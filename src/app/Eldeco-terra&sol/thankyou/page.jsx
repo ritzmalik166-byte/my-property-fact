@@ -1,6 +1,6 @@
 "use client";
 
-import { ELDECO_LANDING_BASE_PATH } from "@/components/eldecoPaths";
+import { ELDECO_PAGE_PATH } from "@/components/eldecoPaths";
 import { useEffect, useState } from "react";
 
 function ThankYouPage() {
@@ -8,7 +8,7 @@ function ThankYouPage() {
 
   useEffect(() => {
     if (secondsLeft === 0) {
-      window.location.href = ELDECO_LANDING_BASE_PATH;
+      window.location.href = ELDECO_PAGE_PATH;
       return;
     }
 
@@ -45,7 +45,7 @@ function ThankYouPage() {
         <button
           type="button"
           onClick={() => {
-            window.location.href = ELDECO_LANDING_BASE_PATH;
+            window.location.href = ELDECO_PAGE_PATH;
           }}
           className="mt-8 h-12 rounded-[4px] bg-black px-8 text-sm font-extrabold text-white transition hover:bg-[#c59c35]"
         >

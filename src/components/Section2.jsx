@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { goToEldecoThankYou } from "./eldecoPaths";
+import { ELDECO_PAGE_THANK_YOU_PATH, goToEldecoThankYou } from "./eldecoPaths";
 import { handleLeadFormSubmit } from "./leadFormSubmit";
 import { OPEN_LEAD_POPUP_EVENT } from "./LeadPopup";
 import styles from "./page.module.css";
@@ -22,7 +22,7 @@ function Section2({ project }) {
       setIsSubmitting(true);
       setFormError("");
       await handleLeadFormSubmit(event, undefined, project);
-      goToEldecoThankYou();
+      goToEldecoThankYou(ELDECO_PAGE_THANK_YOU_PATH);
     } catch (err) {
       setFormError(err instanceof Error ? err.message : "Something went wrong.");
       setIsSubmitting(false);

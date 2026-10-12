@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { goToEldecoThankYou } from "./eldecoPaths";
+import { ELDECO_PAGE_THANK_YOU_PATH, goToEldecoThankYou } from "./eldecoPaths";
 import { handleLeadFormSubmit } from "./leadFormSubmit";
 import styles from "./page.module.css";
 
@@ -71,7 +71,7 @@ function LeadPopup({ project }) {
       window.sessionStorage.setItem(SESSION_KEY, "true");
       setIsSubmitted(true);
       setIsOpen(false);
-      goToEldecoThankYou();
+      goToEldecoThankYou(ELDECO_PAGE_THANK_YOU_PATH);
     } catch (err) {
       setFormError(err instanceof Error ? err.message : "Something went wrong.");
       setIsSubmitting(false);
