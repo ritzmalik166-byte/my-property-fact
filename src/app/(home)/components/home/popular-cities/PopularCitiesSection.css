@@ -1,0 +1,349 @@
+/* Popular Cities — 4-row alternating marquee, layout inspired by "tech stack" marquees */
+
+.popular-cities-section {
+  position: relative;
+  padding: clamp(2.25rem, 5vw, 3.5rem) 0 clamp(2.5rem, 5vw, 3.75rem);
+  
+  background: #f0f1f0;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: clip;
+  box-sizing: border-box;
+}
+
+/* --- Header (centered, ghost title) --- */
+.pc__head-wrap {
+  position: relative;
+  z-index: 2;
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 12px;
+  box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+  .pc__head-wrap {
+    padding: 0 16px 0 20px;
+  }
+}
+
+/* Popular cities — tablet max-width only (760–1024) */
+@media (min-width: 760px) and (max-width: 1023.98px) {
+  .popular-cities-section .pc__head-wrap {
+    max-width: min(100%, 980px);
+    width: 100%;
+    padding-left: clamp(18px, 2.8vw, 32px);
+    padding-right: clamp(18px, 2.8vw, 32px);
+  }
+}
+
+@media (min-width: 1200px) {
+  .pc__head-wrap {
+    padding: 0 20px 0 24px;
+  }
+}
+
+.pc__head-inner {
+  text-align: center;
+  max-width: 40rem;
+  margin: 0 auto;
+  position: relative;
+  padding: 0 clamp(8px, 1.2vw, 4px);
+}
+
+.pc__head-top {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  margin-bottom: 0.65rem;
+}
+
+.pc__kicker {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 118px;
+  height: 34px;
+  box-sizing: border-box;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #334155;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  padding: 0;
+  border-radius: 999px;
+}
+
+.pc__cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 118px;
+  height: 34px;
+  box-sizing: border-box;
+  background: linear-gradient(90deg, #cda958 0%, #67552c 100%);
+  color: #fff !important;
+  padding: 0;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: clamp(0.8rem, 1.1vw, 0.9rem);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+}
+
+.pc__cta:hover,
+.pc__cta:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  color: #fff;
+}
+
+.pc__head-title-block {
+  position: relative;
+  z-index: 1;
+  padding: 0.25rem 0 0.5rem;
+}
+
+.pc__title {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(1.4rem, 2.2vw, 1.75rem);
+  line-height: 1.2;
+  color: #0f172a;
+  margin: 0 0 0.4rem;
+  letter-spacing: -0.02em;
+}
+
+.pc__lede {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(0.86rem, 1.1vw, 0.95rem);
+  line-height: 1.5;
+  color: #64748b;
+  margin: 0;
+  max-width: 32rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pc__ghost {
+  position: absolute;
+  left: 50%;
+  top: 40%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  z-index: 0;
+  pointer-events: none;
+  font-size: clamp(3.2rem, 12vw, 5.5rem);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  color: rgba(15, 23, 42, 0.04);
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* --- Full-bleed marquee zone --- */
+.pc__marquees {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.55rem, 1.2vw, 0.85rem);
+  margin-top: clamp(1.5rem, 2.5vw, 2rem);
+  /* Break out to viewport width */
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  padding: 0.25rem 0;
+  overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent 0%, #000 4%, #000 96%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 4%, #000 96%, transparent 100%);
+}
+
+@media (min-width: 768px) {
+  .pc__marquees {
+    margin-top: clamp(1.75rem, 2.2vw, 2.1rem);
+  }
+}
+
+/* Row: stagger (horizontal offset) for organic rhythm */
+.pc__row {
+  --pc-dur: 34s;
+  --pc-stagger: 0px;
+  padding-left: var(--pc-stagger);
+  overflow: hidden;
+}
+
+.pc__row--s1 {
+  --pc-dur: 36s;
+  --pc-stagger: 0rem;
+}
+.pc__row--s2 {
+  --pc-dur: 40s;
+  --pc-stagger: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .pc__row--s2 {
+    --pc-stagger: 4.5rem;
+  }
+}
+
+.pc__marquee {
+  overflow: hidden;
+  width: 100%;
+  padding: 2px 0;
+}
+
+.pc__track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  animation: pc-marquee 36s linear infinite;
+}
+
+.pc__row--forward .pc__track {
+  animation-duration: var(--pc-dur);
+  animation-name: pc-marquee;
+  animation-direction: normal;
+}
+
+.pc__row--reverse .pc__track {
+  animation-duration: var(--pc-dur);
+  animation-name: pc-marquee;
+  animation-direction: reverse;
+}
+
+/* Second row: offset so rows don’t line up vertically with row 1 */
+.pc__row--s2 .pc__track {
+  animation-delay: -5s;
+}
+
+@keyframes pc-marquee {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    /* Three identical strips: -33.33% = one full segment, seamless loop */
+    transform: translate3d(calc(-100% / 3), 0, 0);
+  }
+}
+
+/* Three equal flex groups: -33.33% shift loops without a visible gap */
+.pc__group {
+  display: flex;
+  flex-direction: row;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.65rem;
+  padding-right: 0.65rem;
+  box-sizing: border-box;
+}
+
+/* --- Pills (layout like tech logos; light theme for MPF) --- */
+.pc__pill {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  gap: 0.4rem;
+  min-height: 2.4rem;
+  padding: 0.35rem 0.9rem 0.35rem 0.4rem;
+  text-decoration: none;
+  color: #0f172a;
+  background: #ffffff;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease,
+    background 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .pc__pill {
+    min-height: 2.5rem;
+    font-size: 0.86rem;
+    padding: 0.4rem 1rem 0.4rem 0.5rem;
+    gap: 0.45rem;
+  }
+}
+
+.pc__pill:hover,
+.pc__pill:focus-visible {
+  transform: scale(1.04);
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.1);
+  border-color: rgba(201, 162, 77, 0.55);
+  background: #fffef9;
+  color: #0f172a;
+}
+
+.pc__pill-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #f1f5f9;
+  flex-shrink: 0;
+}
+
+.pc__pill-img {
+  object-fit: cover;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.pc__pill-text {
+  line-height: 1.2;
+  padding-right: 0.1rem;
+}
+
+/* Reduced motion: pause marquee, show wrap-friendly layout (optional) */
+@media (prefers-reduced-motion: reduce) {
+  .pc__track {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100% !important;
+    max-width: 72rem;
+    margin: 0 auto;
+    row-gap: 0.5rem;
+    padding: 0 12px;
+  }
+
+  .pc__group[aria-hidden="true"] {
+    display: none;
+  }
+
+  .pc__row {
+    padding-left: 0;
+  }
+}
+
+/* Print: static, no mask */
+@media print {
+  .pc__track {
+    animation: none;
+  }
+
+  .pc__marquees {
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+}

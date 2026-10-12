@@ -1,0 +1,237 @@
+/* Critical CSS - Above the fold styles for faster initial render */
+
+/* Essential CSS Variables */
+:root {
+  --bg-color: #68ac78;
+  --menu-color: #ffffff;
+  --text-color: #cfab5a;
+  --bg-with-gradient: radial-gradient(circle at center, #0d5834, #0c2e23);
+  --heaing-font: "Lato", "sans-serif";
+  --text-font: "Inter", "sans-serif";
+  --btn-background: linear-gradient(180deg, #453106 0%, #E6A315 100%);
+  --btn-normal-color: #C9A24D;
+}
+
+/* Critical Layout */
+html, body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  scroll-behavior: smooth;
+  font-family: var(--text-font), sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html,
+  body {
+    scroll-behavior: auto;
+  }
+}
+
+/* Header Critical Styles */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 9999;
+  background: linear-gradient(to bottom, rgba(10, 20, 40, 0.45), rgba(10, 20, 40, 0.15));
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Kill default ul discs before deferred Bootstrap / header.css arrive */
+.header ul,
+.header-links,
+.header .list-unstyled {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.home-banner {
+  width: 100%;
+  display: block;
+  line-height: 0;
+}
+
+.home-banner img,
+.home-banner picture {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.hero-banner-responsive-images {
+  width: 100%;
+}
+
+.hero-banner-frame {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.hero-banner-frame-mobile {
+  aspect-ratio: 458 / 810;
+}
+
+.hero-banner-frame-tablet {
+  aspect-ratio: 1024 / 629;
+}
+
+.hero-banner-frame-desktop {
+  aspect-ratio: 1920 / 883;
+}
+
+.hero-banner-image {
+  object-fit: cover;
+  object-position: center;
+}
+
+.hero-art-direction {
+  aspect-ratio: 458 / 810;
+  display: block;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .hero-art-direction {
+    aspect-ratio: 1024 / 629;
+  }
+}
+
+@media (min-width: 992px) {
+  .hero-art-direction {
+    aspect-ratio: 1920 / 883;
+  }
+
+  .hero-banner-image--full {
+    object-fit: contain;
+    object-position: center center;
+  }
+}
+
+.home-banner.hero-art-direction picture {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.home-banner.hero-art-direction picture img.hero-banner-image {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  display: block;
+}
+
+/* Critical Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--heaing-font) !important;
+}
+
+/* Critical Utility Classes */
+.position-relative {
+  position: relative !important;
+}
+
+.d-flex {
+  display: flex !important;
+}
+
+.justify-content-between {
+  justify-content: space-between !important;
+}
+
+.align-items-center {
+  align-items: center !important;
+}
+
+.w-100 {
+  width: 100% !important;
+}
+
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Critical Display Classes */
+.d-none {
+  display: none !important;
+}
+
+.d-block {
+  display: block !important;
+}
+
+@media (min-width: 768px) {
+  .d-md-none {
+    display: none !important;
+  }
+  .d-md-block {
+    display: block !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .d-lg-none {
+    display: none !important;
+  }
+  .d-lg-block {
+    display: block !important;
+  }
+}
+
+/* Container Critical */
+.container {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+@media (min-width: 576px) {
+  .container {
+    max-width: 540px;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 720px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 960px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1140px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .container {
+    max-width: 1320px;
+  }
+}

@@ -1,0 +1,129 @@
+.wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to bottom left, #f9ded3, #ffe4d5);
+  padding: 24px;
+}
+
+.card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 40px 32px;
+  width: 100%;
+  max-width: 520px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.logo {
+  width: 160px;
+  height: auto;
+  margin: 0 auto;
+}
+
+.icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: #1e2939;
+  color: #ffffff;
+  font-size: 36px;
+  box-shadow: 0 10px 24px rgba(30, 41, 57, 0.25);
+}
+
+.title {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1e2939;
+  margin: 0;
+}
+
+.message {
+  font-size: 17px;
+  color: #475569;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.timerBox {
+  border: 2px solid #1e2939;
+  border-radius: 12px;
+  padding: 16px;
+  background-color: rgba(30, 41, 57, 0.06);
+}
+
+.timerLabel {
+  font-size: 15px;
+  color: #475569;
+  margin-bottom: 8px;
+}
+
+.timerValue {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1e2939;
+}
+
+.actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.primary,
+.secondary {
+  border: none;
+  border-radius: 8px;
+  padding: 12px 28px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.primary {
+  background-color: #1e2939;
+  color: #ffffff;
+  box-shadow: 0 10px 18px rgba(30, 41, 57, 0.25);
+}
+
+.primary:hover {
+  background-color: #111827;
+  transform: translateY(-1px);
+  box-shadow: 0 12px 20px rgba(30, 41, 57, 0.3);
+}
+
+.secondary {
+  background-color: transparent;
+  color: #1e2939;
+  border: 2px solid #1e2939;
+}
+
+.secondary:hover {
+  background-color: rgba(30, 41, 57, 0.08);
+}
+
+@media (max-width: 600px) {
+  .card {
+    padding: 32px 24px;
+  }
+
+  .title {
+    font-size: 28px;
+  }
+
+  .message {
+    font-size: 16px;
+  }
+}
+

@@ -1,0 +1,83 @@
+.insight-container {
+  border-radius: 1rem;
+  border: 1px solid gray;
+  transition: transform 0.3s ease-in-out;
+  overflow: hidden;
+  width: 300px;
+  background-color: #68ac7898;
+}
+.insight-container a {
+  text-decoration: none;
+  color: #000;
+}
+.insight-container-child {
+  height: auto;
+  padding: 1rem;
+}
+.insight-container-child img {
+  width: 100%;
+}
+.insight-container:hover {
+  transform: scale(1.1);
+  box-shadow: 10px 10px 20px 10px rgba(0, 0, 0, 0.1);
+}
+.insight-container-child p:first-of-type {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.insight-container-child p:nth-of-type(2) {
+  font-size: 12px;
+}
+.gap-30 {
+  gap: 30px;
+}
+.insight-explore-button {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 1rem;
+  background-color: #68ac78;
+  overflow: hidden;
+  padding: 1rem 0rem;
+}
+.insight-explore-button button {
+  background-color: transparent;
+  border: none;
+}
+.light-green {
+  background-color: #c5f4e5 !important;
+}
+.light-pink {
+  background-color: #ffd9f8 !important;
+}
+.light-yellow {
+  background-color: #ffedba !important;
+}
+.light-blue {
+  background-color: rgb(195, 195, 252) !important;
+}
+
+.dark-green {
+  background-color: #5affcb !important;
+}
+.dark-pink {
+  background-color: #ff43dd !important;
+}
+.dark-yellow {
+  background-color: #ffcb3d !important;
+}
+.dark-blue {
+  background-color: rgb(90, 90, 255) !important;
+}
+
+.insight-card {
+  min-height: 425px;
+}
+
+@media (max-width: 691px) {
+  .insight-card {
+    max-width: 20rem !important;
+    margin-bottom: 20px;
+  }
+}

@@ -1,0 +1,1707 @@
+"use client";
+import Link from "next/link";
+import Slider from "react-slick";
+import "./propertyV2.css";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+import { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowDown,
+  faArrowLeft,
+  faArrowRight,
+  faMinus,
+  faPlus,
+  faTimes,
+} from "@fortawesome/free-solid-svg-icons";
+import Modal from "react-bootstrap/Modal";
+import NotFound from "../../not-found";
+import CommonPopUpform from "../../(home)/components/common/popupform";
+import GetTouchEnquirySection from "../../(home)/components/common/GetTouchEnquirySection";
+import Featured from "../../(home)/components/home/featured/featured";
+import PopularCitiesSection from "../../(home)/components/home/popular-cities/PopularCitiesSection";
+import { sanitizeHtml } from "../../_global_components/sanitize";
+import { useRouter, notFound } from "next/navigation";
+
+function ScrollFadeSection({
+  as: Tag = "section",
+  className = "",
+  threshold = 0.06,
+  children,
+  ...rest
+}) {
+  const sectionRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const node = sectionRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        setIsVisible(true);
+        observer.disconnect();
+      },
+      { threshold, rootMargin: "100px 0px 80px 0px" },
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [threshold]);
+
+  return (
+    <Tag
+      ref={sectionRef}
+      className={`scroll-fade-section ${isVisible ? "is-visible" : ""} ${className}`.trim()}
+      {...rest}
+    >
+      {children}
+    </Tag>
+  );
+}
+
+function ParallaxImageStrip({ imageSrc, startWidth = 383, startHeight = 247, children }) {
+  const wrapperRef = useRef(null);
+  const innerRef = useRef(null);
+  const overlayRef = useRef(null);
+
+  useEffect(() => {
+    const wrapper = wrapperRef.current;
+    const inner = innerRef.current;
+    const overlay = overlayRef.current;
+    if (!wrapper || !inner) return;
+
+    const lerp = (current, target, ease) => current + (target - current) * ease;
+    const EASE = 0.08;
+    const THRESHOLD = 0.0005;
+
+    let smoothProgress = 0;
+    let targetProgress = 0;
+    let running = true;
+
+    const getTargetProgress = () => {
+      const wrapperRect = wrapper.getBoundingClientRect();
+      const windowH = window.innerHeight;
+      const scrollableHeight = wrapper.offsetHeight - windowH;
+      if (scrollableHeight <= 0) return 0;
+      const scrolled = Math.max(0, -wrapperRect.top);
+      return Math.min(1, scrolled / scrollableHeight);
+    };
+
+    const isMobile = window.innerWidth <= 768;
+
+    const tick = () => {
+      if (!running) return;
+
+      targetProgress = getTargetProgress();
+      smoothProgress = lerp(smoothProgress, targetProgress, EASE);
+
+      if (Math.abs(smoothProgress - targetProgress) < THRESHOLD) {
+        smoothProgress = targetProgress;
+      }
+
+      const p = smoothProgress;
+
+      const zoomEnd = isMobile ? 0.35 : 0.5;
+      const zoomP = Math.min(1, p / zoomEnd);
+      const stickyEl = wrapper.querySelector(".parallax-strip-sticky");
+      const fullW = stickyEl ? stickyEl.offsetWidth : wrapper.offsetWidth;
+      const fullH = window.innerHeight;
+      const w = startWidth + (fullW - startWidth) * zoomP;
+      const h = startHeight + (fullH - startHeight) * zoomP;
+     
+
+      inner.style.width = `${w.toFixed(1)}px`;
+      inner.style.height = `${h.toFixed(1)}px`;
+     
+
+      if (overlay) {
+        const fadeStart = isMobile ? 0.25 : 0.4;
+        const fadeEnd = isMobile ? 0.55 : 0.85;
+        const oP = p <= fadeStart ? 0 : p >= fadeEnd ? 1 : (p - fadeStart) / (fadeEnd - fadeStart);
+
+        overlay.style.opacity = oP.toFixed(3);
+        overlay.style.pointerEvents = oP > 0.15 ? "auto" : "none";
+        overlay.style.transform = `translateY(${(Math.max(0, 1 - oP) * (isMobile ? 30 : 50)).toFixed(1)}px)`;
+      }
+
+      requestAnimationFrame(tick);
+    };
+
+    requestAnimationFrame(tick);
+
+    return () => {
+      running = false;
+    };
+  }, [startWidth, startHeight]);
+
+  return (
+    <div className="parallax-strip-wrapper" ref={wrapperRef}>
+      <div className="parallax-strip-sticky">
+        <div
+          className="parallax-strip-inner"
+          ref={innerRef}
+          style={{ backgroundImage: `url(${imageSrc})` }}
+        />
+        {children && (
+          <div className="parallax-strip-overlay" ref={overlayRef}>
+            {children}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default function Property({
+  projectDetail,
+  similarProjects = [],
+  nearbyBenefitsList,
+}) {
+  const [isAnswerVisible, setIsAnswerVisible] = useState({});
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [showPopUp, setShowPopUp] = useState(false);
+  const [showAllAmenitiesPanel, setShowAllAmenitiesPanel] = useState(false);
+  const [isMobileOrTablet, setIsMobileOrTablet] = useState(false);
+  const [isAmenitiesInView, setIsAmenitiesInView] = useState(false);
+  const [visibleFloorPlanCards, setVisibleFloorPlanCards] = useState({});
+  const [showGalleryModal, setShowGalleryModal] = useState(false);
+  const [activeGalleryIndex, setActiveGalleryIndex] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [backToHomeExpanded, setBackToHomeExpanded] = useState(false);
+  const [allNearbyBenefits, setAllNearbyBenefits] = useState(() =>
+    Array.isArray(nearbyBenefitsList) ? nearbyBenefitsList : [],
+  );
+  const router = useRouter();
+  //Defining loading state
+  const [loading, setLoading] = useState(true);
+
+  //Handling answer div
+  const toggleAnswer = (faqKey) => {
+    setIsAnswerVisible((prev) => ({
+      ...prev,
+      [faqKey]: !prev[faqKey],
+    }));
+  };
+
+  //Setting for banner slider
+  const settings = {
+    dots: false,
+    infinite: (projectDetail.desktopImages?.length ?? 0) > 1,
+    speed: 300,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    fade: (projectDetail.desktopImages?.length ?? 0) > 1,
+    autoplay: (projectDetail.desktopImages?.length ?? 0) > 1,
+    autoplaySpeed: 3000,
+  };
+
+  const NearbyBenefitsPrevArrow = (props) => {
+    const { className, onClick } = props;
+    return (
+      <button
+        type="button"
+        className={`${className || ""} nearby-benefits-arrow nearby-benefits-arrow-prev`}
+        onClick={onClick}
+        aria-label="Previous nearby benefits"
+      >
+        <img src="/icon/arrow-left-s-line.svg" alt="Previous nearby benefits" title="Previous nearby benefits" width={24} height={24} />
+      </button>
+    );
+  };
+
+  const NearbyBenefitsNextArrow = (props) => {
+    const { className, onClick } = props;
+    return (
+      <button
+        type="button"
+        className={`${className || ""} nearby-benefits-arrow nearby-benefits-arrow-next`}
+        onClick={onClick}
+        aria-label="Next nearby benefits"
+      >
+        <img src="/icon/arrow-right-s-line.svg" alt="Next nearby benefits" title="Next nearby benefits" width={24} height={24} />
+      </button>
+    );
+  };
+  const FloorPlanPrevArrow = (props) => {
+    const { className, onClick } = props;
+    return (
+      <button
+        type="button"
+        className={`${className || ""} floorplan-slider-arrow floorplan-slider-arrow-prev`}
+        onClick={onClick}
+        aria-label="Previous floor plans"
+      >
+        <FontAwesomeIcon icon={faArrowLeft} />
+      </button>
+    );
+  };
+
+  const FloorPlanNextArrow = (props) => {
+    const { className, onClick } = props;
+    return (
+      <button
+        type="button"
+        className={`${className || ""} floorplan-slider-arrow floorplan-slider-arrow-next`}
+        onClick={onClick}
+        aria-label="Next floor plans"
+      >
+        <FontAwesomeIcon icon={faArrowRight} />
+      </button>
+    );
+  };
+  const GalleryPrevArrow = (props) => {
+    const { className, onClick } = props;
+    return (
+      <button
+        type="button"
+        className={`${className || ""} gallery-modern-arrow gallery-modern-arrow--prev`}
+        onClick={onClick}
+        aria-label="Previous gallery images"
+      >
+        <FontAwesomeIcon icon={faArrowLeft} />
+      </button>
+    );
+  };
+  const GalleryNextArrow = (props) => {
+    const { className, onClick } = props;
+    return (
+      <button
+        type="button"
+        className={`${className || ""} gallery-modern-arrow gallery-modern-arrow--next`}
+        onClick={onClick}
+        aria-label="Next gallery images"
+      >
+        <FontAwesomeIcon icon={faArrowRight} />
+      </button>
+    );
+  };
+
+  //Generating price in lakh & cr
+  const generatePrice = (price) => {
+    if (/[a-zA-Z]/.test(price)) {
+      return price;
+    }
+    return price < 1
+      ? "₹ " + Math.round(parseFloat(price) * 100) + " Lakh* Onwards"
+      : "₹ " + parseFloat(price) + " Cr* Onwards";
+  };
+  // Back to home: show text while scrolling, icon only when scroll stopped
+  useEffect(() => {
+    let scrollEndTimer = null;
+    const handleBackToHomeScroll = () => {
+      setBackToHomeExpanded(true);
+      if (scrollEndTimer) clearTimeout(scrollEndTimer);
+      scrollEndTimer = setTimeout(() => setBackToHomeExpanded(false), 1200);
+    };
+    window.addEventListener("scroll", handleBackToHomeScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleBackToHomeScroll);
+      if (scrollEndTimer) clearTimeout(scrollEndTimer);
+    };
+  }, []);
+
+// Add nearby image icon to the nearby benefits
+const addNearbyImageIcon = (benefit) => {
+  const name = typeof benefit === "string" ? benefit.trim() : "";
+  if (!name || !allNearbyBenefits?.length) return null;
+  const lower = name.toLowerCase();
+  const nearbyBenefit = allNearbyBenefits.find(
+    (b) =>
+      b.benefitName &&
+      (b.benefitName.toLowerCase() === lower ||
+        b.benefitName.toLowerCase().includes(lower) ||
+        lower.includes(b.benefitName.toLowerCase()))
+  );
+  return nearbyBenefit?.benefitIcon
+    ? `${process.env.NEXT_PUBLIC_IMAGE_URL}nearby-benefit/${nearbyBenefit.benefitIcon}`
+    : null;
+};
+  // Back to home: show text while scrolling, icon only when scroll stopped
+  useEffect(() => {
+    let scrollEndTimer = null;
+    const handleBackToHomeScroll = () => {
+      setBackToHomeExpanded(true);
+      if (scrollEndTimer) clearTimeout(scrollEndTimer);
+      scrollEndTimer = setTimeout(() => setBackToHomeExpanded(false), 1200);
+    };
+    window.addEventListener("scroll", handleBackToHomeScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleBackToHomeScroll);
+      if (scrollEndTimer) clearTimeout(scrollEndTimer);
+    };
+  }, []);
+
+  // Nearby benefits: prefer server-provided list; client fetch only if missing
+  useEffect(() => {
+    if (Array.isArray(nearbyBenefitsList)) return;
+
+    const fetchBenefits = async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}nearby-benefit/get-all`,
+        );
+        setAllNearbyBenefits(res.data);
+      } catch (err) {
+        console.error("Failed to fetch nearby benefits", err);
+      }
+    };
+
+    fetchBenefits();
+  }, [nearbyBenefitsList]);
+  
+
+  useEffect(() => {
+    const header = document.querySelector(".project-detail-header");
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const opacity = Math.min(scrollY / 2000, 1);
+      header.style.background = `rgb(13, 88, 52, ${opacity})`;
+    };
+    window.addEventListener("scroll", handleScroll);
+
+    // Close mobile menu when resizing to desktop view
+    const handleResize = () => {
+      if (window.innerWidth >= 992) {
+        const menu = document.getElementById("property-mbdiv");
+        const menuButtons = document.querySelectorAll(".project-menuBtn");
+        if (menu && menu.classList.contains("active")) {
+          menu.classList.remove("active");
+          menu.style.display = "none";
+          menuButtons.forEach((btn) => btn.classList.remove("closeMenuBtn"));
+          setMenuOpen(false);
+          header?.classList.remove("notfixed");
+          document.body.classList.remove("menu-open");
+        }
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [projectDetail?.amenities]);
+
+  useEffect(() => {
+    const amenitySection = document.getElementById("amenities");
+    if (!amenitySection) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setIsAmenitiesInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.08, rootMargin: "80px 0px 60px 0px" },
+    );
+
+    observer.observe(amenitySection);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    if (!showAllAmenitiesPanel) return;
+    const onKeyDown = (e) => {
+      if (e.key === "Escape") setShowAllAmenitiesPanel(false);
+    };
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [showAllAmenitiesPanel]);
+
+  useEffect(() => {
+    const handleViewportChange = () => {
+      setIsMobileOrTablet(window.innerWidth <= 991);
+    };
+    handleViewportChange();
+    window.addEventListener("resize", handleViewportChange);
+    return () => window.removeEventListener("resize", handleViewportChange);
+  }, []);
+
+  useEffect(() => {
+    setVisibleFloorPlanCards({});
+    const totalCards = projectDetail?.floorPlans?.length || 0;
+    if (!totalCards) return;
+
+    const floorPlanSection = document.getElementById("floorplan");
+    if (!floorPlanSection) return;
+
+    const cardEls = floorPlanSection.querySelectorAll(".floorplan-card[data-floor-index]");
+    if (!cardEls.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const raw = entry.target.getAttribute("data-floor-index");
+          const idx = raw != null ? parseInt(raw, 10) : NaN;
+          if (!Number.isNaN(idx)) {
+            setVisibleFloorPlanCards((prev) =>
+              prev[idx] ? prev : { ...prev, [idx]: true },
+            );
+          }
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -6% 0px" },
+    );
+
+    cardEls.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, [projectDetail?.floorPlans?.length]);
+
+  // Cleanup scroll lock when component unmounts or menu closes
+  useEffect(() => {
+    return () => {
+      // Ensure scroll lock is removed on unmount
+      document.body.classList.remove("menu-open");
+      document.body.classList.remove("overflow-hidden");
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+    };
+  }, []);
+
+  // Ensure scroll lock is properly managed when menu state changes
+  useEffect(() => {
+    if (!menuOpen) {
+      // Ensure scroll is restored when menu closes
+      document.body.classList.remove("menu-open");
+      document.body.classList.remove("overflow-hidden");
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+    }
+  }, [menuOpen]);
+
+  //Handle opening and closing of the property detail page mobile menu
+  const openMenu = (e, targetId) => {
+    // Only prevent default for menu link clicks (when targetId is provided)
+    // Don't prevent default for hamburger button or backdrop clicks
+    if (e && targetId && e.preventDefault) {
+      e.preventDefault();
+    }
+
+    const menuButtons = document.querySelectorAll(".project-menuBtn");
+    const menu = document.getElementById("property-mbdiv");
+    const header = document.querySelector(".project-detail-header");
+
+    if (!menu) return;
+
+    // Determine if menu should be open or closed
+    let isMenuOpen;
+    if (targetId) {
+      // If clicking a menu link, close the menu
+      isMenuOpen = false;
+      menu.classList.remove("active");
+    } else {
+      // Otherwise toggle the menu
+      isMenuOpen = menu.classList.toggle("active");
+    }
+
+    // Toggle menu button classes
+    menuButtons.forEach((btn) =>
+      btn.classList.toggle("closeMenuBtn", isMenuOpen),
+    );
+
+    setMenuOpen(isMenuOpen);
+
+
+    menu.style.display = isMenuOpen ? "block" : "none";
+
+
+    header?.classList.toggle("notfixed", isMenuOpen);
+
+    
+    if (isMenuOpen) {
+      document.body.classList.add("menu-open");
+    } else {
+      document.body.classList.remove("menu-open");
+      document.body.classList.remove("overflow-hidden");
+      // Ensure body can scroll again
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+    }
+
+
+    if (targetId) {
+    
+      setTimeout(() => {
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          const headerHeight = header ? header.offsetHeight : 0;
+          const targetPosition =
+            targetElement.getBoundingClientRect().top +
+            window.scrollY -
+            headerHeight -
+            50;
+
+          window.scrollTo({
+            top: targetPosition,
+            behavior: "smooth",
+          });
+        }
+      }, 150);
+    }
+  };
+
+  const handleBackToHomeClick = (e) => {
+    if (e?.preventDefault) e.preventDefault();
+
+    const menu = document.getElementById("property-mbdiv");
+    const menuButtons = document.querySelectorAll(".project-menuBtn");
+    const header = document.querySelector(".project-detail-header");
+
+    if (menu) {
+      menu.classList.remove("active");
+      menu.style.display = "none";
+    }
+    menuButtons?.forEach((btn) => btn.classList.remove("closeMenuBtn"));
+    header?.classList.remove("notfixed");
+    setMenuOpen(false);
+
+
+    document.body.classList.remove("menu-open");
+    document.body.classList.remove("overflow-hidden");
+    document.body.style.overflow = "";
+    document.body.style.position = "";
+
+    router.push("/");
+
+    
+    window.setTimeout(() => {
+      if (window.location.pathname !== "/") {
+        window.location.assign("/");
+      }
+    }, 250);
+  };
+
+
+  const handleMpfLogoOpenHomeNewTab = () => {
+    const menu = document.getElementById("property-mbdiv");
+    const menuButtons = document.querySelectorAll(".project-menuBtn");
+    const header = document.querySelector(".project-detail-header");
+
+    if (menu) {
+      menu.classList.remove("active");
+      menu.style.display = "none";
+    }
+    menuButtons?.forEach((btn) => btn.classList.remove("closeMenuBtn"));
+    header?.classList.remove("notfixed");
+    setMenuOpen(false);
+
+    document.body.classList.remove("menu-open");
+    document.body.classList.remove("overflow-hidden");
+    document.body.style.overflow = "";
+    document.body.style.position = "";
+
+    if (typeof window === "undefined") return;
+    const homeUrl = `${window.location.origin}/`;
+    const a = document.createElement("a");
+    a.href = homeUrl;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  };
+
+
+
+  
+  if (!projectDetail) {
+    notFound();
+    return null;
+  }
+
+  const imageBase = process.env.NEXT_PUBLIC_IMAGE_URL || "";
+  const slugURL = projectDetail.slugURL || "";
+  const projectImageSrc = (filename) =>
+    filename && slugURL ? `${imageBase}properties/${slugURL}/${filename}` : "/static/no_image.png";
+  const amenitiesList = projectDetail.amenities || [];
+  const floorPlans = projectDetail.floorPlans || [];
+  const galleryImages = projectDetail.galleryImages || [];
+  const amenityDescription = projectDetail.amenityDescription || projectDetail.amenityDesc || "";
+  const floorPlanDescription = projectDetail.floorPlanDescription || projectDetail.floorPlanDesc || "";
+  const locationDescription = projectDetail.locationDescription || projectDetail.locationDesc || "";
+  const nearbyBenefitsMaster = Array.isArray(allNearbyBenefits)
+    ? allNearbyBenefits
+    : Array.isArray(allNearbyBenefits?.data)
+      ? allNearbyBenefits.data
+      : [];
+  const AMENITIES_PREVIEW_MAX = 8;
+  const amenitiesPreviewList = amenitiesList.slice(0, AMENITIES_PREVIEW_MAX);
+  const hasMoreAmenities = amenitiesList.length > AMENITIES_PREVIEW_MAX;
+  const showAmenityCards = isAmenitiesInView;
+  const amenityIconBase = `${process.env.NEXT_PUBLIC_IMAGE_URL || ""}amenity/`;
+  const aboutBuilderImage =
+    projectDetail?.builder?.builderImage ||
+    projectDetail?.builder?.image ||
+    projectDetail?.projectThumbnail ||  
+    projectDetail?.desktopImages?.[0]?.desktopImage ||
+    "";
+  const aboutBuilderImageSrc = aboutBuilderImage
+    ? /^https?:\/\//i.test(aboutBuilderImage) || aboutBuilderImage.startsWith("/")
+      ? aboutBuilderImage
+      : projectImageSrc(aboutBuilderImage)
+    : "/static/no_image.png";
+  const builderSlug = String(
+    projectDetail?.builder?.slugURL || projectDetail?.builder?.slugUrl || "",
+  ).trim();
+  const builderPageHref = builderSlug ? `/builder/${builderSlug}` : null;
+  const locationBenefitList =
+    projectDetail.locationBenefits || projectDetail.projectLocationBenefitList || [];
+  const locationBenefitsToRender = locationBenefitList.length
+    ? locationBenefitList
+    : nearbyBenefitsMaster;
+  const normalizeBenefitText = (value) =>
+    String(value || "")
+      .trim()
+      .toLowerCase();
+  const formatDistanceLabel = (value) => {
+    if (value === undefined || value === null) return "";
+    const text = String(value).trim();
+    if (!text) return "";
+    return /km/i.test(text) ? text : `${text} KM`;
+  };
+  const getNearbyDistanceLabel = (benefit) => {
+    const directDistance =
+      benefit?.distance ?? benefit?.distanceKm ?? benefit?.distanceInKm;
+    const formattedDirect = formatDistanceLabel(directDistance);
+    if (formattedDirect) return formattedDirect;
+
+    const benefitName = normalizeBenefitText(
+      benefit?.benefitName || benefit?.name || benefit?.title,
+    );
+
+    const matchedItem = locationBenefitList.find((item) => {
+      const itemName = normalizeBenefitText(
+        item?.benefitName || item?.name || item?.title,
+      );
+      return (
+        !!itemName &&
+        !!benefitName &&
+        (itemName === benefitName ||
+          itemName.includes(benefitName) ||
+          benefitName.includes(itemName))
+      );
+    });
+
+    const matchedDistance =
+      matchedItem?.distance ?? matchedItem?.distanceKm ?? matchedItem?.distanceInKm;
+    return formatDistanceLabel(matchedDistance);
+  };
+  const uniqueLocationBenefits = locationBenefitsToRender.filter((benefit, index, list) => {
+    const benefitName = normalizeBenefitText(
+      benefit?.benefitName || benefit?.name || benefit?.title,
+    );
+    const distanceLabel = getNearbyDistanceLabel(benefit);
+    const uniqueKey = `${benefitName}__${distanceLabel}`;
+    return (
+      list.findIndex((item) => {
+        const itemName = normalizeBenefitText(
+          item?.benefitName || item?.name || item?.title,
+        );
+        const itemDistance = getNearbyDistanceLabel(item);
+        return `${itemName}__${itemDistance}` === uniqueKey;
+      }) === index
+    );
+  });
+  const nearbyBenefitsCount = uniqueLocationBenefits.length;
+  const nearbyBenefitsSliderSettings = {
+    dots: false,
+    infinite: false,
+    speed: 400,
+    slidesToShow: Math.min(4, nearbyBenefitsCount),
+    slidesToScroll: 1,
+    arrows: nearbyBenefitsCount > 1,
+    prevArrow: <NearbyBenefitsPrevArrow />,
+    nextArrow: <NearbyBenefitsNextArrow />,
+    responsive: [
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: Math.min(3, nearbyBenefitsCount),
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 992,
+        settings: {
+          slidesToShow: Math.min(2, nearbyBenefitsCount),
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 576,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
+  const shouldUseFloorPlanSlider = floorPlans.length > 3;
+  const floorPlanSlidesToShow = Math.min(3, floorPlans.length || 1);
+  const floorPlanSliderSettings = {
+    dots: false,
+    infinite: false,
+    speed: 400,
+    arrows: floorPlans.length > floorPlanSlidesToShow,
+    prevArrow: <FloorPlanPrevArrow />,
+    nextArrow: <FloorPlanNextArrow />,
+    slidesToShow: floorPlanSlidesToShow,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: Math.min(2, floorPlans.length),
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
+  const shouldUseGallerySlider = galleryImages.length > 3;
+  const gallerySliderSettings = {
+    dots: false,
+    infinite: galleryImages.length > 3,
+    speed: 450,
+    slidesToShow: Math.min(3, galleryImages.length || 1),
+    slidesToScroll: 1,
+    arrows: galleryImages.length > 1,
+    prevArrow: <GalleryPrevArrow />,
+    nextArrow: <GalleryNextArrow />,
+    responsive: [
+      {
+        breakpoint: 992,
+        settings: {
+          slidesToShow: Math.min(2, galleryImages.length),
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 576,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
+  };
+  const faqList = projectDetail.faqs || [];
+  const getFloorPlanImage = (plan) => {
+    const imageName =
+      plan?.planImage ||
+      plan?.floorPlanImage ||
+      plan?.imageName ||
+      plan?.image ||
+      plan?.planMap ||
+      "";
+    if (!imageName) return "/static/generic-floorplan.jpg";
+    if (/^https?:\/\//i.test(imageName) || imageName.startsWith("/")) return imageName
+    return projectImageSrc(imageName);
+  };
+
+  const getFloorPlanArea = (plan) => {
+    const sqFt = plan?.areaSqFt ?? plan?.areaSqft ?? plan?.area ?? plan?.size;
+    const sqMt = plan?.areaSqMt != null ? parseFloat(plan.areaSqMt) : null;
+    if (!sqFt && sqMt == null) return "On Request";
+
+    const parts = [];
+    if (sqFt) {
+      const sqFtText = String(sqFt).trim();
+      parts.push(/sq|ft|mtr|meter/i.test(sqFtText) ? sqFtText : `${sqFtText} sq ft`);
+    }
+    if (Number.isFinite(sqMt)) {
+      parts.push(`${sqMt.toFixed(2)} sq mt`);
+    }
+
+    return parts.length ? parts.join(" • ") : "On Request";
+  };
+  const getBannerAltText = (item, index) =>
+    String(item?.altTag || "").trim() ||
+    String(projectDetail?.projectName || "").trim() ||
+    `${projectDetail.projectName || "Property"} banner ${index + 1}`;
+
+  const openGalleryModal = (index) => {
+    setActiveGalleryIndex(index);
+    setShowGalleryModal(true);
+  };
+
+  const closeGalleryModal = () => {
+    setShowGalleryModal(false);
+  };
+  const showPrevGalleryImage = () => {
+    if (!galleryImages.length) return;
+    setActiveGalleryIndex((prev) =>
+      prev === 0 ? galleryImages.length - 1 : prev - 1,
+    );
+  };
+  const showNextGalleryImage = () => {
+    if (!galleryImages.length) return;
+    setActiveGalleryIndex((prev) =>
+      prev === galleryImages.length - 1 ? 0 : prev + 1,
+    );
+  };
+
+  return (
+    <>
+      <Link
+        title="Back to MyPropertyFact home page"
+        href="/"
+        className={`back-to-home-floating ${backToHomeExpanded ? "back-to-home-floating--expanded" : ""}`}
+        aria-label="Back to MyPropertyFact home page"
+        onClick={handleBackToHomeClick}
+      >
+        <span className="back-to-home-floating__text">Back To Home</span>
+        <span className="back-to-home-floating__icon">
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </span>
+      </Link>
+      {/* Header for property detail page */}
+      <header
+        className={`project-detail-header px-4 ${
+          isScrolled ? "fixed-header" : ""
+        }`}
+      >
+        <div className="main-header">
+          <div className="d-flex justify-content-between align-items-center">
+            <div className="d-flex justify-content-center align-items-center">
+              <Link
+                title="View builder profile"
+                href={builderPageHref || "/"}
+                aria-label={
+                  builderPageHref
+                    ? `View ${projectDetail.builder?.builderName || "builder"} profile`
+                    : "Home"
+                }
+                {...(builderPageHref
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
+              >
+                <img
+                  width={198}
+                  height={50.75}
+                  src={projectImageSrc(projectDetail.projectLogo)}
+                  alt={projectDetail.builder?.builderName || projectDetail.projectName || "Project logo"} title={projectDetail.builder?.builderName || projectDetail.projectName || "Project logo"}
+                  className="img-fluid"
+                />
+              </Link>
+            </div>
+            <nav className="navi d-none d-lg-flex">
+              <div className="menu">
+                <ul className="list-inline d-flex text-decoration-none gap-5 m-0 align-items-center">
+                  <li>
+                    <Link
+                      title="Overview"
+                      className="text-decoration-none text-light fs-5 fw-bold"
+                      href="#overview"
+                    >
+                      Overview
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      title="Amenities"
+                      className="text-decoration-none text-light fs-5 fw-bold"
+                      href="#amenities"
+                    >
+                      Amenities
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      title="Plans &amp; Price"
+                      className="text-decoration-none text-light fs-5 fw-bold"
+                      href="#floorplan"
+                    >
+                      Plans &amp; Price
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      title="Gallery"
+                      className="text-decoration-none text-light fs-5 fw-bold"
+                      href="#gallery"
+                    >
+                      Gallery
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      title="Location"
+                      className="text-decoration-none text-light fs-5 fw-bold"
+                      href="#location"
+                    >
+                      Location
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+            {/* Defining header for small devices */}
+            <div
+              className="project-mbMenuContainer"
+              id="property-mbdiv"
+              onClick={(e) => {
+                // close when clicking on dark backdrop only
+                if (e.target.id === "property-mbdiv" && menuOpen) {
+                  openMenu(e);
+                }
+              }}
+            >
+              <div className="mbMenu" onClick={(e) => e.stopPropagation()}>
+                {/* Mobile menu header with logo + close */}
+                <div className="project-mbMenu-header d-flex align-items-center justify-content-between mb-4">
+                  <Link
+                    title="My Property Fact home"
+                    href="/"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleMpfLogoOpenHomeNewTab();
+                    }}
+                    aria-label="My Property Fact home (opens in a new tab)"
+                  >
+                    <img
+                      src="/logo.webp"
+                      alt="My Property Fact logo — project page mobile menu"
+                      title="My Property Fact logo — project page mobile menu"
+                      width={50}
+                      height={55}
+                      className="img-fluid"
+                    />
+                  </Link>
+                  {/* <button
+                    type="button"
+                    className="project-mbMenu-close"
+                    onClick={(e) => openMenu(e)}
+                    aria-label="Close menu"
+                  >
+                    <span></span>
+                    <span></span>
+                  </button> */}
+                </div>
+
+                <ul className="project-mb-list d-lg-none">
+                  <li>
+                    <Link
+                      title="Back to My Property Fact home page"
+                      href="/"
+                      className="text-decoration-none"
+                      onClick={handleBackToHomeClick}
+                    >
+                      Back to Home
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      title="Overview"
+                      href="#overview"
+                      className="text-decoration-none"
+                      onClick={(e) => openMenu(e, "overview")}
+                    >
+                      Overview
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      title="Amenities"
+                      href="#amenities"
+                      className="text-decoration-none"
+                      onClick={(e) => openMenu(e, "amenities")}
+                    >
+                      Amenities
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      title="Plans &amp; Price"
+                      href="#floorplan"
+                      className="text-decoration-none"
+                      onClick={(e) => openMenu(e, "floorplan")}
+                    >
+                      Plans &amp; Price
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      title="Gallery"
+                      href="#gallery"
+                      className="text-decoration-none"
+                      onClick={(e) => openMenu(e, "gallery")}
+                    >
+                      Gallery
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      title="Location"
+                      href="#location"
+                      className="text-decoration-none"
+                      onClick={(e) => openMenu(e, "location")}
+                    >
+                      Location
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            {/* Defining hamburger button for property detail page (mobile) */}
+            <div
+              className="project-menuBtn d-flex d-lg-none"
+              onClick={openMenu}
+            >
+              <span id="menuLine1"></span>
+              <span id="menuLine2"></span>
+              <span id="menuLine3"></span>
+            </div>
+            {/* Logo container */}
+            <div className="logo d-none d-lg-block px-4">
+              <Link
+                href="/"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleMpfLogoOpenHomeNewTab();
+                }}
+                aria-label="My Property Fact home (opens in a new tab)"
+              >
+                <img
+                  src="/logo.webp"
+                  alt="My Property Fact logo — project page header"
+                  title="My Property Fact logo — project page header"
+                  width={70}
+                  height={70}
+                  className="img-fluid"
+                />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div id="home" className="container-fluid p-0">
+        {/* Banner container for property detail page  */}
+        <div className="slick-slider-container">
+          <Slider {...settings}>
+            {projectDetail.desktopImages && projectDetail.desktopImages.map((item, index) => {
+              const mobileItem =
+                projectDetail.mobileImages?.[index]; // pick same index mobile banner
+              return (
+                <picture className="image-con" key={`${item.id}-${index}`}>
+                  {/* Mobile first */}
+                  {mobileItem?.mobileImage && (
+                    <source
+                      srcSet={projectImageSrc(mobileItem.mobileImage)}
+                      media="(max-width: 640px)" // mobile breakpoint
+                    />
+                  )}
+
+                  {/* Tablet/Laptop (falls back to desktopImage) */}
+                  {item.desktopImage && (
+                    <source
+                      srcSet={projectImageSrc(item.desktopImage)}
+                      media="(min-width: 641px)" // tablet/laptop/desktop
+                    />
+                  )}
+
+                  {/* Default fallback */}
+                  <img
+                    src={projectImageSrc(item.desktopImage)}
+                    alt={getBannerAltText(item, index)} title={getBannerAltText(item, index)}
+                    width={2225}
+                    height={1065}
+                  />
+                </picture>
+              );
+            })}
+          </Slider>
+          <div className="hero-content-overlay">
+            <h1>{projectDetail.projectName}</h1>
+            <button
+              className="hero-enquire-btn"
+              onClick={() => setShowPopUp(true)}
+              type="button"
+            >
+              <img
+                src="/icon/enquire_now.svg"
+                alt="Enquire Now" title="Enquire Now"
+                width={32}
+                height={32}
+                className="hero-enquire-btn__icon"
+              />
+              <span>Enquire Now</span>
+            </button>
+          </div>
+          <div className="hero-get-detail-card">
+            <p className="hero-get-location">
+              {projectDetail.projectLocality}, {projectDetail.city},{" "}
+              {projectDetail.state}
+            </p>
+            <p className="hero-get-price">Price: {generatePrice(projectDetail.projectPrice)}</p>
+            <p className="hero-get-config">{projectDetail.projectConfiguration}</p>
+            <p className="hero-get-rera">RERA: {projectDetail.reraNo || "Not found"}</p>
+          </div>
+          <div
+            className="scroll-down-btn d-none d-md-flex"
+            onClick={() => window.scrollBy({ top: 600, behavior: "smooth" })}
+          >
+            <div className="d-flex flex-column align-items-center justify-content-center text-center fs-5">
+              <span>
+                <FontAwesomeIcon icon={faArrowDown} />
+              </span>
+              <span>Scroll Down</span>
+              <i className="fas fa-chevron-down"></i>
+            </div>
+          </div>
+        </div>
+
+        <div id="overview" className="container overview-section py-5 mt-3 mb-3">
+          <div className="overview-content-wrap text-center mx-auto">
+            <h2 className="overview-title">Project Overview</h2>
+            <div
+              className="overview-description"
+              dangerouslySetInnerHTML={{
+                __html: projectDetail.projectWalkthroughDescription,
+              }}
+            ></div>
+          </div>
+        </div>
+
+        {/* Amenities section */}
+        <div className="container-fluid py-5 mb-5 amenities-section" id="amenities">
+          <div className="container amenities-content">
+            <div className="amenities-head">
+              <h2 className="amenities-title">Amenities</h2>
+            </div>
+            {amenityDescription && (
+              <div
+                className="amenities-description text-center mb-4"
+                dangerouslySetInnerHTML={{ __html: amenityDescription }}
+              ></div>
+            )}
+
+            <div className="amenities-preview-wrap">
+              <div className="amenities-grid amenities-grid--compact">
+                {amenitiesPreviewList.map((item, index) => (
+                  <div
+                    key={`${item.id || item.title}-preview-${index}`}
+                    className={`amenity-modern-card amenity-modern-card--compact ${showAmenityCards ? "is-visible" : ""}`}
+                    style={{ transitionDelay: `${index * 35}ms` }}
+                  >
+                    <div className="amenity-modern-icon-wrap">
+                      <img
+                        src={`${amenityIconBase}${item.image}`}
+                        height={32}
+                        width={32}
+                        alt={item.altTag || item.title || "Amenity icon"} title={item.altTag || item.title || "Amenity icon"}
+                        className="d-flex mx-auto amenity-modern-icon-img"
+                      />
+                    </div>
+                    <p className="amenity-modern-title">{item.title}</p>
+                  </div>
+                ))}
+              </div>
+              {hasMoreAmenities && (
+                <div className="amenities-view-more-row">
+                  <button
+                    type="button"
+                    className="amenities-view-more-btn"
+                    onClick={() => setShowAllAmenitiesPanel(true)}
+                  >
+                    <span>View more</span>
+                    <FontAwesomeIcon icon={faPlus} className="amenities-view-more-btn__icon" />
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Floor plans section */}
+        <div className="container mb-5 floorplan-section" id="floorplan">
+          <div className="floorplan-header">
+            <h2 className="fw-bold mb-0 floorplan-heading">Floor Plans</h2>
+            {floorPlanDescription && (
+              <div
+                className="mb-0 floorplan-description"
+                dangerouslySetInnerHTML={{ __html: floorPlanDescription }}
+              ></div>
+            )}
+          </div>
+          {!!floorPlans.length &&
+            (shouldUseFloorPlanSlider ? (
+              <div className="floorplan-slider-wrap">
+                <Slider {...floorPlanSliderSettings} className="floorplan-slider">
+                  {floorPlans.map((item, index) => (
+                    <div key={`${item.id || item.planType || "plan"}-${index}`} className="floorplan-slide">
+                      <article
+                        data-floor-index={index}
+                        className={`floorplan-card ${visibleFloorPlanCards[index] ? "is-visible" : ""}`}
+                      >
+                        <div className="floorplan-card-top-meta">
+                          <p>
+                            <span>Type</span>
+                            <strong>{item.planType || item.type || "Offices"}</strong>
+                          </p>
+                          <p>
+                            <span>Size</span>
+                            <strong>{getFloorPlanArea(item)}</strong>
+                          </p>
+                        </div>
+
+                        <div className="floorplan-image-wrap">
+                          <img
+                            width={500}
+                            height={300}
+                            className="img-fluid floorplan-image floorplan-image--blurred"
+                            src={getFloorPlanImage(item)}
+                            alt={item.altTag || item.planType || "Floor plan"} title={item.altTag || item.planType || "Floor plan"}
+                          />
+                        </div>
+
+                        <button
+                          type="button"
+                          className="floorplan-price-btn"
+                          onClick={() => setShowPopUp(true)}
+                          aria-label={`Request price for ${item.planType || "floor plan"}`}
+                        >
+                          Price On Request
+                        </button>
+                      </article>
+                    </div>
+                  ))}
+                </Slider>
+              </div>
+            ) : (
+              <div className={`floorplan-grid${floorPlans.length === 1 ? " floorplan-grid--single" : ""}`}>
+                {floorPlans.map((item, index) => (
+                  <article
+                    key={`${item.id || item.planType || "plan"}-${index}`}
+                    data-floor-index={index}
+                    className={`floorplan-card ${visibleFloorPlanCards[index] ? "is-visible" : ""}`}
+                  >
+                    <div className="floorplan-card-top-meta">
+                      <p>
+                        <span>Type</span>
+                        <strong>{item.planType || item.type || "Offices"}</strong>
+                      </p>
+                      <p>
+                        <span>Size</span>
+                        <strong>{getFloorPlanArea(item)}</strong>
+                      </p>
+                    </div>
+
+                    <div className="floorplan-image-wrap">
+                      <img
+                        width={500}
+                        height={300}
+                        className="img-fluid floorplan-image floorplan-image--blurred"
+                        src={getFloorPlanImage(item)}
+                        alt={item.altTag || item.planType || "Floor plan"} title={item.altTag || item.planType || "Floor plan"}
+                      />
+                    </div>
+
+                    <button
+                      type="button"
+                      className="floorplan-price-btn"
+                      onClick={() => setShowPopUp(true)}
+                      aria-label={`Request price for ${item.planType || "floor plan"}`}
+                    >
+                      Price On Request
+                    </button>
+                  </article>
+                ))}
+              </div>
+            ))}
+        </div>
+
+        {/* Gallery section */}
+        <div className="container pt-4 pb-2 mb-3 gallery-modern-section" id="gallery">
+          <h2 className="gallery-modern-title">Gallery</h2>
+          {!!galleryImages.length && (
+            shouldUseGallerySlider ? (
+              <div className="gallery-modern-slider-wrap">
+                <Slider {...gallerySliderSettings} className="gallery-modern-slider">
+                  {galleryImages.map((item, index) => (
+                    <div key={`${index}-${item.id || item.imageName}`} className="gallery-modern-slide">
+                      <button
+                        type="button"
+                        className="gallery-modern-item"
+                        onClick={() => openGalleryModal(index)}
+                        aria-label={`Open gallery image ${index + 1}`}
+                      >
+                        <img
+                          src={projectImageSrc(item.imageName)}
+                          alt={item.altTag || `Gallery image ${index + 1}`} title={item.altTag || `Gallery image ${index + 1}`}
+                          className="gallery-modern-image"
+                         style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}/>
+                      </button>
+                    </div>
+                  ))}
+                </Slider>
+              </div>
+            ) : (
+              <div className="gallery-modern-grid">
+                {galleryImages.map((item, index) => (
+                  <button
+                    type="button"
+                    key={`${index}-${item.id || item.imageName}`}
+                    className="gallery-modern-item"
+                    onClick={() => openGalleryModal(index)}
+                    aria-label={`Open gallery image ${index + 1}`}
+                  >
+                    <img
+                      src={projectImageSrc(item.imageName)}
+                      alt={item.altTag || `Gallery image ${index + 1}`} title={item.altTag || `Gallery image ${index + 1}`}
+                      className="gallery-modern-image"
+                     style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}/>
+                  </button>
+                ))}
+              </div>
+            )
+          )}
+        </div>
+        {/* Location section */}
+        <ScrollFadeSection
+          as="section"
+          className="location-modern-section mb-4"
+          id="location"
+        >
+          <div className="container location-modern-container">
+            <div className="location-modern-map-column">
+              <div className="location-modern-map">
+                <img
+                  src={projectImageSrc(projectDetail.locationMap)}
+                  alt="Project Location Map" title="Project Location Map"
+                  className="location-modern-map-image"
+                 style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}/>
+              </div>
+              <button
+                type="button"
+                className="location-modern-map-btn"
+                onClick={() => setShowPopUp(true)}
+              >
+                <span>View Map</span>
+                <span className="location-modern-map-btn-icon">
+                  <FontAwesomeIcon icon={faArrowRight} />
+                </span>
+              </button>
+            </div>
+
+            <div className="location-modern-panel">
+              <h2 className="location-modern-section-title">Location</h2>
+              {locationDescription && (
+                <div
+                  className="location-modern-description"
+                  dangerouslySetInnerHTML={{ __html: locationDescription }}
+                ></div>
+              )}
+              <div className="location-modern-info-card">
+                <div className="location-modern-row">
+                  <h4 className="mb-0">Address</h4>
+                  <h5 className="mb-0">{projectDetail.projectLocality || "NA"}</h5>
+                </div>
+                <div className="location-modern-row">
+                  <h4 className="mb-0">State</h4>
+                  <h5 className="mb-0">{projectDetail.state || "NA"}</h5>
+                </div>
+                <div className="location-modern-row">
+                  <h4 className="mb-0">City</h4>
+                  <h5 className="mb-0">{projectDetail.city || "NA"}</h5>
+                </div>
+                <div className="location-modern-row">
+                  <h4 className="mb-0">Country</h4>
+                  <h5 className="mb-0">{projectDetail.country || "NA"}</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {!!uniqueLocationBenefits.length && (
+            <div className="container location-nearby-wrap">
+              <div
+                className={`location-nearby-slider-wrap${nearbyBenefitsCount > 1 ? " location-nearby-slider-wrap--with-arrows" : ""}`}
+              >
+                <Slider {...nearbyBenefitsSliderSettings}>
+                  {uniqueLocationBenefits.map((benefit) => {
+                    const benefitName =
+                      benefit.benefitName || benefit.name || benefit.title || "Benefit";
+                    const linkedDistance = getNearbyDistanceLabel(benefit);
+                    const slideKey = `${benefit.id ?? ""}-${normalizeBenefitText(benefitName)}-${linkedDistance}`;
+                    return (
+                      <div key={slideKey}>
+                        <article className="location-nearby-card">
+                          <div className="location-nearby-card-icon">
+                            <img
+                              src={
+                                addNearbyImageIcon(benefit.benefitName) ||
+                                "/icon/fallback-icon.png"
+                              }
+                              alt={benefitName} title={benefitName}
+                              width={22}
+                              height={22}
+                            />
+                          </div>
+                          <div className="location-nearby-card-content">
+                            <h3 className="h6 mb-0">{benefitName}</h3>
+                            {linkedDistance && <span>{linkedDistance}</span>}
+                          </div>
+                        </article>
+                      </div>
+                    );
+                  })}
+                </Slider>
+              </div>
+            </div>
+          )}
+        </ScrollFadeSection>
+      </div>
+
+      {/* About the project */}
+      <ScrollFadeSection as="section" className="about-modern-section mb-5">
+        <div className="container about-modern-container">
+          <div className="about-modern-image-wrap">
+            {builderPageHref ? (
+              <Link
+                href={builderPageHref}
+                className="about-modern-image-link"
+                aria-label={`View ${projectDetail.builder?.builderName || "builder"} profile`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img
+                  src={aboutBuilderImageSrc}
+                  alt={projectDetail.builder?.builderName || "Builder"} title={projectDetail.builder?.builderName || "Builder"}
+                  className="about-modern-image"
+                 style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}/>
+              </Link>
+            ) : (
+              <img
+                src={aboutBuilderImageSrc}
+                alt={projectDetail.builder?.builderName || "Builder"} title={projectDetail.builder?.builderName || "Builder"}
+                className="about-modern-image"
+               style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}/>
+            )}
+          </div>
+
+          <div className="about-modern-content">
+            <p className="about-modern-label">About</p>
+            <h2 className="about-modern-title">
+              About The Builder {projectDetail.builder?.builderName || ""}
+            </h2>
+            <div
+              className="about-modern-description"
+              dangerouslySetInnerHTML={{
+                __html: sanitizeHtml(projectDetail.builder?.builderDescription || ""),
+              }}
+            ></div>
+
+            <Link
+              href={builderPageHref || "#"}
+              className="about-modern-link-btn"
+              aria-label="Open builder details"
+              {...(builderPageHref
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {})}
+            >
+              <FontAwesomeIcon icon={faArrowRight} />
+            </Link>
+          </div>
+        </div>
+      </ScrollFadeSection>
+
+      <ParallaxImageStrip imageSrc={aboutBuilderImageSrc}>
+        <GetTouchEnquirySection projectDetail={projectDetail} embeddedInParallax />
+      </ParallaxImageStrip>
+
+      {/* Similar Projects */}
+      {similarProjects.length > 0 && (
+        <div className="container-fluid mb-5 mt-5">
+          <h2 className="text-center mb-4 fw-bold">Similar Projects</h2>
+          <Featured
+            title="Similar Projects"
+            autoPlay={true}
+            allProjects={similarProjects}
+            type="Similar"
+            badgeVariant="default"
+          />
+        </div>
+      )}
+
+      {/* FAQs */}
+      {!!faqList.length && (
+        <section className="faq-modern-section mb-5">
+          <div className="container">
+            <h2 className="faq-modern-title">FAQs</h2>
+            <p className="faq-modern-subtitle">
+              Find answers to common questions about this project.
+            </p>
+
+            <div className="faq-modern-list">
+              {faqList.map((item, index) => {
+                const faqKey = item.id ?? index;
+                const isOpen = !!isAnswerVisible[faqKey];
+                const normalizedQuestion = String(item.question || "").trim();
+                const hasQuestionPrefix = /^q\d+\s*:/i.test(normalizedQuestion);
+                const faqQuestionText = hasQuestionPrefix
+                  ? normalizedQuestion
+                  : `Q${index + 1}: ${normalizedQuestion}`;
+                return (
+                  <article key={`${faqKey}-${index}`} className="faq-modern-item">
+                    <h3 className="mb-0">
+                      <button
+                        type="button"
+                        className="faq-modern-question"
+                        onClick={() => toggleAnswer(faqKey)}
+                        aria-expanded={isOpen}
+                      >
+                        <span>{faqQuestionText}</span>
+                        <span className="faq-modern-icon-wrap">
+                          <FontAwesomeIcon icon={isOpen ? faMinus : faPlus} />
+                        </span>
+                      </button>
+                    </h3>
+                    <div className={`faq-modern-answer ${isOpen ? "show" : ""}`}>
+                      <div className="faq-modern-answer-inner">
+                        <p>{item.answer}</p>
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Popular Cities */}
+      <PopularCitiesSection />
+
+      {showAllAmenitiesPanel && (
+        <>
+          <button
+            type="button"
+            className="amenities-all-backdrop"
+            aria-label="Close amenities list"
+            onClick={() => setShowAllAmenitiesPanel(false)}
+          />
+          <aside
+            className="amenities-all-panel"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="amenities-all-panel-title"
+          >
+            <div className="amenities-all-panel-header">
+              <h3 id="amenities-all-panel-title" className="amenities-all-panel-title">
+                All amenities
+              </h3>
+              <button
+                type="button"
+                className="amenities-all-panel-close"
+                onClick={() => setShowAllAmenitiesPanel(false)}
+                aria-label="Close"
+              >
+                <FontAwesomeIcon icon={faTimes} />
+              </button>
+            </div>
+            <div className="amenities-all-panel-body">
+              <div className="amenities-all-grid">
+                {amenitiesList.map((item, index) => (
+                  <div
+                    key={`${item.id || item.title}-all-${index}`}
+                    className="amenity-modern-card amenity-modern-card--compact amenity-modern-card--panel"
+                  >
+                    <div className="amenity-modern-icon-wrap">
+                      <img
+                        src={`${amenityIconBase}${item.image}`}
+                        height={28}
+                        width={28}
+                        alt={item.altTag || item.title || "Amenity icon"} title={item.altTag || item.title || "Amenity icon"}
+                        className="d-flex mx-auto amenity-modern-icon-img"
+                      />
+                    </div>
+                    <p className="amenity-modern-title">{item.title}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </aside>
+        </>
+      )}
+
+      <CommonPopUpform
+        show={showPopUp}
+        handleClose={setShowPopUp}
+        from={"Project Detail"}
+        data={projectDetail}
+      />
+
+      <Modal
+        show={showGalleryModal}
+        onHide={closeGalleryModal}
+        centered
+        size="xl"
+        className="gallery-zoom-modal"
+        backdropClassName="gallery-zoom-backdrop"
+      >
+        <Modal.Body>
+          <button
+            type="button"
+            className="gallery-modal-close-btn"
+            aria-label="Close gallery preview"
+            onClick={closeGalleryModal}
+          >
+            <FontAwesomeIcon icon={faTimes} />
+          </button>
+
+          <div className="gallery-zoom-viewer">
+            {galleryImages.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  className="gallery-modal-nav-btn gallery-modal-nav-btn--prev"
+                  onClick={showPrevGalleryImage}
+                  aria-label="Show previous gallery image"
+                >
+                  <FontAwesomeIcon icon={faArrowLeft} />
+                </button>
+                <button
+                  type="button"
+                  className="gallery-modal-nav-btn gallery-modal-nav-btn--next"
+                  onClick={showNextGalleryImage}
+                  aria-label="Show next gallery image"
+                >
+                  <FontAwesomeIcon icon={faArrowRight} />
+                </button>
+              </>
+            )}
+            {galleryImages[activeGalleryIndex] && (
+              <img
+                src={projectImageSrc(galleryImages[activeGalleryIndex].imageName)}
+                alt={galleryImages[activeGalleryIndex].altTag || "Gallery preview"} title={galleryImages[activeGalleryIndex].altTag || "Gallery preview"}
+                width={1400}
+                height={1000}
+                className="gallery-zoom-image"
+              />
+            )}
+          </div>
+        </Modal.Body>
+      </Modal>
+    </>
+  );
+}
+

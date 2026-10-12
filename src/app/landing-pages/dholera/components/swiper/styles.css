@@ -1,0 +1,78 @@
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  height: 100%;
+  position: relative;
+  width: 543px;
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Navigation Buttons */
+.swiper-nav-button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 70px;
+  height: 70px;
+  background-color: rgba(0, 0, 0, 0.9);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  font-size: 20px;
+  color: #ffffff;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.swiper-nav-button:hover {
+  background-color: rgba(255, 255, 255, 1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  transform: translateY(-50%) scale(1.1);
+  color: #161616;
+}
+
+.swiper-nav-button:active {
+  transform: translateY(-50%) scale(0.95);
+}
+
+.swiper-nav-button-left {
+  left: 50px;
+}
+
+.swiper-nav-button-right {
+  right: 20px;
+}
+
+@media (min-width: 1495px) {
+  .swiper-nav-button-right {
+    left: 68%;
+  }
+}
+@media (max-width: 768px) {
+  .swiper-nav-button-left {
+    left: 20px;
+  }
+  .swiper-nav-button {
+    height: 45px !important;
+    width: 45px !important;
+  }
+}

@@ -1,0 +1,698 @@
+/* iOS Safari Global Fixes */
+@supports (-webkit-touch-callout: none) {
+  html {
+    height: -webkit-fill-available;
+  }
+  
+  body {
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* Prevent text size adjustment on iOS */
+* {
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Fix for iOS Safari viewport units */
+@supports (-webkit-touch-callout: none) {
+  section {
+    min-height: -webkit-fill-available;
+  }
+}
+
+/* Prevent zoom on double tap for iOS */
+* {
+  touch-action: pan-y;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Smooth scrolling for iOS */
+html {
+  -webkit-overflow-scrolling: touch;
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+  margin-right: -36px !important;
+}
+
+@media (max-width: 768px) {
+  .swiper {
+    margin-right: 0px !important;
+  }
+  .swiper-slide {
+    border: 0px !important;
+  }
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  height: 271px;
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-right: 1px solid rgb(255, 249, 249);
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* background: #00000080; */
+}
+
+/* Custom Pagination Styles for Slider.jsx */
+.mySwiper .swiper-pagination {
+  bottom: -2px !important;
+  position: absolute;
+  z-index: 999999 !important;
+}
+
+.mySwiper .swiper-pagination-bullet {
+  width: 12px;
+  height: 12px;
+  background-color: rgba(217, 217, 217, 1) !important;
+  opacity: 1;
+  margin: 0 6px;
+  transition: all 0.3s ease;
+}
+
+.mySwiper .swiper-pagination-bullet-active {
+  background-color: rgba(255, 255, 255, 1) !important;
+  width: 12px;
+  height: 12px;
+}
+
+.elips {
+  animation: morph 8s ease-in-out infinite;
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+
+  transition: all 1s ease-in-out;
+
+  z-index: 5;
+}
+
+@keyframes morph {
+  0% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+
+  50% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
+  }
+
+  100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+}
+
+/* ============================================
+   RESPONSIVE STYLES - Only affects screens below 1024px
+   Desktop design remains unchanged above 1024px
+   ============================================ */
+
+/* Section 1 (S1) - Hero Section */
+@media (max-width: 1024px) {
+  .dolera-hero-section {
+    display: flex !important;
+    justify-content: space-between !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .dolera-hero-section {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    padding-top: 90px !important;
+  }
+
+  .form-card-outer {
+    padding: 20px !important;
+  }
+
+  .form-card-inner {
+    gap: 16px !important;
+  }
+}
+
+/* Section 3 (S3) - Overview */
+@media (max-width: 1024px) {
+  section:nth-of-type(3) > div {
+    /* width: 100% !important; */
+    max-width: 100% !important;
+    padding: 20px !important;
+  }
+
+  section:nth-of-type(3) h1 {
+    font-size: 36px !important;
+  }
+
+  section:nth-of-type(3) p {
+    font-size: 14px !important;
+    /* padding: 20px !important; */
+  }
+}
+
+@media (max-width: 768px) {
+  section:nth-of-type(3) h1 {
+    font-size: 28px !important;
+  }
+
+  section:nth-of-type(3) > div > div:first-child > div:first-child p {
+    font-size: 16px !important;
+  }
+}
+
+/* Section 4 (S4) - Highlights */
+@media (max-width: 1024px) {
+  section:nth-of-type(4) {
+    padding-right: 20px !important;
+    padding-left: 20px !important;
+    justify-content: center !important;
+    min-height: auto !important;
+    padding-top: 40px !important;
+    padding-bottom: 40px !important;
+  }
+
+  section:nth-of-type(4) > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    gap: 30px !important;
+  }
+
+  section:nth-of-type(4) h2 {
+    font-size: 36px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  section:nth-of-type(4) h2 {
+    font-size: 28px !important;
+  }
+}
+
+/* Section 5 (S5) - Amenities & Price List */
+@media (max-width: 1024px) {
+  section:nth-of-type(5) {
+    padding-bottom: 100px !important;
+  }
+
+  section:nth-of-type(5) > div:first-child {
+    flex-direction: column !important;
+    width: 100% !important;
+    padding: 20px !important;
+    height: auto !important;
+    gap: 30px !important;
+  }
+
+  section:nth-of-type(5) > div:first-child > div:first-child {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  section:nth-of-type(5) > div:first-child > div:last-child {
+    width: 100% !important;
+    height: 400px !important;
+  }
+
+  section:nth-of-type(5) > div:last-child {
+    position: relative !important;
+    width: 90% !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    top: 0 !important;
+    margin-top: 40px !important;
+    height: auto !important;
+    min-height: 250px !important;
+  }
+
+  section:nth-of-type(5) > div:last-child > div {
+    width: 95% !important;
+    height: auto !important;
+    flex-direction: column !important;
+    gap: 20px !important;
+    padding: 20px !important;
+  }
+
+  section:nth-of-type(5) > div:last-child > div > div:first-child {
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  section:nth-of-type(5) > div:last-child h2 {
+    font-size: 32px !important;
+  }
+
+  section:nth-of-type(5) > div:last-child > div > div:first-child > div p,
+  section:nth-of-type(5) > div:last-child > div > div:first-child > div h2 {
+    font-size: 24px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  section:nth-of-type(5) > div:last-child {
+    width: 95% !important;
+  }
+
+  section:nth-of-type(5) > div:last-child h2 {
+    font-size: 24px !important;
+  }
+
+  section:nth-of-type(5) > div:last-child > div > div:first-child > div p,
+  section:nth-of-type(5) > div:last-child > div > div:first-child > div h2 {
+    font-size: 18px !important;
+  }
+
+  section:nth-of-type(5) > div:first-child h2 {
+    font-size: 32px !important;
+  }
+}
+
+/* Section 6 (S6) - Floor Plans */
+@media (max-width: 1024px) {
+  section:nth-of-type(6) {
+    padding: 40px 20px !important;
+  }
+
+  section:nth-of-type(6) > div {
+    flex-direction: column !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    gap: 30px !important;
+  }
+
+  section:nth-of-type(6) > div > div:first-child {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100% !important;
+  }
+
+  section:nth-of-type(6) > div > div:last-child {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 400px !important;
+  }
+
+  section:nth-of-type(6) h2 {
+    font-size: 36px !important;
+  }
+
+  section:nth-of-type(6) button {
+    width: 100% !important;
+    max-width: 300px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  section:nth-of-type(6) h2 {
+    font-size: 28px !important;
+  }
+
+  section:nth-of-type(6) > div > div:last-child {
+    height: 300px !important;
+  }
+}
+
+/* Section 7 (S7) - Gallery */
+@media (max-width: 1024px) {
+  section:nth-of-type(7) {
+    padding: 40px 20px !important;
+  }
+
+  section:nth-of-type(7) > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 30px !important;
+  }
+
+  section:nth-of-type(7) > div > div:last-child > div:first-child {
+    flex-direction: column !important;
+    gap: 20px !important;
+  }
+
+  section:nth-of-type(7) > div > div:last-child > div:first-child > div {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 610/533 !important;
+  }
+
+  section:nth-of-type(7) > div > div:last-child > div:last-child {
+    flex-direction: column !important;
+    gap: 20px !important;
+  }
+
+  section:nth-of-type(7) > div > div:last-child > div:last-child > div {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 399/347 !important;
+  }
+
+  section:nth-of-type(7) h2 {
+    font-size: 36px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  section:nth-of-type(7) h2 {
+    font-size: 28px !important;
+  }
+}
+
+/* Section 8 (S8) - Location Advantage */
+@media (max-width: 1024px) {
+  section:nth-of-type(8) {
+    padding: 40px 20px !important;
+  }
+
+  section:nth-of-type(8) > div:first-child {
+    width: 100% !important;
+    min-height: auto !important;
+    padding: 20px !important;
+    padding-right: 20px !important;
+  }
+
+  section:nth-of-type(8) > div:first-child > div:first-child {
+    flex-direction: column !important;
+    gap: 30px !important;
+    margin-bottom: 30px !important;
+  }
+
+  section:nth-of-type(8) > div:first-child > div:first-child > div:first-child {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    min-height: 43px !important;
+  }
+
+  section:nth-of-type(8)
+    > div:first-child
+    > div:first-child
+    > div:first-child
+    > div {
+    display: none !important;
+  }
+
+  section:nth-of-type(8)
+    > div:first-child
+    > div:first-child
+    > div:first-child
+    h1 {
+    font-size: 32px !important;
+  }
+
+  section:nth-of-type(8) > div:first-child > div:first-child > div:last-child {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  section:nth-of-type(8) > div:first-child > div:last-child {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    gap: 20px !important;
+  }
+
+  section:nth-of-type(8) > div:first-child > div:last-child > div:first-child {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 1084/681 !important;
+  }
+
+  section:nth-of-type(8) > div:last-child {
+    margin-top: 30px !important;
+    min-height: 250px !important;
+  }
+
+  section:nth-of-type(8) > div:last-child > div:last-child {
+    width: 90% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    padding: 20px !important;
+  }
+
+  section:nth-of-type(8) > div:last-child > div:last-child h2 {
+    font-size: 32px !important;
+  }
+
+  section:nth-of-type(8) .elips {
+    width: 150px !important;
+    height: 150px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  section:nth-of-type(8)
+    > div:first-child
+    > div:first-child
+    > div:first-child
+    h1 {
+    font-size: 24px !important;
+  }
+
+  section:nth-of-type(8) > div:last-child > div:last-child h2 {
+    font-size: 24px !important;
+  }
+
+  section:nth-of-type(8) .elips {
+    width: 100px !important;
+    height: 100px !important;
+  }
+}
+
+/* Section 9 (S9) - About Developer */
+@media (max-width: 1024px) {
+  section:nth-of-type(9) {
+    padding: 40px 20px !important;
+  }
+
+  section:nth-of-type(9) > div {
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 30px !important;
+  }
+
+  section:nth-of-type(9) > div > div:first-child {
+    width: 100% !important;
+  }
+
+  section:nth-of-type(9) > div > div:first-child h1 {
+    font-size: 28px !important;
+  }
+
+  section:nth-of-type(9) > div > div:last-child {
+    flex-direction: column !important;
+    height: auto !important;
+    position: relative !important;
+    padding-bottom: 40px !important;
+  }
+
+  section:nth-of-type(9) > div > div:last-child > div:first-child {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 670/446 !important;
+    position: relative !important;
+    z-index: 10 !important;
+  }
+
+  section:nth-of-type(9) > div > div:last-child > div:nth-child(2) {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: auto !important;
+    position: relative !important;
+    top: 0 !important;
+    right: 0 !important;
+    transform: none !important;
+    margin-top: 20px !important;
+    padding: 30px 20px !important;
+  }
+
+  section:nth-of-type(9) > div > div:last-child > div:nth-child(2) > div {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100% !important;
+  }
+
+  section:nth-of-type(9) > div > div:last-child > div:nth-child(2) > div h1 {
+    font-size: 24px !important;
+  }
+
+  section:nth-of-type(9) > div > div:last-child > img {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  section:nth-of-type(9) > div > div:first-child h1 {
+    font-size: 24px !important;
+  }
+
+  section:nth-of-type(9) > div > div:last-child > div:nth-child(2) > div h1 {
+    font-size: 20px !important;
+  }
+}
+
+/* General responsive adjustments */
+@media (max-width: 1024px) {
+  section {
+    width: 100% !important;
+  }
+
+  /* Ensure all sections have proper padding on smaller screens */
+  section {
+    box-sizing: border-box !important;
+  }
+
+  /* Make all images responsive */
+  section img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+
+  /* Make buttons more touch-friendly */
+  button {
+    min-height: 44px !important;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Adjust font sizes for better readability on mobile */
+  h1 {
+    font-size: clamp(24px, 5vw, 36px) !important;
+  }
+
+  h2 {
+    font-size: clamp(20px, 4vw, 32px) !important;
+  }
+
+  p {
+    font-size: clamp(14px, 3vw, 16px) !important;
+  }
+}
+
+/* Footer Responsive Styles */
+@media (max-width: 1024px) {
+  footer {
+    padding: 0px !important;
+  }
+
+  footer > div:first-child {
+    padding: 20px 0 !important;
+  }
+
+  footer > div:nth-child(2) {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 20px !important;
+  }
+
+  footer > div:nth-child(2) p {
+    font-size: 14px !important;
+    line-height: 1.6 !important;
+  }
+
+  footer > div:last-child > div {
+    flex-direction: column !important;
+    gap: 15px !important;
+    padding: 15px !important;
+  }
+
+  footer > div:last-child > div p {
+    font-size: 14px !important;
+    text-align: center !important;
+  }
+}
+
+@media (max-width: 768px) {
+  footer {
+    padding: 0px !important;
+  }
+
+  footer > div:nth-child(2) p {
+    font-size: 12px !important;
+  }
+
+  footer > div:last-child > div p {
+    font-size: 12px !important;
+  }
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(48px);
+  -webkit-backdrop-filter: blur(48px);
+  /* border-radius: 20px; */
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 0px 0px rgba(255, 255, 255, 0);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.8),
+    transparent
+  );
+}
+
+.glass-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.8),
+    transparent,
+    rgba(255, 255, 255, 0.3)
+  );
+}
+
+@font-face {
+  font-family: "Open Sans Regular";
+  src: url("/Open_Sans/static/OpenSans-Regular.ttf");
+}
+@font-face {
+  font-family: "Open Sans SemiBold";
+  src: url("/Open_Sans/static/OpenSans-SemiBold.ttf");
+}
+
+/* Apply Open Sans fonts to dolera landing page */
+section h1,
+section h2,
+section h3,
+h1,
+h2,
+h3 {
+  font-family: "Open Sans SemiBold", sans-serif !important;
+}
+
+section p,
+p {
+  font-family: "Open Sans Regular", sans-serif !important;
+}
+

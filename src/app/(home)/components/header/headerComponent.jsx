@@ -1,0 +1,2258 @@
+"use client";
+import Link from "next/link";
+import "./header.css";
+import { useEffect, useState, useRef, useCallback } from "react";
+import { createPortal } from "react-dom";
+import { usePathname } from "next/navigation";
+import { Spinner } from "react-bootstrap";
+import BrokerLoginModal from "../_homecomponents/BrokerLoginModal";
+import WebsiteOtpModal from "../_homecomponents/WebsiteOtpModal";
+import HeaderAccountMenu from "./HeaderAccountMenu";
+import HeaderLatestSpark from "./HeaderLatestSpark";
+import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faSearch,
+  faChevronDown,
+  faChevronRight,
+  faChevronLeft,
+} from "@fortawesome/free-solid-svg-icons";
+import {
+  buildProjectImageUrl,
+  DEFAULT_PROJECT_CARD_IMAGE,
+} from "@/lib/projectImageUrl";
+import { useRouter } from "next/navigation";
+import {
+  faFacebook,
+  faInstagram,
+  faLinkedin,
+  faYoutube,
+} from "@fortawesome/free-brands-svg-icons";
+import { useSiteData } from "@/app/_global_components/contexts/SiteDataContext";
+import { motion } from "framer-motion";
+import { resolveIpCity } from "@/lib/resolveIpCity";
+import {
+  clearChosenHeaderCity,
+  isSpecificHeaderCity,
+  readChosenHeaderCity,
+  readSessionHeaderCity,
+  writeChosenHeaderCity,
+  writeSessionHeaderCity,
+} from "@/lib/headerChosenCity";
+
+const LOGO_ON_LIGHT = "/logo.webp";
+
+/** Ultimate fallback when GPS/IP city has no listings. */
+const DEFAULT_CITY_WITHOUT_GEO = "Delhi NCR";
+const NOIDA_EXT_HEADER_LABEL = "Noida Ext.";
+
+/** Cities with projects on the site — shown in the header location picker. */
+const HEADER_LOCATION_CITIES = [
+  "Agra",
+  "Bangalore",
+  "Bareilly",
+  "Chandigarh",
+  "Chennai",
+  "Dehradun",
+  "Delhi",
+  "Faridabad",
+  "Ghaziabad",
+  "Goa",
+  "Greater Noida",
+  "Gurugram",
+  "Hyderabad",
+  "Indore",
+  "Jaipur",
+  "Karnal",
+  "Kochi",
+  "Lucknow",
+  "Ludhiana",
+  "Meerut",
+  "Mohali",
+  "Mumbai",
+  "Noida",
+  "Noida Extension",
+  "Panipat",
+  "Pune",
+  "Sonipat",
+  "Thiruvananthapuram",
+  "Vrindavan",
+];
+
+function formatHeaderCityLabel(city) {
+  const value = String(city || "").trim();
+  if (!value) return "";
+  if (/^noida\s*ext(?:ension|n)?\.?$/i.test(value)) {
+    return NOIDA_EXT_HEADER_LABEL;
+  }
+  return value;
+}
+const LOGO_ON_DARK = "/logo.webp";
+
+const NewBadge = ({ isVisible }) => (
+  <span className="city-dropdown-badge">
+    {["N", "e", "w"].map((char, i) => (
+      <motion.span
+        key={i}
+        className="new-char"
+        initial={{ opacity: 0, y: 6, scale: 0.8 }}
+        animate={
+          isVisible
+            ? {
+              opacity: [0, 1, 1, 0],
+              y: [6, 0, 0, 6],
+              scale: [0.8, 1, 1, 0.8],
+            }
+            : { opacity: 0, y: 6, scale: 0.8 }
+        }
+        transition={
+          isVisible
+            ? {
+              duration: 2.5,
+              repeat: Infinity,
+              repeatDelay: 0.5,
+              delay: i * 0.15,
+              times: [0, 0.12, 0.75, 0.9],
+              ease: "easeInOut",
+            }
+            : { duration: 0.2 }
+        }
+      >
+        {char}
+      </motion.span>
+    ))}
+  </span>
+);
+
+const HeaderComponent = () => {
+  const { cityList = [], projectTypes = [], builderList = [], projectList = [], searchProjects, ensureProjectCatalog } = useSiteData();
+  const [isMounted, setIsMounted] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState(null);
+  const [isDropdownHovered, setIsDropdownHovered] = useState(false);
+  const [isNavDropdownDismissed, setIsNavDropdownDismissed] = useState(false);
+  const [showBrokerLoginModal, setShowBrokerLoginModal] = useState(false);
+  const [showWebsiteLoginModal, setShowWebsiteLoginModal] = useState(false);
+  const [websiteAuthFlow, setWebsiteAuthFlow] = useState("login");
+  const [selectedCity, setSelectedCity] = useState("");
+  const [showLocationToast, setShowLocationToast] = useState(false);
+  const [locationHint, setLocationHint] = useState("");
+  const [isLocating, setIsLocating] = useState(false);
+  const [showLocationMenu, setShowLocationMenu] = useState(false);
+  const [isCompactLocationUi, setIsCompactLocationUi] = useState(false);
+  const locationToastShownRef = useRef(false);
+  const locationToastTimerRef = useRef(null);
+  const locationRequestIdRef = useRef(0);
+  const locationDropdownRef = useRef(null);
+  const locationMenuRef = useRef(null);
+  const selectedCityRef = useRef("");
+  const programmaticScrollRef = useRef(false);
+  const cityListingsScrollTimerRef = useRef(null);
+  const pathname = usePathname();
+  const pathnameRef = useRef(pathname);
+  const router = useRouter();
+
+  // Defer dropdown content until after mount to avoid hydration mismatch (data + motion)
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    pathnameRef.current = pathname;
+  }, [pathname]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return undefined;
+    const mq = window.matchMedia("(max-width: 1024px)");
+    const sync = () => setIsCompactLocationUi(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
+  // Check if the pathname starts with /city/
+  const isCityRoute = pathname.startsWith("/city");
+  const isBuilderRoute = pathname.startsWith("/builder");
+  const isProjectTypeRoute =
+    pathname.startsWith("/projects") ||
+    // Any internal listing URL like /food-court-in-delhi, /3-bhk-in-noida, etc.
+    pathname.includes("-in-") ||
+    pathname.startsWith("/apartments-in-") ||
+    pathname.startsWith("/flats-in-") ||
+    pathname.startsWith("/new-projects-in-") ||
+    pathname.startsWith("/commercial-property-in-") ||
+    pathname.startsWith("/offices-and-shop-in-");
+  const isBlogTypeRoute = pathname.startsWith("/blog");
+  const isPropertiesRoute = pathname === "/properties";
+  const isAboutUsRoute = pathname === "/about-us";
+  const isHomePage = pathname === "/";
+  const logoOpensInNewTab = !isHomePage;
+  //Defining scroll variable
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isOverLightSection, setIsOverLightSection] = useState(false);
+  const [isConditionalHeader, setIsConditionalHeader] = useState(false);
+  const [headerVisible, setHeaderVisible] = useState(true); // hide on scroll down, show on scroll up
+  // Project search state
+  const [projectSearchInput, setProjectSearchInput] = useState("");
+  const [projectSearchQuery, setProjectSearchQuery] = useState("");
+  const [projectSearchResults, setProjectSearchResults] = useState([]);
+  const [isSearchingProjects, setIsSearchingProjects] = useState(false);
+  const [imageErrors, setImageErrors] = useState({}); // Track image errors per project
+  const [searchResultsSlideIndex, setSearchResultsSlideIndex] = useState(0);
+  const [mobileSearchSlideIndex, setMobileSearchSlideIndex] = useState(0);
+  const projectsDropdownRef = useRef(null);
+  const scrollPositionRef = useRef(0);
+  const lastScrollYRef = useRef(0);
+  const projectSearchInputRef = useRef(null);
+  const mobileProjectSearchInputRef = useRef(null);
+
+  // Format price for display (lakh/cr) - same as PropertyContainer
+  const formatProjectPrice = (price) => {
+    if (price == null || price === "") return "";
+    if (/[a-zA-Z]/.test(String(price))) return price;
+    const num = parseFloat(price);
+    return num < 1
+      ? "₹ " + Math.round(num * 100) + " Lakh*"
+      : "₹ " + num + " Cr+*";
+  };
+
+  // Get image URL for a project (using project banner image)
+  const getProjectImageSrc = (project) => {
+    const projectId = project.id || project.slugURL;
+    if (imageErrors[projectId]) {
+      return DEFAULT_PROJECT_CARD_IMAGE;
+    }
+    return buildProjectImageUrl(project, { preferThumbnail: true });
+  };
+
+  // Handle image error
+  const handleImageError = (projectId) => {
+    setImageErrors((prev) => ({ ...prev, [projectId]: true }));
+  };
+  const openMenuMobile = (dropdown) => {
+    setActiveDropdown(activeDropdown === dropdown ? null : dropdown);
+  };
+
+  const handleNavDropdownLinkClick = () => {
+    setIsNavDropdownDismissed(true);
+    setIsDropdownHovered(false);
+  };
+
+  const handleNavDropdownMouseLeave = () => {
+    setIsNavDropdownDismissed(false);
+    setIsDropdownHovered(false);
+  };
+
+  useEffect(() => {
+    setIsNavDropdownDismissed(true);
+    setIsDropdownHovered(false);
+  }, [pathname]);
+
+  //Hadling header fixed - only when mobile menu is not open
+  useEffect(() => {
+    const handleScroll = () => {
+      // Check if mobile menu is open
+      const menu = document.getElementById("mbdiv");
+      const isMenuOpen = menu && menu.classList.contains("active");
+
+      // Prevent scrolling when menu is open
+      if (isMenuOpen) {
+        // Restore scroll position if it changed
+        window.scrollTo(0, scrollPositionRef.current);
+        return;
+      }
+
+      // Only update scroll state if menu is not open
+      if (!isMenuOpen) {
+        const currentY = window.scrollY;
+        if (programmaticScrollRef.current) {
+          setIsScrolled(currentY > 100);
+          setHeaderVisible(true);
+          lastScrollYRef.current = currentY;
+          return;
+        }
+        if (currentY > 100) {
+          setIsScrolled(true);
+          // Hide header when scrolling down, show when scrolling up
+          const scrollDelta = 60; // min px moved to trigger
+          if (currentY > lastScrollYRef.current + scrollDelta) {
+            setHeaderVisible(false);
+            lastScrollYRef.current = currentY;
+          } else if (currentY < lastScrollYRef.current - scrollDelta) {
+            setHeaderVisible(true);
+            lastScrollYRef.current = currentY;
+          }
+        } else {
+          setIsScrolled(false);
+          setHeaderVisible(true);
+          lastScrollYRef.current = currentY;
+        }
+      }
+    };
+
+    // Also prevent scroll events on touch devices - but allow scrolling in dropdowns
+    const preventScroll = (e) => {
+      const menu = document.getElementById("mbdiv");
+      const isMenuOpen = menu && menu.classList.contains("active");
+      if (isMenuOpen) {
+        // Check if the touch is inside a scrollable dropdown menu
+        const target = e.target;
+        const dropdownUl = target.closest(
+          ".bigMenuList .dropdown.activeHeader ul",
+        );
+        const dropdownContainer = target.closest(
+          ".bigMenuList .dropdown.activeHeader",
+        );
+
+        // Allow scrolling inside dropdown menus - don't prevent default
+        if (dropdownUl || dropdownContainer) {
+          // Don't prevent default - allow natural scrolling
+          return; // Exit early without preventing
+        }
+
+        // Check if touch is inside the main menu scroller or any menu content
+        const isInsideMenu = target.closest(".mbMenuContainer .mbMenu");
+        if (isInsideMenu) {
+          // Allow scrolling in main menu container and all its children
+          return; // Don't prevent - allow scrolling
+        }
+
+        // Only prevent scrolling on backdrop/container (outside menu)
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
+    };
+
+    let scrollRaf = 0;
+    const onScroll = () => {
+      if (scrollRaf) return;
+      scrollRaf = window.requestAnimationFrame(() => {
+        scrollRaf = 0;
+        handleScroll();
+      });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("wheel", preventScroll, { passive: false });
+    // Use capture phase to check before other handlers
+    window.addEventListener("touchmove", preventScroll, {
+      passive: false,
+      capture: true,
+    });
+
+    return () => {
+      if (scrollRaf) window.cancelAnimationFrame(scrollRaf);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("wheel", preventScroll);
+      window.removeEventListener("touchmove", preventScroll);
+    };
+  }, []);
+
+  // Dark header once the white "Property Search" band reaches it.
+  useEffect(() => {
+    if (!isHomePage) {
+      setIsOverLightSection(false);
+      return undefined;
+    }
+
+    let raf = 0;
+    const update = () => {
+      const section = document.querySelector(".transform-home-section");
+      const header = document.querySelector(".header");
+      if (!section || !header) {
+        setIsOverLightSection(false);
+        return;
+      }
+      const expectedBottom = header.offsetHeight;
+      const sectionTop = section.getBoundingClientRect().top;
+      setIsOverLightSection(sectionTop <= expectedBottom + 8);
+    };
+    const schedule = () => {
+      if (raf) return;
+      raf = window.requestAnimationFrame(() => {
+        raf = 0;
+        update();
+      });
+    };
+
+    update();
+    window.addEventListener("scroll", schedule, { passive: true });
+    window.addEventListener("resize", schedule);
+    return () => {
+      window.cancelAnimationFrame(raf);
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", schedule);
+    };
+  }, [isHomePage]);
+
+  const openMenu = () => {
+    const menuButtons = document.getElementsByClassName("menuBtn");
+    const menu = document.getElementById("mbdiv");
+    // Check if the menu is already open
+    const isMenuOpen = menu.classList.contains("active");
+
+    if (isMenuOpen) {
+      // Close the menu
+      for (let i = 0; i < menuButtons.length; i++) {
+        menuButtons[i].classList.remove("closeMenuBtn");
+      }
+      menu.style.display = "none";
+      menu.classList.remove("active");
+      document.body.classList.remove("menu-open");
+
+      // Toggle className for .header
+      const header = document.querySelector(".header");
+      if (header) {
+        header.classList.remove("notfixed");
+      }
+
+      // Restore body scroll
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.width = "";
+      document.body.style.height = "";
+      document.documentElement.style.overflow = "";
+      document.documentElement.style.height = "";
+
+      // Restore scroll position
+      window.scrollTo(0, scrollPositionRef.current);
+    } else {
+      // Open the menu
+      for (let i = 0; i < menuButtons.length; i++) {
+        menuButtons[i].classList.add("closeMenuBtn");
+      }
+      menu.style.display = "block";
+      menu.classList.add("active");
+      document.body.classList.add("menu-open");
+
+      // Toggle className for .header
+      const header = document.querySelector(".header");
+      if (header) {
+        header.classList.add("notfixed");
+      }
+
+      // Prevent body scroll - save current scroll position
+      scrollPositionRef.current = window.scrollY;
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollPositionRef.current}px`;
+      document.body.style.width = "100%";
+      document.body.style.overflow = "hidden";
+      document.body.style.height = "100%";
+      document.documentElement.style.overflow = "hidden";
+      document.documentElement.style.height = "100%";
+    }
+  };
+
+  const openBrokerLoginModal = () => {
+    setShowBrokerLoginModal(true);
+  };
+
+  const openWebsiteLoginModal = (flow = "login") => {
+    setWebsiteAuthFlow(flow === "register" ? "register" : "login");
+    setShowWebsiteLoginModal(true);
+  };
+
+  useEffect(() => {
+    const openPost = () => setShowBrokerLoginModal(true);
+    const openLogin = (event) => openWebsiteLoginModal(event?.detail?.flow || "login");
+    window.addEventListener("mpf-open-post-property", openPost);
+    window.addEventListener("mpf-open-website-login", openLogin);
+    return () => {
+      window.removeEventListener("mpf-open-post-property", openPost);
+      window.removeEventListener("mpf-open-website-login", openLogin);
+    };
+  }, []);
+
+  // Handle Project Search - keep typing responsive by debouncing actual search work
+  useEffect(() => {
+    const query = projectSearchInput.trim();
+    if (query.length < 2) {
+      setProjectSearchQuery("");
+      setProjectSearchResults([]);
+      setIsSearchingProjects(false);
+      return;
+    }
+    const timeoutId = setTimeout(() => {
+      const q = projectSearchInput.trim();
+      if (q.length < 2) {
+        setProjectSearchQuery("");
+        setProjectSearchResults([]);
+        setIsSearchingProjects(false);
+        return;
+      }
+      setProjectSearchQuery(q);
+      setIsSearchingProjects(true);
+      Promise.resolve()
+        .then(() => (ensureProjectCatalog ? ensureProjectCatalog() : null))
+        .then(() => searchProjects(q))
+        .then((filtered) => {
+          setProjectSearchResults(filtered || []);
+          setIsSearchingProjects(false);
+        })
+        .catch(() => {
+          setProjectSearchResults([]);
+          setIsSearchingProjects(false);
+        });
+    }, 280);
+    return () => clearTimeout(timeoutId);
+  }, [ensureProjectCatalog, projectSearchInput, searchProjects]);
+
+  /** Open project detail in a new tab (header search bar). */
+  const openProjectInNewTab = (project) => {
+    if (!project?.slugURL || typeof window === "undefined") return;
+    window.open(`/${project.slugURL}`, "_blank", "noopener,noreferrer");
+    setProjectSearchInput("");
+    setProjectSearchQuery("");
+    setProjectSearchResults([]);
+  };
+
+  const handleProjectClick = (project) => {
+    openProjectInNewTab(project);
+  };
+
+  // Handle Explore button click
+  const handleExploreClick = () => {
+    const searchValue = projectSearchInput.trim();
+    if (projectSearchResults.length > 0 && projectSearchResults[0]?.slugURL) {
+      openProjectInNewTab(projectSearchResults[0]);
+    } else if (searchValue.length >= 2) {
+      // Navigate to projects page with search query
+      router.push(`/projects?search=${encodeURIComponent(searchValue)}`);
+      setProjectSearchInput("");
+      setProjectSearchQuery("");
+      setProjectSearchResults([]);
+    }
+  };
+
+  // Reset search results slide when results change
+  useEffect(() => {
+    setSearchResultsSlideIndex(0);
+    setMobileSearchSlideIndex(0);
+  }, [projectSearchResults]);
+
+  // Back to search (desktop focuses desktop input; mobile caller can focus mobile input)
+  const handleBackToSearch = () => {
+    setProjectSearchInput("");
+    setProjectSearchQuery("");
+    setProjectSearchResults([]);
+    setSearchResultsSlideIndex(0);
+    setMobileSearchSlideIndex(0);
+    const isMobileMenuOpen = typeof document !== "undefined" && document.getElementById("mbdiv")?.classList.contains("active");
+    setTimeout(() => {
+      if (isMobileMenuOpen && mobileProjectSearchInputRef.current) {
+        mobileProjectSearchInputRef.current.focus();
+      } else {
+        projectSearchInputRef.current?.focus();
+      }
+    }, 100);
+  };
+
+  // Reset search when dropdown closes
+  useEffect(() => {
+    const handleMouseLeave = () => {
+      // Reset search when mouse leaves the projects dropdown area
+      setTimeout(() => {
+        const projectsLi = document.querySelector(
+          ".hasChild:has(.projects-dropdown)",
+        );
+        const isHovering =
+          projectsLi?.matches(":hover") ||
+          projectsDropdownRef.current?.matches(":hover");
+        if (!isHovering) {
+          setProjectSearchInput("");
+          setProjectSearchQuery("");
+          setProjectSearchResults([]);
+        }
+      }, 200);
+    };
+
+    const projectsLi = document.querySelector(
+      ".hasChild:has(.projects-dropdown)",
+    );
+    if (projectsLi) {
+      projectsLi.addEventListener("mouseleave", handleMouseLeave);
+      return () => {
+        projectsLi.removeEventListener("mouseleave", handleMouseLeave);
+      };
+    }
+  }, []);
+
+  const LOCATION_BLOCKED_HINT =
+    "Location is blocked in your browser. Click the tune/lock icon next to the URL → Site settings → Location → Allow, then click this button again.";
+
+  const clearLocationToastTimer = () => {
+    if (locationToastTimerRef.current) {
+      window.clearTimeout(locationToastTimerRef.current);
+      locationToastTimerRef.current = null;
+    }
+  };
+
+  const showLocationFeedback = ({
+    force = false,
+    hint = "",
+    durationMs = 2800,
+  } = {}) => {
+    if (typeof window === "undefined") return;
+    // Permission hints show on all viewports; city toast stays mobile-only.
+    if (!hint && window.innerWidth > 1024) return;
+    if (!force && !hint && locationToastShownRef.current) return;
+    if (!hint) locationToastShownRef.current = true;
+    setLocationHint(hint || "");
+    setShowLocationToast(true);
+    clearLocationToastTimer();
+    locationToastTimerRef.current = window.setTimeout(() => {
+      setShowLocationToast(false);
+      setLocationHint("");
+    }, durationMs);
+  };
+
+  const showMobileLocationToast = (force = false) => {
+    showLocationFeedback({ force });
+  };
+
+  const isSpecificCity = (cityName) => isSpecificHeaderCity(cityName);
+
+  const scrollToHomeCityListings = useCallback(() => {
+    if (typeof window === "undefined" || pathnameRef.current !== "/") return;
+
+    if (cityListingsScrollTimerRef.current) {
+      window.clearTimeout(cityListingsScrollTimerRef.current);
+      cityListingsScrollTimerRef.current = null;
+    }
+
+    const run = () => {
+      const target = document.getElementById("new-property-launches");
+      if (!target) return;
+
+      programmaticScrollRef.current = true;
+      setHeaderVisible(true);
+
+      const header = document.querySelector(".header");
+      const headerHeight = header?.getBoundingClientRect().height || 80;
+      const desiredTop = headerHeight + 16;
+      const currentTop = target.getBoundingClientRect().top;
+      const alreadyInPlace = Math.abs(currentTop - desiredTop) < 28;
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+      if (!alreadyInPlace) {
+        const top = window.scrollY + currentTop - desiredTop;
+        window.scrollTo({
+          top: Math.max(0, top),
+          behavior: reduceMotion ? "auto" : "smooth",
+        });
+      }
+
+      cityListingsScrollTimerRef.current = window.setTimeout(() => {
+        programmaticScrollRef.current = false;
+        lastScrollYRef.current = window.scrollY;
+        setHeaderVisible(true);
+        cityListingsScrollTimerRef.current = null;
+      }, reduceMotion ? 80 : 1000);
+    };
+
+    // Wait for the location sheet to close so body overflow is restored.
+    cityListingsScrollTimerRef.current = window.setTimeout(run, 180);
+  }, []);
+
+  const finishWithCity = useCallback((cityName, { forceToast = false, skipToast = false, scrollToListings = false, source = "manual", persist } = {}) => {
+    const nextCity = String(cityName || "").trim() || DEFAULT_CITY_WITHOUT_GEO;
+    const alreadySaved = Boolean(readChosenHeaderCity());
+    const shouldPersist =
+      persist ?? (source === "manual" || !alreadySaved);
+    setSelectedCity(nextCity);
+    selectedCityRef.current = nextCity;
+    if (isSpecificCity(nextCity)) {
+      writeSessionHeaderCity(nextCity);
+      if (shouldPersist) {
+        writeChosenHeaderCity(nextCity);
+      }
+    } else {
+      writeSessionHeaderCity("");
+      if (shouldPersist) {
+        clearChosenHeaderCity();
+      }
+    }
+    window.dispatchEvent(
+      new CustomEvent("cityChanged", {
+        detail: { cityName: nextCity, source },
+      }),
+    );
+    if (!skipToast) showMobileLocationToast(forceToast);
+    if (scrollToListings) scrollToHomeCityListings();
+  }, [scrollToHomeCityListings]);
+
+  /** City from the visitor IP — keep that city so homepage rails can load matching projects. */
+  const resolveFromIpCity = useCallback(async () => {
+    try {
+      const ipCity = String((await resolveIpCity()) || "").trim();
+      return ipCity || DEFAULT_CITY_WITHOUT_GEO;
+    } catch (error) {
+      console.error("IP city lookup failed:", error);
+      return DEFAULT_CITY_WITHOUT_GEO;
+    }
+  }, []);
+
+  const resolveFromCoords = useCallback(async (coords) => {
+    const response = await fetch(
+      `/api/home/recommended-by-location?lat=${coords.latitude}&lon=${coords.longitude}&intent=projects`,
+    );
+    if (!response.ok) throw new Error("Failed to fetch location");
+    const data = await response.json();
+    return data.success && data.region?.city ? data.region.city : "";
+  }, []);
+
+  const requestBrowserLocation = useCallback(
+    ({ forceToast = false, preferGps = true, scrollToListings = false, replaceSavedCity = false } = {}) => {
+      const requestId = ++locationRequestIdRef.current;
+      setIsLocating(true);
+
+      const applyIfCurrent = (city, opts = {}) => {
+        if (requestId !== locationRequestIdRef.current) return;
+        const incomingSource = opts.source || "manual";
+        // A late GPS/IP result must not overwrite a city the user already chose.
+        if (
+          !replaceSavedCity &&
+          (incomingSource === "gps" || incomingSource === "ip") &&
+          isSpecificCity(selectedCityRef.current)
+        ) {
+          setIsLocating(false);
+          return;
+        }
+        finishWithCity(city, {
+          forceToast,
+          scrollToListings,
+          source: incomingSource,
+          persist:
+            replaceSavedCity ||
+            incomingSource === "manual" ||
+            !readChosenHeaderCity(),
+          ...opts,
+        });
+        setIsLocating(false);
+      };
+
+      const fallbackToIp = (opts = {}) => {
+        resolveFromIpCity().then((city) => applyIfCurrent(city, { ...opts, source: "ip" }));
+      };
+
+      const showBlockedHintAndFallback = () => {
+        showLocationFeedback({
+          force: true,
+          hint: LOCATION_BLOCKED_HINT,
+          durationMs: 8000,
+        });
+        fallbackToIp({ skipToast: true });
+      };
+
+      // IP-only path (initial load) — do not touch GPS so the click can still prompt.
+      if (!preferGps) {
+        fallbackToIp();
+        return;
+      }
+
+      if (typeof navigator === "undefined" || !navigator.geolocation) {
+        fallbackToIp();
+        return;
+      }
+
+      // Call synchronously inside the click handler so Chrome can show the prompt
+      // when permission state is still "prompt".
+      navigator.geolocation.getCurrentPosition(
+        async ({ coords }) => {
+          if (requestId !== locationRequestIdRef.current) return;
+          try {
+            const fromGps = await resolveFromCoords(coords);
+            if (isSpecificCity(fromGps)) {
+              applyIfCurrent(fromGps, { source: "gps" });
+              return;
+            }
+          } catch (error) {
+            console.error("Location Error:", error);
+          }
+          fallbackToIp();
+        },
+        (error) => {
+          if (error?.code !== 1) {
+            console.error("Geolocation Error:", error);
+          }
+          if (requestId !== locationRequestIdRef.current) return;
+          // Denied, or Chrome temporarily blocked after the prompt was ignored several times.
+          if (error?.code === 1) {
+            showBlockedHintAndFallback();
+            return;
+          }
+          fallbackToIp();
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000,
+          maximumAge: 0,
+        },
+      );
+    },
+    [finishWithCity, resolveFromCoords, resolveFromIpCity],
+  );
+
+  const finishWithCityRef = useRef(finishWithCity);
+  const requestBrowserLocationRef = useRef(requestBrowserLocation);
+  finishWithCityRef.current = finishWithCity;
+  requestBrowserLocationRef.current = requestBrowserLocation;
+
+  useEffect(() => {
+    const savedUser = readChosenHeaderCity();
+    const savedSession = readSessionHeaderCity();
+
+    if (savedUser) {
+      finishWithCityRef.current(savedUser, {
+        source: "manual",
+        persist: true,
+      });
+    } else if (savedSession) {
+      finishWithCityRef.current(savedSession, {
+        source: "manual",
+        persist: true,
+      });
+    } else {
+      requestBrowserLocationRef.current({ preferGps: true });
+    }
+
+    return () => {
+      locationRequestIdRef.current += 1;
+      if (cityListingsScrollTimerRef.current) {
+        window.clearTimeout(cityListingsScrollTimerRef.current);
+        cityListingsScrollTimerRef.current = null;
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!showLocationMenu) return undefined;
+
+    const handlePointerDown = (event) => {
+      const trigger = locationDropdownRef.current;
+      const menu = locationMenuRef.current;
+      const inTrigger = trigger && trigger.contains(event.target);
+      const inMenu = menu && menu.contains(event.target);
+      if (!inTrigger && !inMenu) {
+        setShowLocationMenu(false);
+      }
+    };
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") setShowLocationMenu(false);
+    };
+
+    const prevOverflow = document.body.style.overflow;
+    if (typeof window !== "undefined" && window.innerWidth <= 1024) {
+      document.body.style.overflow = "hidden";
+    }
+
+    document.addEventListener("mousedown", handlePointerDown);
+    document.addEventListener("touchstart", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      document.removeEventListener("mousedown", handlePointerDown);
+      document.removeEventListener("touchstart", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [showLocationMenu]);
+
+  const handleSelectLocationCity = (cityName) => {
+    setShowLocationMenu(false);
+    const next = String(cityName || "").trim();
+    const prev = String(selectedCityRef.current || "").trim();
+    const changed = next.toLowerCase() !== prev.toLowerCase();
+    finishWithCity(cityName, { forceToast: true, scrollToListings: changed, source: "manual" });
+  };
+
+  const handleUseCurrentLocation = () => {
+    setShowLocationMenu(false);
+    requestBrowserLocation({
+      forceToast: true,
+      preferGps: true,
+      scrollToListings: true,
+      replaceSavedCity: true,
+    });
+  };
+
+  const locationMenuContent = (
+    <>
+      <div className="mpf-location-dropdown-sheet-head">
+        <div className="mpf-location-dropdown-sheet-head__copy">
+          <strong>Choose location</strong>
+          <span className="mpf-location-dropdown-sheet-head__current">
+            {formatHeaderCityLabel(selectedCity) || "Locating…"}
+          </span>
+        </div>
+        <button
+          type="button"
+          className="mpf-location-dropdown-close"
+          aria-label="Close"
+          onClick={() => setShowLocationMenu(false)}
+        >
+          ×
+        </button>
+      </div>
+      <button
+        type="button"
+        className="mpf-location-dropdown-item mpf-location-dropdown-item--gps"
+        role="option"
+        aria-selected={false}
+        onClick={handleUseCurrentLocation}
+      >
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.8" />
+          <path
+            d="M12 2v3M12 19v3M2 12h3M19 12h3"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
+        </svg>
+        <span>Use current location</span>
+      </button>
+      <div className="mpf-location-dropdown-label">Select city</div>
+      <div className="mpf-location-dropdown-cities">
+        {HEADER_LOCATION_CITIES.map((city) => {
+          const isActive =
+            String(selectedCity || "").trim().toLowerCase() === city.toLowerCase();
+          return (
+            <button
+              key={city}
+              type="button"
+              role="option"
+              aria-selected={isActive}
+              className={`mpf-location-dropdown-item${isActive ? " is-active" : ""}`}
+              onClick={() => handleSelectLocationCity(city)}
+            >
+              {city}
+            </button>
+          );
+        })}
+      </div>
+    </>
+  );
+
+  const locationMenu =
+    showLocationMenu && isMounted
+      ? isCompactLocationUi
+        ? createPortal(
+            <>
+              <button
+                type="button"
+                className="mpf-location-dropdown-backdrop"
+                aria-label="Close location menu"
+                onClick={() => setShowLocationMenu(false)}
+              />
+              <div
+                ref={locationMenuRef}
+                className="mpf-location-dropdown-menu mpf-location-dropdown-menu--sheet"
+                role="listbox"
+                aria-label="Choose location"
+              >
+                {locationMenuContent}
+              </div>
+            </>,
+            document.body,
+          )
+        : (
+            <div
+              ref={locationMenuRef}
+              className="mpf-location-dropdown-menu"
+              role="listbox"
+              aria-label="Choose location"
+            >
+              {locationMenuContent}
+            </div>
+          )
+      : null;
+
+  return (
+    <>
+      <div
+        className={`d-flex justify-content-between align-items-center px-2 px-lg-4 header ${isHomePage ? "header--home-ss" : ""} ${isScrolled ? "fixed-header" : ""
+          } ${isOverLightSection ? "header--on-light" : ""} ${isPropertiesRoute ? "properties-header" : ""} ${isProjectTypeRoute || isCityRoute || isBuilderRoute ? "projects-header" : ""} ${isAboutUsRoute ? "about-us-header" : ""} ${pathname.includes("/properties/") ? "conditional-header" : ""} ${!headerVisible ? "header-hidden" : ""}`}
+      >
+        <div className={`container d-flex justify-content-between align-items-center${isHomePage ? " header-home-ss__container" : ""}`}>
+          <div className="mpf-logo d-flex align-items-center gap-3">
+            <Link
+              href="/"
+              onClick={() => window.scrollTo({ top: 0, left: 0, behavior: "instant" })}
+              title="My Property Fact Home"
+              aria-label="My Property Fact Home"
+              className={isHomePage ? "mpf-header-brand" : undefined}
+              {...(logoOpensInNewTab
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {})}
+            >
+              {isHomePage ? (
+                <span className="mpf-header-logo-swap">
+                  <img
+                    loading="eager"
+                    src={LOGO_ON_LIGHT}
+                    alt="My Property Fact logo — main site header"
+                    title="My Property Fact logo — main site header"
+                    className="mpf-header-logo-img mpf-header-logo-img--black-text"
+                    height={58}
+                    width={62}
+                    fetchPriority="high"
+                    decoding="async"
+                  />
+                  <img
+                    loading="eager"
+                    src={LOGO_ON_DARK}
+                    alt="My Property Fact logo — main site header"
+                    title="My Property Fact logo — main site header"
+                    aria-hidden="true"
+                    className="mpf-header-logo-img mpf-header-logo-img--color-text"
+                    height={58}
+                    width={62}
+                    decoding="async"
+                  />
+                </span>
+              ) : (
+                <img loading="eager"
+                  src={LOGO_ON_DARK}
+                  alt="My Property Fact logo — main site header"
+                  title="My Property Fact logo — main site header"
+                  height={74}
+                  width={80}
+                  fetchPriority="low"
+                  decoding="async"
+                />
+              )}
+            </Link>
+            {isHomePage ? (
+              <div className="mpf-header-location-dropdown" ref={locationDropdownRef}>
+                <button
+                  type="button"
+                  className="mpf-header-location-pill mpf-header-location-pill--action"
+                  title="Choose city or use current location"
+                  aria-label={`Current location ${formatHeaderCityLabel(selectedCity) || "detecting"}. Open location menu.`}
+                  aria-haspopup="listbox"
+                  aria-expanded={showLocationMenu}
+                  disabled={isLocating}
+                  onClick={() => setShowLocationMenu((open) => !open)}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path
+                      d="M12 21s7-4.5 7-11a7 7 0 10-14 0c0 6.5 7 11 7 11z"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                    />
+                    <circle
+                      cx="12"
+                      cy="10"
+                      r="2.5"
+                      stroke="currentColor"
+                      strokeWidth="1.8"
+                    />
+                  </svg>
+                  <span className="mpf-header-location-pill__city">
+                    {formatHeaderCityLabel(selectedCity) || "Locating…"}
+                  </span>
+                  <svg
+                    className="mpf-header-location-pill__chevron"
+                    width="10"
+                    height="10"
+                    viewBox="0 0 12 12"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M3 4.5L6 7.5L9 4.5"
+                      stroke="currentColor"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
+                {locationMenu}
+              </div>
+            ) : null}
+            {isHomePage ? <HeaderLatestSpark /> : null}
+          </div>
+          <nav className="d-none d-lg-flex flex-grow-1 justify-content-end align-items-center">
+            <div className={`menu position-relative${isHomePage ? " header-home-ss__menu" : ""}`}>
+              <ul className="d-flex gap-5 m-0 align-items-center header-links list-unstyled fw-bold">
+                <li
+                  className={`hasChild header-nav-cities${isNavDropdownDismissed ? " nav-dropdown-dismissed" : ""}`}
+                  onMouseEnter={() => {
+                    setIsDropdownHovered(true);
+                    setIsNavDropdownDismissed(false);
+                  }}
+                  onMouseLeave={handleNavDropdownMouseLeave}
+                >
+                  <button
+                    type="button"
+                    className={`text-light text-decoration-none py-3 plus-jakarta-sans-semi-bold header-nav-dropdown-trigger${isCityRoute ? " header-link-active" : ""
+                      }`}
+                    title="Browse cities — open city menu"
+                    aria-haspopup="true"
+                  >
+                    Cities
+                  </button>
+                  <div className="dropdown dropdown-lg z-3 city-dropdown">
+                    {!isMounted || !cityList?.length ? (
+                      <div className="d-flex align-items-center justify-content-center p-3">
+                        <Spinner animation="border" variant="light" />
+                      </div>
+                    ) : (
+                      <>
+                        <div className="city-dropdown-content">
+                          <div className="city-dropdown-left">
+                            <Link
+                              href="/projects/commercial"
+                              className="city-dropdown-item plus-jakarta-sans-semi-bold"
+                              title="Commercial projects"
+                            >
+                              Commercial
+                            </Link>
+                            <Link
+                              href="/projects/residential"
+                              className="city-dropdown-item plus-jakarta-sans-semi-bold"
+                              title="Residential projects"
+                            >
+                              Residential
+                            </Link>
+                            <Link
+                              href="/projects/new-launches"
+                              className="city-dropdown-item with-badge plus-jakarta-sans-semi-bold"
+                              title="New launch projects"
+                            >
+                              New Launches{" "}
+                              <NewBadge isVisible={isDropdownHovered} />
+                            </Link>
+                            <Link
+                              href="/blog"
+                              className="city-dropdown-item plus-jakarta-sans-semi-bold"
+                              title="Articles and news"
+                            >
+                              Articles &amp; News
+                            </Link>
+                          </div>
+                          <ul className="list-inline city-dropdown-right">
+                            {cityList?.map((city) => (
+                              <li key={city.id}>
+                                <Link
+                                  href={`/city/${city.slugURL}`}
+                                  prefetch={false}
+                                  onClick={handleNavDropdownLinkClick}
+                                  className={`text-light text-decoration-none plus-jakarta-sans-semi-bold ${pathname === "/city/" + city.slugURL
+                                    ? "header-link-active"
+                                    : ""
+                                    }`}
+                                  title={`${city.cityName} properties`}
+                                >
+                                  {city.cityName}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div className="dropdown-footer-bar city-dropdown-footer-bar">
+                          <div className="dropdown-footer-left">
+                            <span className="dropdown-footer-label">Contact Us</span>
+                            <a
+                              href="tel:+918920024793"
+                              className="dropdown-footer-phone"
+                              aria-label="Call My Property Fact at +91 8920024793"
+                              title="+91 8920024793"
+                            >
+                              <img src="/static/icon/Vector (1).svg" alt="Phone Icon" title="Phone Icon" className="dropdown-footer-phone-icon" />
+                              +91 8920024793
+                            </a>
+                          </div>
+                          <div className="dropdown-footer-right-wrapper">
+
+                            <a
+                              href="mailto:social@mypropertyfact.com"
+                              className="dropdown-footer-right"
+                              aria-label="Email My Property Fact at social@mypropertyfact.com"
+                              title="Email us at social@mypropertyfact.com"
+                            >
+                              Email us at{" "}
+                              <span className="dropdown-footer-email">social@mypropertyfact.com</span>
+                            </a>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </li>
+                <li
+                  className={`hasChild header-nav-builders${isNavDropdownDismissed ? " nav-dropdown-dismissed" : ""}`}
+                  onMouseEnter={() => {
+                    setIsDropdownHovered(true);
+                    setIsNavDropdownDismissed(false);
+                  }}
+                  onMouseLeave={handleNavDropdownMouseLeave}
+                >
+                  <button
+                    type="button"
+                    className={`text-light py-3 text-decoration-none plus-jakarta-sans-semi-bold header-nav-dropdown-trigger ${isBuilderRoute ? "header-link-active" : ""
+                      }`}
+                    title="Browse builders — open builder menu"
+                    aria-haspopup="true"
+                  >
+                    Builders
+                  </button>
+                  <div className="dropdown dropdown-lg z-3 builder-dropdown">
+                    {!isMounted || builderList.length === 0 ? (
+                      <div className="d-flex align-items-center justify-content-center p-3">
+                        <Spinner animation="border" variant="light" />
+                      </div>
+                    ) : (
+                      <>
+                        <div className="city-dropdown-content">
+                          <div className="city-dropdown-left">
+                            <Link
+                              href="/projects/commercial"
+                              className="city-dropdown-item plus-jakarta-sans-semi-bold"
+                              prefetch={true}
+                              title="Commercial projects"
+                            >
+                              Commercial
+                            </Link>
+                            <Link
+                              href="/projects/residential"
+                              className="city-dropdown-item plus-jakarta-sans-semi-bold"
+                              prefetch={true}
+                              title="Residential projects"
+                            >
+                              Residential
+                            </Link>
+                            <Link
+                              href="/projects/new-launches"
+                              className="city-dropdown-item with-badge plus-jakarta-sans-semi-bold"
+                              prefetch={true}
+                              title="New launch projects"
+                            >
+                              New Launches{" "}
+                              <NewBadge isVisible={isDropdownHovered} />
+                            </Link>
+                            <Link
+                              href="/blog"
+                              className="city-dropdown-item plus-jakarta-sans-semi-bold"
+                              title="Articles and news"
+                            >
+                              Articles &amp; News
+                            </Link>
+                          </div>
+                          <ul className="list-inline city-dropdown-right">
+                            {builderList?.map((builder) => (
+                              <li key={builder.id}>
+                                <Link
+                                  href={`/builder/${builder.slugUrl}`}
+                                  onClick={handleNavDropdownLinkClick}
+                                  className={`text-light text-decoration-none plus-jakarta-sans-semi-bold ${pathname === "/builder/" + builder.slugUrl
+                                    ? "header-link-active"
+                                    : ""
+                                    }`}
+                                  title={`${builder.builderName} projects`}
+                                >
+                                  {builder.builderName.toLowerCase()}
+                                </Link>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                        <div className="dropdown-footer-bar">
+                          <div className="dropdown-footer-left">
+                            <span className="dropdown-footer-label">Contact Us</span>
+                            <a
+                              href="tel:+918920024793"
+                              className="dropdown-footer-phone"
+                              aria-label="Call My Property Fact at +91 8920024793"
+                              title="+91 8920024793"
+                            >
+                              <img src="/static/icon/Vector (1).svg" alt="Phone Icon" title="Phone Icon" className="dropdown-footer-phone-icon" />
+                              +91 8920024793
+                            </a>
+                          </div>
+                          <div className="dropdown-footer-right-wrapper">
+                            <a
+                              href="mailto:social@mypropertyfact.com"
+                              className="dropdown-footer-right"
+                              aria-label="Email My Property Fact at social@mypropertyfact.com"
+                              title="Email us at social@mypropertyfact.com"
+                            >
+                              Email us at{" "}
+                              <span className="dropdown-footer-email">social@mypropertyfact.com</span>
+                            </a>
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                </li>
+                <li className="hasChild header-nav-about">
+                  <Link
+                    href="/about-us"
+                    className={`text-light py-3  text-decoration-none plus-jakarta-sans-semi-bold${pathname === "/about-us" ? "header-link-active" : ""
+                      }`}
+                    title="About Us"
+                  >
+                    About Us
+                  </Link>
+                </li>
+                {/* {isHomePage ? (
+                  <li className="hasChild header-nav-resources">
+                    <Link
+                      href="/blog"
+                      className={`text-light py-3 text-decoration-none plus-jakarta-sans-semi-bold d-inline-flex align-items-center gap-1${isBlogTypeRoute ? " header-link-active" : ""}`}
+                      title="Resources"
+                    >
+                      Resources
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M6 9l6 6 6-6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                      </svg>
+                    </Link>
+                  </li>
+                ) : null} */}
+                {isBlogTypeRoute ? (
+                  <li
+                    className={`hasChild header-nav-projects${isNavDropdownDismissed ? " nav-dropdown-dismissed" : ""}`}
+                    onMouseEnter={() => {
+                      setIsDropdownHovered(true);
+                      setIsNavDropdownDismissed(false);
+                    }}
+                    onMouseLeave={handleNavDropdownMouseLeave}
+                  >
+                    <Link
+                      href="/projects"
+                      className={`text-light py-3 text-decoration-none plus-jakarta-sans-semi-bold${isProjectTypeRoute ? " header-link-active" : ""}`}
+                      title="Browse projects"
+                    >
+                      Projects
+                    </Link>
+                    <div
+                      className="dropdown dropdown-lg projects-dropdown z-3"
+                      ref={projectsDropdownRef}
+                    >
+                      {!isMounted || !projectTypes?.length ? (
+                        <div className="d-flex align-items-center justify-content-center p-3">
+                          <Spinner animation="border" variant="light" />
+                        </div>
+                      ) : (
+                        <>
+                          <div className="city-dropdown-content">
+                            <div className="city-dropdown-left">
+                              <Link
+                                href="/projects/commercial"
+                                className="city-dropdown-item plus-jakarta-sans-semi-bold"
+                                prefetch={true}
+                                onClick={handleNavDropdownLinkClick}
+                                title="Commercial projects"
+                              >
+                                Commercial
+                              </Link>
+                              <Link
+                                href="/projects/residential"
+                                className="city-dropdown-item plus-jakarta-sans-semi-bold"
+                                prefetch={true}
+                                onClick={handleNavDropdownLinkClick}
+                                title="Residential projects"
+                              >
+                                Residential
+                              </Link>
+                              <Link
+                                href="/projects/new-launches"
+                                className="city-dropdown-item with-badge plus-jakarta-sans-semi-bold"
+                                prefetch={true}
+                                onClick={handleNavDropdownLinkClick}
+                                title="New launch projects"
+                              >
+                                New Launches{" "}
+                                <NewBadge isVisible={isDropdownHovered} />
+                              </Link>
+                              <Link
+                                href="/blog"
+                                className="city-dropdown-item plus-jakarta-sans-semi-bold"
+                                onClick={handleNavDropdownLinkClick}
+                                title="Articles and news"
+                              >
+                                Articles &amp; News
+                              </Link>
+                            </div>
+                            <div className="city-dropdown-right projects-search-section">
+                              <div className="projects-search-wrapper">
+                                {!(projectSearchQuery.trim().length >= 2 && projectSearchResults.length > 0 && !isSearchingProjects) && (
+                                  <>
+                                    <p className="projects-search-title plus-jakarta-sans-semi-bold">
+                                      Search Your Dream Home
+                                    </p>
+                                    <div className="projects-search-container">
+                                      <div className="projects-search-input-wrapper">
+                                        <FontAwesomeIcon
+                                          icon={faSearch}
+                                          className="projects-search-icon"
+                                        />
+                                        <input
+                                          ref={projectSearchInputRef}
+                                          type="text"
+                                          placeholder="Search"
+                                          className="projects-search-input"
+                                          value={projectSearchInput}
+                                          onChange={(e) =>
+                                            setProjectSearchInput(e.target.value)
+                                          }
+                                          onKeyDown={(e) => {
+                                            if (e.key === "Enter") {
+                                              e.preventDefault();
+                                              handleExploreClick();
+                                            }
+                                          }}
+                                        />
+                                        <button
+                                          type="button"
+                                          className="projects-explore-btn"
+                                          onClick={handleExploreClick}
+                                        >
+                                          Explore
+                                        </button>
+                                      </div>
+                                    </div>
+                                  </>
+                                )}
+                                {projectSearchQuery.trim().length >= 2 && (
+                                  <div className="projects-search-results-wrapper">
+                                    {isSearchingProjects ? (
+                                      <div className="projects-search-loader-box">
+                                        <Spinner
+                                          animation="border"
+                                          variant="light"
+                                          className="projects-search-loader-spinner"
+                                        />
+                                        <span className="projects-search-loader-text">
+                                          Searching projects...
+                                        </span>
+                                      </div>
+                                    ) : projectSearchResults.length > 0 ? (
+                                      <>
+                                        <div className="projects-search-results-header">
+                                          <span className="projects-search-results-label">
+                                            Projects
+                                          </span>
+                                          <div className="projects-search-results-header-search">
+                                            <FontAwesomeIcon
+                                              icon={faSearch}
+                                              className="projects-search-results-header-search-icon"
+                                            />
+                                            <input
+                                              type="text"
+                                              className="projects-search-results-header-input"
+                                              value={projectSearchInput}
+                                              onChange={(e) =>
+                                                setProjectSearchInput(e.target.value)
+                                              }
+                                              onKeyDown={(e) => {
+                                                if (e.key === "Enter") {
+                                                  e.preventDefault();
+                                                  handleExploreClick();
+                                                }
+                                              }}
+                                              placeholder="Search"
+                                              aria-label="Edit search"
+                                            />
+                                            <button
+                                              type="button"
+                                              className="projects-search-back-link"
+                                              onClick={(e) => {
+                                                e.stopPropagation();
+                                                handleBackToSearch();
+                                              }}
+                                              title="Clear and start new search"
+                                            >
+                                              New search
+                                            </button>
+                                          </div>
+                                        </div>
+                                        <div className="projects-search-horizontal-slider">
+                                          {projectSearchResults.length > 2 && (
+                                            <button
+                                              type="button"
+                                              className="projects-search-arrow projects-search-arrow-left"
+                                              onClick={(e) => {
+                                                e.stopPropagation();
+                                                setSearchResultsSlideIndex((i) =>
+                                                  Math.max(0, i - 1)
+                                                );
+                                              }}
+                                              disabled={searchResultsSlideIndex === 0}
+                                              aria-label="Previous projects"
+                                            >
+                                              <FontAwesomeIcon icon={faChevronLeft} />
+                                            </button>
+                                          )}
+                                          <div
+                                            className="projects-search-cards-track"
+                                            style={{
+                                              "--slide-index": searchResultsSlideIndex,
+                                            }}
+                                          >
+                                            {projectSearchResults.map((project) => {
+                                              const projectId = project.id || project.slugURL;
+                                              const searchProjectLabel =
+                                                project.projectName || project.name || "Project";
+                                              const searchProjectImgMeta = `${searchProjectLabel} — project banner preview, My Property Fact search`;
+                                              return (
+                                                <div
+                                                  key={projectId}
+                                                  className="project-search-card"
+                                                  onClick={() => handleProjectClick(project)}
+                                                  role="button"
+                                                  tabIndex={0}
+                                                  onKeyDown={(e) => {
+                                                    if (e.key === "Enter" || e.key === " ") {
+                                                      e.preventDefault();
+                                                      handleProjectClick(project);
+                                                    }
+                                                  }}
+                                                  aria-label={`View ${searchProjectLabel} (opens in new tab)`}
+                                                >
+                                                  <div className="project-search-card-image">
+                                                    <img
+                                                      src={getProjectImageSrc(project)}
+                                                      alt={searchProjectImgMeta}
+                                                      title={searchProjectImgMeta}
+                                                      width={200}
+                                                      height={140}
+                                                      loading="lazy"
+                                                      decoding="async"
+                                                      onError={() => handleImageError(projectId)}
+                                                    />
+                                                  </div>
+                                                  <div className="project-search-card-body">
+                                                    <p className="project-search-card-title plus-jakarta-sans-semi-bold mb-0">
+                                                      {[project.projectName || project.name, project.cityName]
+                                                        .filter(Boolean)
+                                                        .join(" ")}
+                                                    </p>
+                                                    {(project.projectAddress || project.cityName) && (
+                                                      <p className="project-search-card-location">
+                                                        {project.projectAddress || project.cityName}
+                                                      </p>
+                                                    )}
+                                                    {project.projectPrice != null && project.projectPrice !== "" && (
+                                                      <p className="project-search-card-price text-success plus-jakarta-sans-semi-bold">
+                                                        {formatProjectPrice(project.projectPrice)}
+                                                      </p>
+                                                    )}
+                                                  </div>
+                                                </div>
+                                              );
+                                            })}
+                                          </div>
+                                          {projectSearchResults.length > 2 && (
+                                            <button
+                                              type="button"
+                                              className="projects-search-arrow projects-search-arrow-right"
+                                              onClick={(e) => {
+                                                e.stopPropagation();
+                                                const maxSlide = Math.ceil(
+                                                  projectSearchResults.length / 2
+                                                ) - 1;
+                                                setSearchResultsSlideIndex((i) =>
+                                                  Math.min(maxSlide, i + 1)
+                                                );
+                                              }}
+                                              disabled={
+                                                searchResultsSlideIndex >=
+                                                Math.ceil(projectSearchResults.length / 2) - 1
+                                              }
+                                              aria-label="Next projects"
+                                            >
+                                              <FontAwesomeIcon icon={faChevronRight} />
+                                            </button>
+                                          )}
+                                        </div>
+                                      </>
+                                    ) : (
+                                      <div className="projects-no-results">
+                                        No projects found matching &quot;
+                                        {projectSearchQuery}&quot;
+                                      </div>
+                                    )}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                          <div className="dropdown-footer-bar city-dropdown-footer-bar">
+                            <div className="dropdown-footer-left">
+                              <span className="dropdown-footer-label">Contact Us</span>
+                              <a
+                                href="tel:+918920024793"
+                                className="dropdown-footer-phone"
+                                aria-label="Call My Property Fact at +91 8920024793"
+                                title="+91 8920024793"
+                              >
+                                <img src="/static/icon/Vector (1).svg" alt="Phone Icon" title="Phone Icon" className="dropdown-footer-phone-icon" />
+                                +91 8920024793
+                              </a>
+                            </div>
+                            <div className="dropdown-footer-right-wrapper">
+                              <a
+                                href="mailto:social@mypropertyfact.com"
+                                className="dropdown-footer-right"
+                                aria-label="Email My Property Fact at social@mypropertyfact.com"
+                                title="Email us at social@mypropertyfact.com"
+                              >
+                                Email us at{" "}
+                                <span className="dropdown-footer-email">social@mypropertyfact.com</span>
+                              </a>
+                            </div>
+                          </div>
+                        </>
+                      )}
+                    </div>
+                  </li>
+                ) : null}
+                <li className="hasChild header-nav-blog">
+                  <Link
+                    href="/blog"
+                    className={`text-light py-3  text-decoration-none plus-jakarta-sans-semi-bold${isBlogTypeRoute ? "header-link-active" : ""
+                      }`}
+                    title="Blog"
+                  >
+                    Blog
+                  </Link>
+                </li>
+                <li className={`hasChild header-nav-join${isHomePage ? " header-nav-hide-home" : ""}`}>
+                  <Link
+                    href="/join-our-team"
+                    className={`text-light py-3 text-decoration-none plus-jakarta-sans-semi-bold${pathname === "/join-our-team" ? "header-link-active" : ""
+                      }`}
+                    title="Join Our Team"
+                  >
+                    Join Our Team
+                  </Link>
+                </li>
+                <li className="hasChild header-nav-contact">
+                  <Link
+                    href="/contact-us"
+                    className={`text-light py-3 text-decoration-none plus-jakarta-sans-semi-bold${pathname === "/contact-us" ? "header-link-active" : ""
+                      }`}
+                    title={isHomePage ? "Contact" : "Contact Us"}
+                  >
+                    {isHomePage ? "Contact" : "Contact Us"}
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            {isHomePage ? (
+              <div className="mpf-header-home-actions d-none d-lg-flex align-items-center">
+                <div id="mpf-header-sticky-search" className="mpf-header-sticky-search" />
+                <a href="tel:+918920024793" className="mpf-header-phone" title="Sales enquiry">
+                  <svg className="mpf-header-phone__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.8 19.8 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.8 19.8 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.12.89.32 1.76.6 2.6a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.48-1.17a2 2 0 012.11-.45c.84.28 1.71.48 2.6.6A2 2 0 0122 16.92z" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                  <span className="mpf-header-phone__copy">
+                    <strong>+91 8920 024 793</strong>
+                    <small>Sales Enquiry</small>
+                  </span>
+                </a>
+                <button
+                  type="button"
+                  className="header-post-property-cta mpf-header-post-property-cta d-none d-lg-inline-flex"
+                  onClick={openBrokerLoginModal}
+                  title="Post your property for free"
+                >
+                  <span className="header-post-property-cta__text">Post Your Property</span>
+                  <span className="header-post-property-cta__badge">FREE</span>
+                </button>
+              </div>
+            ) : (
+              <div className="d-none d-lg-flex align-items-center gap-2">
+                <button
+                  type="button"
+                  className="header-post-property-cta d-none d-lg-inline-flex"
+                  onClick={openBrokerLoginModal}
+                  title="Post your property for free"
+                >
+                  <span className="header-post-property-cta__text">Post Your Property</span>
+                  <span className="header-post-property-cta__badge">FREE</span>
+                </button>
+              </div>
+            )}
+          </nav>
+          <button
+            type="button"
+            className="header-post-property-cta header-post-property-cta--mobile d-flex d-lg-none"
+            onClick={openBrokerLoginModal}
+            title="Post your property for free"
+          >
+            <span className="header-post-property-cta__text">Post Property</span>
+            <span className="header-post-property-cta__badge">FREE</span>
+          </button>
+          <div className="header-mobile-actions d-flex align-items-center">
+            <HeaderAccountMenu onRequestAuth={openWebsiteLoginModal} />
+            <button
+              type="button"
+              className="menuBtn"
+              onClick={openMenu}
+              aria-label="Open menu"
+              aria-controls="mbdiv"
+            >
+              <span id="menuLine1"></span>
+              <span id="menuLine2"></span>
+              <span id="menuLine3"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        className="mbMenuContainer"
+        id="mbdiv"
+        onClick={(e) => {
+          // Close menu if clicking on the backdrop (container), not on the menu panel
+          if (e.target.id === "mbdiv") {
+            openMenu();
+          }
+        }}
+      >
+        <div className="mbMenu" onClick={(e) => e.stopPropagation()}>
+          {/* Mobile Menu Header with Logo and Close Button */}
+          <div className="mobile-menu-header">
+            <Link
+              href="/"
+              onClick={() => {
+                window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+                openMenu();
+              }}
+              className="mobile-menu-logo"
+              title="My Property Fact Home"
+              aria-label="My Property Fact Home"
+              {...(logoOpensInNewTab
+                ? { target: "_blank", rel: "noopener noreferrer" }
+                : {})}
+            >
+              <img
+                src="/logo.webp"
+                alt="My Property Fact logo — site header mobile menu"
+                title="My Property Fact logo — site header mobile menu"
+                height={50}
+                width={55}
+              />
+            </Link>
+            <button
+              className="mobile-menu-close-btn"
+              onClick={openMenu}
+              aria-label="Close menu"
+            >
+              <span></span>
+              <span></span>
+              <span></span>
+            </button>
+          </div>
+          <div className="h-100 scroller">
+            <div className="mpf-drawer-header-links">
+              <p className="mpf-drawer-header-links__label">Explore</p>
+              <div className="mpf-drawer-header-links__grid">
+                <Link href="/projects/residential" onClick={openMenu} title="Residential projects">
+                  Residential
+                </Link>
+                <Link href="/projects/commercial" onClick={openMenu} title="Commercial projects">
+                  Commercial
+                </Link>
+                <Link href="/projects/new-launches" onClick={openMenu} title="New launch projects">
+                  New Launches
+                </Link>
+                <Link href="/blog" onClick={openMenu} title="Articles and news">
+                  Articles &amp; News
+                </Link>
+              </div>
+              <button
+                type="button"
+                className="mpf-drawer-post-property"
+                onClick={() => {
+                  openMenu();
+                  openBrokerLoginModal();
+                }}
+              >
+                Post Your Property
+                <span>FREE</span>
+              </button>
+            </div>
+            {/* Mobile Projects Search - aligned with desktop */}
+            <div className="mobile-projects-search">
+              {!(projectSearchQuery.trim().length >= 2 && projectSearchResults.length > 0 && !isSearchingProjects) && (
+                <>
+                  <p className="mobile-projects-search-title plus-jakarta-sans-semi-bold">
+                    Search Your Dream Home
+                  </p>
+                  <div className="mobile-projects-search-container">
+                    <div className="mobile-projects-search-input-wrapper">
+                      <FontAwesomeIcon
+                        icon={faSearch}
+                        className="mobile-projects-search-icon"
+                      />
+                      <input
+                        ref={mobileProjectSearchInputRef}
+                        type="text"
+                        placeholder="Search"
+                        className="mobile-projects-search-input"
+                        value={projectSearchInput}
+                        onChange={(e) => setProjectSearchInput(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            handleExploreClick();
+                            openMenu();
+                          }
+                        }}
+                      />
+                      <button
+                        type="button"
+                        className="mobile-projects-explore-btn"
+                        onClick={() => {
+                          handleExploreClick();
+                          openMenu();
+                        }}
+                      >
+                        Explore
+                      </button>
+                    </div>
+                  </div>
+                </>
+              )}
+              {projectSearchQuery.trim().length >= 2 && (
+                <div className="mobile-projects-search-results">
+                  {isSearchingProjects ? (
+                    <div className="mobile-projects-search-loader-box">
+                      <Spinner
+                        animation="border"
+                        variant="dark"
+                        className="mobile-projects-search-loader-spinner"
+                      />
+                      <span className="mobile-projects-search-loader-text">
+                        Searching projects...
+                      </span>
+                    </div>
+                  ) : projectSearchResults.length > 0 ? (
+                    <div className="mobile-projects-search-results-inner">
+                      <div className="mobile-projects-search-results-header">
+                        <span className="mobile-projects-search-results-label">
+                          Projects
+                        </span>
+                        <div className="mobile-projects-search-results-header-search">
+                          <FontAwesomeIcon
+                            icon={faSearch}
+                            className="mobile-projects-search-results-header-search-icon"
+                          />
+                          <input
+                            type="text"
+                            className="mobile-projects-search-results-header-input"
+                            value={projectSearchInput}
+                            onChange={(e) =>
+                              setProjectSearchInput(e.target.value)
+                            }
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                e.preventDefault();
+                                handleExploreClick();
+                                openMenu();
+                              }
+                            }}
+                            placeholder="Search"
+                            aria-label="Edit search"
+                          />
+                          <button
+                            type="button"
+                            className="mobile-projects-search-back-link"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleBackToSearch();
+                            }}
+                            title="Clear and start new search"
+                          >
+                            New search
+                          </button>
+                        </div>
+                      </div>
+                      <div className="mobile-projects-search-cards">
+                        {(() => {
+                          const PER_SLIDE = 2;
+                          const start = mobileSearchSlideIndex * PER_SLIDE;
+                          const visible = projectSearchResults.slice(
+                            start,
+                            start + PER_SLIDE
+                          );
+                          return visible.map((project) => {
+                            const projectId = project.id || project.slugURL;
+                            const searchProjectLabel =
+                              project.projectName || project.name || "Project";
+                            const searchProjectImgMeta = `${searchProjectLabel} — project banner preview, My Property Fact search`;
+                            return (
+                              <div
+                                key={projectId}
+                                className="mobile-project-search-card"
+                                onClick={() => {
+                                  handleProjectClick(project);
+                                  openMenu();
+                                }}
+                                role="button"
+                                tabIndex={0}
+                                onKeyDown={(e) => {
+                                  if (e.key === "Enter" || e.key === " ") {
+                                    e.preventDefault();
+                                    handleProjectClick(project);
+                                    openMenu();
+                                  }
+
+                                }}
+                                aria-label={`View ${searchProjectLabel} (opens in new tab)`}
+                              >
+                                <div className="mobile-project-search-card-image">
+                                  <img
+                                    src={getProjectImageSrc(project)}
+                                    alt={searchProjectImgMeta}
+                                    title={searchProjectImgMeta}
+                                    width={100}
+                                    height={80}
+                                    loading="lazy"
+                                    decoding="async"
+                                    onError={() => handleImageError(projectId)}
+                                  />
+                                </div>
+                                <div className="mobile-project-search-card-body">
+                                  <div className="mobile-project-search-card-title plus-jakarta-sans-semi-bold">
+                                    {[project.projectName || project.name, project.cityName]
+                                      .filter(Boolean)
+                                      .join(" ")}
+                                  </div>
+                                  {(project.projectAddress || project.cityName) && (
+                                    <div className="mobile-project-search-card-location">
+                                      {project.projectAddress || project.cityName}
+                                    </div>
+                                  )}
+                                  {project.projectPrice != null && project.projectPrice !== "" && (
+                                    <div className="mobile-project-search-card-price text-success plus-jakarta-sans-semi-bold">
+                                      {formatProjectPrice(project.projectPrice)}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          });
+                        })()}
+                      </div>
+                      {projectSearchResults.length > 2 && (
+                        <div className="mobile-projects-search-slider-controls">
+                          <button
+                            type="button"
+                            className="mobile-projects-search-slider-btn"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setMobileSearchSlideIndex((i) => Math.max(0, i - 1));
+                            }}
+                            disabled={mobileSearchSlideIndex === 0}
+                            aria-label="Previous"
+                          >
+                            <FontAwesomeIcon icon={faChevronLeft} />
+                          </button>
+                          <span className="mobile-projects-search-slider-dots">
+                            {mobileSearchSlideIndex + 1} / {Math.ceil(projectSearchResults.length / 2)}
+                          </span>
+                          <button
+                            type="button"
+                            className="mobile-projects-search-slider-btn"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              const maxSlide = Math.ceil(projectSearchResults.length / 2) - 1;
+                              setMobileSearchSlideIndex((i) => Math.min(maxSlide, i + 1));
+                            }}
+                            disabled={
+                              mobileSearchSlideIndex >=
+                              Math.ceil(projectSearchResults.length / 2) - 1
+                            }
+                            aria-label="Next"
+                          >
+                            <FontAwesomeIcon icon={faChevronRight} />
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="mobile-projects-no-results">
+                      No projects found matching &quot;{projectSearchQuery}
+                      &quot;
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+            <div className="bigMenuList">
+              <ul className="list-inline active list-unstyled">
+                <li
+                  className={`mb-hasChild ${activeDropdown === "city" ? "active" : ""
+                    }`}
+                >
+                  <button
+                    type="button"
+                    className="text-decoration-none mobile-menu-item"
+                    onClick={() => openMenuMobile("city")}
+                    title="Browse cities — expand menu"
+                    aria-expanded={activeDropdown === "city"}
+                    aria-controls="mobile-city-submenu"
+                  >
+                    Cities
+                    <FontAwesomeIcon
+                      icon={faChevronDown}
+                      className={`mobile-dropdown-icon ${activeDropdown === "city" ? "rotate" : ""}`}
+                    />
+                  </button>
+                  <div
+                    id="mobile-city-submenu"
+                    className={`dropdown mobile-dropdown ${activeDropdown === "city" ? "activeHeader" : ""
+                      }`}
+                  >
+                    <ul className="list-inline list-unstyled">
+                      {(isMounted ? cityList : [])?.map((city) => (
+                        <li key={city.id}>
+                          <Link
+                            href={`/city/${city.slugURL}`}
+                            prefetch={false}
+                            onClick={openMenu}
+                            className={`text-decoration-none${pathname === `/city/${city.slugURL}` ? " header-link-active" : ""}`}
+                            title={`${city.cityName} properties`}
+                          >
+                            {city.cityName}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </li>
+                <li
+                  className={`mb-hasChild ${activeDropdown === "builder" ? "active" : ""
+                    }`}
+                >
+                  <button
+                    type="button"
+                    className="text-decoration-none mobile-menu-item"
+                    onClick={() => openMenuMobile("builder")}
+                    title="Browse builders — expand menu"
+                    aria-expanded={activeDropdown === "builder"}
+                    aria-controls="mobile-builder-submenu"
+                  >
+                    Builders
+                    <FontAwesomeIcon
+                      icon={faChevronDown}
+                      className={`mobile-dropdown-icon ${activeDropdown === "builder" ? "rotate" : ""}`}
+                    />
+                  </button>
+                  <div
+                    id="mobile-builder-submenu"
+                    className={`dropdown mobile-dropdown ${activeDropdown === "builder" ? "activeHeader" : ""
+                      }`}
+                  >
+                    <ul className="list-inline list-unstyled">
+                      {(isMounted ? builderList : [])?.map((builder) => (
+                        <li key={builder.id}>
+                          <Link
+                            className={`text-decoration-none builder-link${pathname === `/builder/${builder.slugUrl}` ? " header-link-active" : ""}`}
+                            href={`/builder/${builder.slugUrl}`}
+                            onClick={openMenu}
+                            title={`${builder.builderName} projects`}
+                          >
+                            {builder.builderName}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </li>
+                <li>
+                  <Link
+                    className="text-decoration-none"
+                    href="/about-us"
+                    onClick={openMenu}
+                    title="About Us"
+                  >
+                    About Us
+                  </Link>
+                </li>
+                {isBlogTypeRoute ? (
+                  <li
+                    className={`mb-hasChild ${activeDropdown === "projects" ? "active" : ""}`}
+                  >
+                    <div className="mobile-menu-item mobile-menu-item--split">
+                      <Link
+                        href="/projects"
+                        onClick={openMenu}
+                        className={`text-decoration-none mobile-menu-item__label${isProjectTypeRoute ? " header-link-active" : ""}`}
+                        title="Browse all projects"
+                      >
+                        Projects
+                      </Link>
+                      <button
+                        type="button"
+                        className="mobile-menu-item__toggle"
+                        onClick={() => openMenuMobile("projects")}
+                        aria-expanded={activeDropdown === "projects"}
+                        aria-controls="mobile-projects-submenu"
+                        aria-label="Show project types"
+                        title="Show project types"
+                      >
+                        <FontAwesomeIcon
+                          icon={faChevronDown}
+                          className={`mobile-dropdown-icon ${activeDropdown === "projects" ? "rotate" : ""}`}
+                        />
+                      </button>
+                    </div>
+                    <div
+                      id="mobile-projects-submenu"
+                      className={`dropdown mobile-dropdown ${activeDropdown === "projects" ? "activeHeader" : ""}`}
+                    >
+                      <ul className="list-inline list-unstyled">
+                        {(isMounted ? projectTypes : [])?.map((project) => (
+                          <li key={project.id}>
+                            <Link
+                              href={`/projects/${project.slugUrl}`}
+                              onClick={openMenu}
+                              className="text-decoration-none"
+                              title={`${project.projectTypeName} projects`}
+                            >
+                              {project.projectTypeName}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </li>
+                ) : null}
+              </ul>
+            </div>
+            <div className="smallMenuList">
+              <ul className="list-inline list-unstyled">
+                <li>
+                  <Link
+                    className="text-decoration-none"
+                    href="/blog"
+                    onClick={openMenu}
+                    title="Blog"
+                  >
+                    Blog
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="text-decoration-none"
+                    href="/join-our-team"
+                    onClick={openMenu}
+                    title="Join Our Team"
+                  >
+                    Join Our Team
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="text-decoration-none"
+                    href="/contact-us"
+                    onClick={openMenu}
+                    title="Contact Us"
+                  >
+                    Contact us
+                  </Link>
+                </li>
+              </ul>
+            </div>
+            <div className="socialMediaLink">
+              <ul className="list-inline list-unstyled">
+                <li>
+                  <Link
+                    className="text-decoration-none"
+                    href="https://www.facebook.com/mypropertyfact1/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="My Property Fact on Facebook"
+                    aria-label="My Property Fact on Facebook"
+                  >
+                    <FontAwesomeIcon icon={faFacebook} />
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="text-decoration-none"
+                    href="https://www.instagram.com/my.property.fact/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="My Property Fact on Instagram"
+                    aria-label="My Property Fact on Instagram"
+                  >
+                    <FontAwesomeIcon icon={faInstagram} />
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="text-decoration-none"
+                    href="https://www.linkedin.com/company/my-property-fact/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="My Property Fact on LinkedIn"
+                    aria-label="My Property Fact on LinkedIn"
+                  >
+                    <FontAwesomeIcon icon={faLinkedin} />
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    className="text-decoration-none"
+                    href="https://www.youtube.com/@my.propertyfact/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    title="My Property Fact on YouTube"
+                    aria-label="My Property Fact on YouTube"
+                  >
+                    <FontAwesomeIcon icon={faYoutube} />
+                  </Link>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      {showLocationToast ? (
+        <div
+          className={`mpf-location-toast${locationHint ? " mpf-location-toast--hint" : ""}`}
+          role="status"
+          aria-live="polite"
+        >
+          <div className="mpf-location-toast__card">
+            <span className="mpf-location-toast__icon" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M12 21s7-4.5 7-11a7 7 0 10-14 0c0 6.5 7 11 7 11z" stroke="currentColor" strokeWidth="1.8" />
+                <circle cx="12" cy="10" r="2.5" stroke="currentColor" strokeWidth="1.8" />
+              </svg>
+            </span>
+            <div className="mpf-location-toast__copy">
+              {locationHint ? (
+                <>
+                  <small>Enable location</small>
+                  <strong className="mpf-location-toast__hint-text">{locationHint}</strong>
+                </>
+              ) : (
+                <>
+                  <small>Current location</small>
+                  <strong>{formatHeaderCityLabel(selectedCity) || selectedCity}</strong>
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      ) : null}
+      <BrokerLoginModal show={showBrokerLoginModal} onClose={setShowBrokerLoginModal} />
+      <WebsiteOtpModal
+        show={showWebsiteLoginModal}
+        onClose={setShowWebsiteLoginModal}
+        initialFlow={websiteAuthFlow}
+      />
+    </>
+  );
+};
+export default HeaderComponent;

@@ -1,0 +1,236 @@
+.portal-signin-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 2rem;
+}
+
+.portal-signin-wrapper {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 900px;
+  min-height: 600px;
+  position: relative;
+  overflow: hidden;
+}
+
+.portal-signin-panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  transition: transform 0.6s ease-in-out;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: white;
+}
+
+.portal-signin-panel-left {
+  transform: translateX(0);
+  z-index: 3;
+}
+
+.portal-signin-panel-right {
+  transform: translateX(100%);
+  z-index: 1;
+  background: white;
+}
+
+.portal-signin-wrapper.right-panel-active .portal-signin-panel-left {
+  transform: translateX(-100%);
+}
+
+.portal-signin-wrapper.right-panel-active .portal-signin-panel-right {
+  transform: translateX(0);
+  z-index: 3;
+}
+
+.portal-signin-content {
+  width: 100%;
+  max-width: 400px;
+}
+
+.portal-signin-content h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #212529;
+}
+
+.portal-signin-content p {
+  color: #6c757d;
+  margin-bottom: 2rem;
+}
+
+.portal-divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin: 1.5rem 0;
+  color: #6c757d;
+}
+
+.portal-divider::before,
+.portal-divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.portal-divider span {
+  padding: 0 1rem;
+  font-size: 0.875rem;
+}
+
+.portal-social-login {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.portal-signup-link {
+  text-align: center;
+  color: #6c757d;
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.portal-link-button {
+  background: none;
+  border: none;
+  color: #667eea;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.portal-link-button:hover {
+  color: #764ba2;
+}
+
+.portal-signin-overlay {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 0.6s ease-in-out;
+  z-index: 2;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.portal-signin-wrapper.right-panel-active .portal-signin-overlay {
+  transform: translateX(0);
+  z-index: 2;
+}
+
+.portal-signin-overlay-panel {
+  position: relative;
+  width: 200%;
+  height: 100%;
+  display: flex;
+  transition: transform 0.6s ease-in-out;
+}
+
+.portal-signin-wrapper.right-panel-active .portal-signin-overlay-panel {
+  transform: translateX(-50%);
+}
+
+.portal-signin-overlay-left,
+.portal-signin-overlay-right {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  color: white;
+}
+
+.portal-signin-overlay-left {
+  left: 0;
+}
+
+.portal-signin-overlay-right {
+  right: 0;
+}
+
+.portal-signin-overlay-left h2,
+.portal-signin-overlay-right h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: white;
+}
+
+.portal-signin-overlay-left p,
+.portal-signin-overlay-right p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+  opacity: 0.9;
+}
+
+.portal-ghost-button {
+  border: 2px solid white;
+  color: white;
+  padding: 0.75rem 2rem;
+  font-weight: 600;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+}
+
+.portal-ghost-button:hover {
+  background: white;
+  color: #667eea;
+  transform: scale(1.05);
+}
+
+@media (max-width: 768px) {
+  .portal-signin-container {
+    padding: 1rem;
+  }
+
+  .portal-signin-wrapper {
+    min-height: auto;
+  }
+
+  .portal-signin-panel {
+    width: 100%;
+    position: relative;
+    transform: none !important;
+    padding: 2rem 1.5rem;
+  }
+
+  .portal-signin-panel-right {
+    display: none;
+  }
+
+  .portal-signin-wrapper.right-panel-active .portal-signin-panel-right {
+    display: flex;
+  }
+
+  .portal-signin-wrapper.right-panel-active .portal-signin-panel-left {
+    display: none;
+  }
+
+  .portal-signin-overlay {
+    display: none;
+  }
+
+  .portal-signin-content h2 {
+    font-size: 1.5rem;
+  }
+}
+

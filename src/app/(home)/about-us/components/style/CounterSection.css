@@ -1,0 +1,153 @@
+.statsSection {
+    background: #F1F1F1;
+    padding: 55px 20px;
+}
+
+.statsContainer {
+    max-width: 1120px;
+    margin: 0 auto;
+}
+
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.statCard {
+    position: relative;
+    background: #fff;
+    border: 1px solid rgba(13, 88, 52, 0.08);
+    border-radius: 20px;
+    padding: 28px 16px 24px;
+    text-align: center;
+    overflow: hidden;
+    transition: all .35s ease;
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.04);
+}
+
+.statCard::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #0d5834, #C9A24D);
+    transition: .35s ease;
+    transform: translateX(-50%);
+}
+
+.statCard:hover {
+    transform: translateY(-6px);
+    border-color: rgba(201, 162, 77, .35);
+    box-shadow: 0 18px 40px rgba(13, 88, 52, .10);
+}
+
+.statCard:hover::after {
+    width: 100%;
+}
+
+.iconBox {
+    width: 58px;
+    height: 58px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f3efe6;
+}
+
+.iconBox img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.statCard .statNumber {
+    margin: 0;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.15;
+    color: #0c2e23;
+}
+
+.statCard h3 {
+    margin-top: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #0d5834;
+}
+
+@media (max-width: 1024px) {
+    .statsGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+
+    .statsSection {
+        padding: 40px 16px;
+    }
+
+    .statsGrid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+    }
+
+    .statCard {
+        padding: 22px 12px 20px;
+        border-radius: 16px;
+    }
+
+    .iconBox {
+        width: 52px;
+        height: 52px;
+        margin-bottom: 12px;
+    }
+
+    .iconBox img {
+        width: 24px;
+        height: 24px;
+    }
+
+    .statCard .statNumber {
+        font-size: 26px;
+    }
+
+    .statCard h3 {
+        margin-top: 6px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 380px) {
+
+    .statsGrid {
+        gap: 10px;
+    }
+
+    .statCard {
+        padding: 18px 10px 16px;
+    }
+
+    .iconBox {
+        width: 48px;
+        height: 48px;
+    }
+
+    .iconBox img {
+        width: 22px;
+        height: 22px;
+    }
+
+    .statCard .statNumber {
+        font-size: 22px;
+    }
+
+    .statCard h3 {
+        font-size: 13px;
+    }
+}

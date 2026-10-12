@@ -1,0 +1,10 @@
+/* Global resets or overrides for Next.js app */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+

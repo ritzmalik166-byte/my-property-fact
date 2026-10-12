@@ -1,0 +1,8 @@
+node_modules
+.next
+public/properties
+.git
+dist
+coverage
+Dockerfile
+docker-compose.yml

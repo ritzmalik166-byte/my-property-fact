@@ -1,0 +1,88 @@
+{
+  "primaryAction": {
+    "id": "add-property",
+    "label": "Add Property",
+    "href": "/portal/dashboard/listings?action=add"
+  },
+  "sections": [
+    {
+      "id": "overview",
+      "label": "Overview",
+      "items": [
+        {
+          "id": "dashboard",
+          "label": "Dashboard",
+          "icon": "dashboard",
+          "href": "/portal/dashboard",
+          "exact": true,
+          "access": "ALL"
+        }
+      ]
+    },
+    {
+      "id": "manage",
+      "label": "Manage",
+      "items": [
+        {
+          "id": "listings",
+          "label": "My Listings",
+          "icon": "listings",
+          "href": "/portal/dashboard/listings",
+          "access": "ALL"
+        },
+        {
+          "id": "leads",
+          "label": "Leads",
+          "icon": "leads",
+          "href": "/portal/dashboard/leads",
+          "access": "ALL"
+        },
+        {
+          "id": "compliance",
+          "label": "RERA Compliance",
+          "icon": "compliance",
+          "href": "/portal/dashboard/compliance/rera",
+          "access": "ALL"
+        }
+      ]
+    },
+    {
+      "id": "account",
+      "label": "Account",
+      "items": [
+        {
+          "id": "profile",
+          "label": "Profile",
+          "icon": "profile",
+          "href": "/portal/dashboard/profile",
+          "access": "ALL"
+        },
+        {
+          "id": "notifications",
+          "label": "Notifications",
+          "icon": "notifications",
+          "href": "/portal/dashboard/notifications",
+          "access": "ALL"
+        },
+        {
+          "id": "help",
+          "label": "Help & Support",
+          "icon": "help",
+          "href": "/portal/dashboard/help",
+          "access": "ALL"
+        }
+      ]
+    }
+  ],
+  "accessLevels": {
+    "ALL": "All users",
+    "B": "Broker only",
+    "O": "Owner only",
+    "BA": "Broker and Admin only"
+  },
+  "badges": {
+    "NEW": "New feature",
+    "P2": "Phase 2",
+    "Future": "Future release"
+  }
+}

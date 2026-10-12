@@ -1,0 +1,58 @@
+---
+description: Images and links need meaningful alt/title — never blank or "/"
+globs: **/app/(projects)/[slug]/propertypageV*.js,**/app/(projects)/[slug]/**/*.{js,jsx},**/_global_components/**/*.{js,jsx},**/projects/components/**/*.{js,jsx}
+alwaysApply: false
+---
+
+# `alt` / `title` for images and links
+
+SEO/audit tools report **Title: /** when `title` is missing (they fall back to the page path `/`).
+
+## Images
+
+- Every `<img>` / `next/image` needs a **non-empty** `alt` and matching `title`.
+- Amenity / nearby icons: `alt` and `title` from `altTag` → name/title → sensible fallback. Never omit `title`.
+
+```jsx
+// ❌ BAD — audits show Title: /
+<img src={url} alt={item.altTag || item.title} />
+
+// ✅ GOOD
+const label = item.altTag || item.title || "Amenity icon";
+<img src={url} alt={label} title={label} />
+```
+
+## Links (including `#` section anchors)
+
+- Every `<a>` / `<Link>` that audits check needs a descriptive `title`.
+- Section tabs (`#overview`, `#amenities`, `#gallery`, etc.) must set `title` from the visible label — never leave it unset.
+- External links (Google Maps, etc.) need an explicit `title` too — audits otherwise report **Title: /**.
+
+```jsx
+// ❌ BAD
+<a href={`#${id}`}>{label}</a>
+<a href={mapHref} target="_blank" rel="noopener noreferrer">View On Map</a>
+
+// ✅ GOOD
+<a href={`#${id}`} title={`${label} — ${projectName}`}>{label}</a>
+<a
+  href={mapHref}
+  target="_blank"
+  rel="noopener noreferrer"
+  title={`View ${projectName} on Google Maps`}
+>
+  View On Map
+</a>
+```
+
+## Dynamic titles
+
+- Use template literals. Never put `{variable}` inside a normal string.
+
+```jsx
+// ❌ BAD — literal braces in the tooltip
+title="Projects in {projectDetail.city}"
+
+// ✅ GOOD
+title={`Projects in ${projectDetail.city}`}
+```

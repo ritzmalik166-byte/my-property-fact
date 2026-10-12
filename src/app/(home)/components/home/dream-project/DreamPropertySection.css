@@ -1,0 +1,277 @@
+.dream-property-section {
+  position: relative;
+  padding: 64px 0 80px;
+  background: #f8f9fb;
+  overflow-x: clip;
+  overflow-y: visible;
+}
+
+.dream-property-section-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.dream-property-bg-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center bottom;
+  display: block;
+}
+
+.dream-property-container {
+  position: relative;
+  z-index: 1;
+ 
+  margin: 0 auto;
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.dream-property-title {
+  width: 647px;
+  max-width: 100%;
+  margin: 0;
+  color: #333;
+  text-align: center;
+  font-family: "Lato", var(--heaing-font), sans-serif;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  text-transform: capitalize;
+}
+
+.dream-see-all-button {
+  display: flex;
+  padding: 12px 34px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 999px;
+  background: linear-gradient(180deg, #148a3d 0%, #0d5834 100%);
+  color: #fff;
+  font-family: "Outfit", var(--mpf-font-sans, var(--heaing-font)), sans-serif;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  letter-spacing: 0.02em;
+  text-transform: none;
+  text-decoration: none;
+  transition: background 0.3s ease, transform 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  margin-top: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.18) inset,
+    0 8px 20px rgba(13, 88, 52, 0.28);
+}
+
+.dream-city-wave {
+  display: flex;
+  /* Start marquee from the left to avoid blank space on the right edge */
+  justify-content: flex-start;
+  align-items: flex-end;
+  flex-wrap: nowrap;
+  width: 100%;
+  margin-top: 48px;
+  margin-bottom: 32px;
+  min-height: 180px;
+  overflow-x: hidden;
+  overflow-y: visible;
+  /*
+    Avoid clipping/fading marquee items (icons + labels) inside the container.
+    `mask-image` intentionally hides edges, which made the circles/text look "cut".
+  */
+  /* No extra left/right padding to avoid visible side gaps */
+  padding: 40px 0 14px;
+
+}
+
+.dream-city-track {
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(20px, 3.5vw, 48px);
+  width: max-content;
+  /* Slower horizontal marquee */
+  animation: dream-city-marquee 95s linear infinite;
+  will-change: transform;
+}
+
+@keyframes dream-city-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.dream-city-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: #333;
+  /* Slower vertical float */
+  animation: dream-city-float 7s ease-in-out infinite;
+  animation-delay: var(--float-delay, 0s);
+  will-change: transform;
+  flex: 0 0 auto;
+}
+
+@keyframes dream-city-float {
+  0%,
+  100% {
+    /*
+      Important: keep float translation <= 0 so labels never get pushed down
+      (transforms don't affect layout, and overflow-x hidden can clip vertically).
+    */
+    transform: translateY(clamp(var(--float-min, -26px), var(--float-base, 0px), 0px));
+  }
+
+  50% {
+    transform: translateY(
+      calc(
+        clamp(var(--float-min, -26px), var(--float-base, 0px), 0px) - 16px
+      )
+    );
+  }
+}
+
+.dream-city-icon-circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 0;
+  background: #f2efe9;
+  border: 1px solid rgba(20, 26, 28, 0.1);
+  box-shadow: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 22px;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease, transform 0.3s ease, background 0.3s ease;
+  overflow: hidden;
+}
+
+.dream-city-icon-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.dream-city-item:hover .dream-city-icon-circle {
+  box-shadow: none;
+  border-color: #0d5c63;
+  background: #e7e2d8;
+  transform: scale(1.04);
+}
+
+.dream-city-item:hover {
+  color: #0d5834;
+}
+
+.dream-city-label {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
+  color: inherit;
+}
+
+
+.dream-see-all-button:hover {
+  background: linear-gradient(180deg, #1a9d47 0%, #0f6a1f 100%);
+  color: #fff;
+  text-decoration: none;
+  transform: translateY(-2px);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.22) inset,
+    0 12px 26px rgba(13, 88, 52, 0.34);
+}
+
+.dream-see-all-button:active {
+  background: #094a2b;
+  color: #fff;
+  transform: translateY(0);
+}
+
+@media (max-width: 992px) {
+  .dream-city-wave {
+    min-height: 160px;
+  }
+
+  .dream-city-icon-circle {
+    width: 100px;
+    height: 100px;
+    padding: 18px;
+  }
+
+  .dream-city-item {
+    --float-min: -12px;
+    --float-max: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dream-property-section {
+    padding: 48px 0 64px;
+  }
+
+  .dream-property-title {
+    font-size: clamp(24px, 6vw, 36px);
+  }
+
+  .dream-city-wave {
+    margin-top: 36px;
+  }
+
+  .dream-city-icon-circle {
+    width: 88px;
+    height: 88px;
+    padding: 16px;
+  }
+
+  .dream-city-label {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 576px) {
+  .dream-city-wave {
+    margin-top: 28px;
+    min-height: unset;
+    padding: 8px 14px 12px;
+  }
+
+  .dream-city-item {
+    animation-duration: 6.2s;
+    --float-min: -10px;
+    --float-max: 10px;
+  }
+
+  .dream-see-all-button {
+    width: 100%;
+    max-width: 320px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dream-city-track {
+    animation: none;
+  }
+
+  .dream-city-item {
+    animation: none;
+    transform: translateY(var(--float-base, 0));
+  }
+}

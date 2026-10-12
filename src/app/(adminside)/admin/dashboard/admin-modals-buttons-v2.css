@@ -1,0 +1,1121 @@
+/* ============================================================
+   MPF Admin v2.0 — Global Buttons + Modals (full redesign)
+   react-bootstrap modals portal to <body>, so modal rules are
+   intentionally NOT scoped to .admin-v2-shell.
+   These files only load on /admin/dashboard routes.
+   ============================================================ */
+
+/* ══════════════════════════════════════════════════════════
+   1. BACKDROP
+   ══════════════════════════════════════════════════════════ */
+.modal-backdrop,
+.modal-backdrop.show {
+  background-color: rgba(8, 30, 22, 0.55) !important;
+  opacity: 1 !important;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+/* ══════════════════════════════════════════════════════════
+   2. MODAL SHELL
+   ══════════════════════════════════════════════════════════ */
+.modal-dialog {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
+.modal-content {
+  border: none !important;
+  border-radius: 20px !important;
+  overflow: hidden;
+  box-shadow: 0 32px 80px rgba(8, 30, 22, 0.28) !important;
+  background: #fff !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   3. HEADER — premium v2.0
+   ══════════════════════════════════════════════════════════ */
+.modal-header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem !important;
+  min-height: 68px;
+  height: auto !important;
+  border-bottom: 1px solid hsl(150 14% 92%) !important;
+  background: #fff !important;
+  overflow: visible;
+}
+
+/* green accent bar at top */
+.modal-header::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, hsl(152 69% 38%), hsl(142 68% 48%), hsl(152 55% 32%));
+  background-size: 200% 100%;
+  animation: mpfModalBarShimmer 3s linear infinite;
+}
+
+@keyframes mpfModalBarShimmer {
+  0%   { background-position: 0% 0%; }
+  100% { background-position: 200% 0%; }
+}
+
+.modal-title {
+  font-size: 1.1rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.02em !important;
+  color: hsl(152 40% 12%) !important;
+  line-height: 1.2;
+  flex: 1;
+}
+
+.modal .text-muted,
+.modal-body .text-muted {
+  color: #3d5348 !important;
+}
+
+/* sub-title helper class (optional, add to Modal.Title spans) */
+.modal-title small {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: hsl(152 8% 48%);
+  margin-top: 0.1rem;
+}
+
+/* close button */
+.modal .btn-close {
+  width: 2rem !important;
+  height: 2rem !important;
+  min-width: 2rem;
+  border-radius: 50% !important;
+  background-color: hsl(150 18% 95%) !important;
+  background-size: 0.65rem !important;
+  opacity: 0.8 !important;
+  flex-shrink: 0;
+  transition: opacity 0.15s ease, background-color 0.15s ease, transform 0.18s ease !important;
+  box-shadow: none !important;
+  margin-left: 0.75rem;
+}
+
+.modal .btn-close:hover {
+  opacity: 1 !important;
+  background-color: hsl(0 75% 93%) !important;
+  transform: rotate(90deg) !important;
+}
+
+.modal .btn-close:focus {
+  box-shadow: 0 0 0 3px rgba(34, 150, 94, 0.2) !important;
+  outline: none !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   4. BODY
+   ══════════════════════════════════════════════════════════ */
+.modal-body {
+  padding: 1.4rem 1.5rem 1.2rem !important;
+  max-height: calc(100vh - 9rem);
+  overflow-y: auto;
+  background: #fff !important;
+  color: #1b2e24 !important;
+}
+
+.modal-body::-webkit-scrollbar { width: 7px; }
+.modal-body::-webkit-scrollbar-track { background: transparent; }
+.modal-body::-webkit-scrollbar-thumb {
+  background: hsl(150 14% 82%);
+  border-radius: 999px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   5. FOOTER
+   ══════════════════════════════════════════════════════════ */
+.modal-footer {
+  padding: 0.9rem 1.5rem !important;
+  border-top: 1px solid hsl(150 14% 92%) !important;
+  background: #fff !important;
+  gap: 0.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* ══════════════════════════════════════════════════════════
+   6. FORM SECTIONS — spacing inside modal body
+   ══════════════════════════════════════════════════════════ */
+.modal-body .mb-3,
+.modal-body .form-group {
+  margin-bottom: 1rem !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   7. LABELS
+   ══════════════════════════════════════════════════════════ */
+.modal .form-label,
+.modal label.form-label,
+.modal-body .form-label,
+.modal-body label {
+  display: block;
+  font-size: 0.8rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.01em;
+  text-transform: none;
+  color: #374151 !important;
+  margin-bottom: 0.4rem !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   8. TEXT INPUTS & TEXTAREAS
+   ══════════════════════════════════════════════════════════ */
+.modal .form-control,
+.modal-body .form-control {
+  height: 44px !important;
+  border-radius: 11px !important;
+  border: 1.5px solid hsl(150 14% 84%) !important;
+  padding: 0 0.9rem !important;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+  color: hsl(152 20% 18%) !important;
+  background: hsl(150 25% 99%) !important;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04) !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease !important;
+  outline: none !important;
+}
+
+.modal .form-control::placeholder,
+.modal-body .form-control::placeholder {
+  color: hsl(152 6% 60%) !important;
+  font-weight: 400 !important;
+}
+
+.modal .form-control:focus,
+.modal-body .form-control:focus {
+  border-color: hsl(152 55% 44%) !important;
+  background: #fff !important;
+  box-shadow: 0 0 0 3px rgba(34, 150, 94, 0.14) !important;
+}
+
+/* textarea */
+.modal .form-control[as="textarea"],
+.modal textarea.form-control,
+.modal-body textarea.form-control {
+  height: auto !important;
+  min-height: 90px !important;
+  padding: 0.65rem 0.9rem !important;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+/* validation states */
+.modal .form-control.is-invalid,
+.modal-body .form-control.is-invalid {
+  border-color: hsl(0 72% 55%) !important;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1) !important;
+}
+
+.modal .form-control.is-valid,
+.modal-body .form-control.is-valid {
+  border-color: hsl(142 60% 48%) !important;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.12) !important;
+}
+
+.modal .invalid-feedback,
+.modal-body .invalid-feedback {
+  font-size: 0.75rem !important;
+  color: hsl(0 70% 48%) !important;
+  margin-top: 0.3rem !important;
+}
+
+.modal .valid-feedback,
+.modal-body .valid-feedback {
+  font-size: 0.75rem !important;
+  color: hsl(142 60% 36%) !important;
+  margin-top: 0.3rem !important;
+  display: none !important; /* hide "Looks good!" clutter */
+}
+
+/* ══════════════════════════════════════════════════════════
+   9. SELECT / DROPDOWN
+   ══════════════════════════════════════════════════════════ */
+.modal .form-select,
+.modal-body .form-select {
+  height: 44px !important;
+  border-radius: 11px !important;
+  border: 1.5px solid hsl(150 14% 84%) !important;
+  padding: 0 2.4rem 0 0.9rem !important;
+  font-size: 0.9rem !important;
+  font-weight: 500 !important;
+  color: hsl(152 20% 18%) !important;
+  background-color: hsl(150 25% 99%) !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23558c6a' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 0.9rem center !important;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04) !important;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+  appearance: none !important;
+  cursor: pointer;
+}
+
+.modal .form-select:focus,
+.modal-body .form-select:focus {
+  border-color: hsl(152 55% 44%) !important;
+  background-color: #fff !important;
+  box-shadow: 0 0 0 3px rgba(34, 150, 94, 0.14) !important;
+  outline: none !important;
+}
+
+.modal .form-select.is-invalid,
+.modal-body .form-select.is-invalid {
+  border-color: hsl(0 72% 55%) !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   10. FILE INPUT — custom styled
+   ══════════════════════════════════════════════════════════ */
+.modal .form-control[type="file"],
+.modal-body .form-control[type="file"] {
+  height: auto !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 2px dashed hsl(150 25% 80%) !important;
+  border-radius: 12px !important;
+  box-shadow: none !important;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.modal .form-control[type="file"]::file-selector-button {
+  height: 44px;
+  padding: 0 1rem;
+  background: linear-gradient(135deg, hsl(152 60% 32%), hsl(152 65% 24%)) !important;
+  color: #fff;
+  border: none;
+  border-right: 2px solid hsl(150 30% 80%);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  margin-right: 0.75rem;
+}
+
+.modal .form-control[type="file"]::file-selector-button:hover {
+  background: linear-gradient(135deg, hsl(152 60% 27%), hsl(152 65% 20%)) !important;
+}
+
+.modal .form-control[type="file"]:hover,
+.modal-body .form-control[type="file"]:hover {
+  border-color: hsl(152 45% 60%) !important;
+  background: hsl(150 30% 97%) !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   11. IMAGES INSIDE MODAL (prev image thumbs)
+   ══════════════════════════════════════════════════════════ */
+.modal-body img.img-fluid,
+.modal-body img.rounded {
+  border-radius: 12px !important;
+  border: 2px solid hsl(150 14% 88%);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+/* ══════════════════════════════════════════════════════════
+   12. BUTTONS
+   ══════════════════════════════════════════════════════════ */
+.admin-v2-shell .btn,
+.modal .btn {
+  --bs-btn-box-shadow: none;
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  font-size: 0.875rem !important;
+  letter-spacing: 0.01em;
+  padding: 0.55rem 1.2rem !important;
+  box-shadow: none !important;
+  text-transform: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease,
+    background 0.15s ease, border-color 0.15s ease, color 0.15s ease !important;
+}
+
+.admin-v2-shell .btn:hover:not(:disabled),
+.modal .btn:hover:not(:disabled) { transform: translateY(-1px); }
+
+.admin-v2-shell .btn:active:not(:disabled),
+.modal .btn:active:not(:disabled) { transform: translateY(0); }
+
+.admin-v2-shell .btn:disabled,
+.modal .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.admin-v2-shell .btn:focus-visible,
+.modal .btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(34, 150, 94, 0.28) !important;
+}
+
+/* Primary / success */
+.admin-v2-shell .btn-success,
+.admin-v2-shell .btn-primary,
+.modal .btn-success,
+.modal .btn-primary {
+  background: linear-gradient(135deg, hsl(152 69% 30%) 0%, hsl(152 69% 22%) 100%) !important;
+  border: none !important;
+  color: #fff !important;
+  box-shadow: 0 2px 10px rgba(0, 80, 50, 0.22) !important;
+  padding: 0.6rem 1.5rem !important;
+}
+
+.admin-v2-shell .btn-success:hover:not(:disabled),
+.admin-v2-shell .btn-primary:hover:not(:disabled),
+.modal .btn-success:hover:not(:disabled),
+.modal .btn-primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, hsl(152 69% 26%) 0%, hsl(152 69% 18%) 100%) !important;
+  box-shadow: 0 6px 18px rgba(0, 80, 50, 0.28) !important;
+}
+
+/* Secondary */
+.admin-v2-shell .btn-secondary,
+.modal .btn-secondary {
+  background: #fff !important;
+  border: 1.5px solid hsl(150 14% 84%) !important;
+  color: hsl(152 25% 28%) !important;
+}
+
+.admin-v2-shell .btn-secondary:hover:not(:disabled),
+.modal .btn-secondary:hover:not(:disabled) {
+  background: hsl(150 25% 97%) !important;
+  border-color: hsl(150 20% 76%) !important;
+}
+
+/* Danger */
+.admin-v2-shell .btn-danger,
+.modal .btn-danger {
+  background: linear-gradient(135deg, hsl(0 72% 52%) 0%, hsl(0 70% 44%) 100%) !important;
+  border: none !important;
+  color: #fff !important;
+  box-shadow: 0 2px 10px rgba(150, 20, 20, 0.18) !important;
+}
+
+.admin-v2-shell .btn-danger:hover:not(:disabled),
+.modal .btn-danger:hover:not(:disabled) {
+  background: linear-gradient(135deg, hsl(0 72% 47%) 0%, hsl(0 70% 39%) 100%) !important;
+  box-shadow: 0 6px 18px rgba(150, 20, 20, 0.26) !important;
+}
+
+/* Warning / info */
+.admin-v2-shell .btn-warning,
+.modal .btn-warning {
+  background: linear-gradient(135deg, hsl(38 92% 52%), hsl(32 90% 46%)) !important;
+  border: none !important;
+  color: #fff !important;
+}
+
+.admin-v2-shell .btn-info,
+.modal .btn-info {
+  background: linear-gradient(135deg, #a8b84a, #8fa63a) !important;
+  border: none !important;
+  color: #fff !important;
+}
+
+/* Light */
+.admin-v2-shell .btn-light,
+.modal .btn-light {
+  background: hsl(150 20% 97%) !important;
+  border: 1.5px solid hsl(150 14% 88%) !important;
+  color: hsl(152 25% 28%) !important;
+}
+
+/* Outline variants */
+.admin-v2-shell .btn-outline-success,
+.admin-v2-shell .btn-outline-primary,
+.modal .btn-outline-success,
+.modal .btn-outline-primary {
+  background: #fff !important;
+  border: 1.5px solid #8fa63a !important;
+  color: #6f8229 !important;
+}
+
+.admin-v2-shell .btn-outline-success:hover:not(:disabled),
+.admin-v2-shell .btn-outline-primary:hover:not(:disabled),
+.modal .btn-outline-success:hover:not(:disabled),
+.modal .btn-outline-primary:hover:not(:disabled) {
+  background: #f3f5e6 !important;
+  border-color: #6f8229 !important;
+}
+
+.admin-v2-shell .btn-outline-danger,
+.modal .btn-outline-danger {
+  background: #fff !important;
+  border: 1.5px solid hsl(0 60% 72%) !important;
+  color: hsl(0 65% 48%) !important;
+}
+
+.admin-v2-shell .btn-outline-danger:hover:not(:disabled),
+.modal .btn-outline-danger:hover:not(:disabled) {
+  background: hsl(0 80% 97%) !important;
+  border-color: hsl(0 65% 60%) !important;
+}
+
+.admin-v2-shell .btn-outline-secondary,
+.modal .btn-outline-secondary {
+  background: #fff !important;
+  border: 1.5px solid hsl(150 14% 82%) !important;
+  color: hsl(152 20% 32%) !important;
+}
+
+.admin-v2-shell .btn-outline-secondary:hover:not(:disabled),
+.modal .btn-outline-secondary:hover:not(:disabled) {
+  background: hsl(150 22% 96%) !important;
+}
+
+/* Sizes */
+.admin-v2-shell .btn-sm,
+.modal .btn-sm {
+  padding: 0.35rem 0.75rem !important;
+  font-size: 0.8rem !important;
+  border-radius: 8px !important;
+}
+
+.admin-v2-shell .btn-lg,
+.modal .btn-lg {
+  padding: 0.7rem 1.5rem !important;
+  font-size: 0.95rem !important;
+  border-radius: 12px !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   13. MODAL ACTION ROW — button groups at the bottom of forms
+   Use <div class="mpf-modal-actions"> to wrap Cancel + Submit
+   ══════════════════════════════════════════════════════════ */
+.mpf-modal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.65rem;
+  padding-top: 1.25rem;
+  margin-top: 0.5rem;
+  border-top: 1px solid hsl(150 14% 92%);
+}
+
+/* admin-header-btn variants inside modals (no .admin-v2-shell prefix needed) */
+.modal .admin-header-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.55rem 1.25rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.modal .admin-header-btn--primary {
+  background: linear-gradient(135deg, hsl(152 69% 30%) 0%, hsl(152 69% 22%) 100%) !important;
+  color: #fff !important;
+  box-shadow: 0 3px 12px rgba(0, 80, 50, 0.26) !important;
+}
+
+.modal .admin-header-btn--primary:hover:not(:disabled) {
+  background: linear-gradient(135deg, hsl(152 69% 26%) 0%, hsl(152 69% 18%) 100%) !important;
+  box-shadow: 0 6px 18px rgba(0, 80, 50, 0.32) !important;
+  transform: translateY(-1px);
+}
+
+.modal .admin-header-btn--primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.modal .admin-header-btn--secondary {
+  background: #fff !important;
+  border: 1.5px solid hsl(150 14% 84%) !important;
+  color: hsl(152 25% 28%) !important;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.06) !important;
+}
+
+.modal .admin-header-btn--secondary:hover:not(:disabled) {
+  background: hsl(150 25% 97%) !important;
+  border-color: hsl(150 20% 76%) !important;
+  transform: translateY(-1px);
+}
+
+/* ══════════════════════════════════════════════════════════
+   14. ADMIN-v2-SHELL — form-control / form-select (tables)
+   ══════════════════════════════════════════════════════════ */
+.admin-v2-shell .form-control,
+.admin-v2-shell .form-select {
+  border-radius: 10px !important;
+  border: 1.5px solid hsl(150 14% 84%) !important;
+  padding: 0.5rem 0.8rem !important;
+  font-size: 0.9rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.admin-v2-shell .form-control:focus,
+.admin-v2-shell .form-select:focus {
+  border-color: hsl(152 55% 42%) !important;
+  box-shadow: 0 0 0 3px rgba(34, 150, 94, 0.16) !important;
+}
+
+.admin-v2-shell .form-label {
+  font-weight: 600 !important;
+  font-size: 0.82rem !important;
+  color: hsl(152 30% 24%) !important;
+  margin-bottom: 0.35rem !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   15. FAQ LIST (manage-faqs modal)
+   ══════════════════════════════════════════════════════════ */
+.admin-faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.admin-faq-card {
+  border: 1px solid hsl(150 14% 88%);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.admin-faq-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.85rem 1rem;
+  background: hsl(152 45% 96%);
+  border-bottom: 1px solid hsl(152 30% 88%);
+}
+
+.admin-faq-card__question {
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+  font-weight: 600;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  color: #1b2e24 !important;
+}
+
+.admin-faq-card__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.admin-faq-card__answer {
+  margin: 0;
+  padding: 0.85rem 1rem 1rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: #3d5348 !important;
+  background: #fff;
+}
+
+.admin-faq-card__answer-label {
+  font-weight: 600;
+  color: #1b2e24 !important;
+}
+
+html[data-admin-theme="dark"] .admin-faq-card {
+  background: #141414;
+  border-color: #444;
+}
+
+html[data-admin-theme="dark"] .admin-faq-card__header {
+  background: #1f1f1f;
+  border-bottom-color: #444;
+}
+
+html[data-admin-theme="dark"] .admin-faq-card__question,
+html[data-admin-theme="dark"] .admin-faq-card__answer-label {
+  color: #f9fafb !important;
+}
+
+html[data-admin-theme="dark"] .admin-faq-card__answer {
+  color: #d1d5db !important;
+  background: #141414;
+}
+
+/* ══════════════════════════════════════════════════════════
+   16. READABLE TEXT — admin-wide contrast (light + dark)
+   ══════════════════════════════════════════════════════════ */
+.admin-layout-wrapper {
+  --admin-text-readable: #1b2e24;
+  --admin-text-muted-readable: #3d5348;
+}
+
+.admin-layout-wrapper .text-muted,
+.admin-layout-wrapper .text-secondary,
+.admin-layout-wrapper .form-text {
+  color: var(--admin-text-muted-readable) !important;
+}
+
+.admin-layout-wrapper .admin-page-container,
+.admin-layout-wrapper .admin-main-content,
+.admin-layout-wrapper .table-container {
+  color: var(--admin-text-readable);
+}
+
+.admin-modal-surface .modal-body,
+.modal.admin-modal-surface .modal-body,
+.modal-content.admin-modal-surface .modal-body {
+  color: var(--admin-text-readable, #1b2e24) !important;
+}
+
+.admin-modal-body-text,
+.admin-modal-surface .admin-modal-body-text {
+  color: var(--admin-text-muted-readable, #3d5348) !important;
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.admin-modal-status-text,
+.admin-modal-surface .admin-modal-status-text {
+  color: var(--admin-text-readable, #1b2e24) !important;
+  font-weight: 600;
+}
+
+.admin-modal-surface .text-muted,
+.modal-content.admin-modal-surface .text-muted {
+  color: var(--admin-text-muted-readable, #3d5348) !important;
+}
+
+/* Dark theme: modals + shell (admin-modals-buttons-v2 loads after admin-theme) */
+html[data-admin-theme="dark"] .admin-layout-wrapper {
+  --admin-text-readable: #f9fafb;
+  --admin-text-muted-readable: #d1d5db;
+}
+
+html[data-admin-theme="dark"] .modal-content,
+html[data-admin-theme="dark"] .modal-content.admin-modal-surface {
+  background: #000000 !important;
+  border: 1px solid #444444 !important;
+  color: #ffffff !important;
+}
+
+html[data-admin-theme="dark"] .modal-header,
+html[data-admin-theme="dark"] .admin-modal-surface .modal-header {
+  background: #000000 !important;
+  border-bottom-color: #444444 !important;
+  color: #ffffff !important;
+}
+
+html[data-admin-theme="dark"] .modal-title,
+html[data-admin-theme="dark"] .admin-modal-surface .modal-title {
+  color: #ffffff !important;
+}
+
+html[data-admin-theme="dark"] .modal-body,
+html[data-admin-theme="dark"] .admin-modal-surface .modal-body {
+  background: #000000 !important;
+  color: #ffffff !important;
+}
+
+html[data-admin-theme="dark"] .modal-footer,
+html[data-admin-theme="dark"] .admin-modal-surface .modal-footer {
+  background: #000000 !important;
+  border-top-color: #444444 !important;
+}
+
+html[data-admin-theme="dark"] .modal .btn-close,
+html[data-admin-theme="dark"] .admin-modal-surface .modal-header .btn-close {
+  filter: invert(1);
+  opacity: 0.85;
+}
+
+html[data-admin-theme="dark"] .admin-modal-body-text,
+html[data-admin-theme="dark"] .admin-modal-surface .admin-modal-body-text {
+  color: #e5e7eb !important;
+}
+
+html[data-admin-theme="dark"] .admin-modal-status-text,
+html[data-admin-theme="dark"] .admin-modal-surface .admin-modal-status-text {
+  color: #ffffff !important;
+}
+
+html[data-admin-theme="dark"] .admin-modal-surface .text-muted,
+html[data-admin-theme="dark"] .modal-content .text-muted {
+  color: #d1d5db !important;
+}
+
+html[data-admin-theme="dark"] .modal .form-label,
+html[data-admin-theme="dark"] .modal-body label {
+  color: #f3f4f6 !important;
+}
+
+html[data-admin-theme="dark"] .modal .form-control,
+html[data-admin-theme="dark"] .modal .form-select,
+html[data-admin-theme="dark"] .modal-body .form-control,
+html[data-admin-theme="dark"] .modal-body .form-select {
+  background: #0a0a0a !important;
+  border-color: #555555 !important;
+  color: #ffffff !important;
+}
+
+html[data-admin-theme="dark"] .modal .btn-secondary,
+html[data-admin-theme="dark"] .admin-modal-surface .btn-admin-secondary {
+  background: #0a0a0a !important;
+  border-color: #666666 !important;
+  color: #ffffff !important;
+}
+
+html[data-admin-theme="dark"] .admin-mui-datagrid-paper .MuiDataGrid-toolbarContainer .MuiButton-text,
+html[data-admin-theme="dark"] .admin-mui-datagrid-paper .MuiDataGrid-toolbarContainer button {
+  color: #e5e7eb !important;
+}
+
+/* ══════════════════════════════════════════════════════════
+   FAQ list accordion (Manage FAQs modal)
+   Overrides global .accordion-button:not(.collapsed) gradient
+   ══════════════════════════════════════════════════════════ */
+.admin-faq-accordion .accordion-item {
+  border: 1px solid hsl(150 14% 92%);
+  border-radius: 12px;
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+}
+
+.admin-faq-accordion .accordion-button {
+  background: #fff !important;
+  color: hsl(152 40% 12%) !important;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  box-shadow: none !important;
+}
+
+.admin-faq-accordion .accordion-button:not(.collapsed) {
+  background: #f0f7f3 !important;
+  color: hsl(152 40% 12%) !important;
+  box-shadow: none !important;
+}
+
+.admin-faq-accordion .accordion-button:focus {
+  box-shadow: none !important;
+}
+
+.admin-faq-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 0.75rem;
+  padding-right: 0.25rem;
+}
+
+.admin-faq-question {
+  flex: 1;
+  text-align: left;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.admin-faq-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.admin-faq-accordion-body {
+  background: #fff;
+  color: #3d5348;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  border-top: 1px solid hsl(150 14% 92%);
+}
+
+html[data-admin-theme="dark"] .admin-faq-accordion .accordion-button,
+html[data-admin-theme="dark"] .admin-faq-accordion .accordion-button:not(.collapsed) {
+  background: #0a0a0a !important;
+  color: #f3f4f6 !important;
+}
+
+html[data-admin-theme="dark"] .admin-faq-accordion .accordion-item {
+  border-color: #444444;
+}
+
+html[data-admin-theme="dark"] .admin-faq-accordion-body {
+  background: #0a0a0a;
+  color: #e5e7eb;
+  border-top-color: #444444;
+}
+
+/* ══════════════════════════════════════════════════════════
+   MPF MODAL LAYOUT HELPERS (convenient form modals)
+   ══════════════════════════════════════════════════════════ */
+.mpf-modal .modal-content {
+  border-radius: 22px !important;
+}
+
+.mpf-modal .modal-title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding-right: 0.5rem;
+}
+
+.mpf-modal .modal-title small {
+  display: block;
+  font-size: 0.78rem !important;
+  font-weight: 500 !important;
+  letter-spacing: 0 !important;
+  color: #6b7280 !important;
+  margin-top: 0.15rem;
+  line-height: 1.35;
+}
+
+.mpf-modal .modal-body {
+  padding: 1.25rem 1.5rem 1.1rem !important;
+  background: linear-gradient(180deg, #fbfbfc 0%, #fff 48%) !important;
+}
+
+.mpf-modal .modal-footer {
+  padding: 0.95rem 1.5rem !important;
+  background: #f8fafc !important;
+  border-top: 1px solid #eef1f4 !important;
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+}
+
+.mpf-modal__footer-split {
+  justify-content: space-between !important;
+}
+
+.mpf-modal__footer-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.mpf-modal__section {
+  padding: 1rem 1.05rem;
+  border-radius: 14px;
+  border: 1px solid #e8ecf2;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+  margin-bottom: 0.9rem;
+}
+
+.mpf-modal__section:last-child {
+  margin-bottom: 0;
+}
+
+.mpf-modal__section-title {
+  margin: 0 0 0.85rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #6b7280;
+}
+
+.mpf-modal__grid {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.mpf-modal__grid--2 {
+  grid-template-columns: 1.4fr 0.8fr;
+}
+
+@media (max-width: 640px) {
+  .mpf-modal__grid--2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mpf-modal .form-text,
+.mpf-modal .form-text.text-muted {
+  display: block;
+  margin-top: 0.35rem !important;
+  font-size: 0.74rem !important;
+  color: #6b7280 !important;
+  line-height: 1.4;
+}
+
+.mpf-modal .form-text code {
+  font-size: 0.72rem;
+  padding: 0.1rem 0.35rem;
+  border-radius: 6px;
+  background: #f1f5f9;
+  color: #0f766e;
+}
+
+.mpf-modal__hint {
+  margin: 0 0 1rem;
+  padding: 0.75rem 0.9rem;
+  border-radius: 12px;
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+  color: #1e40af;
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1.45;
+}
+
+.mpf-modal__card {
+  padding: 1rem 1.05rem;
+  border-radius: 14px;
+  border: 1px solid #e8ecf2;
+  background: #fff;
+  margin-bottom: 0.85rem;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+}
+
+.mpf-modal__card--invalid {
+  border-color: #fecaca;
+  background: #fffafa;
+}
+
+.mpf-modal__card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.85rem;
+}
+
+.mpf-modal__card-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.28rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: #ecfdf5;
+  color: #047857;
+  border: 1px solid #bbf7d0;
+}
+
+.mpf-modal__card-remove {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: 9px !important;
+}
+
+.mpf-modal__card-remove span {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.mpf-modal__confirm p {
+  margin: 0 0 0.75rem;
+  color: #1f2937;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.mpf-modal__confirm ul {
+  margin: 0;
+  padding: 0.85rem 0.85rem 0.85rem 1.4rem;
+  border-radius: 12px;
+  background: #f8fafc;
+  border: 1px solid #eef1f4;
+  color: #4b5563;
+  font-size: 0.86rem;
+  line-height: 1.55;
+}
+
+.mpf-modal__confirm li + li {
+  margin-top: 0.4rem;
+}
+
+.mpf-modal__empty {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: #6b7280;
+  font-size: 0.9rem;
+  border-radius: 12px;
+  border: 1px dashed #e2e8f0;
+  background: #f8fafc;
+}
+
+.mpf-modal .btn-success,
+.mpf-modal__btn-primary {
+  min-width: 8.5rem;
+  border-radius: 11px !important;
+  font-weight: 700 !important;
+  padding: 0.55rem 1.1rem !important;
+  box-shadow: 0 6px 14px rgba(16, 185, 129, 0.22) !important;
+}
+
+.mpf-modal .btn-outline-secondary,
+.mpf-modal__btn-cancel {
+  border-radius: 11px !important;
+  font-weight: 600 !important;
+  padding: 0.55rem 1rem !important;
+  border-color: #d1d5db !important;
+  color: #374151 !important;
+  background: #fff !important;
+}
+
+.mpf-modal .btn-outline-secondary:hover,
+.mpf-modal__btn-cancel:hover {
+  background: #f3f4f6 !important;
+  border-color: #9ca3af !important;
+  color: #111827 !important;
+}
+
+.admin-faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.admin-faq-card {
+  border: 1px solid #e8ecf2;
+  border-radius: 14px;
+  background: #fff;
+  padding: 0.95rem 1rem;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
+}
+
+.admin-faq-card__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.admin-faq-card__question {
+  margin: 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1.4;
+}
+
+.admin-faq-card__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-shrink: 0;
+}
+
+.admin-faq-card__answer {
+  margin: 0.65rem 0 0;
+  font-size: 0.86rem;
+  color: #4b5563;
+  line-height: 1.55;
+}
+
+.admin-faq-card__answer-label {
+  font-weight: 700;
+  color: #0f766e;
+}

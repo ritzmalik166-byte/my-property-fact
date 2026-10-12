@@ -1,0 +1,355 @@
+.card {
+  min-width: 0;
+  max-width: 100%;
+  border-top-left-radius: 2rem;
+  border-top-right-radius: 2rem;
+  overflow: hidden;
+}
+
+.blogContactForm {
+  position: sticky !important;
+  top: 80px;
+}
+
+.blog-page-section-heading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--bs-dark, #212529);
+}
+
+.blogSectionWrap {
+  overflow: visible;
+  max-width: 1340px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 1024px: tablet/laptop - single column feel, reduced gutters */
+@media (max-width: 1024px) {
+  .blogSectionWrap {
+    max-width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .blogSectionWrap .blogContentRow,
+  .blogContentRow {
+    --bs-gutter-x: 1.5rem;
+  }
+  .blogSidebarCol {
+    padding-left: 0.5rem !important;
+  }
+  .blogRightSticky {
+    top: 90px;
+  }
+}
+
+/* On mobile/tablet: contain horizontal overflow (sidebar not sticky here anyway) */
+@media (max-width: 991px) {
+  .blogSectionWrap {
+    overflow-x: clip;
+  }
+  .blogContentRow {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
+/* Blog row: right column must stretch so sticky sidebar has room to stick on scroll */
+.blogSectionWrap .blogContentRow,
+.blogContentRow {
+  align-items: stretch !important;
+  /* Gap between blog list and right sidebar */
+  --bs-gutter-x: 2.25rem;
+}
+
+/* Prevent flex children from overflowing on small screens */
+.blogContentRow > [class*="col-"] {
+  min-width: 0;
+}
+
+/* Sidebar column: stretch to match left column height (required for sticky); minimal left padding */
+.blogSidebarCol {
+  align-self: stretch;
+  min-height: 0; /* allow flex shrink if needed */
+  padding-left: 0.75rem !important;
+}
+
+/* Sidebar sticks from below header; only the content box sticks, not the full column */
+.blogRightSticky {
+  position: sticky;
+  top: 100px;
+  align-self: flex-start;
+  width: 100%;
+}
+
+.keywordTag {
+  background: linear-gradient(145deg, #f0f0f0, #ffffff);
+  border: 1px solid #dee2e6;
+  color: #333;
+  padding: 6px 14px;
+  font-size: 16px;
+  border-radius: 50px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  cursor: default;
+  text-transform: capitalize;
+  font-weight: bold !important;
+  font-style: italic;
+}
+
+.keywordTag:hover {
+  background: #5cc50d;
+  color: #fff;
+  border-color: #5cc50d;
+  box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);
+}
+
+/* Blog Sidebar Styles */
+.blog-sidebar {
+  position: sticky;
+  top: 100px;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e9ecef;
+}
+
+.sidebar-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #17693d;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #e9ecef;
+}
+
+.sidebar-title i {
+  color: #17693d;
+  font-size: 1rem;
+}
+
+/* Search Section */
+.search-section {
+  margin-bottom: 1.5rem;
+}
+
+.search-input-wrapper {
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.75rem 2.5rem 0.75rem 1rem;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #17693d;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(23, 105, 61, 0.1);
+}
+
+.search-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6c757d;
+  pointer-events: none;
+}
+
+.clear-search-btn {
+  width: 100%;
+  padding: 0.5rem;
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  color: #6c757d;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.clear-search-btn:hover {
+  background: #e9ecef;
+  color: #495057;
+}
+
+/* Recent Blogs Section */
+.recent-blogs-section {
+  margin-top: 1.5rem;
+}
+
+.recent-blogs-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.recent-blog-item {
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f0f0f0;
+  transition: all 0.3s ease;
+}
+
+.recent-blog-item:last-child {
+  border-bottom: none;
+}
+
+.recent-blog-item:hover {
+  padding-left: 0.5rem;
+}
+
+.recent-blog-link {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: #333;
+  transition: color 0.3s ease;
+}
+
+.recent-blog-link:hover {
+  color: #17693d;
+}
+
+.recent-blog-title {
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.4;
+  margin-bottom: 0.25rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.recent-blog-date {
+  font-size: 0.75rem;
+  color: #6c757d;
+  font-style: italic;
+}
+
+/* Blog Search Container Styles */
+.blog-search-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e9ecef;
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.blog-search-input {
+  width: 100%;
+  padding: 1rem 3rem 1rem 3rem;
+  border: 2px solid #e9ecef;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background: #ffffff;
+  color: #333;
+  font-family: inherit;
+}
+
+.blog-search-input::placeholder {
+  color: #6c757d;
+  font-style: italic;
+}
+
+.blog-search-input:focus {
+  outline: none;
+  border-color: #17693d;
+  box-shadow: 0 0 0 4px rgba(23, 105, 61, 0.1);
+  background: #ffffff;
+}
+
+.search-icon-left {
+  position: absolute;
+  left: 1.25rem;
+  color: #6c757d;
+  font-size: 1.1rem;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.clear-search-icon {
+  position: absolute;
+  right: 1rem;
+  background: transparent;
+  border: none;
+  color: #6c757d;
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+.clear-search-icon:hover {
+  background: #f0f0f0;
+  color: #dc3545;
+  transform: scale(1.1);
+}
+
+.clear-search-icon:active {
+  transform: scale(0.95);
+}
+
+@media (max-width: 1024px) {
+  .blog-mobile-sidebar-wrap {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .card {
+    width: 325px;
+  }
+  
+  .blog-sidebar {
+    position: relative;
+    top: 0;
+    margin-top: 2rem;
+  }
+  
+  .blog-search-container {
+    padding: 1rem;
+    border-radius: 12px;
+  }
+  
+  .blog-search-input {
+    padding: 0.875rem 2.5rem 0.875rem 2.75rem;
+    font-size: 0.95rem;
+  }
+  
+  .search-icon-left {
+    left: 1rem;
+    font-size: 1rem;
+  }
+  
+  .clear-search-icon {
+    right: 0.75rem;
+    font-size: 1rem;
+  }
+}

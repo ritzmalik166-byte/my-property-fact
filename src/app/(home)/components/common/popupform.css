@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* Ensure enquiry popup appears above Chatbot and other fixed elements */
+.enquiry-popup.modal {
+  z-index: 2147483647 !important;
+}
+.enquiry-popup.modal .modal-backdrop {
+  z-index: 2147483646 !important;
+}
+
+.enquiry-popup--split-v2 .modal-dialog.enquiry-popup-dialog--split-v2 {
+  max-width: min(920px, calc(100vw - 1.25rem));
+  margin: 0.5rem auto;
+}
+
+.enquiry-popup--split-v2 .modal-content {
+  border: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  background: transparent;
+  box-shadow: none;
+}
+
+.modal-backdrop.enquiry-popup-backdrop {
+  background: rgba(15, 23, 42, 0.58);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.enquiry-popup--split-v2.modal.show .modal-dialog {
+  animation: enquirySplitIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes enquirySplitIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.94) translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .enquiry-popup--split-v2.modal.show .modal-dialog {
+    animation: none;
+  }
+}

@@ -1,0 +1,1107 @@
+"use client";
+import { adminApiWithAuth, adminFetchHeaders } from "../../_lib/adminApiAuth";
+import { LoadingSpinner } from "@/app/_global_components/LoadingSpinner";
+import axios from "axios";
+import {
+  AdminTableDeleteIcon,
+  AdminTableEditIcon,
+} from "../common-model/admin-table-icons";
+import dynamic from "next/dynamic";
+import { useState } from "react";
+import { Button, Col, Form, Modal, Row } from "react-bootstrap";
+import { toast } from "../../_lib/adminToast";
+import CommonModal from "../common-model/common-model";
+import DataTable from "../common-model/data-table";
+import DashboardHeader from "../common-model/dashboardHeader";
+import { useRouter } from "next/navigation";
+import ExcelJS from "exceljs";
+import { saveAs } from "file-saver";
+import Cookies from "js-cookie";
+// Dynamically import JoditEditor with SSR disabled
+const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
+
+
+function formatProjectDateTime(value) {
+  if (value == null || value === "") return "—";
+  if (typeof value === "string") {
+    const d = new Date(value);
+    if (!Number.isNaN(d.getTime())) {
+      return d.toLocaleString(undefined, {
+        dateStyle: "medium",
+        timeStyle: "short",
+      });
+    }
+    return value.replace("T", " ").slice(0, 19);
+  }
+  if (Array.isArray(value) && value.length >= 3) {
+    const [y, mo, d, h = 0, mi = 0, s = 0] = value;
+    const pad = (n) => String(n).padStart(2, "0");
+    return `${y}-${pad(mo)}-${pad(d)} ${pad(h)}:${pad(mi)}:${pad(s)}`;
+  }
+  return String(value);
+}
+
+/** Column order aligned with backend {@code ProjectExportDto} / admin bulk schema. */
+const PROJECT_EXPORT_COLUMN_ORDER = [
+  "id",
+  "projectName",
+  "slugURL",
+  "builderId",
+  "builderName",
+  "cityId",
+  "cityName",
+  "stateName",
+  "countryName",
+  "countryId",
+  "stateId",
+  "propertyTypeId",
+  "propertyTypeName",
+  "projectStatusId",
+  "projectStatusName",
+  "status",
+  "showFeaturedProperties",
+  "projectLocality",
+  "projectConfiguration",
+  "projectPrice",
+  "ivrNo",
+  "reraNo",
+  "reraQr",
+  "reraWebsite",
+  "locationMap",
+  "projectLogo",
+  "projectThumbnail",
+  "projectThumbnailAltTag",
+  "projectLogoAltTag",
+  "locationMapAltTag",
+  "metaTitle",
+  "metaKeyword",
+  "metaDescription",
+  "amenityDesc",
+  "floorPlanDesc",
+  "locationDesc",
+  "createdAt",
+  "updatedAt",
+  "projectBannerImage",
+];
+
+function headerLabelFromKey(key) {
+  return key
+    .replace(/([A-Z])/g, " $1")
+    .replace(/^./, (c) => c.toUpperCase())
+    .trim();
+}
+
+function formatExportCell(key, val) {
+  if (val === null || val === undefined) return "";
+  if (typeof val === "boolean") return val ? "Yes" : "No";
+  if (key === "createdAt" || key === "updatedAt") {
+    return formatProjectDateTime(val);
+  }
+  return String(val);
+}
+
+export default function ManageProjects({
+  builderList,
+  typeList,
+  countryData,
+  projectDetailList,
+  projectStatusList,
+}) {
+  const router = useRouter();
+  // Defining the initial state
+  const initialFormData = {
+    id: 0,
+    builderId: 0,
+    cityId: null,
+    stateId: 0,
+    countryId: 0,
+    propertyTypeId: 0,
+    projectStatusId: 0,
+    projectPrice: null,
+    metaTitle: null,
+    metaKeyword: null,
+    metaDescription: null,
+    projectName: null,
+    slugURL: null,
+    projectLocality: null,
+    projectConfiguration: null,
+    ivrNo: null,
+    reraNo: null,
+    reraQr: null,
+    reraWebsite: null,
+    locationMap: null,
+    projectLogo: null,
+    projectThumbnail: null,
+    floorPlanDescription: null,
+    locationDescription: null,
+    amenityDescription: null,
+    status: false,
+    projectLogoPreview: null,
+    projectThumbnailPreview: null,
+    locationMapPreview: null,
+  };
+
+  const [validated, setValidated] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [title, setTitle] = useState(null);
+  const [confirmBox, setConfirmBox] = useState(false);
+  const [buttonName, setButtonName] = useState(null);
+  const [projectId, setProjectId] = useState(0);
+  const [showLoading, setShowLoading] = useState(false);
+  const [formData, setFormData] = useState(initialFormData);
+  const [states, setStates] = useState([]);
+  const [cities, setCities] = useState([]);
+  const [showUploadModal, setShowUploadModal] = useState(false);
+  const [uploadExcelFile, setUploadExcelFile] = useState(null);
+  const [uploadZipFile, setUploadZipFile] = useState(null);
+  const [uploadLoading, setUploadLoading] = useState(false);
+  const allowedZipTypes = new Set([
+    "application/zip",
+    "application/x-zip-compressed",
+    "multipart/x-zip",
+    "application/octet-stream",
+    "",
+  ]);
+
+  const isZipFile = (file) => {
+    if (!file) return false;
+    const type = (file.type || "").toLowerCase();
+    if (allowedZipTypes.has(type)) return true;
+    return /\.zip$/i.test(file.name || "");
+  };
+  const handleCountryChange = (e) => {
+    const countryId = parseInt(e.target.value, 10) || 0;
+    setFormData((prev) => ({
+      ...prev,
+      countryId,
+      stateId: 0,
+      cityId: null,
+    }));
+    const country = countryData?.find((c) => c.id === countryId);
+    setStates(country ? country?.stateList : []);
+    setCities([]);
+  };
+
+  const handleStateChange = (e) => {
+    const stateId = parseInt(e.target.value, 10) || 0;
+    setFormData((prev) => ({
+      ...prev,
+      stateId,
+      cityId: null,
+    }));
+    const state = states.find((s) => s.id === stateId);
+    setCities(state ? state.cityList : []);
+  };
+
+  //Handle opening model
+  const openAddModel = () => {
+    setTitle("Add New Project");
+    setShowModal(true);
+    setButtonName("Add Project");
+    setFormData(initialFormData);
+    setValidated(false);
+    setCities([]);
+    setStates([]);
+  };
+
+  // Fetching project details (admin — includes drafts / unpublished)
+  const fetchProjectDetails = async (item) => {
+    const token =
+      typeof window !== "undefined" ? Cookies.get("token") : undefined;
+    const authConfig = {
+      withCredentials: true,
+      headers: {
+      },
+    };
+
+    const slugURL = String(item?.slugURL || "").trim();
+    let response;
+
+    // Load by id so a slug change does not 404 the edit screen on the old slug.
+    if (item?.id) {
+      response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}projects/admin/get-by-id/${item.id}`,
+        authConfig,
+      );
+    } else if (slugURL) {
+      response = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}projects/admin/get/${encodeURIComponent(slugURL)}`,
+        authConfig,
+      );
+    } else {
+      throw new Error("Project slug or id is missing.");
+    }
+
+    const project = response.data;
+    const imageBase = project.slugURL
+      ? `${process.env.NEXT_PUBLIC_IMAGE_URL}properties/${project.slugURL}/`
+      : null;
+
+    setFormData({
+      ...initialFormData,
+      ...project,
+      amenityDescription: project.amenityDesc,
+      locationDescription: project.locationDesc,
+      floorPlanDescription: project.floorPlanDesc,
+      locationMap: null,
+      projectLogo: null,
+      projectThumbnail: null,
+      builderId: project.builder?.id ?? 0,
+      cityId: project.cityId ?? null,
+      stateId: project.stateId || 0,
+      countryId: project.countryId || 0,
+      locationMapPreview: project.locationMap && imageBase
+        ? `${imageBase}${project.locationMap}`
+        : null,
+      projectLogoPreview: project.projectLogo && imageBase
+        ? `${imageBase}${project.projectLogo}`
+        : null,
+      projectThumbnailPreview: project.projectThumbnailImage && imageBase
+        ? `${imageBase}${project.projectThumbnailImage}`
+        : null,
+    });
+    const country = countryData?.find((c) => c.id === project.countryId);
+    setStates(country ? country?.stateList : []);
+    const state = country?.stateList?.find((s) => s.id === project.stateId);
+    setCities(state ? state.cityList : []);
+    return project;
+  };
+
+  //Handling opening of edit model
+  const openEditModel = async (item) => {
+    try {
+      setShowLoading(true);
+      await fetchProjectDetails(item);
+      setValidated(false);
+      setTitle("Edit Project Details");
+      setShowModal(true);
+      setButtonName("Update Project");
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message ||
+          error.message ||
+          "Could not load project details.",
+      );
+    } finally {
+      setShowLoading(false);
+    }
+  };
+
+  //Opening delete confirmation box
+  const openConfirmationBox = (id) => {
+    setConfirmBox(true);
+    setProjectId(id);
+  };
+
+  const handleChange = (e) => {
+    const { name, type, files, value, checked } = e.target;
+
+    if (type === "file") {
+      const file = files[0];
+      if (file) {
+        const previewUrl = URL.createObjectURL(file);
+        setFormData((prev) => ({
+          ...prev,
+          [name]: file,
+          [`${name}Preview`]: previewUrl,
+        }));
+      }
+    } else if (type === "checkbox") {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: checked,
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+  };
+
+  // Handling submitting project
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const form = event.currentTarget;
+    if (form.checkValidity() === false) {
+      const firstInvalid = form.querySelector(":invalid");
+      if (firstInvalid) {
+        firstInvalid.scrollIntoView({ behavior: "smooth", block: "center" });
+        firstInvalid.focus();
+      }
+    }
+    setValidated(true);
+    if (form.checkValidity()) {
+      await submitFormData();
+    }
+  };
+
+  const submitFormData = async () => {
+    const data = new FormData();
+    if (formData.metaTitle === null || formData.metaTitle === "") {
+      return;
+    }
+    // Append files (actual File objects, not file names)
+    if (formData.projectLogo instanceof File) {
+      data.append("projectLogo", formData.projectLogo);
+    }
+    if (formData.locationMap instanceof File) {
+      data.append("locationMap", formData.locationMap);
+    }
+    if (formData.projectThumbnail instanceof File) {
+      data.append("projectThumbnail", formData.projectThumbnail);
+    }
+
+    // Append DTO as JSON
+    const toRequiredId = (value) => {
+      const n = Number(value);
+      return Number.isFinite(n) && n > 0 ? n : 0;
+    };
+    const toOptionalCityId = (value) => {
+      const n = Number(value);
+      return Number.isFinite(n) && n > 0 ? n : null;
+    };
+    const dto = {
+      ...formData,
+      cityId: toOptionalCityId(formData.cityId),
+      stateId: toRequiredId(formData.stateId),
+      countryId: toRequiredId(formData.countryId),
+      builderId: toRequiredId(formData.builderId),
+      propertyTypeId: toRequiredId(formData.propertyTypeId),
+      projectStatusId: toRequiredId(formData.projectStatusId),
+    };
+    delete dto.projectLogo;
+    delete dto.locationMap;
+    delete dto.projectThumbnail;
+    data.append(
+      "addUpdateProjectDto",
+      new Blob([JSON.stringify(dto)], { type: "application/json" }),
+    );
+
+    try {
+      setShowLoading(true);
+      const token =
+        typeof window !== "undefined" ? Cookies.get("token") : undefined;
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}projects/add-new`,
+        data,
+        {
+          withCredentials: true,
+          headers: {
+          },
+        },
+      );
+
+      if (response.data.isSuccess === 1) {
+        router.refresh();
+        toast.success(response.data.message);
+        setFormData(initialFormData);
+        setShowModal(false);
+      }
+    } catch (error) {
+      toast.error(
+        error.response?.data?.error ||
+          "An error occurred while submitting the form.",
+      );
+    } finally {
+      setShowLoading(false);
+    }
+  };
+
+  const formFields = [
+    {
+      label: "Meta Title",
+      name: "metaTitle",
+      type: "text",
+      placeholder: "Meta Title",
+      required: true,
+      colSize: 6,
+    },
+    {
+      label: "Meta Description",
+      name: "metaDescription",
+      type: "text",
+      placeholder: "Meta Description",
+      required: true,
+      colSize: 6,
+    },
+    {
+      label: "Meta Keyword",
+      name: "metaKeyword",
+      type: "text",
+      placeholder: "Meta Keyword",
+      required: true,
+      colSize: 6,
+    },
+    {
+      label: "Project Name",
+      name: "projectName",
+      type: "text",
+      placeholder: "Project Name",
+      required: true,
+      colSize: 6,
+    },
+    {
+      label: "Project Locality",
+      name: "projectLocality",
+      type: "text",
+      placeholder: "Project Locality",
+      required: true,
+      colSize: 6,
+    },
+    {
+      label: "Country",
+      name: "countryId",
+      type: "select",
+      required: true,
+      colSize: 6,
+      options: countryData,
+      valueKey: "id",
+      labelKey: "countryName",
+      onChange: handleCountryChange,
+    },
+    {
+      label: "State",
+      name: "stateId",
+      type: "select",
+      required: true,
+      colSize: 6,
+      options: states,
+      valueKey: "id",
+      labelKey: "stateName",
+      onChange: handleStateChange,
+      disabled: !states.length,
+    },
+    {
+      label: "City",
+      name: "cityId",
+      type: "select",
+      required: false,
+      colSize: 6,
+      options: cities,
+      valueKey: "id",
+      labelKey: "cityName",
+      disabled: !cities.length,
+    },
+    {
+      label: "Project Configuration",
+      name: "projectConfiguration",
+      type: "text",
+      placeholder: "Project Configuration",
+      required: true,
+      colSize: 6,
+    },
+    {
+      label: "Project By",
+      name: "builderId",
+      type: "select",
+      required: true,
+      colSize: 6,
+      options: builderList,
+      valueKey: "id",
+      labelKey: "builderName",
+    },
+    {
+      label: "Location Map",
+      name: "locationMap",
+      previousImage: formData.locationMapPreview,
+      type: "file",
+      required: false,
+      colSize: 6,
+      width: 815,
+      height: 813,
+    },
+    {
+      label: "Project Logo",
+      name: "projectLogo",
+      previousImage: formData.projectLogoPreview,
+      type: "file",
+      required: false,
+      colSize: 6,
+      width: 792,
+      height: 203,
+    },
+    {
+      label: "Project Thumbnail",
+      name: "projectThumbnail",
+      previousImage: formData.projectThumbnailPreview,
+      type: "file",
+      required: false,
+      colSize: 6,
+      width: 600,
+      height: 600,
+    },
+    {
+      label: "Project price",
+      name: "projectPrice",
+      type: "text",
+      placeholder: "Project price",
+      required: true,
+      colSize: 6,
+    },
+    {
+      label: "Rera Number",
+      name: "reraNo",
+      type: "text",
+      placeholder: "Reara Number",
+      required: true,
+      colSize: 6,
+    },
+    {
+      label: "Rera website",
+      name: "reraWebsite",
+      type: "text",
+      placeholder: "Rera website",
+      required: false,
+      colSize: 6,
+    },
+    {
+      label: "Slug Url",
+      name: "slugURL",
+      type: "text",
+      placeholder: "Slug url",
+      required: false,
+      colSize: 6,
+    },
+    {
+      label: "IVR number",
+      name: "ivrNo",
+      type: "text",
+      placeholder: "IVR number",
+      required: false,
+      colSize: 6,
+    },
+    {
+      label: "Property type",
+      name: "propertyTypeId",
+      type: "select",
+      required: true,
+      colSize: 6,
+      options: typeList,
+      valueKey: "id",
+      labelKey: "projectTypeName",
+    },
+    {
+      label: "Project Status",
+      name: "projectStatusId",
+      type: "select",
+      required: true,
+      colSize: 6,
+      options: projectStatusList,
+      valueKey: "id",
+      labelKey: "statusName",
+    },
+    {
+      label: "Amenity Description",
+      name: "amenityDescription",
+      type: "jodit",
+      value: formData.amenityDescription,
+      required: true,
+      colSize: 12, // full width
+    },
+    {
+      label: "Location Description",
+      name: "locationDescription",
+      type: "jodit",
+      value: formData.locationDescription,
+      required: true,
+      colSize: 12, // full width
+    },
+    {
+      label: "Floor Plan Description",
+      name: "floorPlanDescription",
+      type: "jodit",
+      value: formData.floorPlanDescription,
+      required: true,
+      colSize: 12, // full width
+    },
+  ];
+
+  //Defining table columns
+  const columns = [
+    {
+      field: "index",
+      headerName: "S.no",
+      width: 70,
+      cellClassName: "centered-cell",
+    },
+    {
+      field: "projectName",
+      headerName: "Project Name",
+      flex: 1,
+    },
+    {
+      field: "builderName",
+      headerName: "Project By",
+      flex: 1,
+    },
+    {
+      field: "projectLocality",
+      headerName: "Project Locality",
+      flex: 1,
+    },
+    {
+      field: "projectConfiguration",
+      headerName: "Project Configuration",
+      flex: 1,
+    },
+    {
+      field: "propertyTypeName",
+      headerName: "Property Type",
+      flex: 1,
+    },
+    {
+      field: "projectStatusName",
+      headerName: "Project Status",
+      flex: 1,
+    },
+    {
+      field: "status",
+      headerName: "Draft Status",
+      flex: 1,
+    },
+    {
+      field: "createdAt",
+      headerName: "Created",
+      flex: 1,
+      minWidth: 180,
+      renderCell: (params) => (
+        <span style={{ fontSize: "0.875rem" }}>
+          {formatProjectDateTime(params.value)}
+        </span>
+      ),
+    },
+    {
+      field: "updatedAt",
+      headerName: "Updated",
+      flex: 1,
+      minWidth: 180,
+      renderCell: (params) => (
+        <span style={{ fontSize: "0.875rem" }}>
+          {formatProjectDateTime(params.value)}
+        </span>
+      ),
+    },
+    {
+      field: "action",
+      headerName: "Action",
+      width: 100,
+      renderCell: (params) => (
+        <div className="d-flex align-items-center gap-2">
+          <span
+            className="d-inline-flex"
+            style={{ cursor: "pointer" }}
+            onClick={() => openConfirmationBox(params.row.id)}
+            role="presentation"
+          >
+            <AdminTableDeleteIcon />
+          </span>
+          <span
+            className="d-inline-flex"
+            style={{ cursor: "pointer" }}
+            onClick={() => openEditModel(params.row)}
+            role="presentation"
+          >
+            <AdminTableEditIcon />
+          </span>
+        </div>
+      ),
+    },
+  ];
+
+  const handleClose = () => {
+    setShowModal(false);
+  };
+
+  const exportAllProjectToExcel = async () => {
+    let projects;
+    try {
+      const res = await axios.get(
+        `${process.env.NEXT_PUBLIC_API_URL}projects/admin-export`,
+        adminApiWithAuth(),
+      );
+      projects = Array.isArray(res.data) ? res.data : [];
+    } catch (e) {
+      console.error(e);
+      toast.error(
+        e.response?.data?.message ??
+          "Could not export projects. Sign in and ensure you can manage projects.",
+      );
+      return;
+    }
+
+    if (!projects.length) {
+      toast.info("No projects to export.");
+      return;
+    }
+
+    projects.sort((a, b) => (a.id || 0) - (b.id || 0));
+
+    const headers = PROJECT_EXPORT_COLUMN_ORDER;
+
+    const workbook = new ExcelJS.Workbook();
+    const worksheet = workbook.addWorksheet("Projects");
+
+    worksheet.addRow(headers.map(headerLabelFromKey));
+
+    const headerRow = worksheet.getRow(1);
+    headerRow.font = { bold: true, color: { argb: "FFFFFFFF" } };
+    headerRow.fill = {
+      type: "pattern",
+      pattern: "solid",
+      fgColor: { argb: "FF228B22" },
+    };
+    headerRow.alignment = { vertical: "middle", horizontal: "center" };
+
+    worksheet.autoFilter = {
+      from: { row: 1, column: 1 },
+      to: { row: 1, column: headers.length },
+    };
+
+    const wideTextKeys = new Set([
+      "amenityDesc",
+      "floorPlanDesc",
+      "locationDesc",
+      "metaKeyword",
+      "metaDescription",
+      "locationMap",
+    ]);
+
+    for (const project of projects) {
+      const rowValues = headers.map((key) =>
+        formatExportCell(key, project[key]),
+      );
+      worksheet.addRow(rowValues);
+    }
+
+    worksheet.columns.forEach((col, idx) => {
+      const key = headers[idx];
+      if (wideTextKeys.has(key)) {
+        col.width = 50;
+        return;
+      }
+      let maxLength = 12;
+      col.eachCell({ includeEmpty: true }, (cell) => {
+        const len = cell.value != null ? String(cell.value).length : 0;
+        if (len > maxLength) maxLength = len;
+      });
+      col.width = Math.min(maxLength + 2, 45);
+    });
+
+    const now = new Date();
+    const timestamp = now
+      .toISOString()
+      .replace(/[-:]/g, "")
+      .replace("T", "_")
+      .split(".")[0];
+    const fileName = `projects_export_${timestamp}.xlsx`;
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    saveAs(new Blob([buffer]), fileName);
+    toast.success("Export downloaded.");
+  };
+  const openUploadModal = () => {
+    setShowUploadModal(true);
+    setUploadExcelFile(null);
+    setUploadZipFile(null);
+  };
+
+  const closeUploadModal = () => {
+    setShowUploadModal(false);
+    setUploadExcelFile(null);
+    setUploadZipFile(null);
+  };
+
+  const handleUploadProjectsSubmit = async (e) => {
+    e?.preventDefault();
+    if (!uploadExcelFile) {
+      toast.error("Please select an Excel file (.xlsx or .xls)");
+      return;
+    }
+    if (!uploadZipFile) {
+      toast.error("Please select a zip file with project images");
+      return;
+    }
+    if (!isZipFile(uploadZipFile)) {
+      toast.error("Please select a valid .zip file");
+      return;
+    }
+    setUploadLoading(true);
+    let toastId = null;
+    try {
+      toastId = toast.loading("Uploading data…");
+      const formData = new FormData();
+      formData.append("file", uploadExcelFile);
+      if (uploadZipFile) {
+        formData.append("imagesZip", uploadZipFile);
+      }
+      const token =
+        typeof window !== "undefined" ? Cookies.get("token") : undefined;
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}excel-upload/projects`,
+        formData,
+        {
+          withCredentials: true,
+          timeout: 600000,
+          headers: {
+          },
+          onUploadProgress: (event) => {
+            if (!toastId || !event.total) return;
+            const pct = Math.round((event.loaded * 100) / event.total);
+            toast.update(toastId, {
+              render: `Uploading data… ${pct}%`,
+              isLoading: true,
+            });
+          },
+        },
+      );
+      if (response.data?.isSuccess === 1) {
+        const successText =
+          response.data?.message?.trim() || "Data is uploaded";
+        toast.update(toastId, {
+          render: successText,
+          type: "success",
+          isLoading: false,
+          duration: 4000,
+        });
+        closeUploadModal();
+        router.refresh();
+      } else {
+        toast.update(toastId, {
+          render: response.data?.message ?? "Upload failed",
+          type: "error",
+          isLoading: false,
+          duration: 5000,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+
+      const message =
+        error.response?.data?.message ??
+        (error.code === "ECONNABORTED"
+          ? "Upload timed out. The file may be too large or the server is busy — try again."
+          : error.message) ??
+        "Upload failed";
+      if (toastId != null) {
+        toast.update(toastId, {
+          render: message,
+          type: "error",
+          isLoading: false,
+          duration: 5000,
+        });
+      } else {
+        toast.error(message);
+      }
+    } finally {
+      setUploadLoading(false);
+    }
+  };
+
+  return (
+    <>
+      <DashboardHeader
+        buttonName={"+ Add new Project"}
+        functionName={openAddModel}
+        heading={"Manage Projects"}
+        exportExcel={"Export to excel"}
+        exportFunction={exportAllProjectToExcel}
+      />
+      <button 
+        className="admin-header-btn admin-header-btn--primary mb-3" 
+        onClick={openUploadModal}
+      >
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{marginRight:6,flexShrink:0}} aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/>
+        </svg>
+        Upload Projects
+      </button>
+      <div className="table-container">
+        <DataTable list={projectDetailList} columns={columns} />
+      </div>
+      {/* Modal for adding a new project */}
+      <Modal size="xl" show={showModal} onHide={handleClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>{title}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form noValidate validated={validated} onSubmit={handleSubmit}>
+            <Row>
+              {formFields.map((field, index) => (
+                <Form.Group
+                  as={Col}
+                  md={field.colSize || 6}
+                  className="mb-3"
+                  controlId={`form-${field.name}`}
+                  key={index}
+                >
+                  <Form.Label className="fw-bold">{field.label}</Form.Label>
+
+                  {field.type === "jodit" ? (
+                    <JoditEditor
+                      value={formData[field.name] ?? ""}
+                      onBlur={(newContent) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          [field.name]: newContent,
+                        }))
+                      }
+                    />
+                  ) : field.type === "select" ? (
+                    <Form.Select
+                      name={field.name}
+                      value={formData[field.name] || ""}
+                      onChange={field.onChange || handleChange}
+                      disabled={field.disabled}
+                      required={field.required}
+                    >
+                      <option value="">Select {field.label}</option>
+                      {field.options?.map((opt) => (
+                        <option
+                          key={`${opt[field.valueKey]}-${index}`}
+                          value={opt[field.valueKey]}
+                        >
+                          {opt[field.labelKey]}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  ) : field.type === "file" ? (
+                    <>
+                      {field.previousImage && (
+                        <div>
+                          <img
+                            src={field.previousImage}
+                            alt="Current Project Logo" title="Current Project Logo"
+                            width={field.width || 200}
+                            height={field.height || 200}
+                            className="mb-3 img-fluid rounded"
+                          />
+                          <br />
+                        </div>
+                      )}
+                      <Form.Control
+                        type="file"
+                        name={field.name}
+                        onChange={field.onChange || handleChange}
+                        required={field.required}
+                        disabled={field.disabled}
+                      />
+                    </>
+                  ) : (
+                    <Form.Control
+                      type={field.type}
+                      name={field.name}
+                      placeholder={field.placeholder}
+                      value={formData[field.name] || ""}
+                      onChange={field.onChange || handleChange}
+                      required={field.required}
+                      disabled={field.disabled}
+                    />
+                  )}
+                  <Form.Control.Feedback type="invalid">
+                    {field.label} is required!
+                  </Form.Control.Feedback>
+                </Form.Group>
+              ))}
+            </Row>
+            <Row>
+              <Form.Check
+                type="switch"
+                id="custom-switch"
+                name="status"
+                label="Publish Project"
+                checked={formData.status || false}
+                onChange={handleChange}
+              />
+            </Row>
+            {/* <Row> */}
+
+            <div className="mpf-modal-actions">
+              <Button
+                variant="secondary"
+                onClick={() => setShowModal(false)}
+                disabled={showLoading}
+              >
+                Cancel
+              </Button>
+              <button
+                className="admin-header-btn admin-header-btn--primary"
+                type="submit"
+                disabled={showLoading}
+              >
+                {buttonName} <LoadingSpinner show={showLoading} />
+              </button>
+            </div>
+          </Form>
+        </Modal.Body>
+      </Modal>
+      {/* Upload Projects Modal (Excel + optional Zip) */}
+      <Modal show={showUploadModal} onHide={closeUploadModal} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Upload Projects</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form onSubmit={handleUploadProjectsSubmit}>
+            <Form.Group className="mb-3" controlId="uploadExcel">
+              <Form.Label className="fw-bold">
+                Excel file <span className="text-danger">*</span>
+              </Form.Label>
+              <Form.Control
+                type="file"
+                accept=".xlsx,.xls"
+                onChange={(e) =>
+                  setUploadExcelFile(e.target.files?.[0] ?? null)
+                }
+                required
+              />
+              <Form.Text className="text-muted">
+                .xlsx or .xls with project data
+              </Form.Text>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="uploadZip">
+              <Form.Label className="fw-bold">Images zip</Form.Label>
+              <Form.Control
+                type="file"
+                accept=".zip"
+                onChange={(e) => setUploadZipFile(e.target.files?.[0] ?? null)}
+                required
+              />
+              <Form.Text className="text-muted">
+                .zip with images named like
+                ProjectName_ImageType_My-Property-Fact
+              </Form.Text>
+            </Form.Group>
+            <div className="d-flex gap-2 justify-content-end">
+              <Button
+                variant="secondary"
+                onClick={closeUploadModal}
+                disabled={uploadLoading}
+              >
+                Cancel
+              </Button>
+              <button
+                className="admin-header-btn admin-header-btn--primary"
+                type="submit"
+                disabled={uploadLoading || !uploadExcelFile || !uploadZipFile}
+              >
+                {uploadLoading ? (
+                  <>
+                    <LoadingSpinner show={true} /> Uploading…
+                  </>
+                ) : (
+                  "Upload"
+                )}
+              </button>
+            </div>
+          </Form>
+        </Modal.Body>
+      </Modal>
+      <CommonModal
+        confirmBox={confirmBox}
+        setConfirmBox={setConfirmBox}
+        api={`${process.env.NEXT_PUBLIC_API_URL}projects/delete/${projectId}`}
+      />
+    </>
+  );
+}

@@ -1,0 +1,437 @@
+[
+  {
+    "id": "1",
+    "title": "Dashboard",
+    "icon": "cil-speedometer",
+    "to": "/portal/dashboard",
+    "roles": ["all"],
+    "children": [
+      {
+        "id": "1-1",
+        "title": "Overview (Home)",
+        "icon": "cil-home",
+        "to": "/portal/dashboard/overview",
+        "roles": ["all"]
+      },
+      {
+        "id": "1-2",
+        "title": "Alerts Center",
+        "icon": "cil-bell",
+        "to": "/portal/dashboard/alerts",
+        "roles": ["all"]
+      },
+      {
+        "id": "1-3",
+        "title": "Tips & Tasks",
+        "icon": "cil-lightbulb",
+        "to": "/portal/dashboard/tips-tasks",
+        "roles": ["all"]
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "title": "Listings",
+    "icon": "cil-list-rich",
+    "to": "/portal/listings",
+    "roles": ["broker", "owner"],
+    "children": [
+      {
+        "id": "2-1",
+        "title": "My Listings",
+        "icon": "cil-home",
+        "to": "/portal/listings/my-listings",
+        "roles": ["broker", "owner"]
+      },
+      {
+        "id": "2-2",
+        "title": "Drafts & Pending Review",
+        "icon": "cil-clock",
+        "to": "/portal/listings/drafts-pending",
+        "roles": ["broker", "owner"]
+      },
+      {
+        "id": "2-3",
+        "title": "Published",
+        "icon": "cil-check-circle",
+        "to": "/portal/listings/published",
+        "roles": ["broker", "owner"]
+      },
+      {
+        "id": "2-4",
+        "title": "Paused & Expired",
+        "icon": "cil-ban",
+        "to": "/portal/listings/paused-expired",
+        "roles": ["broker", "owner"]
+      },
+      {
+        "id": "2-5",
+        "title": "Create/Edit Listing — Wizard",
+        "icon": "cil-pencil",
+        "to": "/portal/listings/wizard",
+        "roles": ["broker", "owner"],
+        "children": [
+          {
+            "id": "2-5-1",
+            "title": "Step 1: Basics",
+            "to": "/portal/listings/wizard/basics"
+          },
+          {
+            "id": "2-5-2",
+            "title": "Step 2: Location",
+            "to": "/portal/listings/wizard/location"
+          },
+          {
+            "id": "2-5-3",
+            "title": "Step 3: Details (res/commercial)",
+            "to": "/portal/listings/wizard/details"
+          },
+          {
+            "id": "2-5-4",
+            "title": "Step 4: Media",
+            "to": "/portal/listings/wizard/media"
+          },
+          {
+            "id": "2-5-5",
+            "title": "Step 5: Pricing",
+            "to": "/portal/listings/wizard/pricing"
+          },
+          {
+            "id": "2-5-6",
+            "title": "Step 6: Documents & Compliance",
+            "to": "/portal/listings/wizard/documents"
+          }
+        ]
+      },
+      {
+        "id": "2-6",
+        "title": "Listing Quality Center (LQS)",
+        "icon": "cil-star",
+        "to": "/portal/listings/lqs",
+        "roles": ["broker", "owner"]
+      },
+      {
+        "id": "2-7",
+        "title": "Media Library",
+        "icon": "cil-image",
+        "to": "/portal/listings/media-library",
+        "roles": ["broker", "owner"]
+      },
+      {
+        "id": "2-8",
+        "title": "Bulk Upload (CSV)",
+        "icon": "cil-cloud-upload",
+        "to": "/portal/listings/bulk-upload",
+        "roles": ["broker_admin"],
+        "phase": "P2"
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "title": "Leads",
+    "icon": "cil-user-follow",
+    "to": "/portal/leads",
+    "roles": ["broker", "owner"],
+    "children": [
+      {
+        "id": "3-1",
+        "title": "All Leads",
+        "icon": "cil-people",
+        "to": "/portal/leads/all",
+        "roles": ["broker", "owner"]
+      },
+      {
+        "id": "3-2",
+        "title": "New / Unassigned",
+        "icon": "cil-plus",
+        "to": "/portal/leads/new-unassigned",
+        "roles": ["broker"]
+      },
+      {
+        "id": "3-3",
+        "title": "Assigned to Me",
+        "icon": "cil-user",
+        "to": "/portal/leads/assigned",
+        "roles": ["broker", "owner"]
+      },
+      {
+        "id": "3-4",
+        "title": "Verified / Unverified",
+        "icon": "cil-check",
+        "to": "/portal/leads/verified",
+        "roles": ["broker", "owner"]
+      },
+      {
+        "id": "3-5",
+        "title": "Duplicates & Spam",
+        "icon": "cil-warning",
+        "to": "/portal/leads/duplicates",
+        "roles": ["broker_admin"]
+      },
+      {
+        "id": "3-6",
+        "title": "SLA & TTFC Report",
+        "icon": "cil-chart-line",
+        "to": "/portal/leads/sla-report",
+        "roles": ["broker_admin"]
+      },
+      {
+        "id": "3-7",
+        "title": "Lead Detail",
+        "icon": "cil-info",
+        "to": "/portal/leads/detail",
+        "roles": ["broker", "owner"]
+      }
+    ]
+  },
+  {
+    "id": "4",
+    "title": "Messages",
+    "icon": "cil-envelope-open",
+    "to": "/portal/messages",
+    "roles": ["broker", "owner"],
+    "children": [
+      {
+        "id": "4-1",
+        "title": "Inbox",
+        "icon": "cil-inbox",
+        "to": "/portal/messages/inbox",
+        "roles": ["broker", "owner"]
+      },
+      {
+        "id": "4-2",
+        "title": "Templates",
+        "icon": "cil-file",
+        "to": "/portal/messages/templates",
+        "roles": ["broker", "owner"]
+      },
+      {
+        "id": "4-3",
+        "title": "Outbox & History",
+        "icon": "cil-send",
+        "to": "/portal/messages/outbox",
+        "roles": ["broker", "owner"]
+      }
+    ]
+  },
+  {
+    "id": "5",
+    "title": "Calendar",
+    "icon": "cil-calendar",
+    "to": "/portal/calendar",
+    "roles": ["all"],
+    "children": [
+      {
+        "id": "5-1",
+        "title": "Site Visits",
+        "icon": "cil-map",
+        "to": "/portal/calendar/site-visits",
+        "roles": ["all"]
+      },
+      {
+        "id": "5-2",
+        "title": "Callbacks & Tasks",
+        "icon": "cil-phone",
+        "to": "/portal/calendar/tasks",
+        "roles": ["all"]
+      },
+      {
+        "id": "5-3",
+        "title": "Integrations (Google/Outlook)",
+        "icon": "cil-link",
+        "to": "/portal/calendar/integrations",
+        "roles": ["all"],
+        "phase": "P2"
+      }
+    ]
+  },
+  {
+    "id": "6",
+    "title": "Reports",
+    "icon": "cil-bar-chart",
+    "to": "/portal/reports",
+    "roles": ["broker", "owner"],
+    "children": [
+      {
+        "id": "6-1",
+        "title": "Listing Performance",
+        "icon": "cil-chart-line",
+        "to": "/portal/reports/listing-performance",
+        "roles": ["broker", "owner"]
+      },
+      {
+        "id": "6-2",
+        "title": "Funnel & Conversion",
+        "icon": "cil-filter",
+        "to": "/portal/reports/funnel-conversion",
+        "roles": ["broker", "owner"]
+      },
+      {
+        "id": "6-3",
+        "title": "Lead Quality & TTFC",
+        "icon": "cil-graph",
+        "to": "/portal/reports/lead-quality",
+        "roles": ["broker_admin"]
+      },
+      {
+        "id": "6-4",
+        "title": "Price vs Locality Median",
+        "icon": "cil-chart",
+        "to": "/portal/reports/price-vs-locality",
+        "roles": ["broker", "owner"]
+      }
+    ]
+  },
+  {
+    "id": "7",
+    "title": "Compliance",
+    "icon": "cil-shield-alt",
+    "to": "/portal/compliance",
+    "roles": ["broker", "owner"],
+    "children": [
+      {
+        "id": "7-1",
+        "title": "RERA Credentials",
+        "icon": "cil-id-card",
+        "to": "/portal/compliance/rera",
+        "roles": ["broker"]
+      },
+      {
+        "id": "7-2",
+        "title": "Document Vault (listing docs)",
+        "icon": "cil-folder",
+        "to": "/portal/compliance/vault",
+        "roles": ["broker", "owner"]
+      },
+      {
+        "id": "7-3",
+        "title": "Consent & Logs",
+        "icon": "cil-file",
+        "to": "/portal/compliance/consent-logs",
+        "roles": ["broker", "owner"]
+      },
+      {
+        "id": "7-4",
+        "title": "DLT & Templates (view)",
+        "icon": "cil-document",
+        "to": "/portal/compliance/dlt-templates",
+        "roles": ["broker_admin"]
+      }
+    ]
+  },
+  {
+    "id": "8",
+    "title": "Billing",
+    "icon": "cil-wallet",
+    "to": "/portal/billing",
+    "roles": ["broker", "owner"],
+    "children": [
+      {
+        "id": "8-1",
+        "title": "Plan & Usage",
+        "icon": "cil-layers",
+        "to": "/portal/billing/plan-usage",
+        "roles": ["broker", "owner"]
+      },
+      {
+        "id": "8-2",
+        "title": "Invoices & Payments",
+        "icon": "cil-receipt",
+        "to": "/portal/billing/invoices",
+        "roles": ["broker", "owner"]
+      },
+      {
+        "id": "8-3",
+        "title": "Promotions / Boosts",
+        "icon": "cil-bolt",
+        "to": "/portal/billing/promotions",
+        "roles": ["broker", "owner"],
+        "phase": "P2"
+      }
+    ]
+  },
+  {
+    "id": "9",
+    "title": "Settings",
+    "icon": "cil-settings",
+    "to": "/portal/settings",
+    "roles": ["all"],
+    "children": [
+      {
+        "id": "9-1",
+        "title": "Profile",
+        "icon": "cil-user",
+        "to": "/portal/settings/profile",
+        "roles": ["all"]
+      },
+      {
+        "id": "9-2",
+        "title": "Company / Team",
+        "icon": "cil-group",
+        "to": "/portal/settings/team",
+        "roles": ["broker_admin"]
+      },
+      {
+        "id": "9-3",
+        "title": "Notifications",
+        "icon": "cil-bell",
+        "to": "/portal/settings/notifications",
+        "roles": ["all"]
+      },
+      {
+        "id": "9-4",
+        "title": "Security (Password/2FA/Sessions)",
+        "icon": "cil-lock-locked",
+        "to": "/portal/settings/security",
+        "roles": ["all"]
+      },
+      {
+        "id": "9-5",
+        "title": "Routing & Assignments",
+        "icon": "cil-random",
+        "to": "/portal/settings/routing",
+        "roles": ["broker_admin"],
+        "phase": "P2"
+      },
+      {
+        "id": "9-6",
+        "title": "API / Webhooks",
+        "icon": "cil-cloud",
+        "to": "/portal/settings/api-webhooks",
+        "roles": ["broker_admin"],
+        "phase": "Future"
+      }
+    ]
+  },
+  {
+    "id": "10",
+    "title": "Help",
+    "icon": "cil-life-ring",
+    "to": "/portal/help",
+    "roles": ["all"],
+    "children": [
+      {
+        "id": "10-1",
+        "title": "Knowledge Base",
+        "icon": "cil-book",
+        "to": "/portal/help/knowledge-base",
+        "roles": ["all"]
+      },
+      {
+        "id": "10-2",
+        "title": "Contact Support",
+        "icon": "cil-envelope-closed",
+        "to": "/portal/help/contact",
+        "roles": ["all"]
+      },
+      {
+        "id": "10-3",
+        "title": "System Status",
+        "icon": "cil-chart-pie",
+        "to": "/portal/help/system-status",
+        "roles": ["all"]
+      }
+    ]
+  }
+]

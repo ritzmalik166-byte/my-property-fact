@@ -1,0 +1,77 @@
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* Action Button Styles */
+.admin-action-btn {
+    cursor: pointer;
+}
+
+.admin-action-btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 12px rgba(104, 172, 120, 0.4) !important;
+}
+
+/* Dashboard specific styles */
+.admin-page-container {
+    animation: fadeInUp 0.5s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Styles */
+@media (max-width: 992px) {
+    .admin-page-header h1 {
+        font-size: 1.75rem;
+    }
+    
+    .admin-content-card {
+        margin-bottom: 1.25rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-page-header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .admin-page-header p {
+        font-size: 0.9rem;
+    }
+    
+    .admin-content-card {
+        padding: 1.25rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .admin-page-header h1 {
+        font-size: 1.35rem;
+    }
+    
+    .admin-content-card {
+        padding: 1rem;
+    }
+    
+    .admin-content-card h5 {
+        font-size: 1.1rem;
+    }
+    
+    .admin-content-card p {
+        font-size: 0.875rem;
+    }
+    
+    .btn {
+        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+    }
+}

@@ -1,0 +1,302 @@
+.authWrapper {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25),
+    0 10px 10px rgba(0, 0, 0, 0.22);
+  position: relative;
+  overflow: hidden;
+  max-width: 100%;
+  min-height: 480px;
+  font-family: "Montserrat", sans-serif;
+}
+
+/* Forms */
+.authWrapper .formContainer {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  transition: all 0.6s ease-in-out;
+}
+.authWrapper .signInContainer {
+  left: 0;
+  width: 50%;
+  z-index: 2;
+}
+.authWrapper.rightPanelActive .signInContainer {
+  transform: translateX(100%);
+}
+.authWrapper .signUpContainer {
+  left: 0;
+  width: 50%;
+  opacity: 0;
+  z-index: 1;
+}
+.authWrapper.rightPanelActive .signUpContainer {
+  transform: translateX(100%);
+  opacity: 1;
+  z-index: 5;
+  animation: show 0.6s;
+}
+@keyframes show {
+  0%,
+  49.99% {
+    opacity: 0;
+    z-index: 1;
+  }
+  50%,
+  100% {
+    opacity: 1;
+    z-index: 5;
+  }
+}
+
+/* Overlay */
+.authWrapper .overlayContainer {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+  transition: transform 0.6s ease-in-out;
+  z-index: 100;
+}
+.authWrapper.rightPanelActive .overlayContainer {
+  transform: translateX(-100%);
+}
+.authWrapper .overlay {
+  background: var(--bg-with-gradient);
+  color: #fff;
+  position: relative;
+  left: -100%;
+  height: 100%;
+  width: 200%;
+  transform: translateX(0);
+  transition: transform 0.6s ease-in-out;
+}
+.authWrapper.rightPanelActive .overlay {
+  transform: translateX(50%);
+}
+.authWrapper .overlayPanel {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 40px;
+  text-align: center;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  transition: transform 0.6s ease-in-out;
+}
+
+.authWrapper .overlayPanel h1 {
+  color: #fff;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  font-family: "Montserrat", sans-serif;
+}
+
+.authWrapper .overlayPanel p {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  font-weight: 400;
+}
+.authWrapper .overlayLeft {
+  transform: translateX(-20%);
+}
+.authWrapper.rightPanelActive .overlayLeft {
+  transform: translateX(0);
+}
+.authWrapper .overlayRight {
+  right: 0;
+  transform: translateX(0);
+}
+.authWrapper.rightPanelActive .overlayRight {
+  transform: translateX(20%);
+}
+
+/* Inputs & Buttons */
+.authWrapper form {
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 50px;
+  height: 100%;
+  text-align: center;
+}
+
+.authWrapper form h1 {
+  color: #2c3e50;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  font-family: "Montserrat", sans-serif;
+}
+
+.authWrapper form span {
+  color: #6c757d;
+  font-size: 14px;
+  margin: 15px 0;
+  font-weight: 400;
+}
+.authWrapper input {
+  background-color: #f8f9fa;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  padding: 12px 15px;
+  margin: 8px 0;
+  width: 100%;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.authWrapper input:focus {
+  outline: none;
+  border-color: var(--text-color);
+  box-shadow: 0 0 0 3px rgba(207, 171, 90, 0.1);
+  background-color: #fff;
+}
+.authWrapper button {
+  border-radius: 25px;
+  border: none;
+  background: var(--btn-background);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 14px 45px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  box-shadow: 0 4px 15px rgba(207, 171, 90, 0.3);
+}
+
+.authWrapper button:hover {
+  background: var(--btn-background-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(207, 171, 90, 0.4);
+}
+
+.authWrapper button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: 0 2px 8px rgba(207, 171, 90, 0.2);
+}
+.authWrapper button:active {
+  transform: scale(0.95);
+}
+.authWrapper button:focus {
+  outline: none;
+}
+.authWrapper button.ghost {
+  background-color: transparent;
+  border: 2px solid #fff;
+  color: #fff;
+  box-shadow: none;
+}
+
+.authWrapper button.ghost:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+}
+
+/* Social */
+.authWrapper .socialContainer {
+  margin: 20px 0;
+}
+.authWrapper .social {
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 5px;
+  height: 40px;
+  width: 40px;
+}
+
+/* Google Login Button Styling */
+.googleLoginButton {
+  width: 100%;
+  margin: 10px 0;
+}
+
+.googleLoginButton div[role="button"] {
+  width: 100% !important;
+  height: 48px !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.3s ease !important;
+  border: 2px solid #e9ecef !important;
+}
+
+.googleLoginButton div[role="button"]:hover {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15) !important;
+  transform: translateY(-1px) !important;
+}
+
+.googleLoginButton div[role="button"]:focus {
+  outline: none !important;
+  border-color: var(--text-color) !important;
+  box-shadow: 0 0 0 3px rgba(207, 171, 90, 0.1) !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .authWrapper {
+    min-height: 400px;
+  }
+  
+  .authWrapper form {
+    padding: 0 30px;
+  }
+  
+  .authWrapper form h1 {
+    font-size: 24px;
+  }
+  
+  .authWrapper .overlayPanel {
+    padding: 0 20px;
+  }
+  
+  .authWrapper .overlayPanel h1 {
+    font-size: 28px;
+  }
+  
+  .authWrapper .overlayPanel p {
+    font-size: 14px;
+  }
+}
+
+/* Loading state styling */
+.authWrapper button:disabled {
+  position: relative;
+}
+
+.authWrapper button:disabled::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  margin: auto;
+  border: 2px solid transparent;
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

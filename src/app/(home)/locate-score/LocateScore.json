@@ -1,0 +1,4003 @@
+[
+  {
+    "id": 1,
+    "cityId": "bengaluru",
+    "cityName": "Bengaluru",
+    "altName": "Bangalore",
+    "state": "Karnataka",
+    "focus": "Tech & Startup Capital – Residential + Commercial + Office",
+    "evaluationDate": "2025-11-01",
+
+    "categories": [
+      {
+        "code": "L",
+        "name": "Local Economy & Indicators",
+        "maxScore": 200,
+        "score": 180,
+        "sections": [
+          {
+            "title": "Overview",
+            "body": "Bengaluru is India’s tech and startup capital, with a deep ecosystem in IT/ITeS, product tech, SaaS, fintech, biotech, aerospace, R&D, and consulting. It’s one of the country’s highest GDP and per-capita income urban centres."
+          },
+          {
+            "title": "Jobs & Diversification",
+            "body": "Massive employment bases in Whitefield, Outer Ring Road (ORR), Electronic City, Manyata/Thanisandra, Hebbal–North, and CBD. Growing R&D, EV, aerospace, and biotech clusters add resilience beyond pure IT."
+          },
+          {
+            "title": "Population & Urbanisation",
+            "body": "Relentless in-migration of skilled professionals from across India and abroad; constant household formation, especially in mid–upper mid housing."
+          }
+        ]
+      },
+      {
+        "code": "O",
+        "name": "Ongoing / Future Projects",
+        "maxScore": 150,
+        "score": 140,
+        "sections": [
+          {
+            "title": "Catalysts",
+            "body": "Namma Metro expansion (Purple, Green, Yellow, Pink lines, ORR line) is radically improving cross-city commute.\n\nPeripheral Ring Road / STRR and arterial road widening (in progress/planned).\n\nUpgrades and new link roads to Kempegowda International Airport (incl. airport metro).\n\nLarge integrated townships, tech parks, SEZs, and mixed-use developments in North & East Bengaluru."
+          }
+        ]
+      },
+      {
+        "code": "C",
+        "name": "Connectivity & Commute",
+        "maxScore": 150,
+        "score": 125,
+        "sections": [
+          {
+            "title": "Intra-City Connectivity",
+            "body": "Strong but evolving: Namma Metro + buses + cabs form the backbone.\n\nChronic traffic congestion on ORR, Whitefield Road, and EC corridors, especially during peak office hours.\n\nMetro extensions and suburban rail are long-term relief valves."
+          },
+          {
+            "title": "Regional Connectivity",
+            "body": "International airport with expanding global/direct connectivity.\n\nHighway links to Chennai, Hyderabad, Mysuru, and Pune/Mumbai via NICE, NH-44, NH-75, etc."
+          }
+        ]
+      },
+      {
+        "code": "A",
+        "name": "Amenities & Gentrification",
+        "maxScore": 150,
+        "score": 135,
+        "sections": [
+          {
+            "title": "Lifestyle",
+            "body": "Vibrant F&B, pub, café, and retail culture in Indiranagar, Koramangala, MG Road, CBD, HSR, Whitefield, Sarjapur–Bellandur, etc.\n\nMalls, high streets, co-working spaces, and leisure hubs are all well represented."
+          },
+          {
+            "title": "Social Infra",
+            "body": "Reputed schools, international schools, engineering/management colleges, and multi-speciality hospitals across most major corridors.\n\nGated communities and integrated townships with clubs, sports, and green spaces."
+          },
+          {
+            "title": "Gentrification",
+            "body": "Rapid in North (Hebbal–Airport belt), East (Whitefield–Kadugodi), ORR, and Sarjapur Road.\n\nOlder cores (Jayanagar, Malleswaram, Rajajinagar) balancing heritage with modern infill."
+          }
+        ]
+      },
+      {
+        "code": "T",
+        "name": "Trends & Historical Data",
+        "maxScore": 150,
+        "score": 130,
+        "sections": [
+          {
+            "title": "Prices & Yields",
+            "body": "Long-term steady capital appreciation, especially in IT corridors and well-planned townships.\n\nResidential yields typically around 2.8–3.5%, higher in certain rental-heavy micro-markets (student/IT catchments).\n\nCommercial/office assets in prime tech belts attract strong occupier demand and institutional interest."
+          },
+          {
+            "title": "Market Behaviour",
+            "body": "Historically resilient; corrections tend to be shallow and short relative to many Indian cities due to job stickiness and rental demand."
+          }
+        ]
+      },
+      {
+        "code": "E",
+        "name": "Existing Supply vs Demand",
+        "maxScore": 200,
+        "score": 165,
+        "sections": [
+          {
+            "title": "Supply",
+            "body": "Significant residential pipeline along ORR, North Bengaluru (airport corridor), East (Whitefield–Varthur–Kadugodi), and South (Kanakapura–Bannerghatta).\n\nRobust Grade-A office and business park supply; flex/co-working stock expanding."
+          },
+          {
+            "title": "Demand",
+            "body": "Deep end-user and tenant demand from IT/tech/startup workforce.\n\nStrong corporate leasing, especially in ORR, Whitefield, North, and CBD/secondary CBD."
+          },
+          {
+            "title": "Absorption",
+            "body": "Consistently healthy absorption for mid to upper-mid residential and Grade-A offices.\n\nOverhang mostly in very peripheral or infrastructure-lagging micro-pockets."
+          }
+        ]
+      }
+    ],
+
+    "summary": {
+      "totalScore": 875,
+      "maxTotalScore": 1000,
+      "grade": "A",
+      "gradeLabel": "Excellent",
+      "headlineVerdict": "India’s foremost tech-economy real-estate market with strong long-term fundamentals."
+    },
+
+    "interpretation": {
+      "strengths": [
+        "Deep tech/startup/R&D job engine; diversified white-collar economy.",
+        "Strong, sticky rental demand; maturing metro network; township-driven living experience.",
+        "Multiple micro-markets allow investors to position for yield or appreciation, or a blend of both."
+      ],
+      "watchOuts": [
+        "Persistent traffic congestion in several belts; reliance on infra execution timelines (metro, ring roads).",
+        "Regulatory/approval delays in some zones.",
+        "Micro-market performance can diverge sharply; not all “Bangalore” is equal."
+      ]
+    },
+
+    "recommendations": {
+      "microMarketStrategy": [
+        "End-user + long-term appreciation: North Bengaluru (airport belt), parts of East (Whitefield–Varthur), well-planned South corridors.",
+        "Rental yield + liquidity: ORR catchments (Bellandur, HSR adjacency), Whitefield, certain North Bengaluru pockets."
+      ],
+      "developerAndInfra": [
+        "Stick to builders with a strong track record; prioritise locations aligned with current or upcoming metro lines and major arterial roads."
+      ],
+      "assetType": [
+        "Grade-A office or co-working-heavy buildings in ORR / Whitefield / North business districts can deliver better yields vs conventional residential."
+      ],
+      "holdingHorizon": "Best results typically show when you ride a full infra + job + gentrification cycle rather than seeking 1–2 year flips."
+    },
+
+    "verdictText": "Bengaluru scores ~875/1000 on the LOCATE framework, a high-quality, tech-led, globally relevant city where disciplined micro-market selection and infra-aware investing can create robust, compounding real-estate portfolios."
+  },
+  {
+    "id": 2,
+    "cityId": "goa",
+    "cityName": "Goa",
+    "altName": null,
+    "state": "Goa",
+    "focus": "Second Homes + Holiday Rentals + Hospitality & Tourism-Led Real Estate",
+    "evaluationDate": "2025-11-01",
+    "categories": [
+      {
+        "code": "L",
+        "name": "Local Economy & Indicators",
+        "maxScore": 200,
+        "score": 165,
+        "sections": [
+          {
+            "title": "Overview",
+            "body": "Goa’s economy is anchored by tourism, hospitality, casinos, services, small-scale industry, and agriculture, with mining currently muted. It maintains one of India’s highest per-capita income levels, supported by a strong tourism–services foundation."
+          },
+          {
+            "title": "Jobs & Diversification",
+            "body": "Employment is concentrated in hotels, restaurants, travel services, casinos, retail, real estate, education, healthcare, and government services. IT and knowledge-oriented parks and industrial estates—primarily around Panaji and designated hubs—add moderate diversification."
+          },
+          {
+            "title": "Population & Urbanisation",
+            "body": "A stable resident population is supplemented by inward migration from metros such as Mumbai, Pune, Bangalore, and NCR. This includes retirees, remote professionals, entrepreneurs, and second-home buyers, reinforcing Goa’s lifestyle-led real-estate market."
+          }
+        ]
+      },
+      {
+        "code": "O",
+        "name": "Ongoing / Future Projects",
+        "maxScore": 150,
+        "score": 135,
+        "sections": [
+          {
+            "title": "Catalysts",
+            "body": "MOPA (Manohar International Airport) significantly enhances access, especially for North and central Goa. Upgrades at Dabolim Airport, coastal roadworks, new bridges such as Mandovi and Zuari, and improved internal corridors strengthen mobility. Clustered villa townships, boutique gated apartments, and hospitality-led developments continue to shape the market. Infrastructure upgrades are gradual but airport-driven demand remains a major catalyst."
+          }
+        ]
+      },
+      {
+        "code": "C",
+        "name": "Connectivity & Commute",
+        "maxScore": 150,
+        "score": 130,
+        "sections": [
+          {
+            "title": "External Connectivity",
+            "body": "Two airports—Dabolim and Mopa—connect Goa to major metros and seasonal international routes. NH66 and rail networks link Goa to Mumbai, Pune, Bengaluru, Mangaluru, and key coastal and regional cities."
+          },
+          {
+            "title": "Internal Connectivity & Commute",
+            "body": "Internal road networks are functional but narrow in many pockets. Tourist-season congestion affects Calangute–Baga–Candolim, Panaji, and select South Goa areas. Distances are short but travel times can extend significantly during peak inflows."
+          }
+        ]
+      },
+      {
+        "code": "A",
+        "name": "Amenities & Gentrification",
+        "maxScore": 150,
+        "score": 140,
+        "sections": [
+          {
+            "title": "Lifestyle",
+            "body": "Goa is a lifestyle-first destination. Beach belts and inland hubs feature cafés, restaurants, nightlife, boutique retail, wellness retreats, co-working spaces, and entertainment venues. North Goa—Calangute–Candolim–Baga, Anjuna–Vagator, Assagao, Siolim—has undergone rapid lifestyle upgradation. Select South Goa pockets such as Colva, Benaulim, and the Palolem belt offer a calmer but evolving lifestyle ecosystem."
+          },
+          {
+            "title": "Social Infra",
+            "body": "Educational and healthcare infrastructures are strongest around Panaji, Mapusa, Margao, Vasco, and emerging townships. Newer gated villas and apartments increasingly incorporate clubs, pools, landscaped gardens, and concierge-style offerings."
+          },
+          {
+            "title": "Gentrification",
+            "body": "North Goa’s gentrification is pronounced, particularly in villa-rich belts such as Assagao, Siolim, Nerul, Parra, and Moira. South Goa and hinterland areas show slower but consistent evolution, often anchored around resort clusters and integrated developments."
+          }
+        ]
+      },
+      {
+        "code": "T",
+        "name": "Trends & Historical Data",
+        "maxScore": 150,
+        "score": 130,
+        "sections": [
+          {
+            "title": "Prices & Yields",
+            "body": "Prime North Goa micro-markets have seen significant price appreciation over the last 5–7 years driven by second-home and villa investors. Long-term residential rental yields typically range around 2.5–3.0%, while short-stay and holiday rental models—when professionally managed—can deliver superior returns."
+          },
+          {
+            "title": "Market Behaviour",
+            "body": "Market movements align closely with tourism cycles, regulatory shifts affecting homestays, and broader HNI and NRI sentiment. Prime pockets remain resilient with shallow corrections, while speculative inland belts exhibit higher volatility and slower absorption."
+          }
+        ]
+      },
+      {
+        "code": "E",
+        "name": "Existing Supply vs Demand",
+        "maxScore": 200,
+        "score": 165,
+        "sections": [
+          {
+            "title": "Supply",
+            "body": "Goa’s supply mix includes villas, low-rise apartments, independent homes, and resort-linked developments. New supply is concentrated in North Goa boutique gated communities, villa clusters, and hospitality-integrated real estate."
+          },
+          {
+            "title": "Demand",
+            "body": "Demand remains strong among HNIs, NRIs, lifestyle seekers, retirees, remote professionals, and local service-sector end-users. Holiday-rental-focused investors play a significant role in prime belts."
+          },
+          {
+            "title": "Absorption",
+            "body": "Absorption is fast in well-located North Goa and select South Goa micro-markets. Inland or low-amenity zones see slower sales cycles and heightened price sensitivity."
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "totalScore": 865,
+      "maxTotalScore": 1000,
+      "grade": "A",
+      "gradeLabel": "Excellent",
+      "headlineVerdict": "A lifestyle-led coastal market with strong tourism fundamentals and powerful second-home and holiday-rental potential."
+    },
+    "interpretation": {
+      "strengths": [
+        "Dual-airport connectivity boosting accessibility and investor inflow.",
+        "High aspirational value for lifestyle homes, boutique villas, and hospitality-driven assets.",
+        "North Goa shows strong historical appreciation and superior rental performance.",
+        "Limited land availability in prime corridors supports long-term price strength."
+      ],
+      "watchOuts": [
+        "Tourism seasonality impacts congestion and rental patterns.",
+        "Micro-market sensitivity is extremely high—small distance differences affect return outcomes.",
+        "Infrastructure strain in peak tourist periods affects commute experience and service accessibility.",
+        "Liquidity can be slower in non-prime or deep-inland pockets with weaker rental stories."
+      ]
+    },
+    "recommendations": {
+      "microMarketStrategy": [
+        "Prioritise micro-markets such as Assagao, Siolim, Anjuna–Vagator, Nerul, Parra, and Candolim–Calangute rather than treating Goa as a single uniform market.",
+        "In South Goa, focus on Colva–Benaulim and curated parts of Cavelossim–Palolem that have clear lifestyle or tourism pull."
+      ],
+      "developerAndInfra": [
+        "Prefer established developers with clear land title, NA conversion, approvals, and a strong delivery track record.",
+        "Favour micro-locations with confirmed road access, utilities, and proximity to lifestyle hubs and beaches."
+      ],
+      "assetType": [
+        "Villas offer high emotional value and strong short-stay revenue potential but are more management-intensive.",
+        "Apartments suit investors seeking lower ticket sizes, easier upkeep, and lock-and-leave convenience with moderate yields."
+      ],
+      "holdingHorizon": "A 5–10 year horizon aligns best with Goa’s tourism cycle, infrastructure upgrades, and long-term capital appreciation dynamics."
+    },
+    "verdictText": "Goa scores ~865/1000 on the LOCATE framework, a tourism-driven, highly aspirational real-estate destination where disciplined micro-market selection and clarity of intent—lifestyle or yield—can create compelling long-term investment outcomes."
+  },
+  {
+    "id": 3,
+    "cityId": "karnal",
+    "cityName": "Karnal",
+    "altName": null,
+    "state": "Haryana",
+    "focus": "End-user Residential + Agri/Agro-Processing + Highway-led Commercial",
+    "evaluationDate": "2025-11-01",
+    "categories": [
+      {
+        "code": "L",
+        "name": "Local Economy & Indicators",
+        "maxScore": 200,
+        "score": 145,
+        "sections": [
+          {
+            "title": "Overview",
+            "body": "Karnal is a key agricultural and agro-research hub of Haryana, known for rice mills, seed research, and allied food-processing. It also benefits from trade, education, healthcare, and government services."
+          },
+          {
+            "title": "Jobs & Diversification",
+            "body": "Employment is driven by agriculture, agro-industries, small manufacturing, trading, logistics, and services. White-collar jobs are growing but remain modest compared to NCR cities."
+          },
+          {
+            "title": "Population & Urbanisation",
+            "body": "Urbanisation is steadily rising as surrounding rural populations gravitate towards Karnal for education, healthcare, jobs, and housing."
+          }
+        ]
+      },
+      {
+        "code": "O",
+        "name": "Ongoing / Future Projects",
+        "maxScore": 150,
+        "score": 120,
+        "sections": [
+          {
+            "title": "Catalysts",
+            "body": "City road improvements, flyovers, and junction upgrades are underway along key corridors. Industrial and logistics facilities are gradually strengthening due to NH-44 connectivity. Urban development schemes are improving drainage, water supply, and civic infrastructure in newer sectors. While not a mega-infra hotspot like NCR, Karnal is seeing incremental but meaningful urban upgrades."
+          }
+        ]
+      },
+      {
+        "code": "C",
+        "name": "Connectivity & Commute",
+        "maxScore": 150,
+        "score": 135,
+        "sections": [
+          {
+            "title": "Inter-City Connectivity",
+            "body": "Karnal is strategically located on NH-44 (old NH-1, GT Road) between Delhi and Chandigarh. It has good rail connectivity on the Delhi\u2013Ambala\u2013Chandigarh route, linking to major North Indian cities."
+          },
+          {
+            "title": "Intra-City Commute",
+            "body": "Commute times are generally manageable, with congestion mainly around market cores and highway junctions. Auto and bus networks support local movement, and the city scale keeps average travel times moderate."
+          }
+        ]
+      },
+      {
+        "code": "A",
+        "name": "Amenities & Gentrification",
+        "maxScore": 150,
+        "score": 115,
+        "sections": [
+          {
+            "title": "Lifestyle & Retail",
+            "body": "Karnal has malls, branded showrooms, high streets, hotels, and restaurants along the highway and in central areas. Leisure amenities and organised F&B are growing, though at a smaller scale than Tier-1 cities."
+          },
+          {
+            "title": "Social Infrastructure",
+            "body": "Reputed schools and colleges, as well as multi-speciality hospitals, serve the city and its rural catchment. Newer residential pockets and townships offer parks, clubs, and gated community amenities."
+          },
+          {
+            "title": "Gentrification",
+            "body": "Gentrification is strongest along the NH-44 corridor and in planned residential sectors, while older cores are modernising gradually."
+          }
+        ]
+      },
+      {
+        "code": "T",
+        "name": "Trends & Historical Data",
+        "maxScore": 150,
+        "score": 115,
+        "sections": [
+          {
+            "title": "Prices & Yields",
+            "body": "Ticket sizes remain affordable to mid-range, attracting local end-users and small investors. Price appreciation has been steady rather than explosive, tied to gradual urbanisation and income growth. Residential rental yields broadly fall in the 2.6\u20133.1% range, while high-street shops at good junctions can perform better."
+          },
+          {
+            "title": "Absorption & Resilience",
+            "body": "Demand is primarily end-user driven, creating a relatively stable but slower-moving market compared to NCR, with limited volatility."
+          }
+        ]
+      },
+      {
+        "code": "E",
+        "name": "Existing Supply vs Demand",
+        "maxScore": 200,
+        "score": 150,
+        "sections": [
+          {
+            "title": "Supply",
+            "body": "Karnal offers a mix of plotted developments, independent floors, small apartment complexes, and some townships. Growing strip and high-street commercial is visible along NH-44 and key city roads."
+          },
+          {
+            "title": "Demand",
+            "body": "Demand is driven by local business families, farmers shifting to urban living, government employees, and small service professionals. Investor interest exists but the market is far more end-user centric than speculative."
+          },
+          {
+            "title": "Absorption",
+            "body": "Absorption is healthy in ready and near-ready, well-located projects, while peripheral or poorly planned pockets see slower traction."
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "totalScore": 780,
+      "maxTotalScore": 1000,
+      "grade": "B+",
+      "gradeLabel": "Good",
+      "headlineVerdict": "A stable, value-oriented regional market with strong highway connectivity and agro-economic backing."
+    },
+    "interpretation": {
+      "strengths": [
+        "Strategic location on NH-44 between Delhi and Chandigarh.",
+        "Resilient agro-industrial base and service sector supporting end-user housing demand.",
+        "Affordable price points with scope for long-term, steady appreciation."
+      ],
+      "watchOuts": [
+        "Slower white-collar job creation compared to NCR hubs.",
+        "Limited depth of premium lifestyle and office product versus Tier-1 cities.",
+        "Project selection and micro-location factors such as approach roads and nearby infrastructure matter significantly for liquidity."
+      ]
+    },
+    "recommendations": {
+      "microMarketStrategy": [
+        "Prioritise projects along the NH-44 corridor and in planned sectoral residential areas for better connectivity and visibility."
+      ],
+      "developerAndInfra": [
+        "Focus on developers with a track record of delivering basic civic amenities and choose micro-locations with good frontage, approach roads, and proximity to schools and hospitals."
+      ],
+      "assetType": [
+        "Prefer ready or near-ready 2/3BHK apartments and floors in established pockets to reduce execution risk.",
+        "Consider high-street and strip retail at junctions with real footfall rather than deep, low-visibility shops."
+      ],
+      "holdingHorizon": "Adopt a 5\u20138 year horizon and treat Karnal as a slow-and-steady compounding market rather than a quick-flip speculative play."
+    },
+    "verdictText": "Karnal scores ~780/1000 on the LOCATE framework, offering a stable, value-oriented regional housing market underpinned by highway connectivity and a resilient agro-industrial base."
+  },
+  {
+    "id": 4,
+    "cityId": "manesar",
+    "cityName": "Manesar",
+    "altName": null,
+    "state": "Haryana",
+    "focus": "Industrial + Logistics + Emerging Residential Corridors",
+    "evaluationDate": "2025-11-01",
+    "categories": [
+      {
+        "code": "L",
+        "name": "Local Economy & Indicators",
+        "maxScore": 200,
+        "score": 170,
+        "sections": [
+          {
+            "title": "Overview",
+            "body": "Manesar is one of North India\u2019s most important industrial and automotive hubs, home to Maruti Suzuki, Honda, Motherson, and hundreds of Tier-1 and Tier-2 auto-ancillary and manufacturing units."
+          },
+          {
+            "title": "Jobs & Diversification",
+            "body": "The local economy has a strong base in manufacturing, engineering, logistics, and warehousing, with rising interest in data centres and industrial parks. White-collar presence is limited but increasing due to spillover from Gurugram."
+          },
+          {
+            "title": "Population & Urbanisation",
+            "body": "There is steady in-migration of factory workers, technicians, managers, logistics staff, and their families seeking more affordable housing compared to Gurugram."
+          }
+        ]
+      },
+      {
+        "code": "O",
+        "name": "Ongoing / Future Projects",
+        "maxScore": 150,
+        "score": 145,
+        "sections": [
+          {
+            "title": "Catalysts",
+            "body": "The Delhi\u2013Mumbai Expressway (DME) connectivity is transforming Manesar into a logistics super-node. KMP Expressway and NH-48 upgrades enable seamless truck and freight movement. Planned Global City and IMT expansion zones promise multi-sector growth, and multiple warehousing and industrial parks are under development."
+          }
+        ]
+      },
+      {
+        "code": "C",
+        "name": "Connectivity & Commute",
+        "maxScore": 150,
+        "score": 140,
+        "sections": [
+          {
+            "title": "Inter-City Connectivity",
+            "body": "Manesar lies directly on NH-48, bridging Delhi, Gurugram, and Jaipur. The KMP Expressway provides superb circular connectivity across NCR, and there is relatively close access to IGI Airport via expressways, typically 35\u201345 minutes depending on the sector."
+          },
+          {
+            "title": "Intra-City Commute",
+            "body": "Industrial traffic can cause local bottlenecks, but roads are largely designed for heavy vehicular movement. Future metro or RRTS proposals, if executed, may further strengthen long-term connectivity."
+          }
+        ]
+      },
+      {
+        "code": "A",
+        "name": "Amenities & Gentrification",
+        "maxScore": 150,
+        "score": 110,
+        "sections": [
+          {
+            "title": "Lifestyle & Retail",
+            "body": "Lifestyle and retail amenities remain limited compared to Gurugram, with retail mainly in the form of high-streets and basic markets. Better amenities are concentrated along NH-48 and towards New Gurugram."
+          },
+          {
+            "title": "Social Infrastructure",
+            "body": "Schools, clinics, and family-centric townships are growing in sectors closer to Gurugram. Residents still depend on Gurugram for advanced entertainment, tertiary healthcare, and large malls."
+          },
+          {
+            "title": "Gentrification",
+            "body": "Gentrification is fastest around the New Gurugram\u2013Manesar interface, while it is slower inside the IMT industrial core."
+          }
+        ]
+      },
+      {
+        "code": "T",
+        "name": "Trends & Historical Data",
+        "maxScore": 150,
+        "score": 130,
+        "sections": [
+          {
+            "title": "Prices & Yields",
+            "body": "Residential assets offer competitive ticket sizes with gradual appreciation tied to industry-led demand, and rental yields in the range of 2.7\u20133.3%. Warehousing and industrial assets often see strong yields of around 8\u201311%, low vacancy, and long-term corporate leases."
+          },
+          {
+            "title": "Absorption",
+            "body": "Absorption is high in industrial and warehouse assets, while residential absorption is moderate but improving in better-connected sectors and township developments."
+          }
+        ]
+      },
+      {
+        "code": "E",
+        "name": "Existing Supply vs Demand",
+        "maxScore": 200,
+        "score": 170,
+        "sections": [
+          {
+            "title": "Supply",
+            "body": "There is ample supply of industrial plots, warehouses, and logistics parks, alongside a rising supply of mid-income residential projects and townships."
+          },
+          {
+            "title": "Demand",
+            "body": "Industrial and logistics demand remains extremely strong. Residential demand is driven by the workforce, small business owners, and spillover buyers from Gurugram."
+          },
+          {
+            "title": "Absorption",
+            "body": "Absorption is very healthy for industrial and warehouse spaces, and consistent for residential projects in planned sectors with good access and livability."
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "totalScore": 865,
+      "maxTotalScore": 1000,
+      "grade": "A",
+      "gradeLabel": "Excellent",
+      "headlineVerdict": "Industrial powerhouse with massive logistics potential and rising residential relevance."
+    },
+    "interpretation": {
+      "strengths": [
+        "One of India\u2019s strongest industrial clusters with marquee auto and manufacturing units.",
+        "Directly plugged into the Delhi\u2013Mumbai Expressway, KMP, and NH-48 logistics triad.",
+        "One of NCR\u2019s fastest-growing warehousing and logistics zones.",
+        "Affordable housing relative to Gurugram with future upside from industrial and infra-led growth."
+      ],
+      "watchOuts": [
+        "Lifestyle amenities are still developing and lag behind Gurugram.",
+        "Industrial traffic congestion can be significant during peak hours.",
+        "Residential demand is more functional than aspirational in several pockets, requiring careful micro-market selection."
+      ]
+    },
+    "recommendations": {
+      "microMarketStrategy": [
+        "Prioritise sectors and parks closest to the DME, KMP, and NH-48 junctions to maximise logistics advantages.",
+        "For residential, focus on sectors that interface with New Gurugram or lie close to NH-48 for better livability and appreciation."
+      ],
+      "developerAndInfra": [
+        "Select projects in master-planned parks and sectors with robust internal roads and utilities.",
+        "Prefer developers with proven capability in industrial and warehousing assets, as well as township-scale residential."
+      ],
+      "assetType": [
+        "Industrial and warehousing assets in DME- and KMP-adjacent logistics parks offer top opportunities with strong yields and stable tenants.",
+        "In residential, prefer ready or near-ready apartments and floors in family-friendly townships near Gurugram-facing sectors.",
+        "Neighbourhood retail and SCO-style assets work best near dense worker and residential catchments rather than deep inside industrial interiors."
+      ],
+      "holdingHorizon": "Adopt a 5\u20138 year holding horizon to capture value uplift from DME activation, the Global City ecosystem, and continuous industrial expansion."
+    },
+    "verdictText": "Manesar earns an A-grade LOCATE Score (~865/1000), a high-potential investment market powered by industry, logistics, and expressway infrastructure, with residential value steadily rising as Gurugram expands outward."
+  },
+  {
+    "id": 5,
+    "cityId": "panipat",
+    "cityName": "Panipat",
+    "altName": null,
+    "state": "Haryana",
+    "focus": "Residential + Industrial/Manufacturing + Highway-Led Logistics",
+    "evaluationDate": "2025-11-01",
+    "categories": [
+      {
+        "code": "L",
+        "name": "Local Economy & Indicators",
+        "maxScore": 200,
+        "score": 165,
+        "sections": [
+          {
+            "title": "Overview",
+            "body": "Panipat is one of India\u2019s most important textile, carpet, petrochemical, and handloom hubs. Its manufacturing-driven economy is nationally significant and supports a strong MSME base."
+          },
+          {
+            "title": "Jobs & Diversification",
+            "body": "Core sectors include textiles, carpets, petrochemicals anchored by IOCL, plastics, engineering goods, warehousing, trading, and retail. The economy is highly industrial, with a growing services and small-office layer."
+          },
+          {
+            "title": "Population & Urbanisation",
+            "body": "There is steady urban inflow from nearby towns and villages due to abundant jobs, good schools, and strong middle-class housing demand."
+          }
+        ]
+      },
+      {
+        "code": "O",
+        "name": "Ongoing / Future Projects",
+        "maxScore": 150,
+        "score": 130,
+        "sections": [
+          {
+            "title": "Catalysts",
+            "body": "Expansion of the IOCL Panipat Refinery is boosting downstream petrochemical industries. Industrial cluster upgrades in Sectors 29 and 30 and the Samalkha belt, highway-side commercial redevelopment along NH-44, and sector road, sewage, and water upgrades are strengthening emerging residential pockets. While Panipat lacks NCR-style mega-infra, its industrial investment cycle is strong and continuous."
+          }
+        ]
+      },
+      {
+        "code": "C",
+        "name": "Connectivity & Commute",
+        "maxScore": 150,
+        "score": 140,
+        "sections": [
+          {
+            "title": "Inter-City Connectivity",
+            "body": "Panipat lies on NH-44 (Delhi\u2013Ambala\u2013Chandigarh), providing powerful access to NCR and Punjab/Himachal. Rail connectivity is excellent, with express trains to Delhi and Chandigarh."
+          },
+          {
+            "title": "Intra-City Commute",
+            "body": "Core city areas face peak traffic, but newer sectors have smoother mobility. Overall, the city size keeps average commute times manageable."
+          }
+        ]
+      },
+      {
+        "code": "A",
+        "name": "Amenities & Gentrification",
+        "maxScore": 150,
+        "score": 120,
+        "sections": [
+          {
+            "title": "Lifestyle & Retail",
+            "body": "Panipat offers good high streets, textile markets, malls, multiplexes, and an expanding caf\u00e9 culture. Highway-led hotels and restaurants are improving hospitality options."
+          },
+          {
+            "title": "Social Infrastructure",
+            "body": "The city has a strong school network, colleges, and multiple multi-speciality hospitals. Newer townships provide parks, clubs, and gated lifestyle amenities."
+          },
+          {
+            "title": "Gentrification",
+            "body": "Gentrification is fastest along NH-44, Refinery Road, and newer residential sectors, while older markets are modernising steadily."
+          }
+        ]
+      },
+      {
+        "code": "T",
+        "name": "Trends & Historical Data",
+        "maxScore": 150,
+        "score": 115,
+        "sections": [
+          {
+            "title": "Prices & Yields",
+            "body": "Ticket sizes are in the affordable-to-mid segment, with appreciation steady but dependent on industrial performance. Residential yields are typically in the 2.6\u20133.2% range, while commercial and high-street yields are stronger in textile and highway belts."
+          },
+          {
+            "title": "Market Behaviour",
+            "body": "The market is largely end-user dominated, leading to stable but moderate appreciation. Cycles are influenced by refinery output, global textile trends, and seasonal demand."
+          }
+        ]
+      },
+      {
+        "code": "E",
+        "name": "Existing Supply vs Demand",
+        "maxScore": 200,
+        "score": 155,
+        "sections": [
+          {
+            "title": "Supply",
+            "body": "Panipat offers a mix of plotted developments, builder floors, apartments, and industrial plots. Active high-street and warehouse supply exists near NH-44 and industrial clusters."
+          },
+          {
+            "title": "Demand",
+            "body": "Demand is dominated by local business families, MSME owners, industrial workforce, and refinery-linked jobs, with stable rental demand in central and industrial-adjacent pockets."
+          },
+          {
+            "title": "Absorption",
+            "body": "Absorption is strong in well-located, ready or near-ready properties, and slower in fringe areas where social infrastructure is weaker."
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "totalScore": 825,
+      "maxTotalScore": 1000,
+      "grade": "A-",
+      "gradeLabel": "Very Good",
+      "headlineVerdict": "Industrial strength, NH-44 connectivity, and a stable end-user housing market."
+    },
+    "interpretation": {
+      "strengths": [
+        "Large textile and petrochemical industrial ecosystem that underpins employment.",
+        "Direct NH-44 connectivity to NCR and Punjab, supporting trade and logistics.",
+        "Affordable housing with steady appreciation prospects.",
+        "Continuous industrial upgradation supporting long-term stability."
+      ],
+      "watchOuts": [
+        "Market cycles can be influenced by volatility in textile and petrochemical sectors.",
+        "Certain pockets have limited lifestyle amenities and require selective project choice.",
+        "Fringe sectors need stronger social infrastructure for faster absorption and value creation."
+      ]
+    },
+    "recommendations": {
+      "microMarketStrategy": [
+        "Target NH-44 and Refinery Road corridors for the best combination of connectivity, job proximity, and housing demand."
+      ],
+      "developerAndInfra": [
+        "Prioritise developers with a track record in delivering townships and projects with reliable civic infrastructure and approach roads."
+      ],
+      "assetType": [
+        "For residential, favour ready or near-ready 2/3BHK units in established sectors close to schools and hospitals.",
+        "For commercial, consider textile market-adjacent and highway-frontage high-street properties where visibility and footfall are strong.",
+        "Industrial and warehouse assets in established clusters with good truck access and tenant depth offer solid long-term plays."
+      ],
+      "holdingHorizon": "Adopt a 5\u20137 year holding horizon to benefit from refinery expansion, industrial-corridor stability, and the maturation of emerging townships."
+    },
+    "verdictText": "Panipat scores ~825/1000 on the LOCATE framework, a high-potential, industry-led, highway-connected city offering steady returns and strong end-user fundamentals."
+  },
+  {
+    "id": 6,
+    "cityId": "sonipat",
+    "cityName": "Sonipat",
+    "altName": null,
+    "state": "Haryana",
+    "focus": "Residential + Industrial + Logistics + Education Belt",
+    "evaluationDate": "2025-11-01",
+    "categories": [
+      {
+        "code": "L",
+        "name": "Local Economy & Indicators",
+        "maxScore": 200,
+        "score": 160,
+        "sections": [
+          {
+            "title": "Overview",
+            "body": "Sonipat is one of Haryana\u2019s fastest-rising education\u2013industrial\u2013logistics corridors, benefiting from Delhi spillover demand, KMP Expressway proximity, and a maturing industrial and MSME ecosystem."
+          },
+          {
+            "title": "Jobs & Diversification",
+            "body": "The city has a strong presence of industries such as steel, textiles, packaging, engineering goods, logistics parks, and food processing, as well as a powerful education belt including O.P. Jindal University, Ashoka University, SRM, and others. Government offices, retail, and services support stable employment."
+          },
+          {
+            "title": "Population & Urbanisation",
+            "body": "There is steady in-migration from North Delhi, Panipat, and rural Haryana due to affordable housing and proximity to NCR job centres."
+          }
+        ]
+      },
+      {
+        "code": "O",
+        "name": "Ongoing / Future Projects",
+        "maxScore": 150,
+        "score": 135,
+        "sections": [
+          {
+            "title": "Catalysts",
+            "body": "The KMP Expressway is operational, transforming Sonipat into a logistics hotspot. The Delhi\u2013Panipat RRTS is progressing and is set to significantly cut commute times. Multiple industrial park expansions across Rai, Kundli, and Barhi, along with urban development works such as drainage upgrades, street widening, and new sectoral planning, are strengthening the growth outlook."
+          }
+        ]
+      },
+      {
+        "code": "C",
+        "name": "Connectivity & Commute",
+        "maxScore": 150,
+        "score": 140,
+        "sections": [
+          {
+            "title": "Inter-City Connectivity",
+            "body": "Sonipat has immediate access to NH-44, the Delhi\u2013Ambala\u2013Chandigarh corridor. The KMP Expressway and Eastern Peripheral Expressway enhance multi-directional movement across NCR, and the upcoming RRTS will be a major upgrade."
+          },
+          {
+            "title": "Intra-City Commute",
+            "body": "Intra-city travel is smooth in newer sectors, while legacy zones experience peak congestion. Bus and auto networks support local commuting, and the city size keeps overall travel manageable."
+          }
+        ]
+      },
+      {
+        "code": "A",
+        "name": "Amenities & Gentrification",
+        "maxScore": 150,
+        "score": 125,
+        "sections": [
+          {
+            "title": "Lifestyle & Retail",
+            "body": "High-streets and malls are growing around the Kundli\u2013Rai\u2013NH-44 belt. The caf\u00e9, gym, and entertainment scene is expanding, strongly influenced by proximity to Delhi."
+          },
+          {
+            "title": "Social Infrastructure",
+            "body": "Multiple schools, universities, medical colleges, and hospitals create a strong social infrastructure base. Gated townships and plotted sectors are improving overall livability."
+          },
+          {
+            "title": "Gentrification",
+            "body": "Gentrification is fastest along the Kundli\u2013NH-44\u2013KMP triangle, while older city cores are modernising at a moderate pace."
+          }
+        ]
+      },
+      {
+        "code": "T",
+        "name": "Trends & Historical Data",
+        "maxScore": 150,
+        "score": 120,
+        "sections": [
+          {
+            "title": "Prices & Yields",
+            "body": "Ticket sizes remain attractive, and appreciation has improved significantly after the opening of the KMP Expressway. Residential rental yields are typically in the 2.7\u20133.4% range, while warehousing and logistics assets can deliver approximately 8\u201312% yields."
+          },
+          {
+            "title": "Absorption & Resilience",
+            "body": "End-user demand is steady, with strong industrial and logistics absorption. Purely residential pockets can see more cyclical movement, especially in non-infrastructure-linked micro-locations."
+          }
+        ]
+      },
+      {
+        "code": "E",
+        "name": "Existing Supply vs Demand",
+        "maxScore": 200,
+        "score": 165,
+        "sections": [
+          {
+            "title": "Supply",
+            "body": "Sonipat has a vast supply of plotted developments, low-rise floors, group housing, industrial plots, and warehousing parks. Large land parcels allow for future expansion."
+          },
+          {
+            "title": "Demand",
+            "body": "Demand comes from end-users in Delhi, Panipat, and Karnal; students and faculty from the education belt; logistics operators; factories; and MSMEs."
+          },
+          {
+            "title": "Absorption",
+            "body": "Absorption is excellent in logistics and industrial parks, and consistent in residential projects along Kundli\u2013NH-44 and KMP-influenced zones."
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "totalScore": 845,
+      "maxTotalScore": 1000,
+      "grade": "A-",
+      "gradeLabel": "Excellent",
+      "headlineVerdict": "A rapidly evolving NCR submarket, strong in logistics, education, and plotted development demand."
+    },
+    "interpretation": {
+      "strengths": [
+        "KMP, NH-44, and the upcoming RRTS give Sonipat a massive commute and logistics advantage.",
+        "A strong education hub fuels consistent rental and residential demand.",
+        "Logistics and warehousing growth is accelerating investor interest.",
+        "Plotted developments and low-rise townships see strong traction among end-users and investors."
+      ],
+      "watchOuts": [
+        "Lifestyle amenities are still maturing in several pockets, especially away from the main corridors.",
+        "Some sectors face uneven civic upkeep and require selective micro-market choice.",
+        "Residential markets can move more slowly in non-infrastructure-linked or speculative locations."
+      ]
+    },
+    "recommendations": {
+      "microMarketStrategy": [
+        "Target the Kundli\u2013NH-44\u2013KMP triangle for the best appreciation potential driven by connectivity and industrial demand.",
+        "In residential, focus on plotted and low-rise floor developments near major educational institutions and expressway-linked sectors."
+      ],
+      "developerAndInfra": [
+        "Prefer developers with a track record in delivering townships and plotted communities with reliable road access and basic civic infrastructure."
+      ],
+      "assetType": [
+        "Plotted developments and low-rise floors work well for NCR commuters, students, and faculty, offering flexibility and strong resale demand.",
+        "Logistics and warehousing assets in KMP- and NH-44-linked parks can deliver high yields and long-term tenant stickiness."
+      ],
+      "holdingHorizon": "Adopt a 5\u20138 year horizon to fully benefit from RRTS completion, continued logistics expansion, and the maturation of townships across newer sectors."
+    },
+    "verdictText": "Sonipat earns a strong A- LOCATE Score (~845/1000), an expanding NCR growth belt with excellent expressway connectivity and robust long-term fundamentals."
+  },
+  {
+    "id": 7,
+    "cityId": "faridabad",
+    "cityName": "Faridabad",
+    "altName": null,
+    "state": "Haryana",
+    "focus": "End-user Residential + Industrial/Commercial Mix",
+    "evaluationDate": "2025-10-01",
+    "categories": [
+      {
+        "code": "L",
+        "name": "Local Economy & Indicators",
+        "maxScore": 200,
+        "score": 160,
+        "sections": [
+          {
+            "title": "Overview",
+            "body": "Faridabad has a large industrial base spanning auto components, light engineering, and textiles, with growing services and retail activity. Its proximity to Delhi and Noida supports job creation and business formation."
+          },
+          {
+            "title": "Population & Urbanisation",
+            "body": "The city sees steady in-migration, especially into Greater Faridabad (Neharpar) townships, as families seek value housing within NCR."
+          },
+          {
+            "title": "Diversification",
+            "body": "The economy is manufacturing-led, with rising healthcare, education, and small offices and high-streets adding to the diversification."
+          }
+        ]
+      },
+      {
+        "code": "O",
+        "name": "Ongoing / Future Projects",
+        "maxScore": 150,
+        "score": 130,
+        "sections": [
+          {
+            "title": "Catalysts",
+            "body": "Key catalysts include the FNG Expressway link to Noida\u2013Ghaziabad, improved access to the Delhi\u2013Mumbai Expressway via peripheral connectors and Sohna, and sector roads, drainage, and civic upgrades across Greater Faridabad alongside junction improvements."
+          }
+        ]
+      },
+      {
+        "code": "C",
+        "name": "Connectivity & Commute",
+        "maxScore": 150,
+        "score": 135,
+        "sections": [
+          {
+            "title": "Transit",
+            "body": "The Delhi Metro Violet Line runs up to Ballabhgarh, and there is rail connectivity to Delhi. Road connectivity is via NH-19/Mathura Road, with links toward Noida through the FNG corridor and towards Gurugram via SPR and KMP connectors."
+          },
+          {
+            "title": "Commute",
+            "body": "Commutes are reasonable in off-peak hours but see peak congestion on Mathura Road and key city junctions."
+          }
+        ]
+      },
+      {
+        "code": "A",
+        "name": "Amenities & Gentrification",
+        "maxScore": 150,
+        "score": 120,
+        "sections": [
+          {
+            "title": "Lifestyle",
+            "body": "Faridabad has expanding malls, high-streets, cinema complexes, and a growing caf\u00e9 and fitness culture, particularly in Greater Faridabad."
+          },
+          {
+            "title": "Social Infrastructure",
+            "body": "Reputed schools such as DPS and Modern School, along with multi-speciality hospitals like Asian and the Fortis/Sarvodaya cluster, serve the city and its catchment."
+          },
+          {
+            "title": "Gentrification",
+            "body": "Gentrification is fastest in Greater Faridabad corridors, while legacy cores are modernising gradually."
+          }
+        ]
+      },
+      {
+        "code": "T",
+        "name": "Trends & Historical Data",
+        "maxScore": 150,
+        "score": 120,
+        "sections": [
+          {
+            "title": "Prices & Yields",
+            "body": "Ticket sizes are competitive, and there has been a steady post-2021 recovery in prices. Typical residential yields are around 2.8\u20133.3%, with stronger returns for well-located strata retail."
+          },
+          {
+            "title": "Absorption & Resilience",
+            "body": "Improving project handovers have lifted market confidence. However, absorption can still be cyclical in fringe pockets with weaker amenity depth."
+          }
+        ]
+      },
+      {
+        "code": "E",
+        "name": "Existing Supply vs Demand",
+        "maxScore": 200,
+        "score": 160,
+        "sections": [
+          {
+            "title": "Supply",
+            "body": "Faridabad has a large inventory across 2/3BHK townships and plotted and low-rise developments, along with increasing neighbourhood commercial supply."
+          },
+          {
+            "title": "Demand",
+            "body": "Demand is primarily from end-user families seeking value, with rental demand concentrated near metro stations, schools, and hospitals."
+          },
+          {
+            "title": "Absorption",
+            "body": "Absorption is healthy in ready or near-ready, metro-proximate projects, and slower where amenity depth and civic infrastructure lag."
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "totalScore": 825,
+      "maxTotalScore": 1000,
+      "grade": "A-",
+      "gradeLabel": "Very Good",
+      "headlineVerdict": "Value-led NCR market with improving connectivity and stable end-user demand."
+    },
+    "interpretation": {
+      "strengths": [
+        "Industrial job backbone with manufacturing and services supporting local employment.",
+        "Metro presence and improving expressway connectivity enhance regional access.",
+        "Competitive home prices relative to core Delhi and Gurugram.",
+        "Rising township amenities in Greater Faridabad strengthen livability."
+      ],
+      "watchOuts": [
+        "Peak-hour traffic on legacy corridors such as Mathura Road.",
+        "Amenity depth remains uneven in peripheral sectors and fringe projects.",
+        "Project-specific execution timelines must be monitored carefully."
+      ]
+    },
+    "recommendations": {
+      "microMarketStrategy": [
+        "Prioritise metro-proximate locations and sector-road nodes for better tenanting, resale velocity, and daily commute comfort."
+      ],
+      "developerAndInfra": [
+        "Choose ready or near-ready projects in Greater Faridabad from developers with a credible delivery record, especially where township amenities such as parks, clubs, and retail are already functional."
+      ],
+      "assetType": [
+        "Focus on family-centric 2/3BHK homes in well-planned townships for long-term stability.",
+        "In strata retail, target high-street, corner frontage near dense townships and schools, and avoid deep-bay galleries with low walk-in potential."
+      ],
+      "holdingHorizon": "Plan for a 5\u20137 year holding horizon to capture the benefits of FNG linkage, expressway connectivity, and ongoing gentrification across Neharpar corridors."
+    },
+    "verdictText": "Faridabad scores ~825/1000 on the LOCATE framework, a very good, value-led NCR market with improving connectivity and stable, predominantly end-user-driven housing demand."
+  },
+  {
+    "id": 8,
+    "cityId": "gurugram",
+    "cityName": "Gurugram",
+    "altName": "Gurgaon",
+    "state": "Haryana",
+    "focus": "Integrated Residential + Commercial Real Estate Potential",
+    "evaluationDate": "2025-10-01",
+    "categories": [
+      {
+        "code": "L",
+        "name": "Local Economy & Indicators",
+        "maxScore": 200,
+        "score": 180,
+        "sections": [
+          {
+            "title": "Overview",
+            "body": "Gurugram is India\u2019s premier corporate hub after Mumbai and Delhi, hosting headquarters of MNCs and a dense ecosystem of IT/ITeS, BFSI, consulting, D2C, and startups."
+          },
+          {
+            "title": "Jobs & Diversification",
+            "body": "Key employment clusters span Cyber City, Udyog Vihar, Golf Course Road and Extension, and warehousing and 3PL belts along NH-8 and KMP, supported by thriving hospitality and retail."
+          },
+          {
+            "title": "Population & Urbanisation",
+            "body": "High-skilled in-migration from across India and abroad sustains premium housing demand across mid to luxury segments."
+          }
+        ]
+      },
+      {
+        "code": "O",
+        "name": "Ongoing / Future Projects",
+        "maxScore": 150,
+        "score": 140,
+        "sections": [
+          {
+            "title": "Catalysts",
+            "body": "The Dwarka Expressway corridor build-out and its linkages to UER-II and IGI Airport, Delhi\u2013Mumbai Expressway access spurring warehousing and industrial growth, SPR and Golf Course Extension Road upgrades, and planned metro and rapid rail expansions are key multi-year catalysts."
+          }
+        ]
+      },
+      {
+        "code": "C",
+        "name": "Connectivity & Commute",
+        "maxScore": 150,
+        "score": 130,
+        "sections": [
+          {
+            "title": "Roads & Regional Connectivity",
+            "body": "NH-8, Southern Peripheral Road (SPR), Golf Course Road and Extension, and the Dwarka Expressway provide strong regional reach and airport connectivity."
+          },
+          {
+            "title": "Transit & Commute",
+            "body": "Rapid Metro and Delhi Metro interchanges, along with airport proximity, are major advantages. However, peak-hour congestion persists on key arterials, and first and last mile gaps remain in outer sectors."
+          }
+        ]
+      },
+      {
+        "code": "A",
+        "name": "Amenities & Gentrification",
+        "maxScore": 150,
+        "score": 145,
+        "sections": [
+          {
+            "title": "Lifestyle",
+            "body": "Gurugram offers global-standard lifestyle infrastructure, including Cyber Hub, premium malls, destination F&B, luxury clubs, and a strong entertainment and wellness scene."
+          },
+          {
+            "title": "Social Infrastructure",
+            "body": "Top schools, multi-speciality hospitals, and international hospitality brands provide deep social infrastructure for families and corporates."
+          },
+          {
+            "title": "Gentrification",
+            "body": "Gentrification is rapid across Golf Course Road, Golf Course Extension Road, SPR, and the Dwarka Expressway, with luxury townships and mixed-use developments maturing quickly."
+          }
+        ]
+      },
+      {
+        "code": "T",
+        "name": "Trends & Historical Data",
+        "maxScore": 150,
+        "score": 135,
+        "sections": [
+          {
+            "title": "Prices & Yields",
+            "body": "Prime corridors have seen robust capital appreciation post-2020, with residential yields typically around 2.8\u20133.6% and stronger returns in Grade-A offices and managed retail."
+          },
+          {
+            "title": "Absorption & Volatility",
+            "body": "Office leasing has been resilient, and luxury launches have been absorbed faster than pre-2020 norms. However, premium valuations can amplify cycles, especially in speculative pockets."
+          }
+        ]
+      },
+      {
+        "code": "E",
+        "name": "Existing Supply vs Demand",
+        "maxScore": 200,
+        "score": 155,
+        "sections": [
+          {
+            "title": "Supply",
+            "body": "Gurugram has a large pipeline across luxury and upper-mid residential, plotted floors, Grade-A offices, and a steady warehousing stock in peripheral belts."
+          },
+          {
+            "title": "Demand",
+            "body": "Demand is deep from end-users, HNIs, NRIs, and corporate occupiers, with strong leasing in CBD and expressway-linked office corridors."
+          },
+          {
+            "title": "Absorption",
+            "body": "Absorption is healthy in well-connected sectors and sometimes exhibits overhang in fringe or ultra-luxury tickets that are misaligned with demand."
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "totalScore": 885,
+      "maxTotalScore": 1000,
+      "grade": "A",
+      "gradeLabel": "Excellent",
+      "headlineVerdict": "Blue-chip NCR market with corporate depth, premium amenities, and multi-year infra catalysts."
+    },
+    "interpretation": {
+      "strengths": [
+        "Powerful corporate job engine with diversified IT, BFSI, and service sectors.",
+        "Airport adjacency and strong expressway connectivity underpin business and residential demand.",
+        "Depth of Grade-A offices, global-standard retail, and luxury residential.",
+        "Strong absorption in prime corridors with demonstrated resilience."
+      ],
+      "watchOuts": [
+        "Peak-hour congestion and commute stress on several major roads.",
+        "Premium pricing and ticket sizes create entry barriers and can amplify market cycles.",
+        "Micro-market disparities and execution timelines in outer sectors require careful scrutiny.",
+        "Water-table and storm-water management concerns in select pockets."
+      ]
+    },
+    "recommendations": {
+      "microMarketStrategy": [
+        "For prime residential, focus on Golf Course Road, Golf Course Extension Road, SPR, and select Dwarka Expressway sectors with proven livability.",
+        "Align investments with corridors that directly benefit from Dwarka Expressway, DME, and UER-II linkages."
+      ],
+      "developerAndInfra": [
+        "Prefer reputed developers with strong balance sheets and a track record of delivering on time and to promised specifications.",
+        "Stress-test commute times and existing infrastructure before committing in outer sectors."
+      ],
+      "assetType": [
+        "Prime residential apartments and floors in established luxury corridors for long-term appreciation.",
+        "Pre-leased offices and managed retail in Cyber City, MG Road belts, and dense high-street catchments for yield stability.",
+        "Logistics and industrial assets in NH-8 and KMP influence zones aligned to D2C and 3PL demand."
+      ],
+      "holdingHorizon": "Plan for a 5\u20138 year holding horizon to benefit from ongoing infra completion, maturing corridors, and the compounding effect of Gurugram\u2019s corporate ecosystem."
+    },
+    "verdictText": "Gurugram scores ~885/1000 on the LOCATE framework, an excellent, blue-chip NCR market combining corporate depth, premium amenities, and powerful multi-year infrastructure catalysts."
+  },
+  {
+    "id": 9,
+    "cityId": "chandigarh",
+    "cityName": "Chandigarh",
+    "altName": "Tri-City: Chandigarh\u2013Mohali\u2013Panchkula",
+    "state": "Chandigarh (UT)",
+    "focus": "Premium Residential + Govt/Service Sector + Education/Healthcare + Commercial",
+    "evaluationDate": "2025-11-01",
+    "categories": [
+      {
+        "code": "L",
+        "name": "Local Economy & Indicators",
+        "maxScore": 200,
+        "score": 180,
+        "sections": [
+          {
+            "title": "Overview",
+            "body": "Chandigarh is one of India\u2019s most planned and highest per-capita-income cities, driven by government administration, education, healthcare, hospitality, IT, and a strong services ecosystem."
+          },
+          {
+            "title": "Jobs & Diversification",
+            "body": "Major employment arises from government offices and the High Court, education hubs, medical institutions such as PGI, retail, IT parks in Chandigarh and Mohali, and biotech and startup activity in Mohali. White-collar density is very strong."
+          },
+          {
+            "title": "Population & Urbanisation",
+            "body": "The region features stable, high-quality urbanisation with strong inflows from Punjab, Haryana, Himachal, and Delhi, as people seek lifestyle, safety, and education advantages."
+          }
+        ]
+      },
+      {
+        "code": "O",
+        "name": "Ongoing / Future Projects",
+        "maxScore": 150,
+        "score": 130,
+        "sections": [
+          {
+            "title": "Catalysts",
+            "body": "IT City Mohali expansion is attracting tech and startup talent. Aerotropolis and New Chandigarh sectoral development, airport capacity upgrades, road-widening projects, and civic improvement drives in Mohali and Panchkula are key catalysts. Although Chandigarh has limited land for new mega projects, Tri-City expansion compensates with strong planned development."
+          }
+        ]
+      },
+      {
+        "code": "C",
+        "name": "Connectivity & Commute",
+        "maxScore": 150,
+        "score": 145,
+        "sections": [
+          {
+            "title": "Inter-City Connectivity",
+            "body": "The Tri-City enjoys excellent highway access via NH-5 and NH-152, and Chandigarh International Airport connects to major metros. Upcoming direct expressway links to Delhi are further improving regional connectivity."
+          },
+          {
+            "title": "Intra-City Commute",
+            "body": "Intra-city commute is extremely efficient due to a planned grid, wide roads, green belts, and low congestion relative to other Indian cities."
+          }
+        ]
+      },
+      {
+        "code": "A",
+        "name": "Amenities & Gentrification",
+        "maxScore": 150,
+        "score": 150,
+        "sections": [
+          {
+            "title": "Lifestyle",
+            "body": "The region boasts premium malls, high-street shopping such as Sector 17 and Elante, a strong caf\u00e9 culture, performing arts, sports complexes, and lakefront leisure. The Tri-City offers top-tier restaurants, clubs, and hospitality."
+          },
+          {
+            "title": "Social Infrastructure",
+            "body": "Chandigarh is home to one of India\u2019s best education and healthcare ecosystems, including PGIMER, Punjab University, IISER, and multiple international schools. Planned sectors with parks, extensive green cover, and disciplined civic governance underpin livability."
+          },
+          {
+            "title": "Gentrification",
+            "body": "Mohali\u2019s Airport Road, New Chandigarh, and Panchkula sectors are witnessing rapid lifestyle enhancement and gentrification, building on Chandigarh\u2019s core strengths."
+          }
+        ]
+      },
+      {
+        "code": "T",
+        "name": "Trends & Historical Data",
+        "maxScore": 150,
+        "score": 130,
+        "sections": [
+          {
+            "title": "Prices & Yields",
+            "body": "Pricing is premium with stable appreciation of around 5\u20138% annually over the long term. Residential yields are typically in the 2.3\u20132.8% range, with commercial yields stronger in Mohali and IT-linked belts."
+          },
+          {
+            "title": "Market Behaviour",
+            "body": "The market is highly end-user driven and displays very low volatility compared to most Indian cities. Strong resale in premium sectors and the Tri-City\u2019s planned nature support long-term value."
+          }
+        ]
+      },
+      {
+        "code": "E",
+        "name": "Existing Supply vs Demand",
+        "maxScore": 200,
+        "score": 170,
+        "sections": [
+          {
+            "title": "Supply",
+            "body": "Chandigarh proper has extremely limited supply due to land constraints and strict regulations, while Mohali and Panchkula provide expansion with plotted, mid-luxury, and commercial inventory."
+          },
+          {
+            "title": "Demand",
+            "body": "End-user and HNI demand is very strong, and investor interest is stable in Mohali commercial belts and newer corridors such as New Chandigarh."
+          },
+          {
+            "title": "Absorption",
+            "body": "Absorption is fast in good Tri-City locations like Airport Road, IT City, and New Chandigarh, and slow mainly in fringe pockets far from sectoral roads."
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "totalScore": 905,
+      "maxTotalScore": 1000,
+      "grade": "A+",
+      "gradeLabel": "Exceptional",
+      "headlineVerdict": "One of India\u2019s most stable, premium, and livable real estate markets."
+    },
+    "interpretation": {
+      "strengths": [
+        "Ultra-planned, clean, green city with very high lifestyle and civic standards.",
+        "Tri-City expansion via Mohali, New Chandigarh, and Panchkula offers new investment opportunities.",
+        "Strong education and healthcare hubs create resilient, long-term end-user demand.",
+        "Premium safety, governance, and quality of life relative to most Tier-1 cities."
+      ],
+      "watchOuts": [
+        "Restricted land supply leads to high entry prices, especially in core Chandigarh sectors.",
+        "Pure speculative investment potential is limited inside Chandigarh\u2019s core, which is heavily end-user driven.",
+        "Major growth and scalable inventory depend more on Mohali and New Chandigarh than on the core city."
+      ]
+    },
+    "recommendations": {
+      "microMarketStrategy": [
+        "For premium residential, focus on established Chandigarh sectors for stability and on Mohali Airport Road and New Chandigarh for modern, scalable appreciation.",
+        "Identify Tri-City corridors that blend Chandigarh brand pull with incremental supply and better ticket sizes."
+      ],
+      "developerAndInfra": [
+        "Prefer reputed developers with experience in planned townships and high-spec apartments that align with the region\u2019s quality expectations."
+      ],
+      "assetType": [
+        "Prime residential in Chandigarh sectors 5\u201344 for long-term end-user stability and capital preservation.",
+        "Commercial and office assets in Mohali\u2019s Airport Road, IT City, and Sector 82\u201383 belts for healthy yields and absorption.",
+        "Plotted and township projects in New Chandigarh for a mix of affordability, growth potential, and spillover demand."
+      ],
+      "holdingHorizon": "Adopt a 5\u201310 year horizon to capture excellent compounding in Tri-City expansions while benefiting from Chandigarh\u2019s inherently stable real-estate behaviour."
+    },
+    "verdictText": "Chandigarh scores ~905/1000 on the LOCATE framework, an A+ grade city for real estate with unmatched planning, livability, and stable appreciation across decades."
+  },
+  {
+    "id": 10,
+    "cityId": "kochi",
+    "cityName": "Kochi",
+    "altName": "Cochin",
+    "state": "Kerala",
+    "focus": "Port City + IT/Tech + Tourism + NRI-Driven Residential + Logistics",
+    "evaluationDate": "2025-11-01",
+    "categories": [
+      {
+        "code": "L",
+        "name": "Local Economy & Indicators",
+        "maxScore": 200,
+        "score": 175,
+        "sections": [
+          {
+            "title": "Overview",
+            "body": "Kochi\u2019s economy is powered by IT/ITeS at Infopark and SmartCity, shipping and logistics via Cochin Port, petrochemicals, tourism, healthcare, education, and a massive NRI remittance base."
+          },
+          {
+            "title": "Jobs & Diversification",
+            "body": "Key job drivers include IT hubs at Infopark and SmartCity, Cochin Port and the Vallarpadam International Container Transhipment Terminal, BPCL Kochi refinery and allied industrial belts, as well as strong hospitals, hospitality, and marine exports."
+          },
+          {
+            "title": "Population & Urbanisation",
+            "body": "Kochi has high urbanisation with steady inflows from central Kerala and Gulf-returning families, supporting a diverse and skilled workforce."
+          }
+        ]
+      },
+      {
+        "code": "O",
+        "name": "Ongoing / Future Projects",
+        "maxScore": 150,
+        "score": 135,
+        "sections": [
+          {
+            "title": "Catalysts",
+            "body": "Key catalysts include the Water Metro, India\u2019s first such system, improving multi-island connectivity; SmartCity Kochi phase expansions; Metro Phase-II and possible extensions; port modernisation and logistics parks near the ICTT; and new township and waterfront development projects. Kochi\u2019s infrastructure is unique and multi-modal, combining metro, water metro, and highways."
+          }
+        ]
+      },
+      {
+        "code": "C",
+        "name": "Connectivity & Commute",
+        "maxScore": 150,
+        "score": 135,
+        "sections": [
+          {
+            "title": "Inter-City Connectivity",
+            "body": "Cochin International Airport, India\u2019s first fully solar-powered airport, offers outstanding global and NRI connectivity. Rail links run across Kerala, Tamil Nadu, and Karnataka, and NH-66 and NH-544 connect Kochi to the rest of South India."
+          },
+          {
+            "title": "Intra-City Commute",
+            "body": "Kochi Metro and the Water Metro together help reduce pressure on road networks, although congestion still occurs in MG Road, Edappally, and Vytilla junctions during peak hours."
+          }
+        ]
+      },
+      {
+        "code": "A",
+        "name": "Amenities & Gentrification",
+        "maxScore": 150,
+        "score": 145,
+        "sections": [
+          {
+            "title": "Lifestyle",
+            "body": "Kochi offers a vibrant waterfront lifestyle with caf\u00e9s, culture, and arts in Fort Kochi, Marine Drive, and Panampilly Nagar. Lulu Mall and other retail hubs drive shopping demand, and premium dining, boutique hospitality, and an expat-friendly culture are on the rise."
+          },
+          {
+            "title": "Social Infrastructure",
+            "body": "The city hosts one of Kerala\u2019s best healthcare ecosystems, including Aster, Rajagiri, and AIMS, and has strong schools, universities, and coaching hubs."
+          },
+          {
+            "title": "Gentrification",
+            "body": "Gentrification is rapid in Kakkanad, Marine Drive, Edappally, Panampilly Nagar, and Vytilla, with waterfront zones driving premium segment demand."
+          }
+        ]
+      },
+      {
+        "code": "T",
+        "name": "Trends & Historical Data",
+        "maxScore": 150,
+        "score": 125,
+        "sections": [
+          {
+            "title": "Prices & Yields",
+            "body": "Premium waterfront and IT corridor zones have seen moderate-to-strong appreciation. Residential yields are typically around 2.7\u20133.3%, while commercial yields are in the 6\u20138% range. NRI-driven cycles often lead to price surges around festive and Gulf-return seasons."
+          },
+          {
+            "title": "Market Behaviour",
+            "body": "The market is largely end-user heavy and stable, with a strong Gulf NRI influence on mid-upper housing demand."
+          }
+        ]
+      },
+      {
+        "code": "E",
+        "name": "Existing Supply vs Demand",
+        "maxScore": 200,
+        "score": 165,
+        "sections": [
+          {
+            "title": "Supply",
+            "body": "There is strong apartment and township presence in Kakkanad, Edappally, Vytilla, Aluva, and along Marine Drive, with villas in the outskirts and waterfront belts, plus steady commercial and IT office supply around Infopark."
+          },
+          {
+            "title": "Demand",
+            "body": "Demand is very strong among IT professionals, NRIs, Gulf families, local business owners, and healthcare-sector employees, with high interest in 2/3BHK mid-upper apartments."
+          },
+          {
+            "title": "Absorption",
+            "body": "Absorption is excellent in IT corridor and waterfront zones, and moderate in deep suburbs without strong social infrastructure."
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "totalScore": 880,
+      "maxTotalScore": 1000,
+      "grade": "A",
+      "gradeLabel": "Excellent",
+      "headlineVerdict": "Strong economic diversity, superb global connectivity, and unique waterfront and IT-driven real estate dynamics."
+    },
+    "interpretation": {
+      "strengths": [
+        "A multi-sector economy spanning IT, port and logistics, healthcare, tourism, and petrochemicals.",
+        "Very stable NRI-driven housing demand, especially from Gulf returnees.",
+        "Unique mobility mix with Metro and Water Metro, plus strong lifestyle appeal along waterfronts.",
+        "Rising commercial investment interest near Infopark, Kakkanad, and Marine Drive."
+      ],
+      "watchOuts": [
+        "Traffic bottlenecks remain in older cores and major junctions.",
+        "Waterfront projects require extra due diligence on environmental norms and regulations.",
+        "Micro-market differences are large, with short distances creating material changes in ROI."
+      ]
+    },
+    "recommendations": {
+      "microMarketStrategy": [
+        "Prioritise the IT corridor around Kakkanad, Infopark, and SmartCity for a combination of appreciation and rental strength.",
+        "For long-term scarcity and lifestyle value, focus on select waterfront micro-markets such as Marine Drive and premium stretches of Bolgatty and Kadavanthra."
+      ],
+      "developerAndInfra": [
+        "Choose developers with strong track records in high-rise and waterfront construction, ensuring compliance with coastal and environmental regulations."
+      ],
+      "assetType": [
+        "2/3BHK apartments in IT-linked corridors for yield and liquidity.",
+        "Premium waterfront apartments and villas for NRI and luxury buyers.",
+        "Commercial and office assets in IT parks, co-working-heavy zones, and waterfront retail for 6\u20138% yield potential."
+      ],
+      "holdingHorizon": "Adopt a 5\u20138 year horizon to capture the impact of Water Metro expansion, port-led logistics upgrades, and the maturation of key township developments."
+    },
+    "verdictText": "Kochi scores ~880/1000 on the LOCATE framework, making it one of South India\u2019s most livable, diversified, and future-ready real estate markets, driven equally by tech, trade, tourism, and NRI capital."
+  },
+  {
+    "id": 11,
+    "cityId": "thiruvananthapuram",
+    "cityName": "Thiruvananthapuram",
+    "altName": "Trivandrum",
+    "state": "Kerala",
+    "focus": "IT/Technology + Government Capital + Education/Healthcare + Tourism",
+    "evaluationDate": "2025-11-01",
+    "categories": [
+      {
+        "code": "L",
+        "name": "Local Economy & Indicators",
+        "maxScore": 200,
+        "score": 175,
+        "sections": [
+          {
+            "title": "Overview",
+            "body": "Thiruvananthapuram\u2019s economy is powered by central and state government headquarters, PSUs, Technopark, education, healthcare, tourism, and science and space research institutions such as ISRO and VSSC."
+          },
+          {
+            "title": "Jobs & Diversification",
+            "body": "Key job anchors include Technopark Phases I\u2013III with major IT giants and startups, central and state government employment, a strong research ecosystem including ISRO, IISER, and SCTIMST, and growing medical and education clusters."
+          },
+          {
+            "title": "Population & Urbanisation",
+            "body": "The city has a highly literate, stable population with steady white-collar migration from across Kerala and South India."
+          }
+        ]
+      },
+      {
+        "code": "O",
+        "name": "Ongoing / Future Projects",
+        "maxScore": 150,
+        "score": 140,
+        "sections": [
+          {
+            "title": "Catalysts",
+            "body": "Major catalysts include Technopark Phase 4 (Technocity) expansion, the upcoming Vizhinjam International Seaport as a deep-water logistics gateway, road widening and bypass development on the Kazhakkoottam\u2013Kovalam stretch, airport modernisation prospects, improved coastal connectivity, Smart City initiatives, and new township developments. Together they give Thiruvananthapuram a tech-, port-, and tourism-aligned growth pipeline."
+          }
+        ]
+      },
+      {
+        "code": "C",
+        "name": "Connectivity & Commute",
+        "maxScore": 150,
+        "score": 130,
+        "sections": [
+          {
+            "title": "Inter-City Connectivity",
+            "body": "Trivandrum International Airport provides Gulf, domestic, and select international routes. The city lies on Kerala\u2019s core rail spine, and NH-66 upgrades are improving north\u2013south road movement."
+          },
+          {
+            "title": "Intra-City Commute",
+            "body": "Arterial roads in the main city are generally good, though bottlenecks occur near Kazhakkoottam and key medical and education clusters. Future metro or light rail proposals are under review, and coastal belt roads are gradually improving commute conditions."
+          }
+        ]
+      },
+      {
+        "code": "A",
+        "name": "Amenities & Gentrification",
+        "maxScore": 150,
+        "score": 140,
+        "sections": [
+          {
+            "title": "Lifestyle",
+            "body": "The city offers calm, green, coastal urban living, with premium pockets in Pattom, Vellayambalam, Kowdiar, the Kazhakkoottam\u2013Technopark belt, and coastal zones. Caf\u00e9s, malls such as Lulu Mall, recreational hubs, and cultural centres underpin quality of life."
+          },
+          {
+            "title": "Social Infrastructure",
+            "body": "Thiruvananthapuram has one of India\u2019s strongest healthcare and education ecosystems, including SAT, KIMS, PRS, Trivandrum Medical College, and the ISRO\u2013IISER belt, along with reliable civic infrastructure and safe neighbourhoods."
+          },
+          {
+            "title": "Gentrification",
+            "body": "Gentrification is rapid near Technopark, Akkulam, and Kazhakkoottam, with steady improvement in the central city. Heritage cores remain dense but functional."
+          }
+        ]
+      },
+      {
+        "code": "T",
+        "name": "Trends & Historical Data",
+        "maxScore": 150,
+        "score": 130,
+        "sections": [
+          {
+            "title": "Prices & Yields",
+            "body": "IT and central corridors have seen consistent appreciation. Residential yields typically range from 2.7\u20133.4%, with higher yields near Technopark rentals. Luxury housing demand is rising in the Kowdiar\u2013Vellayambalam belt."
+          },
+          {
+            "title": "Market Behaviour",
+            "body": "The market is dominantly end-user and extremely stable, with low volatility. NRI-driven cycles create periodic surges in demand and pricing."
+          }
+        ]
+      },
+      {
+        "code": "E",
+        "name": "Existing Supply vs Demand",
+        "maxScore": 200,
+        "score": 165,
+        "sections": [
+          {
+            "title": "Supply",
+            "body": "Apartments, villas, and plotted layouts are expanding in Kazhakkoottam, Akkulam, and the Technocity belt, with premium redevelopment inside the core city and rising commercial supply around Technopark."
+          },
+          {
+            "title": "Demand",
+            "body": "Demand comes from IT professionals, government employees, NRIs, scientists and researchers, and healthcare and education workers, with a high appetite for mid-premium 2/3BHK apartments."
+          },
+          {
+            "title": "Absorption",
+            "body": "Absorption is excellent in IT and central city zones and moderate in far-peripheral areas lacking robust civic infrastructure."
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "totalScore": 880,
+      "maxTotalScore": 1000,
+      "grade": "A",
+      "gradeLabel": "Excellent",
+      "headlineVerdict": "Stable, knowledge-driven, high-livability city with strong IT and port-led future potential."
+    },
+    "interpretation": {
+      "strengths": [
+        "Technopark and Technocity together form a massive IT employment engine.",
+        "The upcoming Vizhinjam deep-water port is set to be a major shipping and logistics catalyst.",
+        "Top-notch healthcare and education create strong, resilient end-user demand.",
+        "Calm, safe, green urban environment that is attractive to families, NRIs, and professionals."
+      ],
+      "watchOuts": [
+        "Traffic pressure persists in Kazhakkoottam and key core-city corridors.",
+        "Timelines and execution certainty for metro or light rail remain evolving.",
+        "Coastal regulatory norms and environmental restrictions require careful site-level due diligence."
+      ]
+    },
+    "recommendations": {
+      "microMarketStrategy": [
+        "Prioritise the IT belt from Kazhakkoottam through Technopark to Technocity for the strongest rental and appreciation prospects.",
+        "For end-users, premium central pockets such as Kowdiar, Vellayambalam, and Pattom offer elite social infrastructure and long-term stability."
+      ],
+      "developerAndInfra": [
+        "Select developers with proven delivery in mid-premium apartments and townships, particularly in IT-linked corridors and central-city redevelopment projects."
+      ],
+      "assetType": [
+        "2/3BHK apartments in the IT belt for rental demand from technology professionals.",
+        "Premium apartments and villas in central pockets for high-end end-users and NRIs.",
+        "Select waterfront and coastal assets in Akkulam, Shangumugham, and Kovalam, with strict adherence to regulatory norms."
+      ],
+      "holdingHorizon": "Adopt a 5\u20138 year holding horizon to capture the full benefit of port activation, Technocity expansion, and broader urban upgrades."
+    },
+    "verdictText": "Thiruvananthapuram scores ~880/1000 on the LOCATE framework, a high-quality, resilient, tech and port-linked capital city market ideal for both end-user stability and long-term investor growth."
+  },
+  {
+    "id": 12,
+    "cityId": "indore",
+    "cityName": "Indore",
+    "altName": null,
+    "state": "Madhya Pradesh",
+    "focus": "Commercial Capital + Education Hub + Manufacturing/Services + Residential",
+    "evaluationDate": "2025-11-01",
+    "categories": [
+      {
+        "code": "L",
+        "name": "Local Economy & Indicators",
+        "maxScore": 200,
+        "score": 165,
+        "sections": [
+          {
+            "title": "Overview",
+            "body": "Indore is the commercial capital of Madhya Pradesh with a diversified economy spanning trading, services, education, IT/ITES, pharma, food processing, engineering, and finance."
+          },
+          {
+            "title": "Jobs & Diversification",
+            "body": "Corporate ecosystems are concentrated in the Vijay Nagar–Super Corridor belt, while industrial clusters in Pithampur support auto, pharma, and engineering manufacturing."
+          },
+          {
+            "title": "Population & Urbanisation",
+            "body": "Indore has seen rapid urban migration from MP’s Tier-2 and Tier-3 towns, with strong middle-class expansion and sustained end-user housing demand."
+          }
+        ]
+      },
+      {
+        "code": "O",
+        "name": "Ongoing / Future Projects",
+        "maxScore": 150,
+        "score": 130,
+        "sections": [
+          {
+            "title": "Catalysts",
+            "body": "Key growth drivers include the under-construction Indore Metro across priority routes, the expansion of the Super Corridor with IT parks and premium residential projects, continued industrial and logistics development in Pithampur, and Smart City investments in roads, lighting, drainage, and public spaces."
+          }
+        ]
+      },
+      {
+        "code": "C",
+        "name": "Connectivity & Commute",
+        "maxScore": 150,
+        "score": 140,
+        "sections": [
+          {
+            "title": "Roads",
+            "body": "Indore has a well-maintained arterial network with bypasses and ring-road connectivity that supports efficient intra-city and inter-city movement."
+          },
+          {
+            "title": "Transit & Air/Rail",
+            "body": "Metro development is underway, complemented by a strong city bus system and suburban transport. Devi Ahilya Bai Holkar Airport offers robust domestic connectivity, and the central rail junction links Indore to key Indian cities."
+          },
+          {
+            "title": "Commute",
+            "body": "Commutes are generally smooth across most zones, with congestion largely restricted to old-city cores and traditional market streets during peak hours."
+          }
+        ]
+      },
+      {
+        "code": "A",
+        "name": "Amenities & Gentrification",
+        "maxScore": 150,
+        "score": 135,
+        "sections": [
+          {
+            "title": "Lifestyle",
+            "body": "Indore offers vibrant cafés, malls, F&B clusters, sports facilities, and cultural venues, especially around Vijay Nagar and the Super Corridor."
+          },
+          {
+            "title": "Social Infra",
+            "body": "The city hosts a strong education ecosystem with schools, colleges, and coaching centres, alongside multi-speciality hospitals and well-planned township living."
+          },
+          {
+            "title": "Gentrification",
+            "body": "Gentrification is most visible in the Super Corridor, Vijay Nagar, MR10 and Ring Road sectors, and the Rau–Pithampur belt, where modern residential and commercial formats are rapidly expanding."
+          }
+        ]
+      },
+      {
+        "code": "T",
+        "name": "Trends & Historical Data",
+        "maxScore": 150,
+        "score": 125,
+        "sections": [
+          {
+            "title": "Prices & Yields",
+            "body": "City-wide prices have shown steady appreciation, with the fastest growth around the Super Corridor. Residential rental yields generally range from ~2.8–3.4%, with higher yields in well-positioned commercial and retail assets."
+          },
+          {
+            "title": "Market Behaviour",
+            "body": "Indore’s real estate market is largely end-user driven, stable, and low in volatility, with consistent absorption in mid-income and emerging premium segments."
+          }
+        ]
+      },
+      {
+        "code": "E",
+        "name": "Existing Supply vs Demand",
+        "maxScore": 200,
+        "score": 155,
+        "sections": [
+          {
+            "title": "Supply",
+            "body": "The supply landscape includes apartment complexes, plotted layouts, villa communities, and commercial developments expanding along new growth corridors such as the Super Corridor and Ring Road."
+          },
+          {
+            "title": "Demand",
+            "body": "Demand is driven by professionals, students, business families, and the industrial workforce, reflecting Indore’s position as a commercial and educational magnet for central India."
+          },
+          {
+            "title": "Absorption",
+            "body": "Absorption remains high in established micro-markets and is improving rapidly in emerging corridors as infrastructure and social amenities deepen."
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "totalScore": 850,
+      "maxTotalScore": 1000,
+      "grade": "A-",
+      "gradeLabel": "Excellent",
+      "headlineVerdict": "A fast-growing, well-governed Tier-1.5 city with strong commercial, educational, and industrial fundamentals."
+    },
+    "interpretation": {
+      "strengths": [
+        "Balanced, diversified economy combining trading, IT/ITES, manufacturing, and services.",
+        "Strong civic administration, cleanliness credentials, and improving liveability indices.",
+        "Rapid corridor-led development along the Super Corridor and Ring Road.",
+        "Robust demand from both end-users and investors in key growth pockets."
+      ],
+      "watchOuts": [
+        "Metro execution timelines and associated construction-phase disruption.",
+        "Uneven development and infrastructure gaps in certain old-city pockets.",
+        "Speculative land buying on far-outskirts where infra and demand depth are still evolving."
+      ]
+    },
+    "recommendations": {
+      "microMarketStrategy": [
+        "Prioritise the Super Corridor, Vijay Nagar, MR10, and Ring Road belts for long-term residential investment.",
+        "For commercial/office exposure, focus on the Super Corridor, Vijay Nagar, and AB Road corridors.",
+        "For industrial and land plays, align with established and expanding clusters in the Pithampur region."
+      ],
+      "developerAndInfra": [
+        "Prefer projects by established developers with clear title, approvals, and timely delivery records.",
+        "Favour micro-markets with proven civic infrastructure, road connectivity, and access to education and healthcare hubs."
+      ],
+      "assetType": [
+        "Mid-to-premium apartments in Super Corridor/Vijay Nagar corridors offer a good balance of end-user depth and appreciation potential.",
+        "Strategically located commercial and retail spaces can deliver higher yields in established demand nodes.",
+        "Industrial and warehousing land near Pithampur suits investors with higher risk appetite and a longer horizon."
+      ],
+      "holdingHorizon": "A 5–8 year horizon is ideal to fully benefit from Metro commissioning, corridor maturation, and continued economic diversification."
+    },
+    "verdictText": "Indore scores ~850/1000 on the LOCATE framework — a clean, well-administered, commercially vibrant Tier-1.5 city where disciplined corridor and asset selection can deliver compelling long-term outcomes for both end-users and investors."
+  },
+  {
+    "id": 13,
+    "cityId": "noida",
+    "cityName": "Noida",
+    "altName": null,
+    "state": "Uttar Pradesh",
+    "focus": "Integrated Residential + Commercial Real Estate Investment Potential",
+    "evaluationDate": "2025-10-01",
+    "categories": [
+      {
+        "code": "L",
+        "name": "Local Economy & Indicators",
+        "maxScore": 200,
+        "score": 175,
+        "sections": [
+          {
+            "title": "Overview",
+            "body": "Noida is one of India\u2019s most diversified, self-sustained urban economies within the Delhi\u2013NCR belt and a major contributor to Uttar Pradesh\u2019s GDP."
+          },
+          {
+            "title": "Jobs & Diversification",
+            "body": "Its economic base spans IT/ITES, electronics, MSMEs, logistics, corporate offices, retail, and media, with large employers such as HCL, Samsung, TCS, Infosys, and Tech Mahindra anchoring job creation."
+          },
+          {
+            "title": "Population & Urbanisation",
+            "body": "Population growth is driven by affordability versus Delhi/Gurgaon, strong metro and expressway connectivity, and a continuous inflow of working professionals and families."
+          },
+          {
+            "title": "Economic Depth",
+            "body": "A balanced mix of IT parks, industrial estates, logistics centres, retail, education institutions, and the upcoming Film City project creates a multi-layered, future-facing economic fabric."
+          }
+        ]
+      },
+      {
+        "code": "O",
+        "name": "Ongoing / Future Projects",
+        "maxScore": 150,
+        "score": 140,
+        "sections": [
+          {
+            "title": "Key Catalysts",
+            "body": "Major growth drivers include the Noida International Airport at Jewar, expansion of the Noida\u2013Greater Noida\u2013Yamuna Expressway corridor, the Regional Rapid Transit System (Ghaziabad\u2013Jewar), near-completion of the FNG Expressway, and continuous sector-level upgrades such as road widening, sewage modernisation, smart traffic systems, and metro extensions towards Greater Noida West."
+          }
+        ]
+      },
+      {
+        "code": "C",
+        "name": "Connectivity & Commute",
+        "maxScore": 150,
+        "score": 145,
+        "sections": [
+          {
+            "title": "Transport Network",
+            "body": "Noida offers one of the most efficient transport networks in NCR, combining the Blue and Aqua Line metro corridors, multiple expressways, and arterial roads that connect seamlessly to Delhi, Ghaziabad, and Greater Noida."
+          },
+          {
+            "title": "Regional Connectivity",
+            "body": "Fast road access to Delhi, Gurgaon, Ghaziabad, and the upcoming Jewar Airport positions Noida as a strategic residential and commercial hub."
+          },
+          {
+            "title": "Commute Experience",
+            "body": "Despite peak-hour bottlenecks along key expressway stretches and sector junctions, the city\u2019s planned geometry generally supports faster and more predictable commute times than many other NCR hubs."
+          }
+        ]
+      },
+      {
+        "code": "A",
+        "name": "Amenities & Gentrification",
+        "maxScore": 150,
+        "score": 135,
+        "sections": [
+          {
+            "title": "Residential & Lifestyle",
+            "body": "Premium townships by developers such as Jaypee, ATS, Gulshan, Ace, and Mahagun offer strong clubhouse, sports, and green-area amenities that cater to mid, upper-mid, and luxury segments."
+          },
+          {
+            "title": "Commercial & Mixed-Use",
+            "body": "Key commercial destinations such as DLF Mall of India, Logix Mall, Wave City Centre, Advant Navis, and emerging hubs like One FNG strengthen Noida\u2019s mixed-use live\u2013work\u2013play proposition."
+          },
+          {
+            "title": "Livability Indicators",
+            "body": "A dense network of reputed schools, colleges, and hospitals, combined with leisure parks and improving civic infrastructure, translates into consistently high livability scores relative to many peer markets."
+          }
+        ]
+      },
+      {
+        "code": "T",
+        "name": "Trends & Historical Data",
+        "maxScore": 150,
+        "score": 130,
+        "sections": [
+          {
+            "title": "Price Trends",
+            "body": "As of 2025, residential prices across active sectors typically range from about \u20b97,500 to \u20b913,000 per sq ft, reflecting ~35% appreciation since 2020. Commercial capital values range around \u20b99,000\u2013\u20b914,000 per sq ft in prime belts."
+          },
+          {
+            "title": "Yields & Absorption",
+            "body": "Residential rental yields are usually in the 2.5\u20133% band, while commercial and office assets can deliver 7\u20139% yields in strong micro-markets, supported by robust post-2022 absorption."
+          },
+          {
+            "title": "Historical Performance",
+            "body": "Noida has demonstrated relatively low volatility compared with Gurgaon, rewarding disciplined investors with steady, long-term returns and better entry pricing for similar-grade assets."
+          }
+        ]
+      },
+      {
+        "code": "E",
+        "name": "Existing Supply vs Demand",
+        "maxScore": 200,
+        "score": 175,
+        "sections": [
+          {
+            "title": "Supply Landscape",
+            "body": "Noida hosts a healthy spread of residential supply across affordability bands, as well as a stable commercial pipeline, with particularly high activity in sectors 75\u2013150 along key expressways."
+          },
+          {
+            "title": "Demand Drivers",
+            "body": "Demand is powered by IT and corporate workforces, airport- and expressway-linked investors, and upgraders seeking better amenities than older Delhi neighbourhoods."
+          },
+          {
+            "title": "Absorption",
+            "body": "Office absorption remains strong, and unsold residential inventory has been trending down, indicating structural depth rather than speculative overbuilding."
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "totalScore": 900,
+      "maxTotalScore": 1000,
+      "grade": "A+",
+      "gradeLabel": "Excellent",
+      "headlineVerdict": "One of India\u2019s most future-ready real estate markets with diversified jobs, strong connectivity, and airport-led multi-year growth potential."
+    },
+    "interpretation": {
+      "strengths": [
+        "Highly diversified economic base across IT, electronics, MSMEs, logistics, and services.",
+        "Excellent metro and expressway connectivity within NCR and towards the upcoming Jewar Airport.",
+        "Strong pipeline of infrastructure and policy-backed projects including Film City and RRTS.",
+        "Healthy residential and commercial absorption with declining unsold inventory."
+      ],
+      "watchOuts": [
+        "Construction-phase disruptions around expressways and large infra projects.",
+        "Localized congestion and pollution hotspots in a few dense belts.",
+        "Execution and phasing risks around airport-linked and Film City-led appreciation narratives."
+      ]
+    },
+    "recommendations": {
+      "microMarketStrategy": [
+        "Prioritise sectors along the Noida\u2013Greater Noida Expressway, upcoming airport influence zones, and well-established residential belts in sectors 75\u2013150.",
+        "For commercial and office-led plays, focus on Expressway, Wave City Centre, and upcoming Film City\u2013linked corridors.",
+        "Avoid over-reliance on very peripheral or isolated pockets where social infrastructure and connectivity are yet to mature."
+      ],
+      "developerAndInfra": [
+        "Prefer projects by established developers with clear RERA track records and delivered townships.",
+        "Focus on micro-markets with existing or near-term metro connectivity and robust internal road networks."
+      ],
+      "assetType": [
+        "Mid-to-premium apartments in Expressway and metro-linked sectors for a balance of end-user depth and capital appreciation.",
+        "Grade-A office/commercial strata in proven business districts for higher-yield plays.",
+        "Select plotted/township land parcels near airport and RRTS influence zones for higher-risk, higher-reward long-term bets."
+      ],
+      "holdingHorizon": "A 5\u201310 year holding horizon is ideal to fully capture the combined impact of the airport, Film City, expressway expansion, and metro/RRTS integration."
+    },
+    "verdictText": "Noida scores ~900/1000 on the LOCATE framework \u2014 a mature yet fast-evolving market where well-chosen sectors and developers can deliver strong, risk-adjusted returns for both end-users and investors."
+  },
+  {
+    "id": 14,
+    "cityId": "delhi",
+    "cityName": "Delhi (National Capital Territory)",
+    "altName": "NCT of Delhi",
+    "state": "Delhi",
+    "focus": "Government Hub + Services + Corporate + Residential + Commercial",
+    "evaluationDate": "2025-11-01",
+    "categories": [
+      {
+        "code": "L",
+        "name": "Local Economy & Indicators",
+        "maxScore": 200,
+        "score": 180,
+        "sections": [
+          {
+            "title": "Overview",
+            "body": "Delhi is India\u2019s administrative, political, and service-sector powerhouse, anchored by government ministries, PSU headquarters, legal institutions, media, consulting, education, healthcare, retail, and trade."
+          },
+          {
+            "title": "Jobs & Diversification",
+            "body": "Employment spans public sector, private services, consulting, hospitality, aviation, education, and SME clusters, creating one of India\u2019s deepest and broadest white-collar job markets."
+          },
+          {
+            "title": "Population & Urbanisation",
+            "body": "A dense, diverse, and highly skilled population with stable end-user residential demand across mid, upper-mid, and premium segments."
+          }
+        ]
+      },
+      {
+        "code": "O",
+        "name": "Ongoing / Future Projects",
+        "maxScore": 150,
+        "score": 135,
+        "sections": [
+          {
+            "title": "Catalysts",
+            "body": "Key projects include Delhi Metro phase expansions, Central Vista redevelopment, peripheral expressways, arterial road upgrades, underpasses/tunnels, and new mixed-use redevelopments across East, West, and South Delhi."
+          }
+        ]
+      },
+      {
+        "code": "C",
+        "name": "Connectivity & Commute",
+        "maxScore": 150,
+        "score": 145,
+        "sections": [
+          {
+            "title": "Road Network",
+            "body": "Delhi has a dense arterial grid supported by expressways, elevated corridors, and ring roads enabling cross-city travel."
+          },
+          {
+            "title": "Transit",
+            "body": "India\u2019s largest Metro system, extensive bus network, railway integration, and IGI Airport create the strongest multimodal connectivity in NCR."
+          },
+          {
+            "title": "Commute",
+            "body": "Despite congestion during peak hours, multimodal coverage ensures resilient and predictable commute options for most citizens."
+          }
+        ]
+      },
+      {
+        "code": "A",
+        "name": "Amenities & Gentrification",
+        "maxScore": 150,
+        "score": 150,
+        "sections": [
+          {
+            "title": "Lifestyle",
+            "body": "Delhi offers exceptional dining, culture, retail, nightlife, and leisure zones, including premium malls, art districts, and heritage-centred high streets."
+          },
+          {
+            "title": "Social Infrastructure",
+            "body": "Home to India\u2019s leading hospitals, universities, schools, and public institutions, with strong distribution across zones."
+          },
+          {
+            "title": "Gentrification",
+            "body": "Rapid redevelopment continues across South Delhi, Aerocity, West Delhi, and central administrative districts."
+          }
+        ]
+      },
+      {
+        "code": "T",
+        "name": "Trends & Historical Data",
+        "maxScore": 150,
+        "score": 130,
+        "sections": [
+          {
+            "title": "Prices & Yields",
+            "body": "Premium pricing in South/Central Delhi with stable long-term appreciation. Residential yields typically range between 2\u20133%, with higher yields in commercial hubs such as Connaught Place, Aerocity, and district centres."
+          },
+          {
+            "title": "Absorption",
+            "body": "Strong yet steady absorption driven by end-users, HNIs, corporates, and institutional renters."
+          }
+        ]
+      },
+      {
+        "code": "E",
+        "name": "Existing Supply vs Demand",
+        "maxScore": 200,
+        "score": 165,
+        "sections": [
+          {
+            "title": "Supply",
+            "body": "Limited supply due to city boundaries; new inventory enters mainly through redevelopment, builder floors, plotted colonies, and selective high-rise townships."
+          },
+          {
+            "title": "Demand",
+            "body": "Demand remains extremely strong, driven by government employees, professionals, business families, diplomats, students, and NRIs."
+          },
+          {
+            "title": "Absorption",
+            "body": "Rapid in prime zones; moderate in ageing or infrastructure-lagging pockets awaiting redevelopment."
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "totalScore": 905,
+      "maxTotalScore": 1000,
+      "grade": "A+",
+      "gradeLabel": "Exceptional",
+      "headlineVerdict": "India\u2019s capital city and one of the most stable, high-demand real-estate ecosystems with unmatched connectivity, amenities, and institutional depth."
+    },
+    "interpretation": {
+      "strengths": [
+        "Unmatched governance, institutional and administrative presence.",
+        "India\u2019s strongest Metro and multimodal transport ecosystem.",
+        "Premium amenities, retail, dining, and healthcare quality.",
+        "Limited supply, creating long-term value stability."
+      ],
+      "watchOuts": [
+        "Ageing infrastructure in some zones, dependent on redevelopment cycles.",
+        "Premium entry pricing across major micro-markets.",
+        "Localized congestion/pollution hotspots."
+      ]
+    },
+    "recommendations": {
+      "microMarketStrategy": [
+        "Prime residential focus: South Delhi, Vasant Kunj, GK, Hauz Khas, Civil Lines.",
+        "Commercial strategy: Connaught Place, Aerocity, Nehru Place, Saket District Centre.",
+        "Redevelopment and builder-floor strategy for West and South Delhi extension belts."
+      ],
+      "developerAndInfra": [
+        "Choose reputed developers involved in redevelopment or luxury housing.",
+        "Prioritise micro-markets undergoing structured civic upgrades."
+      ],
+      "assetType": [
+        "Premium residential floors/apartments for long-term capital safety.",
+        "Commercial office spaces in CP/Aerocity for high-yield secure rentals.",
+        "Redevelopment plots/floors for appreciation-driven plays."
+      ],
+      "holdingHorizon": "Ideal holding horizon: 5\u201310 years to benefit from redevelopment cycles and infrastructure modernisation."
+    },
+    "verdictText": "Delhi scores ~905/1000 on the LOCATE framework \u2014 a structurally strong, supply-constrained capital market where disciplined buying ensures stable, long-term wealth creation."
+  },
+  {
+    "id": 15,
+    "cityId": "chennai",
+    "cityName": "Chennai",
+    "altName": null,
+    "state": "Tamil Nadu",
+    "focus": "IT \u2022 Industrial \u2022 Port City \u2014 Residential + Commercial",
+    "evaluationDate": "2025-11-01",
+    "categories": [
+      {
+        "code": "L",
+        "name": "Local Economy & Indicators",
+        "maxScore": 200,
+        "score": 175,
+        "sections": [
+          {
+            "title": "Overview",
+            "body": "Chennai is a diversified metro powered by IT/ITES, auto manufacturing, electronics, logistics, healthcare, finance, and education."
+          },
+          {
+            "title": "Jobs & Diversification",
+            "body": "Key hubs include OMR IT Corridor, Sholinganallur, Siruseri SIPCOT, and Oragadam\u2013Sriperumbudur industrial belt."
+          },
+          {
+            "title": "Population & Urbanisation",
+            "body": "Strong inflow of skilled workforce fuels consistent mid-income housing demand."
+          }
+        ]
+      },
+      {
+        "code": "O",
+        "name": "Ongoing / Future Projects",
+        "maxScore": 150,
+        "score": 135,
+        "sections": [
+          {
+            "title": "Catalysts",
+            "body": "Metro Phase II, Peripheral Ring Road, OMR Phase II, ECR upgrades, port modernisation, and new industrial hubs drive future growth."
+          }
+        ]
+      },
+      {
+        "code": "C",
+        "name": "Connectivity & Commute",
+        "maxScore": 150,
+        "score": 140,
+        "sections": [
+          {
+            "title": "Roads",
+            "body": "Strong arterial network: OMR, GST, ECR, Mount Road, ORR."
+          },
+          {
+            "title": "Transit",
+            "body": "Metro (Phase I & II), suburban rail, MRTS, and extensive bus network ensure multimodal connectivity."
+          },
+          {
+            "title": "Commute",
+            "body": "Peak congestion on OMR/GST; metro expansion expected to ease pressures."
+          }
+        ]
+      },
+      {
+        "code": "A",
+        "name": "Amenities & Gentrification",
+        "maxScore": 150,
+        "score": 140,
+        "sections": [
+          {
+            "title": "Lifestyle",
+            "body": "Rich F&B, entertainment, cultural venues, malls, beaches, and emerging caf\u00e9 districts."
+          },
+          {
+            "title": "Social Infrastructure",
+            "body": "Top hospitals, schools, universities, and established neighbourhoods."
+          },
+          {
+            "title": "Gentrification",
+            "body": "Rapid across OMR, ECR, Velachery, Pallikaranai, Thoraipakkam, Perungudi, GST Road."
+          }
+        ]
+      },
+      {
+        "code": "T",
+        "name": "Trends & Historical Data",
+        "maxScore": 150,
+        "score": 130,
+        "sections": [
+          {
+            "title": "Prices & Yields",
+            "body": "Strong long-term appreciation; residential yields ~2.7\u20133.3%; higher commercial yields in IT corridors."
+          },
+          {
+            "title": "Absorption",
+            "body": "Stable, end-user\u2013led, low volatility with consistent absorption."
+          }
+        ]
+      },
+      {
+        "code": "E",
+        "name": "Existing Supply vs Demand",
+        "maxScore": 200,
+        "score": 165,
+        "sections": [
+          {
+            "title": "Supply",
+            "body": "Large supply of mid-income apartments, IT parks, townships across OMR and GST."
+          },
+          {
+            "title": "Demand",
+            "body": "Demand led by IT, manufacturing, healthcare/education sectors, and NRIs."
+          },
+          {
+            "title": "Absorption",
+            "body": "Excellent in OMR\u2013Sholinganallur\u2013Perungudi\u2013Siruseri; steady in GST and city-central pockets."
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "totalScore": 885,
+      "maxTotalScore": 1000,
+      "grade": "A",
+      "gradeLabel": "Excellent",
+      "headlineVerdict": "A diversified, future-ready metro with strong IT + manufacturing fundamentals and stable long-term performance."
+    },
+    "interpretation": {
+      "strengths": [
+        "Strong economic diversification across IT, auto, electronics, logistics, and services.",
+        "Robust multimodal connectivity through metro, suburban rail, and arterial corridors.",
+        "High-quality education and healthcare infrastructure.",
+        "Consistent end-user demand ensures market stability."
+      ],
+      "watchOuts": [
+        "Peak congestion across OMR/GST stretches.",
+        "Flood-prone pockets require drainage due diligence.",
+        "Dependence on industrial-corridor performance in certain belts."
+      ]
+    },
+    "recommendations": {
+      "microMarketStrategy": [
+        "Target OMR (Perungudi\u2013Sholinganallur\u2013Siruseri), Velachery, ECR, and GST Road corridors.",
+        "For commercial: Guindy, Mount Road, OMR IT parks, Siruseri clusters.",
+        "Avoid flood-prone belts lacking proven stormwater systems."
+      ],
+      "developerAndInfra": [
+        "Prefer reputed developers with township and infra delivery track record.",
+        "Focus on metro Phase II\u2013connected micro-markets."
+      ],
+      "assetType": [
+        "Mid-to-premium apartments along OMR/ECR.",
+        "Commercial strata in IT corridors for yield plays.",
+        "Villas/plots in ECR/GST for lifestyle-driven long-term returns."
+      ],
+      "holdingHorizon": "5\u201310 years for full benefit from metro expansion and township corridor growth."
+    },
+    "verdictText": "Chennai scores ~885/1000 on the LOCATE framework \u2014 one of India\u2019s most stable, future-ready metros."
+  },
+  {
+    "id": 16,
+    "cityId": "mohali",
+    "cityName": "Mohali (SAS Nagar)",
+    "altName": "SAS Nagar",
+    "state": "Punjab",
+    "focus": "Residential \u2022 IT/Startup Hub \u2022 Education/Healthcare \u2022 Commercial",
+    "evaluationDate": "2025-11-01",
+    "categories": [
+      {
+        "code": "L",
+        "name": "Local Economy & Indicators",
+        "maxScore": 200,
+        "score": 170,
+        "sections": [
+          {
+            "title": "Overview",
+            "body": "Mohali has evolved into a major IT, education, healthcare, and services hub supporting the Chandigarh Tri-City economy."
+          },
+          {
+            "title": "Jobs & Diversification",
+            "body": "Employment spans IT City Mohali, biotech, analytics, startups, aviation services, manufacturing, education institutions, and healthcare."
+          },
+          {
+            "title": "Population & Urbanisation",
+            "body": "Consistent migration from Punjab, Haryana, Himachal, and NCR due to planned sectors, greenery, safety, and proximity to Chandigarh."
+          }
+        ]
+      },
+      {
+        "code": "O",
+        "name": "Ongoing / Future Projects",
+        "maxScore": 150,
+        "score": 135,
+        "sections": [
+          {
+            "title": "Catalysts",
+            "body": "Key drivers include expansion of Mohali IT City, Aerotropolis and New Chandigarh linkages, Airport Road upgrades, and integrated township and high-rise development."
+          }
+        ]
+      },
+      {
+        "code": "C",
+        "name": "Connectivity & Commute",
+        "maxScore": 150,
+        "score": 145,
+        "sections": [
+          {
+            "title": "Road & Regional Connectivity",
+            "body": "Immediate access to Chandigarh International Airport and strong connectivity to Chandigarh, Panchkula, Zirakpur, and major Punjab/Himachal cities."
+          },
+          {
+            "title": "Intra-City Commute",
+            "body": "Planned grid-sector design ensures smooth commute; peak congestion near Airport Road and Zirakpur junctions."
+          }
+        ]
+      },
+      {
+        "code": "A",
+        "name": "Amenities & Gentrification",
+        "maxScore": 150,
+        "score": 140,
+        "sections": [
+          {
+            "title": "Lifestyle",
+            "body": "Caf\u00e9s, malls, multiplexes, premium dining, wellness centres, and lifestyle hubs are rapidly expanding."
+          },
+          {
+            "title": "Social Infrastructure",
+            "body": "Strong education and healthcare presence including universities, premium schools, and multi-speciality hospitals."
+          },
+          {
+            "title": "Gentrification",
+            "body": "High-speed gentrification along Airport Road, IT City, New Chandigarh link road, and Phase sectors."
+          }
+        ]
+      },
+      {
+        "code": "T",
+        "name": "Trends & Historical Data",
+        "maxScore": 150,
+        "score": 130,
+        "sections": [
+          {
+            "title": "Prices & Yields",
+            "body": "Steady growth from 2014\u20132025 with strong appreciation in Airport Road and IT City belts. Yields ~2.5\u20133.2% residential and 6\u20138% commercial."
+          },
+          {
+            "title": "Market Behaviour",
+            "body": "A stable, end-user\u2013driven market with low volatility. Plot appreciation historically strong with increasing liquidity in apartments."
+          }
+        ]
+      },
+      {
+        "code": "E",
+        "name": "Existing Supply vs Demand",
+        "maxScore": 200,
+        "score": 165,
+        "sections": [
+          {
+            "title": "Supply",
+            "body": "Healthy mix of apartments, plotted developments, villa floors, SCOs, and IT/commercial inventory across Sectors 66\u2013115."
+          },
+          {
+            "title": "Demand",
+            "body": "Driven by IT, healthcare, education professionals, NRIs, and Chandigarh upgraders."
+          },
+          {
+            "title": "Absorption",
+            "body": "Fast absorption in well-connected township belts; slower in distant peripheral pockets."
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "totalScore": 885,
+      "maxTotalScore": 1000,
+      "grade": "A",
+      "gradeLabel": "Excellent",
+      "headlineVerdict": "A planned, tech-driven, highly livable city with strong long-term residential and commercial potential supported by exceptional connectivity and infrastructure."
+    },
+    "interpretation": {
+      "strengths": [
+        "Strong IT and startup ecosystem.",
+        "Excellent connectivity including airport access.",
+        "High-quality social infrastructure.",
+        "Rapid gentrification across key sectors."
+      ],
+      "watchOuts": [
+        "Peak congestion near Airport Road.",
+        "Higher pricing in certain premium belts.",
+        "Slower social infra expansion in outer peripheral sectors."
+      ]
+    },
+    "recommendations": {
+      "microMarketStrategy": [
+        "Top corridors: Airport Road, IT City (82\u201383\u2013101), New Chandigarh link road, Sectors 66\u2013115.",
+        "For commercial/IT investments: Airport Road, IT City, and SCO belts."
+      ],
+      "developerAndInfra": [
+        "Prefer reputed developers with timely delivery.",
+        "Prefer micro-markets benefiting from airport influence and multi-sector growth."
+      ],
+      "assetType": [
+        "Mid-to-premium apartments/villa floors in connected sectors.",
+        "SCOs and office spaces in Airport Road/IT City.",
+        "Plots in emerging Aerotropolis belts for long-term growth."
+      ],
+      "holdingHorizon": "Ideal horizon: 5\u20138 years to capture full IT City + Airport Road + New Chandigarh corridor impact."
+    },
+    "verdictText": "Mohali scores ~885/1000 \u2014 a well-planned, rapidly modernising city with strong IT, healthcare, and education-driven demand offering excellent long-term returns."
+  },
+  {
+    "id": 17,
+    "cityId": "pune",
+    "cityName": "Pune",
+    "altName": null,
+    "state": "Maharashtra",
+    "focus": "IT \u2022 Industrial \u2022 Education Hub \u2014 Residential + Commercial",
+    "evaluationDate": "2025-11-01",
+    "categories": [
+      {
+        "code": "L",
+        "name": "Local Economy & Indicators",
+        "maxScore": 200,
+        "score": 170,
+        "sections": [
+          {
+            "title": "Overview",
+            "body": "Pune is Maharashtra\u2019s second economic powerhouse with strong IT, auto/engineering, manufacturing, education, biotech, and services ecosystems."
+          },
+          {
+            "title": "Jobs & Diversification",
+            "body": "Large IT hubs (Hinjewadi, Kharadi, Baner\u2013Balewadi), auto manufacturing in Pimpri\u2013Chinchwad, and a vast education\u2013research network drive employment depth."
+          },
+          {
+            "title": "Population & Urbanisation",
+            "body": "High inflow of young professionals, students, and skilled workforce sustains deep end-user demand."
+          }
+        ]
+      },
+      {
+        "code": "O",
+        "name": "Ongoing / Future Projects",
+        "maxScore": 150,
+        "score": 130,
+        "sections": [
+          {
+            "title": "Catalysts",
+            "body": "Key catalysts include the Pune Metro expansion, Ring Road, Hinjewadi\u2013Shivajinagar Metro, airport expansion, and large integrated township corridors."
+          }
+        ]
+      },
+      {
+        "code": "C",
+        "name": "Connectivity & Commute",
+        "maxScore": 150,
+        "score": 135,
+        "sections": [
+          {
+            "title": "Road Network",
+            "body": "Strong arterial corridors like Mumbai\u2013Pune Highway, Nagar Road, and Katraj\u2013Dehu Road bypass support mobility across major hubs."
+          },
+          {
+            "title": "Transit",
+            "body": "Metro lines under implementation aim to reduce reliance on road transport."
+          },
+          {
+            "title": "Commute",
+            "body": "Congestion persists in Hinjewadi, Kharadi, and central zones; infra upgrades expected to ease movement."
+          }
+        ]
+      },
+      {
+        "code": "A",
+        "name": "Amenities & Gentrification",
+        "maxScore": 150,
+        "score": 140,
+        "sections": [
+          {
+            "title": "Lifestyle",
+            "body": "Premium malls, caf\u00e9s, nightlife, sports clubs, and entertainment clusters in Baner, Balewadi, Kalyani Nagar, and Kharadi."
+          },
+          {
+            "title": "Social Infrastructure",
+            "body": "Top-tier schools, universities, hospitals, and established neighbourhoods strengthen liveability."
+          },
+          {
+            "title": "Gentrification",
+            "body": "Rapid along Baner\u2013Balewadi, Kharadi\u2013Wagholi, Wakad, Hinjewadi Phase 1\u20133, and new township belts."
+          }
+        ]
+      },
+      {
+        "code": "T",
+        "name": "Trends & Historical Data",
+        "maxScore": 150,
+        "score": 130,
+        "sections": [
+          {
+            "title": "Prices & Yields",
+            "body": "Stable appreciation across IT corridors; residential yields ~2.9\u20133.4%, commercial yields higher in Kharadi and Hinjewadi."
+          },
+          {
+            "title": "Market Behaviour",
+            "body": "Pune remains one of India\u2019s most end-user\u2013driven and low-volatility markets."
+          }
+        ]
+      },
+      {
+        "code": "E",
+        "name": "Existing Supply vs Demand",
+        "maxScore": 200,
+        "score": 165,
+        "sections": [
+          {
+            "title": "Supply",
+            "body": "Large supply of mid-income apartments, premium towers, integrated townships, and Grade-A offices."
+          },
+          {
+            "title": "Demand",
+            "body": "Demand is driven by IT workforce, manufacturing professionals, students, and business families."
+          },
+          {
+            "title": "Absorption",
+            "body": "Strong absorption across Hinjewadi, Kharadi, Balewadi, and Pimpri\u2013Chinchwad; steady in central Pune."
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "totalScore": 870,
+      "maxTotalScore": 1000,
+      "grade": "A",
+      "gradeLabel": "Excellent",
+      "headlineVerdict": "A highly stable, diversified, and future-ready market anchored by IT and industrial strength with deep end-user demand."
+    },
+    "interpretation": {
+      "strengths": [
+        "Strong and diversified economy led by IT, manufacturing, and education.",
+        "High end-user demand ensures long-term stability.",
+        "Township-driven micro-markets offer planned living and sustained absorption.",
+        "Higher rental yields compared to many metros."
+      ],
+      "watchOuts": [
+        "Traffic congestion in IT corridors during peak hours.",
+        "Construction timelines and infra execution pace.",
+        "Peripheral pockets need stronger social infra."
+      ]
+    },
+    "recommendations": {
+      "microMarketStrategy": [
+        "Top residential corridors: Hinjewadi, Baner\u2013Balewadi, Kharadi, Wagholi.",
+        "For commercial: Kharadi, Hinjewadi, Viman Nagar, Balewadi High Street.",
+        "Township corridors ideal for long-term family living."
+      ],
+      "developerAndInfra": [
+        "Prefer reputed developers with strong track record in townships and IT-corridor projects.",
+        "Focus on micro-markets with upcoming Metro and Ring Road access."
+      ],
+      "assetType": [
+        "Mid-to-premium apartments in IT belt for appreciation.",
+        "Commercial strata in Kharadi/Hinjewadi for yields.",
+        "Plots/villas in township belts for long-term value growth."
+      ],
+      "holdingHorizon": "Recommended horizon: 5\u20138 years to benefit from metro and ring-road completion."
+    },
+    "verdictText": "Pune scores ~870/1000 on the LOCATE framework \u2014 a resilient, well-diversified market offering long-term appreciation backed by strong end-user demand."
+  },
+  {
+    "id": 17,
+    "cityId": "agra",
+    "cityName": "Agra",
+    "altName": null,
+    "state": "Uttar Pradesh",
+    "focus": "Tourism-Led City \u2022 End-User Residential \u2022 Retail/High-Street Driven Market",
+    "evaluationDate": "2025-11-01",
+    "categories": [
+      {
+        "code": "L",
+        "name": "Local Economy & Indicators",
+        "maxScore": 200,
+        "score": 150,
+        "sections": [
+          {
+            "title": "Overview",
+            "body": "Agra\u2019s economy is anchored by tourism (Taj Mahal), leather/footwear industries, handicrafts, engineering units, education, and healthcare."
+          },
+          {
+            "title": "Jobs & Diversification",
+            "body": "Employment is dominated by MSMEs, hospitality, retail, local manufacturing, and small service industries. Limited white-collar corporate presence."
+          },
+          {
+            "title": "Population & Urbanisation",
+            "body": "Stable, end-user\u2013driven population with consistent migration from surrounding districts."
+          }
+        ]
+      },
+      {
+        "code": "O",
+        "name": "Ongoing / Future Projects",
+        "maxScore": 150,
+        "score": 125,
+        "sections": [
+          {
+            "title": "Catalysts",
+            "body": "Agra Metro (Phase 1), road junction upgrades, heritage-area redevelopment, riverfront improvements, and tourism circuit enhancements."
+          }
+        ]
+      },
+      {
+        "code": "C",
+        "name": "Connectivity & Commute",
+        "maxScore": 150,
+        "score": 135,
+        "sections": [
+          {
+            "title": "Inter-City Connectivity",
+            "body": "Excellent regional access via the Yamuna Expressway (to Delhi\u2013Noida) and the Agra\u2013Lucknow Expressway, with strong rail connectivity."
+          },
+          {
+            "title": "Intra-City Commute",
+            "body": "Congestion persists in heritage and high-tourism cores; Metro expected to ease pressure."
+          },
+          {
+            "title": "Air Connectivity",
+            "body": "Kheria Airport operates select domestic routes as a civil enclave."
+          }
+        ]
+      },
+      {
+        "code": "A",
+        "name": "Amenities & Gentrification",
+        "maxScore": 150,
+        "score": 115,
+        "sections": [
+          {
+            "title": "Lifestyle",
+            "body": "Growing malls, hotels, caf\u00e9s, and high-street retail near major tourist and residential zones."
+          },
+          {
+            "title": "Social Infrastructure",
+            "body": "Adequate schools, colleges, and hospitals with township-level facilities emerging on peripheral corridors."
+          },
+          {
+            "title": "Gentrification",
+            "body": "Most prominent around expressway-linked corridors, newer residential belts, and township clusters."
+          }
+        ]
+      },
+      {
+        "code": "T",
+        "name": "Trends & Historical Data",
+        "maxScore": 150,
+        "score": 115,
+        "sections": [
+          {
+            "title": "Prices & Appreciation",
+            "body": "Affordable-to-mid ticket sizes with steady appreciation since 2021. Rental yields 2.6\u20133.2%."
+          },
+          {
+            "title": "Market Behaviour",
+            "body": "End-user\u2013led and tourism supportive; stable with mild seasonal fluctuations."
+          }
+        ]
+      },
+      {
+        "code": "E",
+        "name": "Existing Supply vs Demand",
+        "maxScore": 200,
+        "score": 150,
+        "sections": [
+          {
+            "title": "Supply",
+            "body": "Strong supply of apartments, plots, villas, and high-street retail along main corridors."
+          },
+          {
+            "title": "Demand",
+            "body": "Driven by end-users, small business owners, and investors focusing on retail and township plots."
+          },
+          {
+            "title": "Absorption",
+            "body": "Good absorption in ready and central projects; slower in fringe pockets."
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "totalScore": 790,
+      "maxTotalScore": 1000,
+      "grade": "B+",
+      "gradeLabel": "Good",
+      "headlineVerdict": "A well-connected, tourism-supported, end-user\u2013heavy market offering affordability and steady long-term demand."
+    },
+    "interpretation": {
+      "strengths": [
+        "Strong connectivity via expressways and rail.",
+        "Tourism-driven economic stability.",
+        "Affordable entry prices with steady appreciation.",
+        "Township development improving micro-market quality."
+      ],
+      "watchOuts": [
+        "Limited white-collar job creation.",
+        "Heritage-core congestion and seasonal crowding.",
+        "Moderate social infrastructure depth in peripheral pockets."
+      ]
+    },
+    "recommendations": {
+      "microMarketStrategy": [
+        "Prioritise expressway-linked corridors, central Deori Road belt, Fatehabad Road, and township zones.",
+        "Retail/high-street investment best near tourist routes and dense residential zones.",
+        "Avoid fringe pockets lacking supporting infrastructure."
+      ],
+      "developerAndInfra": [
+        "Choose developers with township and ready-infra capabilities.",
+        "Focus on micro-markets benefiting from Metro and expressway connectivity."
+      ],
+      "assetType": [
+        "Affordable\u2013mid apartments for end-user\u2013driven appreciation.",
+        "High-street retail for superior yield potential.",
+        "Township plots for long-term price growth."
+      ],
+      "holdingHorizon": "Ideal horizon: 5\u20138 years aligned with metro and corridor upgrades."
+    },
+    "verdictText": "Agra scores ~790/1000 on the LOCATE framework \u2014 an end-user\u2013centric, tourism-supported market with stable demand and value-driven opportunities."
+  },
+  {
+    "id": 18,
+    "cityId": "hyderabad",
+    "cityName": "Hyderabad",
+    "altName": null,
+    "state": "Telangana",
+    "focus": "Tech \u2022 Life Sciences \u2022 Corporate Hubs \u2014 Residential + Commercial",
+    "evaluationDate": "2025-11-01",
+    "categories": [
+      {
+        "code": "L",
+        "name": "Local Economy & Indicators",
+        "maxScore": 200,
+        "score": 180,
+        "sections": [
+          {
+            "title": "Overview",
+            "body": "Hyderabad is a leading multi-sector economy anchored by IT/ITES, pharmaceuticals, biotechnology, financial services, logistics, and manufacturing."
+          },
+          {
+            "title": "Jobs & Diversification",
+            "body": "The city hosts major IT campuses across HITEC City, Gachibowli, Financial District, Kokapet, and pharma/biotech anchors in Genome Valley."
+          },
+          {
+            "title": "Population & Urbanisation",
+            "body": "Strong in-migration from across India fuels premium and mid-income housing demand, with significant NRI participation."
+          }
+        ]
+      },
+      {
+        "code": "O",
+        "name": "Ongoing / Future Projects",
+        "maxScore": 150,
+        "score": 145,
+        "sections": [
+          {
+            "title": "Catalysts",
+            "body": "Metro Phase II, Airport Metro, Outer Ring Road upgrades, Regional Ring Road, Hyderabad Pharma City, Neopolis masterplan, and new radial link roads."
+          }
+        ]
+      },
+      {
+        "code": "C",
+        "name": "Connectivity & Commute",
+        "maxScore": 150,
+        "score": 135,
+        "sections": [
+          {
+            "title": "Road Network",
+            "body": "The Outer Ring Road enables high-speed regional movement with strong arterial links to IT corridors."
+          },
+          {
+            "title": "Transit",
+            "body": "Metro + Airport Metro expansion strengthens CBD-to-IT commute efficiency."
+          },
+          {
+            "title": "Commute",
+            "body": "Peak congestion in IT corridors persists but continuous infrastructure expansion reduces bottlenecks."
+          }
+        ]
+      },
+      {
+        "code": "A",
+        "name": "Amenities & Gentrification",
+        "maxScore": 150,
+        "score": 140,
+        "sections": [
+          {
+            "title": "Lifestyle",
+            "body": "Premium malls, global F&B, coworking hubs, and entertainment clusters concentrated in HITEC\u2013Gachibowli\u2013Kokapet."
+          },
+          {
+            "title": "Social Infrastructure",
+            "body": "International schools, top-tier hospitals, and modern township amenities across West Hyderabad."
+          },
+          {
+            "title": "Gentrification",
+            "body": "Rapid in Kokapet/Neopolis, Narsingi, Tellapur, and the Financial District."
+          }
+        ]
+      },
+      {
+        "code": "T",
+        "name": "Trends & Historical Data",
+        "maxScore": 150,
+        "score": 135,
+        "sections": [
+          {
+            "title": "Prices & Yields",
+            "body": "Strong appreciation across IT and airport-linked corridors. Residential yields ~3\u20134%, among the highest across major metros."
+          },
+          {
+            "title": "Market Behaviour",
+            "body": "Hyderabad has led India in price growth and commercial absorption over recent years."
+          }
+        ]
+      },
+      {
+        "code": "E",
+        "name": "Existing Supply vs Demand",
+        "maxScore": 200,
+        "score": 165,
+        "sections": [
+          {
+            "title": "Supply",
+            "body": "Significant inventory of high-rise apartments, villas, integrated communities, and extensive Grade-A office parks."
+          },
+          {
+            "title": "Demand",
+            "body": "Driven by IT, pharma, biotech, corporate professionals, and NRIs."
+          },
+          {
+            "title": "Absorption",
+            "body": "Excellent absorption across Gachibowli\u2013Kokapet\u2013Tellapur\u2013Narsingi; moderate in outer belts pending infra upgrades."
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "totalScore": 900,
+      "maxTotalScore": 1000,
+      "grade": "A+",
+      "gradeLabel": "Exceptional",
+      "headlineVerdict": "A future-ready high-performance real-estate ecosystem powered by world-class IT, pharma, and infrastructure growth."
+    },
+    "interpretation": {
+      "strengths": [
+        "India\u2019s strongest blend of IT + biotech + corporate ecosystems.",
+        "High-growth infrastructure pipeline with Airport Metro and RRR.",
+        "Strong social infrastructure across education, healthcare, and amenities.",
+        "High absorption and price momentum in key micro-markets."
+      ],
+      "watchOuts": [
+        "High dependency on IT corridor performance.",
+        "Traffic congestion in West Hyderabad during peak hours.",
+        "Rising ticket sizes in premium micro-markets."
+      ]
+    },
+    "recommendations": {
+      "microMarketStrategy": [
+        "Best residential corridors: Kokapet, Neopolis, Gachibowli, Tellapur, Narsingi.",
+        "For commercial: Financial District, HITEC City, Kokapet SEZ zones.",
+        "Avoid far-out peripheries without infra timelines."
+      ],
+      "developerAndInfra": [
+        "Choose reputed developers with proven delivery across West Hyderabad.",
+        "Prioritize micro-markets benefiting from Airport Metro and Neopolis masterplan."
+      ],
+      "assetType": [
+        "Premium high-rise apartments for capital appreciation.",
+        "Commercial Grade-A strata in Financial District for yields.",
+        "Plots/villas in Neopolis for long-term upside."
+      ],
+      "holdingHorizon": "Ideal horizon: 5\u201310 years to ride the full infra + airport-effect cycle."
+    },
+    "verdictText": "Hyderabad scores ~900/1000 on the LOCATE framework \u2014 one of India\u2019s strongest, most future-ready real estate markets with exceptional fundamentals."
+  },
+  {
+    "id": 19,
+    "cityId": "dehradun",
+    "cityName": "Dehradun",
+    "altName": null,
+    "state": "Uttarakhand",
+    "focus": "Capital City \u2022 Education Hub \u2022 Tourism \u2022 Second Homes",
+    "evaluationDate": "2025-11-01",
+    "categories": [
+      {
+        "code": "L",
+        "name": "Local Economy & Indicators",
+        "maxScore": 200,
+        "score": 165,
+        "sections": [
+          {
+            "title": "Overview",
+            "body": "Dehradun is Uttarakhand\u2019s capital and primary economic centre with strong dependence on government services, education, defence institutions, tourism, and healthcare."
+          },
+          {
+            "title": "Jobs & Diversification",
+            "body": "Employment comes from state government, defence/PSUs, universities, schools, hospitals, hospitality, retail, and tourism-linked services."
+          },
+          {
+            "title": "Population & Urbanisation",
+            "body": "Rapidly urbanising with strong lifestyle migration from NCR, Punjab, UP, and NRIs seeking second homes and long-term residence."
+          }
+        ]
+      },
+      {
+        "code": "O",
+        "name": "Ongoing / Future Projects",
+        "maxScore": 150,
+        "score": 135,
+        "sections": [
+          {
+            "title": "Catalysts",
+            "body": "Key catalysts include the Delhi\u2013Dehradun Expressway, Smart City initiatives, the upcoming Dehradun\u2013Mussoorie Ropeway, and transit proposals such as MetroNeo connecting Doon\u2013Haridwar\u2013Rishikesh."
+          }
+        ]
+      },
+      {
+        "code": "C",
+        "name": "Connectivity & Commute",
+        "maxScore": 150,
+        "score": 130,
+        "sections": [
+          {
+            "title": "Inter-City Connectivity",
+            "body": "Expressways, Jolly Grant Airport, and major rail lines connect Dehradun strongly to NCR and North India."
+          },
+          {
+            "title": "Intra-City Mobility",
+            "body": "Congestion occurs on Rajpur Road, Sahastradhara Road, GMS Road, and Haridwar Bypass during peaks; Smart City junction upgrades aim to reduce pressure."
+          }
+        ]
+      },
+      {
+        "code": "A",
+        "name": "Amenities & Gentrification",
+        "maxScore": 150,
+        "score": 130,
+        "sections": [
+          {
+            "title": "Lifestyle",
+            "body": "A fast-growing urban lifestyle with malls, caf\u00e9s, retail streets, premium restaurants, and leisure zones appealing to students and professionals."
+          },
+          {
+            "title": "Social Infrastructure",
+            "body": "Top-tier schools, colleges, coaching hubs, and multi-speciality hospitals drive the city\u2019s education\u2013health ecosystem."
+          },
+          {
+            "title": "Gentrification",
+            "body": "Fastest along Mussoorie Road, Sahastradhara Road, Rajpur Road extensions, and emerging township belts."
+          }
+        ]
+      },
+      {
+        "code": "T",
+        "name": "Trends & Historical Data",
+        "maxScore": 150,
+        "score": 130,
+        "sections": [
+          {
+            "title": "Prices & Appreciation",
+            "body": "Average prices of ~\u20b96,400\u2013\u20b96,500 psf; scenic and premium belts have seen 60\u2013100% appreciation over five years."
+          },
+          {
+            "title": "Yields & Market Behaviour",
+            "body": "Residential yields ~2.6\u20133.2%; well-managed homestays/holiday rentals offer higher returns. Market is largely end-user + second-home driven with stable momentum."
+          }
+        ]
+      },
+      {
+        "code": "E",
+        "name": "Existing Supply vs Demand",
+        "maxScore": 200,
+        "score": 160,
+        "sections": [
+          {
+            "title": "Supply",
+            "body": "Supply includes apartments, villas, plotted developments, and view-oriented projects across Mussoorie Rd, Sahastradhara Rd, Shimla Bypass, and Haridwar Rd."
+          },
+          {
+            "title": "Demand",
+            "body": "Demand comes from state employees, education/healthcare professionals, local business families, NCR migrants, and NRIs."
+          },
+          {
+            "title": "Absorption",
+            "body": "Strong absorption in well-connected, township, and scenic/view-based micro-markets."
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "totalScore": 850,
+      "maxTotalScore": 1000,
+      "grade": "A-",
+      "gradeLabel": "Excellent",
+      "headlineVerdict": "A scenic, well-connected capital city with strong education and lifestyle appeal ideal for long-term living and second-home investment."
+    },
+    "interpretation": {
+      "strengths": [
+        "Strong governance and administrative presence as state capital.",
+        "High-quality education and healthcare ecosystem.",
+        "Excellent connectivity with upcoming expressway and ropeway.",
+        "Strong demand from NCR migrants and lifestyle buyers."
+      ],
+      "watchOuts": [
+        "Peak-hour congestion in core corridors.",
+        "Limited large-scale commercial job hubs relative to metros.",
+        "Hill-terrain development constraints in certain belts."
+      ]
+    },
+    "recommendations": {
+      "microMarketStrategy": [
+        "Best corridors: Mussoorie Road, Sahastradhara Road, Rajpur Road extensions, and premium township belts.",
+        "Invest early in scenic/view-oriented projects for stronger long-term appreciation.",
+        "Avoid terrain-sensitive pockets prone to congestion or infrastructure delays."
+      ],
+      "developerAndInfra": [
+        "Prefer reputed developers offering township-led amenities and reliable delivery.",
+        "Focus on micro-markets benefiting from expressway/airport/Smart City influence."
+      ],
+      "assetType": [
+        "Apartments and villas in premium scenic belts.",
+        "Holiday homes/homestays for yield-focused investors.",
+        "Plots near major township clusters for long-term growth."
+      ],
+      "holdingHorizon": "Ideal holding period: 5\u20138 years to capture expressway completion and township maturation."
+    },
+    "verdictText": "Dehradun scores ~850/1000 on the LOCATE framework \u2014 a capital city with strong lifestyle orientation, high livability, and consistent long-term appreciation."
+  },
+  {
+    "id": 20,
+    "cityId": "thiruvananthapuram",
+    "cityName": "Thiruvananthapuram",
+    "altName": "Trivandrum",
+    "state": "Kerala",
+    "focus": "IT \u2022 Government Hub \u2022 Education \u2022 Tourism \u2014 Residential + Commercial",
+    "evaluationDate": "2025-11-01",
+    "categories": [
+      {
+        "code": "L",
+        "name": "Local Economy & Indicators",
+        "maxScore": 200,
+        "score": 170,
+        "sections": [
+          {
+            "title": "Overview",
+            "body": "Thiruvananthapuram is Kerala\u2019s administrative capital and a major hub for IT, education, research, healthcare, and tourism."
+          },
+          {
+            "title": "Jobs & Diversification",
+            "body": "Technopark (India\u2019s largest IT park) anchors IT employment; government institutions, medical research, tourism, and PSU sectors add diversification."
+          },
+          {
+            "title": "Population & Urbanisation",
+            "body": "Stable, educated population with growing inflow due to IT expansion and rising mid-income housing demand."
+          }
+        ]
+      },
+      {
+        "code": "O",
+        "name": "Ongoing / Future Projects",
+        "maxScore": 150,
+        "score": 140,
+        "sections": [
+          {
+            "title": "Catalysts",
+            "body": "Technopark Phase IV, Vizhinjam International Port, Outer Ring Road, NH-66 upgrades, Smart City initiatives, and mobility corridor expansions."
+          }
+        ]
+      },
+      {
+        "code": "C",
+        "name": "Connectivity & Commute",
+        "maxScore": 150,
+        "score": 135,
+        "sections": [
+          {
+            "title": "Road Connectivity",
+            "body": "Well-connected via NH-66, MC Road, and upcoming ring-road projects improving peripheral movement."
+          },
+          {
+            "title": "Transit",
+            "body": "International Airport, suburban railway, and proposed metro/light metro systems enhance connectivity."
+          },
+          {
+            "title": "Commute",
+            "body": "Peak-hour congestion in CBD and Kazhakkoottam IT corridor; infra upgrades expected to mitigate bottlenecks."
+          }
+        ]
+      },
+      {
+        "code": "A",
+        "name": "Amenities & Gentrification",
+        "maxScore": 150,
+        "score": 140,
+        "sections": [
+          {
+            "title": "Lifestyle",
+            "body": "Caf\u00e9s, malls, beaches, cultural venues, sports facilities, and premium leisure centres support an evolving urban lifestyle."
+          },
+          {
+            "title": "Social Infrastructure",
+            "body": "High-quality schools, universities, research institutions, and top hospitals such as SCTIMST and KIMS."
+          },
+          {
+            "title": "Gentrification",
+            "body": "Rapid across Kazhakkoottam, Akkulam, PMG Junction, and Kovalam influence zones."
+          }
+        ]
+      },
+      {
+        "code": "T",
+        "name": "Trends & Historical Data",
+        "maxScore": 150,
+        "score": 130,
+        "sections": [
+          {
+            "title": "Prices & Yields",
+            "body": "Steady appreciation in IT and coastal corridors; yields ~2.8\u20133.2%, higher in rental-demand pockets near Technopark."
+          },
+          {
+            "title": "Market Behaviour",
+            "body": "Low-volatility, end-user\u2013driven market with rising investor interest due to port and IT expansion."
+          }
+        ]
+      },
+      {
+        "code": "E",
+        "name": "Existing Supply vs Demand",
+        "maxScore": 200,
+        "score": 165,
+        "sections": [
+          {
+            "title": "Supply",
+            "body": "Apartments, villas, premium gated communities, and coastal/lakefront projects expanding rapidly across northern belts."
+          },
+          {
+            "title": "Demand",
+            "body": "Demand driven by IT professionals, government employees, NRIs, and tourism-linked buyers."
+          },
+          {
+            "title": "Absorption",
+            "body": "High absorption in Technopark-adjacent belts and township zones; moderate in southern peripheral pockets."
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "totalScore": 880,
+      "maxTotalScore": 1000,
+      "grade": "A",
+      "gradeLabel": "Excellent",
+      "headlineVerdict": "A high-potential capital city with strong IT anchors, major port development, and rising residential demand supported by robust social infrastructure."
+    },
+    "interpretation": {
+      "strengths": [
+        "Strong IT and government employment backbone.",
+        "Vizhinjam Port to transform economic potential.",
+        "High education and healthcare quality.",
+        "Steady, end-user\u2013centric appreciation."
+      ],
+      "watchOuts": [
+        "Peak congestion in IT and central zones.",
+        "Coastal regulation and terrain-led restrictions.",
+        "Execution timelines for metro/light-metro proposals."
+      ]
+    },
+    "recommendations": {
+      "microMarketStrategy": [
+        "Top corridors: Kazhakkoottam, Akkulam, Sreekaryam, PMG, Kowdiar, Kovalam belt.",
+        "Ideal for IT-linked, NRI, and lifestyle buyers."
+      ],
+      "developerAndInfra": [
+        "Prefer developers with strong coastal compliance and township capabilities.",
+        "Micro-markets near Technopark and upcoming port-linked corridors offer long-term upside."
+      ],
+      "assetType": [
+        "Mid-to-premium apartments in IT belts.",
+        "Villas/row houses in coastal and green corridors.",
+        "Commercial units near Kazhakkoottam for yield plays."
+      ],
+      "holdingHorizon": "Recommended horizon: 5\u201310 years aligned with port, ring road, and mobility project milestones."
+    },
+    "verdictText": "Thiruvananthapuram scores ~880/1000 \u2014 a stable, future-ready capital city with strong IT growth, premium social infrastructure, and long-term appreciation potential."
+  },
+  {
+    "id": 21,
+    "cityId": "jaipur",
+    "cityName": "Jaipur",
+    "altName": "Pink City",
+    "state": "Rajasthan",
+    "focus": "Tourism \u2022 IT/Corporate Growth \u2022 Education \u2022 Residential Expansion",
+    "evaluationDate": "2025-11-01",
+    "categories": [
+      {
+        "code": "L",
+        "name": "Local Economy & Indicators",
+        "maxScore": 200,
+        "score": 165,
+        "sections": [
+          {
+            "title": "Overview",
+            "body": "Jaipur is Rajasthan\u2019s capital and economic hub with strong tourism, government services, education, handicrafts, IT, and MSME activity."
+          },
+          {
+            "title": "Jobs & Diversification",
+            "body": "Employment spans tourism/hospitality, IT parks, startups, jewellery, handicrafts, retail, and government institutions."
+          },
+          {
+            "title": "Population & Urbanisation",
+            "body": "High in-migration from Rajasthan\u2019s Tier-2/3 cities and growing demand for mid-income housing across expanding urban belts."
+          }
+        ]
+      },
+      {
+        "code": "O",
+        "name": "Ongoing / Future Projects",
+        "maxScore": 150,
+        "score": 135,
+        "sections": [
+          {
+            "title": "Catalysts",
+            "body": "Key projects include the Jaipur Metro expansion, Ring Road completion, SEZ upgrades, new IT/tech parks, and large integrated townships."
+          }
+        ]
+      },
+      {
+        "code": "C",
+        "name": "Connectivity & Commute",
+        "maxScore": 150,
+        "score": 135,
+        "sections": [
+          {
+            "title": "Road Network",
+            "body": "Strong connectivity through NH48, Agra Road, Ajmer Road, Tonk Road, and Ring Road improving cross-city movement."
+          },
+          {
+            "title": "Transit",
+            "body": "Metro Phase 1 operational; further expansion planned to connect major residential and commercial zones."
+          },
+          {
+            "title": "Commute",
+            "body": "Peak congestion in old city areas; smoother commute in new corridors like Mansarovar, Jagatpura, Ajmer Road."
+          }
+        ]
+      },
+      {
+        "code": "A",
+        "name": "Amenities & Gentrification",
+        "maxScore": 150,
+        "score": 135,
+        "sections": [
+          {
+            "title": "Lifestyle",
+            "body": "Malls, multiplexes, caf\u00e9s, cultural districts, and leisure spaces concentrated in Vaishali Nagar, Mansarovar, and C-Scheme."
+          },
+          {
+            "title": "Social Infrastructure",
+            "body": "Robust education and healthcare institutions with growing private hospital chains and premium schools."
+          },
+          {
+            "title": "Gentrification",
+            "body": "Fastest along Ajmer Road, Jagatpura, Vaishali Nagar, and integrated township corridors."
+          }
+        ]
+      },
+      {
+        "code": "T",
+        "name": "Trends & Historical Data",
+        "maxScore": 150,
+        "score": 130,
+        "sections": [
+          {
+            "title": "Prices & Yields",
+            "body": "Consistent appreciation across emerging corridors; residential yields ~2.6\u20133.1%; commercial yields higher in C-Scheme, MI Road, and Vaishali Nagar."
+          },
+          {
+            "title": "Market Behaviour",
+            "body": "End-user\u2013led market with growing investor interest in township belts; low volatility."
+          }
+        ]
+      },
+      {
+        "code": "E",
+        "name": "Existing Supply vs Demand",
+        "maxScore": 200,
+        "score": 160,
+        "sections": [
+          {
+            "title": "Supply",
+            "body": "Apartments, villas, floors, and townships expanding rapidly along Ajmer Road, Jagatpura, and Tonk Road belts."
+          },
+          {
+            "title": "Demand",
+            "body": "Driven by salaried professionals, business families, students, NRIs, and tourism/hospitality-linked residents."
+          },
+          {
+            "title": "Absorption",
+            "body": "Healthy across Mansarovar, Vaishali Nagar, Jagatpura; moderate in outer peripheries."
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "totalScore": 860,
+      "maxTotalScore": 1000,
+      "grade": "A",
+      "gradeLabel": "Excellent",
+      "headlineVerdict": "A fast-modernising capital city with strong tourism, growing IT activity, and robust residential demand supported by expanding infrastructure."
+    },
+    "interpretation": {
+      "strengths": [
+        "Capital city with strong tourism and cultural economy.",
+        "Rapid residential expansion backed by townships.",
+        "Improving infrastructure including metro and ring road.",
+        "Stable end-user\u2013driven demand."
+      ],
+      "watchOuts": [
+        "Old city congestion and narrow road networks.",
+        "Peripheral areas require stronger social infra.",
+        "Limited large-scale corporate presence compared to metros."
+      ]
+    },
+    "recommendations": {
+      "microMarketStrategy": [
+        "Top corridors: Ajmer Road, Jagatpura, Vaishali Nagar, Mansarovar.",
+        "Township belts ideal for family living and long-term growth."
+      ],
+      "developerAndInfra": [
+        "Prefer reputed township developers with strong track record.",
+        "Focus on micro-markets benefiting from Ring Road and Metro expansion."
+      ],
+      "assetType": [
+        "Mid-to-premium apartments in Ajmer Road/Jagatpura.",
+        "Commercial spaces in C-Scheme, MI Road, and Vaishali Nagar for yields.",
+        "Plots/villas in premium township belts."
+      ],
+      "holdingHorizon": "Recommended horizon: 5\u20138 years aligned with metro and infra strengthening."
+    },
+    "verdictText": "Jaipur scores ~860/1000 \u2014 a high-growth capital city with strong cultural appeal, rising IT activity, and attractive residential opportunities."
+  },
+  {
+    "id": 21,
+    "cityId": "greater-noida",
+    "cityName": "Greater Noida",
+    "altName": null,
+    "state": "Uttar Pradesh",
+    "focus": "Planned City \u2022 Institutional Hub \u2022 Industrial + Residential Growth Corridor",
+    "evaluationDate": "2025-11-01",
+    "categories": [
+      {
+        "code": "L",
+        "name": "Local Economy & Indicators",
+        "maxScore": 200,
+        "score": 170,
+        "sections": [
+          {
+            "title": "Overview",
+            "body": "Greater Noida is a master-planned urban hub with strong institutional presence, industrial estates, residential sectors, education campuses, and logistics."
+          },
+          {
+            "title": "Jobs & Diversification",
+            "body": "Key employment drivers include industries in Ecotech areas, corporates in Knowledge Park, logistics hubs, education institutions, and IT/office clusters along expressways."
+          },
+          {
+            "title": "Population & Urbanisation",
+            "body": "High influx from Noida, Delhi, and Ghaziabad driven by affordability, planned sectors, and township ecosystems."
+          }
+        ]
+      },
+      {
+        "code": "O",
+        "name": "Ongoing / Future Projects",
+        "maxScore": 150,
+        "score": 140,
+        "sections": [
+          {
+            "title": "Catalysts",
+            "body": "Jewar Airport, Film City, Data Centre parks, Pod Taxi proposal, metro extension, Knowledge Park redevelopment, and expressway upgrades."
+          }
+        ]
+      },
+      {
+        "code": "C",
+        "name": "Connectivity & Commute",
+        "maxScore": 150,
+        "score": 140,
+        "sections": [
+          {
+            "title": "Road Connectivity",
+            "body": "Strong connectivity via Noida\u2013Greater Noida Expressway, Yamuna Expressway, Eastern Peripheral Expressway, and sector grid roads."
+          },
+          {
+            "title": "Transit",
+            "body": "Aqua Line metro extension proposals and future RRTS integration aim to significantly improve commute flows."
+          },
+          {
+            "title": "Commute",
+            "body": "Smooth internal commute due to planned design; congestion limited to expressway entry/exit points."
+          }
+        ]
+      },
+      {
+        "code": "A",
+        "name": "Amenities & Gentrification",
+        "maxScore": 150,
+        "score": 130,
+        "sections": [
+          {
+            "title": "Lifestyle",
+            "body": "Growing malls, retail, hospitality, stadiums, golf courses, and entertainment zones across Pari Chowk, KP sectors, and township belts."
+          },
+          {
+            "title": "Social Infrastructure",
+            "body": "Universities, schools, hospitals, and sports facilities contribute to a strong institutional foundation."
+          },
+          {
+            "title": "Gentrification",
+            "body": "Fastest in Pari Chowk, Knowledge Park, Omega\u2013Alpha\u2013Beta sectors, and expressway-linked corridors."
+          }
+        ]
+      },
+      {
+        "code": "T",
+        "name": "Trends & Historical Data",
+        "maxScore": 150,
+        "score": 125,
+        "sections": [
+          {
+            "title": "Prices & Yields",
+            "body": "Steady appreciation; rental yields ~2.7\u20133.1%. Airport influence zones showing accelerated growth."
+          },
+          {
+            "title": "Market Behaviour",
+            "body": "Stable end-user market with rising investor interest around airport, Film City, and expressway belts."
+          }
+        ]
+      },
+      {
+        "code": "E",
+        "name": "Existing Supply vs Demand",
+        "maxScore": 200,
+        "score": 165,
+        "sections": [
+          {
+            "title": "Supply",
+            "body": "Townships, high-rise apartments, villas, plotted sectors, and large-format educational/industrial campuses."
+          },
+          {
+            "title": "Demand",
+            "body": "Driven by students, corporates, airport-linked workforce, and families seeking planned living."
+          },
+          {
+            "title": "Absorption",
+            "body": "Strong absorption in Pari Chowk, Omega\u2013Alpha belts, KP sectors, and expressway zones."
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "totalScore": 850,
+      "maxTotalScore": 1000,
+      "grade": "A-",
+      "gradeLabel": "Excellent",
+      "headlineVerdict": "A well-planned, institutionally rich city with strong long-term upside driven by airport, Film City, and expressway-led multi-sector expansion."
+    },
+    "interpretation": {
+      "strengths": [
+        "Planned city layout with strong livability.",
+        "Jewar Airport and Film City transforming future potential.",
+        "Robust institutional and industrial presence.",
+        "Excellent expressway-led regional connectivity."
+      ],
+      "watchOuts": [
+        "Metro connectivity pending full execution.",
+        "Certain pockets require stronger retail/social infra.",
+        "Speculative land buying in airport-influence zones."
+      ]
+    },
+    "recommendations": {
+      "microMarketStrategy": [
+        "Best corridors: Pari Chowk, KP I\u2013V, Omega\u2013Alpha\u2013Beta sectors, Expressway belts, YEIDA link zones.",
+        "Focus on airport and Film City influence sectors for long-term bets."
+      ],
+      "developerAndInfra": [
+        "Prefer township developers with strong delivery.",
+        "Select projects with expressway access and upcoming metro alignment."
+      ],
+      "assetType": [
+        "Mid-to-premium apartments in KP/Pari Chowk.",
+        "Commercial and office spaces in KP sectors.",
+        "Plots/villas near expressway and YEIDA belts."
+      ],
+      "holdingHorizon": "Ideal horizon: 5\u201310 years aligned with airport, RRTS, and metro execution."
+    },
+    "verdictText": "Greater Noida scores ~850/1000 \u2014 a structured, infrastructure-rich city with strong economic fundamentals and upcoming mega-project catalysts."
+  },
+  {
+    "id": 22,
+    "cityId": "greater-noida-west",
+    "cityName": "Greater Noida West",
+    "altName": "Noida Extension",
+    "state": "Uttar Pradesh",
+    "focus": "Mid-Income Housing \u2022 Family-Centric Townships \u2022 Expressway-Led Growth",
+    "evaluationDate": "2025-11-01",
+    "categories": [
+      {
+        "code": "L",
+        "name": "Local Economy & Indicators",
+        "maxScore": 200,
+        "score": 160,
+        "sections": [
+          {
+            "title": "Overview",
+            "body": "Greater Noida West has emerged as one of NCR\u2019s fastest-growing housing hubs, driven by affordability, large-scale township development, and proximity to Noida\u2019s job centres."
+          },
+          {
+            "title": "Jobs & Diversification",
+            "body": "Residents depend heavily on Noida and Greater Noida job corridors\u2014IT/ITES, offices, MSMEs, retail, logistics\u2014within commutable distance."
+          },
+          {
+            "title": "Population & Urbanisation",
+            "body": "One of NCR\u2019s densest upcoming residential catchments with strong demand from young families, IT workers, small business owners, and first-time buyers."
+          }
+        ]
+      },
+      {
+        "code": "O",
+        "name": "Ongoing / Future Projects",
+        "maxScore": 150,
+        "score": 135,
+        "sections": [
+          {
+            "title": "Catalysts",
+            "body": "FNG Expressway completion, NH-24 expansion, metro extension proposal to GNW, new sector roads, drainage upgrades, and smart traffic systems accelerate future growth."
+          }
+        ]
+      },
+      {
+        "code": "C",
+        "name": "Connectivity & Commute",
+        "maxScore": 150,
+        "score": 135,
+        "sections": [
+          {
+            "title": "Road Network",
+            "body": "Strong access via Noida\u2013Greater Noida Link Road, NH-24, FNG Expressway, and widening of internal sector roads."
+          },
+          {
+            "title": "Commute",
+            "body": "Peak congestion at Gaur Chowk and Ek Murti roundabout; smoother connectivity expected with FNG completion and proposed metro expansion."
+          }
+        ]
+      },
+      {
+        "code": "A",
+        "name": "Amenities & Gentrification",
+        "maxScore": 150,
+        "score": 130,
+        "sections": [
+          {
+            "title": "Lifestyle",
+            "body": "Retail plazas, malls, high-street markets, sports academies, and large clubhouses within townships support evolving lifestyle needs."
+          },
+          {
+            "title": "Social Infrastructure",
+            "body": "Rapid addition of schools, hospitals, supermarkets, and coaching centres across Sectors 1\u201316; township amenities fill gaps."
+          },
+          {
+            "title": "Gentrification",
+            "body": "Fastest along Gaur Chowk, Sector 1\u20134, Ek Murti, Techzone 4\u20137, and crossing towards Noida Sectors 70\u201379."
+          }
+        ]
+      },
+      {
+        "code": "T",
+        "name": "Trends & Historical Data",
+        "maxScore": 150,
+        "score": 125,
+        "sections": [
+          {
+            "title": "Prices & Yields",
+            "body": "Prices have appreciated ~25\u201335% in 3 years; rental yields ~2.7\u20133.2%. Strong occupancy due to family-driven demand."
+          },
+          {
+            "title": "Market Behaviour",
+            "body": "End-user dominated; stable absorption; steady appreciation across townships; low volatility."
+          }
+        ]
+      },
+      {
+        "code": "E",
+        "name": "Existing Supply vs Demand",
+        "maxScore": 200,
+        "score": 170,
+        "sections": [
+          {
+            "title": "Supply",
+            "body": "Large inventory of mid-income apartments, studio units, retail plazas, and township clusters across Sectors 1\u201316."
+          },
+          {
+            "title": "Demand",
+            "body": "Demand is driven by Noida/IT professionals, first-time homebuyers, small business families, and tenants seeking value-based living."
+          },
+          {
+            "title": "Absorption",
+            "body": "High in ready-to-move and nearing-possession projects; improving for new launches along the FNG corridor."
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "totalScore": 855,
+      "maxTotalScore": 1000,
+      "grade": "A-",
+      "gradeLabel": "Excellent",
+      "headlineVerdict": "A high-demand, value-driven residential hub with strong township living, improving connectivity, and sustained long-term appeal for families."
+    },
+    "interpretation": {
+      "strengths": [
+        "Affordable-to-mid segment with strong end-user depth.",
+        "Large township ecosystems with mature amenities.",
+        "Massive upcoming infra (FNG, metro proposal) expected to uplift value.",
+        "Stable appreciation and strong rental occupancy."
+      ],
+      "watchOuts": [
+        "Peak-hour congestion at major junctions.",
+        "Dependence on Noida/Greater Noida for white-collar jobs.",
+        "Infra in certain pockets still developing."
+      ]
+    },
+    "recommendations": {
+      "microMarketStrategy": [
+        "Best sectors: 1\u20134, Techzone 4\u20137, Gaur Chowk belt, Ek Murti stretch.",
+        "Choose projects close to FNG corridor, NH-24 link, and Noida Sectors 70\u201379 access."
+      ],
+      "developerAndInfra": [
+        "Select reputed developers with large township presence and proven delivery.",
+        "Focus on micro-markets benefiting from expressway and proposed metro expansion."
+      ],
+      "assetType": [
+        "Mid-income apartments for end-user + rental demand.",
+        "Retail/high-street shops near dense townships for yields.",
+        "Plots/floors in upcoming belts for long-term appreciation."
+      ],
+      "holdingHorizon": "5\u20137 years ideal to benefit from FNG + Road Upgrades + Metro proposal maturity."
+    },
+    "verdictText": "Greater Noida West scores ~855/1000 \u2014 a family-centric, rapidly developing township market with strong long-term real estate fundamentals."
+  },
+  {
+    "id": 23,
+    "cityId": "vrindavan",
+    "cityName": "Vrindavan",
+    "altName": null,
+    "state": "Uttar Pradesh",
+    "focus": "Religious Tourism \u2022 Spiritual Living \u2022 Second Homes",
+    "evaluationDate": "2025-11-01",
+    "categories": [
+      {
+        "code": "L",
+        "name": "Local Economy & Indicators",
+        "maxScore": 200,
+        "score": 150,
+        "sections": [
+          {
+            "title": "Overview",
+            "body": "Vrindavan\u2019s economy is primarily driven by religious tourism, hospitality, spiritual institutions, and local businesses."
+          },
+          {
+            "title": "Pilgrimage & Services",
+            "body": "Lakhs of pilgrims visit annually, creating strong demand for hotels, ashrams, eateries, and local handicrafts."
+          },
+          {
+            "title": "Population & Urbanisation",
+            "body": "Increasing settlement by retirees, spiritual seekers, and NCR migrants seeking peaceful living."
+          }
+        ]
+      },
+      {
+        "code": "O",
+        "name": "Ongoing / Future Projects",
+        "maxScore": 150,
+        "score": 125,
+        "sections": [
+          {
+            "title": "Catalysts",
+            "body": "Yamuna Expressway influence, Mathura\u2013Vrindavan tourism upgrades, road widening, heritage walks, riverfront beautification, and township development."
+          }
+        ]
+      },
+      {
+        "code": "C",
+        "name": "Connectivity & Commute",
+        "maxScore": 150,
+        "score": 130,
+        "sections": [
+          {
+            "title": "Inter-City Access",
+            "body": "Excellent access from Delhi\u2013NCR via Yamuna Expressway; close proximity to Mathura Junction and ongoing highway enhancements."
+          },
+          {
+            "title": "Local Commute",
+            "body": "Moderate congestion during peak festival seasons; otherwise manageable commute with ongoing road upgrades."
+          }
+        ]
+      },
+      {
+        "code": "A",
+        "name": "Amenities & Gentrification",
+        "maxScore": 150,
+        "score": 120,
+        "sections": [
+          {
+            "title": "Lifestyle",
+            "body": "Spiritual living ecosystem with ashrams, meditation centres, riverside ghats, temples, and developing caf\u00e9/retail pockets."
+          },
+          {
+            "title": "Social Infrastructure",
+            "body": "Schools, hospitals, and convenience retail adequate; improving with township developments."
+          },
+          {
+            "title": "Gentrification",
+            "body": "Driven by large ashrams, townships, and second-home communities expanding across Chhatikara\u2013Sunrakh Road and Parikrama Marg extensions."
+          }
+        ]
+      },
+      {
+        "code": "T",
+        "name": "Trends & Historical Data",
+        "maxScore": 150,
+        "score": 120,
+        "sections": [
+          {
+            "title": "Prices & Yields",
+            "body": "Steady appreciation due to tourism and religious demand; yields ~2.5\u20133% for residential and higher for holiday rentals."
+          },
+          {
+            "title": "Market Behaviour",
+            "body": "Stable, low-volatility market driven by pilgrims, retirees, investors, and spiritual communities."
+          }
+        ]
+      },
+      {
+        "code": "E",
+        "name": "Existing Supply vs Demand",
+        "maxScore": 200,
+        "score": 155,
+        "sections": [
+          {
+            "title": "Supply",
+            "body": "Supply includes ashrams, apartments, villas, gated communities, and second-home projects."
+          },
+          {
+            "title": "Demand",
+            "body": "Demand is strong from devotees, NCR settlers, NRIs, and long-stay pilgrims."
+          },
+          {
+            "title": "Absorption",
+            "body": "Fast absorption in township belts; moderate in older areas with limited amenities."
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "totalScore": 800,
+      "maxTotalScore": 1000,
+      "grade": "B+",
+      "gradeLabel": "Good",
+      "headlineVerdict": "A spiritually rich, tourism-backed, second-home destination with steady long\u2011term demand."
+    },
+    "interpretation": {
+      "strengths": [
+        "Strong tourism economy and continuous footfall.",
+        "Excellent Delhi\u2013NCR connectivity via Yamuna Expressway.",
+        "Growing demand for second homes, retirement living, and holiday stays.",
+        "Township developments upgrading lifestyle quality."
+      ],
+      "watchOuts": [
+        "Festive-season congestion.",
+        "Limited large-scale job creation.",
+        "Social infrastructure still maturing in new belts."
+      ]
+    },
+    "recommendations": {
+      "microMarketStrategy": [
+        "Best corridors: Chhatikara Road, Sunrakh Road, Parikrama Marg extensions, and township belts.",
+        "Ideal for spiritual living, homestays, and second-home investment."
+      ],
+      "developerAndInfra": [
+        "Prefer reputed developers with established townships.",
+        "Select projects near expressway access and major temple circuits."
+      ],
+      "assetType": [
+        "Apartments/villas in gated communities for end-users.",
+        "Holiday rentals for yield-focused investors.",
+        "Plots in expanding corridors for long-term gains."
+      ],
+      "holdingHorizon": "Ideal horizon: 5\u20137 years aligned with tourism infra expansion."
+    },
+    "verdictText": "Vrindavan scores ~800/1000 \u2014 a peaceful, spiritually anchored destination with consistent tourism-led demand and strong second\u2011home potential."
+  },
+  {
+    "id": 24,
+    "cityId": "ludhiana",
+    "cityName": "Ludhiana",
+    "altName": null,
+    "state": "Punjab",
+    "focus": "Industrial \u2022 Manufacturing \u2022 MSME Capital \u2014 Residential + Commercial",
+    "evaluationDate": "2025-11-01",
+    "categories": [
+      {
+        "code": "L",
+        "name": "Local Economy & Indicators",
+        "maxScore": 200,
+        "score": 160,
+        "sections": [
+          {
+            "title": "Overview",
+            "body": "Ludhiana is Punjab\u2019s industrial capital with a strong base in textiles, hosiery, bicycles, auto parts, manufacturing, and MSMEs."
+          },
+          {
+            "title": "Jobs & Diversification",
+            "body": "Employment is dominated by manufacturing, trading, logistics, retail, and small-scale industrial units across Focal Points and industrial estates."
+          },
+          {
+            "title": "Population & Urbanisation",
+            "body": "A dense urban population driven by local business families, labour workforce, and small industrial units; strong end-user residential demand."
+          }
+        ]
+      },
+      {
+        "code": "O",
+        "name": "Ongoing / Future Projects",
+        "maxScore": 150,
+        "score": 120,
+        "sections": [
+          {
+            "title": "Catalysts",
+            "body": "Industrial upgrades, road-widening initiatives, Vande Bharat connectivity, new logistics hubs, and Focal Point redevelopment are key upcoming catalysts."
+          }
+        ]
+      },
+      {
+        "code": "C",
+        "name": "Connectivity & Commute",
+        "maxScore": 150,
+        "score": 130,
+        "sections": [
+          {
+            "title": "Road Connectivity",
+            "body": "Strong connectivity via NH44, Chandigarh\u2013Ludhiana Road, and GT Road; logistics movement supports industrial activity."
+          },
+          {
+            "title": "Rail Connectivity",
+            "body": "Major railway junction with strong North India connectivity; freight movement is a major strength."
+          },
+          {
+            "title": "Commute",
+            "body": "Peak congestion in industrial and market belts; internal roads improving under Smart City initiatives."
+          }
+        ]
+      },
+      {
+        "code": "A",
+        "name": "Amenities & Gentrification",
+        "maxScore": 150,
+        "score": 120,
+        "sections": [
+          {
+            "title": "Lifestyle",
+            "body": "Growing caf\u00e9s, malls, and local retail clusters supporting mid-income living; premium lifestyle pockets remain limited."
+          },
+          {
+            "title": "Social Infrastructure",
+            "body": "Strong presence of hospitals, schools, and colleges catering to a large residential base."
+          },
+          {
+            "title": "Gentrification",
+            "body": "Emerging along Pakhowal Road, South City belt, and select township corridors."
+          }
+        ]
+      },
+      {
+        "code": "T",
+        "name": "Trends & Historical Data",
+        "maxScore": 150,
+        "score": 115,
+        "sections": [
+          {
+            "title": "Prices & Yields",
+            "body": "Moderate appreciation over the last decade; residential yields ~2.5\u20133%; commercial yields higher in industrial-linked zones."
+          },
+          {
+            "title": "Market Behaviour",
+            "body": "Primarily end-user + business-family driven; stable but slower appreciation versus metros."
+          }
+        ]
+      },
+      {
+        "code": "E",
+        "name": "Existing Supply vs Demand",
+        "maxScore": 200,
+        "score": 155,
+        "sections": [
+          {
+            "title": "Supply",
+            "body": "Mix of plotted colonies, floors, apartments, and growing township developments."
+          },
+          {
+            "title": "Demand",
+            "body": "Demand driven by business owners, workers, traders, and families upgrading to township-style living."
+          },
+          {
+            "title": "Absorption",
+            "body": "Healthy absorption in developed corridors; slower in peripheral pockets."
+          }
+        ]
+      }
+    ],
+    "summary": {
+      "totalScore": 800,
+      "maxTotalScore": 1000,
+      "grade": "B+",
+      "gradeLabel": "Good",
+      "headlineVerdict": "A stable, industrial-driven city with strong end-user demand and gradual township-led transformation."
+    },
+    "interpretation": {
+      "strengths": [
+        "Industrial and MSME powerhouse with strong job depth.",
+        "Strong rail + road connectivity.",
+        "Stable end-user housing market.",
+        "Low volatility with consistent demand."
+      ],
+      "watchOuts": [
+        "Infra gaps and congestion in older industrial belts.",
+        "Limited premium lifestyle zones versus metros.",
+        "Market appreciation slower than IT-led cities."
+      ]
+    },
+    "recommendations": {
+      "microMarketStrategy": [
+        "Best corridors: Pakhowal Road, South City, Bhai Randhir Singh Nagar, Sidhwan Canal Road.",
+        "For commercial: Focal Points, GT Road, and industrial-linked corridors."
+      ],
+      "developerAndInfra": [
+        "Choose developers with reliable infra delivery.",
+        "Prefer emerging township belts offering planned amenities."
+      ],
+      "assetType": [
+        "Plotted developments and floors for end-user safety.",
+        "Commercial/industrial assets for yield-focused investors.",
+        "Township apartments for long-term appreciation."
+      ],
+      "holdingHorizon": "Recommended horizon: 5\u20137 years to benefit from infra upgrades and township expansion."
+    },
+    "verdictText": "Ludhiana scores ~800/1000 \u2014 a strong industrial city with stable end-user housing demand and evolving township-led growth."
+  }
+  
+]

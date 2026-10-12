@@ -1,0 +1,87 @@
+/**
+ * @param {"default" | "executive" | "executivePlain"} pageStyle
+ */
+export default function DashboardHeader({
+  heading,
+  buttonName,
+  functionName,
+  secondaryButtonName,
+  secondaryFunctionName,
+  secondaryDisabled = false,
+  exportExcel,
+  exportFunction,
+  exportDisabled = false,
+  exportIconType = "download",
+  pageStyle = "default",
+}) {
+  const isExecutiveChrome =
+    pageStyle === "executive" || pageStyle === "executivePlain";
+  const showExecutiveKicker = pageStyle === "executive";
+  const exportIsAdd = exportIconType === "add";
+
+  return (
+    <div
+      className={`admin-dashboard-toolbar mpf-page-toolbar${isExecutiveChrome ? " admin-dashboard-toolbar--executive" : ""}`}
+    >
+      <div className="admin-dashboard-toolbar-title-wrap">
+        <nav className="mpf-page-breadcrumb" aria-label="Breadcrumb">
+          <span>Admin</span>
+          <span className="mpf-page-breadcrumb__sep">/</span>
+          <span className="mpf-page-breadcrumb__current">{heading}</span>
+        </nav>
+        {showExecutiveKicker ? (
+          <p className="admin-dashboard-toolbar-kicker">Executive overview</p>
+        ) : null}
+        <h1 className="admin-dashboard-toolbar-title">{heading}</h1>
+      </div>
+      <div className="admin-dashboard-toolbar-actions">
+        {exportExcel && (
+          <button
+            type="button"
+            className="admin-header-btn admin-header-btn--export"
+            disabled={exportDisabled}
+            onClick={() => exportFunction()}
+          >
+            {exportIsAdd ? (
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: 6, flexShrink: 0 }} aria-hidden="true">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            ) : (
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: 6, flexShrink: 0 }} aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+              </svg>
+            )}
+            {exportExcel}
+          </button>
+        )}
+        {secondaryButtonName && (
+          <button
+            type="button"
+            className="admin-header-btn admin-header-btn--secondary"
+            disabled={secondaryDisabled}
+            onClick={() => secondaryFunctionName?.()}
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: 6, flexShrink: 0 }} aria-hidden="true">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/>
+            </svg>
+            {secondaryButtonName}
+          </button>
+        )}
+        {buttonName && (
+          <button
+            type="button"
+            className="admin-header-btn admin-header-btn--primary"
+            onClick={() => functionName()}
+          >
+            {!buttonName.trim().startsWith("+") && (
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{marginRight:6,flexShrink:0}} aria-hidden="true">
+                <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+              </svg>
+            )}
+            {buttonName}
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}

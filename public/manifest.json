@@ -1,0 +1,19 @@
+{
+  "name": "Property Portal Dashboard",
+  "short_name": "Property Portal",
+  "description": "Professional real estate portal dashboard for agents and property owners",
+  "start_url": "/portal",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#667eea",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/logo.webp",
+      "sizes": "any",
+      "type": "image/png"
+    }
+  ],
+  "categories": ["business", "productivity"],
+  "lang": "en-US"
+}

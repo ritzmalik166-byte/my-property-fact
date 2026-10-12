@@ -1,0 +1,41 @@
+/* Example highlight animation */
+@keyframes highlightPulse {
+  0%,
+  100% {
+    box-shadow: 0 0 10px 3px rgba(58, 179, 74, 0);
+  }
+  50% {
+    box-shadow: 0 0 10px 3px rgba(58, 179, 74, 0.8);
+  }
+}
+
+.highlight {
+  animation: highlightPulse 1s ease forwards;
+  border-color: #3ab34a !important; /* optional: green border during highlight */
+}
+
+/* Highlight card gradient hover effect */
+.highlight-card {
+  transition: all 0.3s ease-in-out;
+  cursor: default;
+  position: relative;
+  z-index: 1;
+  background-color: white;
+}
+
+.highlight-card:hover {
+  background: linear-gradient(to right, #ffffff, #d1fae5);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Icon styling */
+.icon-circle {
+  background-color: #d1fae5;
+  color: #16a34a;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

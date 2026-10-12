@@ -1,0 +1,1543 @@
+"use client";
+import Link from "next/link";
+import Slider from "react-slick";
+import "./property.css";
+import "../../(home)/components/common/popupform.css";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/effect-fade";
+
+// import './styles.css';
+
+// import required modules
+import { Autoplay, EffectFade, Navigation } from "swiper/modules";
+
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { buildEnquirySubmitData } from "@/lib/leadTracker";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowDown,
+  faArrowLeft,
+  faBed,
+  faBuilding,
+  faChartArea,
+  faLocationDot,
+} from "@fortawesome/free-solid-svg-icons";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import NotFound from "../../not-found";
+import Featured from "../../(home)/components/home/featured/featured";
+import CommonPopUpform from "../../(home)/components/common/popupform";
+import { LoadingSpinner } from "@/app/_global_components/LoadingSpinner";
+import { toast } from "react-toastify";
+import { sanitizeHtml } from "../../_global_components/sanitize";
+import { formatDistanceKm } from "@/lib/utils";
+import {
+  validateLeadEmail,
+  validateLeadName,
+  validateLeadPhone,
+} from "@/lib/leadValidation";
+import { Col, Row } from "react-bootstrap";
+import { usePathname, notFound } from "next/navigation";
+
+export default function Property({
+  projectDetail,
+  similarProjects = [],
+  nearbyBenefitsList,
+}) {
+  const [isAnswerVisible, setIsAnswerVisible] = useState([false, false]);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [showPopUp, setShowPopUp] = useState(false);
+  const [showLoading, setShowLoading] = useState(false);
+  const [amenities, setAllAmenities] = useState([]);
+  const [amenityButtonName, setAmenityButtonName] = useState("VIEW MORE");
+  const [amenityButtonStatus, setAmenityButtonStatus] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [backToHomeExpanded, setBackToHomeExpanded] = useState(false);
+  const [allNearbyBenefits, setAllNearbyBenefits] = useState(() =>
+    Array.isArray(nearbyBenefitsList) ? nearbyBenefitsList : [],
+  );
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+    enquiryFrom: "",
+    projectLink: "",
+    pageName: "",
+  });
+  const pathname = usePathname();
+  const [validated, setValidated] = useState(false);
+  const [validated1, setValidated1] = useState(false);
+  //Defining loading state
+  const [loading, setLoading] = useState(true);
+
+  //Validation errors state
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+    phone: "",
+  });
+
+  //Validation functions
+  const validateName = validateLeadName;
+  const validateEmail = validateLeadEmail;
+  const validatePhone = validateLeadPhone;
+
+  //Handling answer div
+  const toggleAnswer = (index) => {
+    const updatedVisibility = [...isAnswerVisible];
+    updatedVisibility[index] = !updatedVisibility[index];
+    setIsAnswerVisible(updatedVisibility);
+  };
+
+  const bannerImages = projectDetail.desktopImages ?? [];
+  const bannerMultiple = bannerImages.length > 1;
+
+  // Gallery arrows: same style as Similar Projects (featured) – white circle + SVG icons
+  const GalleryPrevArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <button
+        type="button"
+        className={`${className || ""} custom-featured-arrow custom-featured-arrow-prev gallery-featured-arrow`}
+        style={style}
+        onClick={onClick}
+        aria-label="Previous slide"
+      >
+        <img
+          src="/icon/arrow-left-s-line.svg"
+          alt="Previous"
+          title="Previous"
+          width={32}
+          height={32}
+        />
+      </button>
+    );
+  };
+  const GalleryNextArrow = (props) => {
+    const { className, style, onClick } = props;
+    return (
+      <button
+        type="button"
+        className={`${className || ""} custom-featured-arrow custom-featured-arrow-next gallery-featured-arrow`}
+        style={style}
+        onClick={onClick}
+        aria-label="Next slide"
+      >
+        <img
+          src="/icon/arrow-right-s-line.svg"
+          alt="Next"
+          title="Next"
+          width={32}
+          height={32}
+        />
+      </button>
+    );
+  };
+
+  //Setting for gallery slider
+  const settings1 = {
+    dots: false,
+    infinite: (projectDetail.galleryImages?.length ?? 0) > 1,
+    speed: 500,
+    autoplay: (projectDetail.galleryImages?.length ?? 0) > 1,
+    slidesToShow: 2, // Default for large screens
+    arrows: true,
+    prevArrow: <GalleryPrevArrow />,
+    nextArrow: <GalleryNextArrow />,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 1024, // Tablets
+        settings: {
+          slidesToShow: 2,
+        },
+      },
+      {
+        breakpoint: 768, // Mobile (Medium screens)
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+      {
+        breakpoint: 480, // Small mobile screens
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
+
+  // Floor plan area: support areaSqFt, areaSqft, area, size; show sq mt if available
+  const getFloorPlanArea = (plan) => {
+    const sqFt = plan?.areaSqFt ?? plan?.areaSqft ?? plan?.area ?? plan?.size;
+    const sqMt = plan?.areaSqMt != null ? parseFloat(plan.areaSqMt) : null;
+    if (!sqFt && sqMt == null) return "On Request";
+    const parts = [];
+    if (sqFt) parts.push(`${String(sqFt).trim()} sq ft`);
+    if (Number.isFinite(sqMt)) parts.push(`${sqMt.toFixed(2)} sq mt`);
+    return parts.length ? parts.join(" • ") : "On Request";
+  };
+
+  //Generating price in lakh & cr
+  const generatePrice = (price) => {
+    if (/[a-zA-Z]/.test(price)) {
+      return price;
+    }
+    return price < 1
+      ? "₹ " + Math.round(parseFloat(price) * 100) + " Lakh* Onwards"
+      : "₹ " + parseFloat(price) + " Cr* Onwards";
+  };
+  //Handle form input data
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((preData) => ({
+      ...preData,
+      [name]: value,
+    }));
+
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: "",
+      }));
+    }
+  };
+
+  //Handle blur validation
+  const handleBlur = (e) => {
+    const { name, value } = e.target;
+    let error = "";
+
+    if (name === "name") {
+      error = validateName(value);
+    } else if (name === "email") {
+      error = validateEmail(value);
+    } else if (name === "phone") {
+      error = validatePhone(value);
+    }
+
+    setErrors((prev) => ({
+      ...prev,
+      [name]: error,
+    }));
+  };
+
+  //Handle submit form
+  const handleSubmit = async (e, form_position) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+
+    // Validate all fields
+    const nameError = validateName(formData.name);
+    const emailError = validateEmail(formData.email);
+    const phoneError = validatePhone(formData.phone);
+
+    const newErrors = {
+      name: nameError,
+      email: emailError,
+      phone: phoneError,
+    };
+
+    setErrors(newErrors);
+
+    // Check if form is valid
+    const isFormValid =
+      form.checkValidity() &&
+      !nameError &&
+      !emailError &&
+      !phoneError &&
+      formData.message.trim() !== "";
+
+    if (form_position === "bottom_form") {
+      if (!isFormValid) {
+        e.stopPropagation();
+        setValidated1(true);
+        toast.error("Please fill all fields correctly!");
+        return;
+      }
+    } else {
+      if (!isFormValid) {
+        e.stopPropagation();
+        setValidated(true);
+        toast.error("Please fill all fields correctly!");
+        return;
+      }
+    }
+
+    try {
+      setShowLoading(true);
+      // Make API request
+      const submitData = await buildEnquirySubmitData(
+        {
+          ...formData,
+          enquiryFrom: projectDetail.projectName,
+          projectLink: process.env.NEXT_PUBLIC_UI_URL + pathname,
+          pageName: "Project Detail",
+        },
+        {
+          property: {
+            property_name: projectDetail.projectName ?? null,
+            project: projectDetail.projectName ?? null,
+            builder: projectDetail.builderName ?? null,
+            city: projectDetail.cityName ?? null,
+            locality: projectDetail.location ?? null,
+            bhk: projectDetail.propertyType ?? null,
+          },
+        },
+      );
+
+      const response = await axios.post(
+        process.env.NEXT_PUBLIC_API_URL + "enquiry/post",
+        submitData,
+      );
+      // Check if response is successful
+      if (response.data.isSuccess === 1) {
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          message: "",
+          enquiryFrom: "",
+          projectLink: "",
+        });
+        setErrors({
+          name: "",
+          email: "",
+          phone: "",
+        });
+        if (form_position === "bottom_form") {
+          setValidated1(false);
+        } else {
+          setValidated(false);
+        }
+        toast.success("Enquiry sent successfully");
+      } else {
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast.error(
+        error.response?.data?.message || "An error occurred. Please try again.",
+      );
+    } finally {
+      setShowLoading(false);
+    }
+  };
+
+// Add nearby image icon to the nearby benefits
+const addNearbyImageIcon = (benefit) => {
+  const name = typeof benefit === "string" ? benefit.trim() : "";
+  if (!name || !allNearbyBenefits?.length) return null;
+  const lower = name.toLowerCase();
+  const nearbyBenefit = allNearbyBenefits.find(
+    (b) =>
+      b.benefitName &&
+      (b.benefitName.toLowerCase() === lower ||
+        b.benefitName.toLowerCase().includes(lower) ||
+        lower.includes(b.benefitName.toLowerCase()))
+  );
+  return nearbyBenefit?.benefitIcon
+    ? `${process.env.NEXT_PUBLIC_IMAGE_URL}nearby-benefit/${nearbyBenefit.benefitIcon}`
+    : null;
+};
+  // Back to home: show text while scrolling, icon only when scroll stopped
+  useEffect(() => {
+    let scrollEndTimer = null;
+    const handleBackToHomeScroll = () => {
+      setBackToHomeExpanded(true);
+      if (scrollEndTimer) clearTimeout(scrollEndTimer);
+      scrollEndTimer = setTimeout(() => setBackToHomeExpanded(false), 1200);
+    };
+    window.addEventListener("scroll", handleBackToHomeScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", handleBackToHomeScroll);
+      if (scrollEndTimer) clearTimeout(scrollEndTimer);
+    };
+  }, []);
+
+  // Nearby benefits: loaded on server for this route; client fetch only if not passed
+  useEffect(() => {
+    if (Array.isArray(nearbyBenefitsList)) return;
+
+    const fetchBenefits = async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}nearby-benefit/get-all`,
+        );
+        setAllNearbyBenefits(res.data);
+      } catch (err) {
+        console.error("Failed to fetch nearby benefits", err);
+      }
+    };
+
+    fetchBenefits();
+  }, [nearbyBenefitsList]);
+
+  useEffect(() => {
+    setAllAmenities((projectDetail?.amenities || []).slice(0, 18));
+    const header = document.querySelector(".project-detail-header");
+    const handleScroll = () => {
+      const scrollY = window.scrollY;
+      const opacity = Math.min(scrollY / 2000, 1);
+      header.style.background = `rgb(13, 88, 52, ${opacity})`;
+    };
+    window.addEventListener("scroll", handleScroll);
+
+    // Close mobile menu when resizing to desktop view
+    const handleResize = () => {
+      if (window.innerWidth >= 992) {
+        const menu = document.getElementById("property-mbdiv");
+        const menuButtons = document.querySelectorAll(".project-menuBtn");
+        if (menu && menu.classList.contains("active")) {
+          menu.classList.remove("active");
+          menu.style.display = "none";
+          menuButtons.forEach((btn) => btn.classList.remove("closeMenuBtn"));
+          setMenuOpen(false);
+          header?.classList.remove("notfixed");
+          document.body.classList.remove("menu-open");
+        }
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [projectDetail?.amenities]);
+
+  // Cleanup scroll lock when component unmounts or menu closes
+  useEffect(() => {
+    return () => {
+      // Ensure scroll lock is removed on unmount
+      document.body.classList.remove("menu-open");
+      document.body.classList.remove("overflow-hidden");
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+    };
+  }, []);
+
+  // Ensure scroll lock is properly managed when menu state changes
+  useEffect(() => {
+    if (!menuOpen) {
+      // Ensure scroll is restored when menu closes
+      document.body.classList.remove("menu-open");
+      document.body.classList.remove("overflow-hidden");
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+    }
+  }, [menuOpen]);
+
+  //Handle opening and closing of the property detail page mobile menu
+  const openMenu = (e, targetId) => {
+    // Only prevent default for menu link clicks (when targetId is provided)
+    // Don't prevent default for hamburger button or backdrop clicks
+    if (e && targetId && e.preventDefault) {
+      e.preventDefault();
+    }
+
+    const menuButtons = document.querySelectorAll(".project-menuBtn");
+    const menu = document.getElementById("property-mbdiv");
+    const header = document.querySelector(".project-detail-header");
+
+    if (!menu) return;
+
+    // Determine if menu should be open or closed
+    let isMenuOpen;
+    if (targetId) {
+      // If clicking a menu link, close the menu
+      isMenuOpen = false;
+      menu.classList.remove("active");
+    } else {
+      // Otherwise toggle the menu
+      isMenuOpen = menu.classList.toggle("active");
+    }
+
+    // Toggle menu button classes
+    menuButtons.forEach((btn) =>
+      btn.classList.toggle("closeMenuBtn", isMenuOpen),
+    );
+
+    setMenuOpen(isMenuOpen);
+
+    // Toggle display
+    menu.style.display = isMenuOpen ? "block" : "none";
+
+    // Toggle header class
+    header?.classList.toggle("notfixed", isMenuOpen);
+
+    // Toggle body scroll lock - ensure it's properly removed when menu closes
+    if (isMenuOpen) {
+      document.body.classList.add("menu-open");
+    } else {
+      document.body.classList.remove("menu-open");
+      document.body.classList.remove("overflow-hidden");
+      // Ensure body can scroll again
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+    }
+
+    // Handle scrolling when clicking a menu link
+    if (targetId) {
+      // Use setTimeout to ensure menu is closed and scroll lock is removed before scrolling
+      setTimeout(() => {
+        const targetElement = document.getElementById(targetId);
+        if (targetElement) {
+          const headerHeight = header ? header.offsetHeight : 0;
+          const targetPosition =
+            targetElement.getBoundingClientRect().top +
+            window.scrollY -
+            headerHeight -
+            50;
+
+          window.scrollTo({
+            top: targetPosition,
+            behavior: "smooth",
+          });
+        }
+      }, 150);
+    }
+  };
+
+  const handleBackToHomeClick = () => {
+    const menu = document.getElementById("property-mbdiv");
+    const menuButtons = document.querySelectorAll(".project-menuBtn");
+    const header = document.querySelector(".project-detail-header");
+
+    if (menu) {
+      menu.classList.remove("active");
+      menu.style.display = "none";
+    }
+    menuButtons?.forEach((btn) => btn.classList.remove("closeMenuBtn"));
+    header?.classList.remove("notfixed");
+    setMenuOpen(false);
+
+    document.body.classList.remove("menu-open");
+    document.body.classList.remove("overflow-hidden");
+    document.body.style.overflow = "";
+    document.body.style.position = "";
+  };
+
+  /** MPF logo: open home in a new tab so project-page CSS / Bootstrap state never leaks into home. */
+  const handleMpfLogoOpenHomeNewTab = () => {
+    const menu = document.getElementById("property-mbdiv");
+    const menuButtons = document.querySelectorAll(".project-menuBtn");
+    const header = document.querySelector(".project-detail-header");
+
+    if (menu) {
+      menu.classList.remove("active");
+      menu.style.display = "none";
+    }
+    menuButtons?.forEach((btn) => btn.classList.remove("closeMenuBtn"));
+    header?.classList.remove("notfixed");
+    setMenuOpen(false);
+
+    document.body.classList.remove("menu-open");
+    document.body.classList.remove("overflow-hidden");
+    document.body.style.overflow = "";
+    document.body.style.position = "";
+
+    if (typeof window === "undefined") return;
+    const homeUrl = `${window.location.origin}/`;
+    const a = document.createElement("a");
+    a.href = homeUrl;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+  };
+
+  //Generating banner src
+  // const imageSrc = `${process.env.NEXT_PUBLIC_IMAGE_URL}properties/${projectDetail.slugURL}/${projectDetail.banners[0].desktopImage}`;
+  // const imageSrc = `/properties/${projectDetail.slugURL}/${projectDetail.projectThumbnail}`;
+
+  //Checking If project detail is not available then show not found page
+  if (!projectDetail) {
+    notFound();
+    return null;
+  }
+
+  const imageBase = process.env.NEXT_PUBLIC_IMAGE_URL || "";
+  const slugURL = projectDetail.slugURL || "";
+  const builderSlug = String(
+    projectDetail.builder?.slugURL ||
+      projectDetail.builder?.slugUrl ||
+      projectDetail.builder?.slug ||
+      projectDetail.builder?.builderSlug ||
+      "",
+  ).trim();
+  const builderPageHref = builderSlug ? `/builder/${builderSlug}` : null;
+  const projectImageSrc = (filename) =>
+    filename && slugURL ? `${imageBase}properties/${slugURL}/${filename}` : "/static/no_image.png";
+  const getBannerAltText = (item, index) =>
+    String(item?.altTag || "").trim() ||
+    String(projectDetail?.projectName || "").trim() ||
+    `${projectDetail.projectName || "Property"} banner ${index + 1}`;
+
+  const viewAllAmenities = () => {
+    const amenitiesList = projectDetail.amenities || [];
+    setAmenityButtonStatus((prev) => {
+      if (prev === true) {
+        setAllAmenities(amenitiesList.slice(0, 18));
+      } else {
+        setAllAmenities(amenitiesList);
+      }
+      return !prev; // toggle status
+    });
+
+    setAmenityButtonName((prev) =>
+      prev === "VIEW MORE" ? "VIEW LESS" : "VIEW MORE",
+    );
+  };
+
+  return (
+    <>
+      <Link
+        title="Back to My Property Fact home page (opens in a new tab)"
+        href="/"
+        target="_blank"
+        rel="noopener noreferrer"
+        className={`back-to-home-floating ${backToHomeExpanded ? "back-to-home-floating--expanded" : ""}`}
+        aria-label="Back to MyPropertyFact home page (opens in a new tab)"
+        onClick={handleBackToHomeClick}
+      >
+        <span className="back-to-home-floating__text">Back To Home</span>
+        <span className="back-to-home-floating__icon">
+          <FontAwesomeIcon icon={faArrowLeft} />
+        </span>
+      </Link>
+      {/* Header for property detail page */}
+      <header
+        className={`project-detail-header px-4 ${
+          isScrolled ? "fixed-header" : ""
+        }`}
+      >
+        <div className="main-header">
+          <div className="d-flex justify-content-between align-items-center">
+            <div className="d-flex justify-content-center align-items-center">
+              <Link
+                title="View builder profile"
+                href={builderPageHref || "/"}
+                aria-label={
+                  builderPageHref
+                    ? `View ${projectDetail.builder?.builderName || "builder"} profile`
+                    : "Home"
+                }
+                {...(builderPageHref
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
+              >
+                <img
+                  width={198}
+                  height={51}
+                  src={projectImageSrc(projectDetail.projectLogo)}
+                  alt={projectDetail.builder?.builderName || projectDetail.projectName || "Project logo"}
+                  title={projectDetail.builder?.builderName || projectDetail.projectName || "Project logo"}
+                  className="img-fluid"
+                />
+              </Link>
+            </div>
+            <nav className="navi d-none d-lg-flex">
+              <div className="menu">
+                <ul className="list-inline d-flex text-decoration-none gap-5 m-0 align-items-center">
+                  <li>
+                    <Link
+                      title="View Overview"
+                      className="text-decoration-none text-light fs-5 fw-bold"
+                      href="#overview"
+                    >
+                      Overview
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      title="View Amenities"
+                      className="text-decoration-none text-light fs-5 fw-bold"
+                      href="#amenities"
+                    >
+                      Amenities
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      title="View Plans & Price"
+                      className="text-decoration-none text-light fs-5 fw-bold"
+                      href="#floorplan"
+                    >
+                      Plans &amp; Price
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      title="View Gallery"
+                      className="text-decoration-none text-light fs-5 fw-bold"
+                      href="#gallery"
+                    >
+                      Gallery
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      title="View Location"
+                      className="text-decoration-none text-light fs-5 fw-bold"
+                      href="#location"
+                    >
+                      Location
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+            {/* Defining header for small devices */}
+            <div
+              className="project-mbMenuContainer"
+              id="property-mbdiv"
+              onClick={(e) => {
+                // close when clicking on dark backdrop only
+                if (e.target.id === "property-mbdiv" && menuOpen) {
+                  openMenu(e);
+                }
+              }}
+            >
+              <div className="mbMenu" onClick={(e) => e.stopPropagation()}>
+                {/* Mobile menu header with logo + close */}
+                <div className="project-mbMenu-header d-flex align-items-center justify-content-between mb-4">
+                  <Link
+                    title="My Property Fact home (opens in a new tab)"
+                    href="/"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      handleMpfLogoOpenHomeNewTab();
+                    }}
+                    aria-label="My Property Fact home (opens in a new tab)"
+                  >
+                    <img
+                      src="/logo.webp"
+                      alt="My Property Fact logo — project page mobile menu"
+                      title="My Property Fact logo — project page mobile menu"
+                      width={50}
+                      height={55}
+                      className="img-fluid"
+                    />
+                  </Link>
+                  {/* <button
+                    type="button"
+                    className="project-mbMenu-close"
+                    onClick={(e) => openMenu(e)}
+                    aria-label="Close menu"
+                  >
+                    <span></span>
+                    <span></span>
+                  </button> */}
+                </div>
+
+                <ul className="project-mb-list d-lg-none">
+                  <li>
+                    <Link
+                      title="Back to My Property Fact home page (opens in a new tab)"
+                      href="/"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-decoration-none"
+                      onClick={handleBackToHomeClick}
+                    >
+                      Back to Home
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      title="View Overview"
+                      href="#overview"
+                      className="text-decoration-none"
+                      onClick={(e) => openMenu(e, "overview")}
+                    >
+                      Overview
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      title="View Amenities"
+                      href="#amenities"
+                      className="text-decoration-none"
+                      onClick={(e) => openMenu(e, "amenities")}
+                    >
+                      Amenities
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      title="View Plans & Price"
+                      href="#floorplan"
+                      className="text-decoration-none"
+                      onClick={(e) => openMenu(e, "floorplan")}
+                    >
+                      Plans &amp; Price
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      title="View Gallery"
+                      href="#gallery"
+                      className="text-decoration-none"
+                      onClick={(e) => openMenu(e, "gallery")}
+                    >
+                      Gallery
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      title="View Location"
+                      href="#location"
+                      className="text-decoration-none"
+                      onClick={(e) => openMenu(e, "location")}
+                    >
+                      Location
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            {/* Defining hamburger button for property detail page (mobile) */}
+            <div
+              className="project-menuBtn d-flex d-lg-none"
+              onClick={openMenu}
+            >
+              <span id="menuLine1"></span>
+              <span id="menuLine2"></span>
+              <span id="menuLine3"></span>
+            </div>
+            {/* Logo container */}
+            <div className="logo d-none d-lg-block px-4">
+              <Link
+                title="My Property Fact home (opens in a new tab)"
+                href="/"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleMpfLogoOpenHomeNewTab();
+                }}
+                aria-label="My Property Fact home (opens in a new tab)"
+              >
+                <img
+                  src="/logo.webp"
+                  alt="My Property Fact logo — project page header"
+                  title="My Property Fact logo — project page header"
+                  width={70}
+                  height={70}
+                  className="img-fluid"
+                />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div id="home" className="container-fluid p-0">
+        {/* Banner container for property detail page  */}
+        <div className="slick-slider-container">
+          <Swiper
+            modules={[Autoplay, EffectFade]}
+            className="property-banner-swiper"
+            slidesPerView={1}
+            speed={300}
+            loop={bannerMultiple}
+            allowTouchMove={bannerMultiple}
+            effect={bannerMultiple ? "fade" : "slide"}
+            fadeEffect={{ crossFade: true }}
+            autoplay={
+              bannerMultiple
+                ? { delay: 3000, disableOnInteraction: false }
+                : false
+            }
+          >
+            {bannerImages.map((item, index) => (
+              <SwiperSlide key={`${item.id}-${index}`}>
+                <div className="image-con">
+                  <img loading="eager"
+                    src={projectImageSrc(item.desktopImage)}
+                    alt={getBannerAltText(item, index)}
+                    title={getBannerAltText(item, index)}
+                    fetchPriority={index === 0 ? "high" : "low"}
+                    className="slick-banner-img"
+                   style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}/>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+
+          {/* Defining form on banner container - desktop only; mobile uses popup via floating Enquire button */}
+          <div className="banner-form d-none d-lg-block">
+            <Form
+              noValidate
+              validated={validated}
+              onSubmit={(e) => handleSubmit(e, "top_form")}
+            >
+              <Form.Group className="mb-3" controlId="full_name">
+                <Form.Control
+                  type="text"
+                  placeholder="Full name"
+                  value={formData.name || ""}
+                  onChange={(e) => handleChange(e)}
+                  onBlur={handleBlur}
+                  name="name"
+                  isInvalid={
+                    !!errors.name || (validated && !formData.name.trim())
+                  }
+                  required
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.name || "Please provide a valid name."}
+                </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="email_id">
+                <Form.Control
+                  type="email"
+                  placeholder="Email id"
+                  value={formData.email || ""}
+                  onChange={(e) => handleChange(e)}
+                  onBlur={handleBlur}
+                  name="email"
+                  isInvalid={
+                    !!errors.email || (validated && !formData.email.trim())
+                  }
+                  required
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.email || "Please provide a valid email."}
+                </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="phone_number">
+                <Form.Control
+                  type="tel"
+                  placeholder="Phone Number"
+                  value={formData.phone || ""}
+                  onChange={(e) => handleChange(e)}
+                  onBlur={handleBlur}
+                  name="phone"
+                  isInvalid={
+                    !!errors.phone || (validated && !formData.phone.trim())
+                  }
+                  required
+                />
+                <Form.Control.Feedback type="invalid">
+                  {errors.phone || "Please provide a valid phone number."}
+                </Form.Control.Feedback>
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="message">
+                <Form.Control
+                  as="textarea"
+                  rows={3}
+                  placeholder="Message"
+                  value={formData.message || ""}
+                  onChange={(e) => handleChange(e)}
+                  name="message"
+                  required
+                />
+                <Form.Control.Feedback type="invalid">
+                  Please provide a valid message.
+                </Form.Control.Feedback>
+              </Form.Group>
+              <div>
+                <Button
+                  className="btn btn-background border-0 w-50"
+                  type="submit"
+                  disabled={showLoading}
+                >
+                  Submit <LoadingSpinner show={showLoading} />
+                </Button>
+              </div>
+            </Form>
+          </div>
+          <div
+            className="scroll-down-btn d-none d-md-flex"
+            onClick={() => window.scrollBy({ top: 600, behavior: "smooth" })}
+          >
+            <div className="d-flex flex-column align-items-center justify-content-center text-center fs-5">
+              <span>
+                <FontAwesomeIcon icon={faArrowDown} />
+              </span>
+              <span>Scroll Down</span>
+              <i className="fas fa-chevron-down"></i>
+            </div>
+          </div>
+        </div>
+
+        <div
+          id="overview"
+          className="container py-5 bg-white rounded-3 mt-3 mb-3"
+        >
+          <div className="row gy-5 align-items-stretch">
+            {/* Project Info */}
+            <div className="col-lg-4">
+              <div className="p-2 p-lg-5 rounded-4 bg-white h-100 d-flex flex-column justify-content-center align-items-center custom-shadow">
+                <div>
+                  <h1 className="mb-3 text-dark fw-bold">
+                    {projectDetail.projectName}
+                  </h1>
+
+                  <p className="fs-5 mb-3 text-muted d-flex align-items-center">
+                    <FontAwesomeIcon
+                      icon={faLocationDot}
+                      className="text-success me-2 fs-5"
+                    />
+                    <span>{projectDetail.projectLocality}, {projectDetail.city}, {projectDetail.state}</span>
+                  </p>
+
+                  {projectDetail.builder?.builderName && (
+                    <p className="fs-5 mb-3 text-muted d-flex align-items-center">
+                      {builderPageHref ? (
+                        <Link
+                          title="View builder profile"
+                          href={builderPageHref}
+                          className="text-decoration-none text-muted d-inline-flex align-items-center builder-profile-link"
+                          aria-label={`View ${projectDetail.builder.builderName} profile`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          <FontAwesomeIcon
+                            icon={faBuilding}
+                            className="text-success me-2 fs-5"
+                          />
+                          <span>{projectDetail.builder.builderName}</span>
+                        </Link>
+                      ) : (
+                        <>
+                          <FontAwesomeIcon
+                            icon={faBuilding}
+                            className="text-success me-2 fs-5"
+                          />
+                          <span>{projectDetail.builder.builderName}</span>
+                        </>
+                      )}
+                    </p>
+                  )}
+
+                  <p className="fs-5 text-dark mb-2">
+                    <strong>
+                      Price: {generatePrice(projectDetail.projectPrice)}
+                    </strong>
+                  </p>
+
+                  <p className="fs-6 text-muted mb-2">
+                    {projectDetail.projectConfiguration}
+                  </p>
+
+                  <p className="fs-6 text-muted">
+                    <strong className="text-dark">RERA:</strong>{" "}
+                    {projectDetail.reraNo || "Not found"}
+                  </p>
+                </div>
+                <button
+                  className="btn btn-success border-0 btn-background text-white w-100 p-2"
+                  onClick={() => setShowPopUp(true)}
+                >
+                  <span className="m-0 d-inline-block fw-semibold">Get Detail</span>
+                </button>
+              </div>
+            </div>
+            {/* Walkthrough Description */}
+            <div className="col-lg-8">
+              <div className="bg-white p-4 p-md-5 rounded-4 custom-shadow h-100">
+                <h2 className="text-dark fw-bold mb-4 text-center text-md-start">
+                  Project Overview
+                </h2>
+
+                <div
+                  className="text-muted fs-6 lh-lg"
+                  dangerouslySetInnerHTML={{
+                    __html: projectDetail.projectWalkthroughDescription,
+                  }}
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Amenities section */}
+        <div className="container-fluid py-5 text-white mb-5" id="amenities">
+          {/* Title */}
+          <h2 className="text-center fw-bold mb-5">Amenities</h2>
+
+          {/* Description (API may return amenityDesc or amenityDescription) */}
+          {(projectDetail.amenityDescription || projectDetail.amenityDesc) && (
+            <div
+              className="text-center container mb-5"
+              dangerouslySetInnerHTML={{
+                __html: projectDetail.amenityDescription || projectDetail.amenityDesc || "",
+              }}
+            />
+          )}
+
+          {/* Amenities Grid */}
+          <div className="container d-flex flex-wrap justify-content-center gap-3 mb-5 amenity-container">
+            {amenities.map((item, index) => (
+              <div key={index} className="amenity-detail-container">
+                <div className="bg-white mb-3 p-3 rounded-2">
+                  <img
+                    src={`${process.env.NEXT_PUBLIC_IMAGE_URL}amenity/${item.image}`}
+                    height={60}
+                    width={60}
+                    alt={item.altTag || item.title || "Amenity"}
+                    title={item.altTag || item.title || "Amenity"}
+                    className="mb-3 d-flex mx-auto"
+                  />
+                </div>
+                <p className="text-white text-center fs-6">{item.title}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* View All Button */}
+          <div className="text-center">
+            <Button
+              className="btn btn-background rounded-3 text-white border-0 px-5 py-3"
+              onClick={() => viewAllAmenities(amenityButtonName)}
+            >
+              {amenityButtonName}
+            </Button>
+          </div>
+        </div>
+
+        {/* Floor plans section */}
+        <div className="container mb-5" id="floorplan">
+          <div className="">
+            <h2 className="text-center fw-bold mb-4">Floor Plans</h2>
+            {(projectDetail.floorPlanDescription || projectDetail.floorPlanDesc) && (
+              <div
+                className="text-center mb-4"
+                dangerouslySetInnerHTML={{
+                  __html: projectDetail.floorPlanDescription || projectDetail.floorPlanDesc || "",
+                }}
+              />
+            )}
+          </div>
+          {/* <div className="d-flex justify-content-center p-2 d-flex flex-column flex-md-row gap-md-3 flex-wrap flex-lg-nowrap"> */}
+          <Swiper
+            direction="horizontal"
+            navigation={true}
+            pagination={{ clickable: true }}
+            spaceBetween={20}
+            loop={true}
+            breakpoints={{
+              320: { slidesPerView: 1 },
+              576: { slidesPerView: 1.5 },
+              768: { slidesPerView: 2 },
+              992: { slidesPerView: 3 },
+              1200: { slidesPerView: 4 },
+            }}
+            modules={[Navigation]}
+            className="mySwiper p-2"
+          >
+            {projectDetail.floorPlans?.map((item, index) => (
+              <SwiperSlide key={`${item.planType}-${index}`}>
+                <div className="card">
+                  <div className="p-3 rounded-sm d-flex mx-auto">
+                    <img
+                      width={300}
+                      height={200}
+                      className="img-fluid rounded-3"
+                      src="/static/generic-floorplan.jpg"
+                      alt="floor plan"
+                      title="floor plan"
+                    />
+                  </div>
+                  <div className="border-bottom property-type-detail">
+                    <p>
+                      <FontAwesomeIcon icon={faBed} width={20} color="green" />{" "}
+                      Type
+                    </p>
+                    <p>{item.planType}</p>
+                  </div>
+                  <div className="mt-2 property-type-detail">
+                    <p>
+                      <FontAwesomeIcon
+                        icon={faChartArea}
+                        width={20}
+                        color="green"
+                      />{" "}
+                      Area
+                    </p>
+                    <p>{getFloorPlanArea(item)}</p>
+                  </div>
+                  <div className="pb-4 ps-2 mt-4">
+                    <button
+                      className="btn btn-background text-white"
+                      onClick={() => setShowPopUp(true)}
+                    >
+                      PRICE ON REQUEST
+                    </button>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+          {/* </div> */}
+        </div>
+
+        {/* Gallery section */}
+        <div className="container-fluid bg-light py-5 mb-5" id="gallery">
+          <h2 className="text-center mb-4 fw-bold">Gallery</h2>
+          <div className="container-fluid mt-4">
+            <div className="row justify-content-center">
+              <div className="col-12">
+                <Slider {...settings1} className="gallery-slider">
+                  {(projectDetail.galleryImages || []).map((item, index) => (
+                    <div
+                      key={`${index}-${item.id}`}
+                      className="project-detail-gallery-container "
+                    >
+                      <img
+                        src={projectImageSrc(item.imageName)}
+                        alt={item.altTag || "Gallery Image"}
+                        title={item.altTag || "Gallery Image"}
+                        className="img-fluid rounded-5 object-fit-cover px-2 "
+                       style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}/>
+                    </div>
+                  ))}
+                </Slider>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* Location section */}
+        <div className="container mb-5" id="location">
+          <div>
+            <h2 className="text-center fw-bold">Location</h2>
+          </div>
+          <div className="text-center p-2 p-md-4 p-lg-5">
+            {(projectDetail.locationDescription || projectDetail.locationDesc) && (
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: projectDetail.locationDescription || projectDetail.locationDesc || "",
+                }}
+              />
+            )}
+          </div>
+          <div className="row">
+            <div className="col-md-6">
+              {/* Nearby Benefits Section */}
+              <div className="row g-3">
+                {(projectDetail.locationBenefits || []).map((item, index) => (
+                  <div key={index} className="col-6">
+                    <div className="border rounded-4 p-3 h-100 d-flex align-items-center gap-3 bg-light shadow-sm">
+                      {item.benefitName != null ? (
+                        <img
+                          src={addNearbyImageIcon(item.benefitName) || `/icon/fallback-icon.png`}
+                          alt={item.benefitName || ""}
+                          title={item.benefitName || ""}
+                          width={40}
+                          height={40}
+                        />
+                      ) : (
+                        <img
+                          src={`/icon/fallback-icon.png`}
+                          alt="fallback-icon"
+                          title="fallback-icon"
+                          width={40}
+                          height={40}
+                        />
+                      )}
+                      <div>
+                        <h3 className="mb-1 h6 fw-semibold text-dark">
+                          {item.benefitName}
+                        </h3>
+                        <small className="text-muted">{formatDistanceKm(item.distance)}</small>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Address Section */}
+              <div className="mt-4 p-4">
+                <div className="row">
+                  <div className="col-sm-6 mb-3">
+                    <h4 className="mb-1 text-success fw-semibold">Address</h4>
+                    <h5 className="mb-0">{projectDetail.projectLocality || ""}</h5>
+                  </div>
+                  <div className="col-sm-6 mb-3">
+                    <h4 className="mb-1 text-success fw-semibold">State</h4>
+                    <h5 className="mb-0">{projectDetail.state || ""}</h5>
+                  </div>
+                  <div className="col-sm-6 mb-3">
+                    <h4 className="mb-1 text-success fw-semibold">City</h4>
+                    <h5 className="mb-0">{projectDetail.city || ""}</h5>
+                  </div>
+                  <div className="col-sm-6 mb-3">
+                    <h4 className="mb-1 text-success fw-semibold">Country</h4>
+                    <h5 className="mb-0">{projectDetail.country || ""}</h5>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div className="col-md-6 p-3">
+              <div
+                className="position-relative border rounded-4 overflow-hidden shadow-sm"
+                style={{ height: "350px" }}
+              >
+                <img
+                  src={projectImageSrc(projectDetail.locationMap)}
+                  alt="Project Location Map"
+                  title="Project Location Map"
+                  className="object-fit-cover"
+                 style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }}/>
+
+                {/* Overlay text */}
+                <div className="position-absolute bottom-0 start-0 w-100 p-2 bg-dark bg-opacity-50 text-white text-center">
+                  <small className="fw-semibold">Project Location</small>
+                </div>
+              </div>
+              <div className="text-center mt-3">
+                <button
+                  className="btn btn-background text-white px-4 py-2 rounded-pill"
+                  onClick={() => setShowPopUp(true)}
+                >
+                  View On Map
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      
+
+      {/* About the project */}
+      <div
+        className="container-fluid py-5 mb-5"
+        style={{
+          backgroundImage: `linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url(${projectImageSrc(projectDetail?.desktopImages?.[0]?.desktopImage)})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          height: "600px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        {/* Section Heading */}
+        <div>
+          <h2 className="text-center text-white fw-bold mb-5">
+            About The Builder {projectDetail.builder?.builderName || ""}
+          </h2>
+
+          {/* Description */}
+          <div>
+            <div className="container mb-5">
+              <div
+                className="text-center project-about-container text-white"
+                dangerouslySetInnerHTML={{
+                  __html: sanitizeHtml(projectDetail.builder?.builderDescription || ""),
+                }}
+              ></div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="text-center">
+              <Link
+                title="Check More Projects"
+                href={builderPageHref || "#"}
+                className="btn btn-success px-4 py-2 rounded-pill shadow-sm"
+                {...(builderPageHref
+                  ? { target: "_blank", rel: "noopener noreferrer" }
+                  : {})}
+              >
+               Check More Projects
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Contact us section */}
+      <div className="container mb-5">
+        <div>
+          <h2 className="text-center fw-bold mb-4">Get in Touch</h2>
+          <div className="row">
+            <div
+              className="col-12 col-md-6 col-lg-6 col-xl-6 
+            d-flex justify-content-center align-items-center"
+            >
+              <div className="">
+                <div className="w-100 w-md-50 w-lg-50 mb-3 contactus-content">
+                  <p className="fs-5 mb-5">
+                    If you have any additional queries regarding the project or
+                    would like to take the next step in your investment journey,
+                    you can fill out this query form and our team will be happy
+                    to assist you with what you need.
+                  </p>
+                  <ul className="fs-5">
+                    <li className="my-3">Book a Site Visit</li>
+                    <li className="my-3">Ask For a Brochure</li>
+                    <li className="my-3">Speak to a Representative</li>
+                    <li className="my-3">Ask for a Quotation</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div className="col-12 col-md-6 col-lg-6 col-xl-6">
+              <div className="container d-flex justify-content-center project-detail-contact-form">
+                <Form
+                  noValidate
+                  validated={validated1}
+                  className="w-100 rounded-3 p-3"
+                  onSubmit={(e) => handleSubmit(e, "bottom_form")}
+                >
+                  <Row>
+                    <Col>
+                      <Form.Group className="mb-3" controlId="first_name">
+                        <Form.Control
+                          type="text"
+                          placeholder="Full Name"
+                          value={formData.name || ""}
+                          onChange={(e) => handleChange(e)}
+                          onBlur={handleBlur}
+                          name="name"
+                          isInvalid={
+                            !!errors.name ||
+                            (validated1 && !formData.name.trim())
+                          }
+                          required
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {errors.name || "Please provide a valid name."}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  <Form.Group className="mb-3" controlId="email_id">
+                    <Form.Control
+                      type="email"
+                      placeholder="Email Id"
+                      value={formData.email || ""}
+                      onChange={(e) => handleChange(e)}
+                      onBlur={handleBlur}
+                      name="email"
+                      isInvalid={
+                        !!errors.email || (validated1 && !formData.email.trim())
+                      }
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.email || "Please provide a valid email."}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                  <Form.Group className="mb-3" controlId="phone_number">
+                    <Form.Control
+                      type="tel"
+                      placeholder="Phone Number"
+                      value={formData.phone || ""}
+                      onChange={(e) => handleChange(e)}
+                      onBlur={handleBlur}
+                      name="phone"
+                      isInvalid={
+                        !!errors.phone || (validated1 && !formData.phone.trim())
+                      }
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {errors.phone || "Please provide a valid phone number."}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                  <Form.Group className="mb-3" controlId="message">
+                    <Form.Control
+                      as="textarea"
+                      rows={3}
+                      placeholder="Message"
+                      value={formData.message || ""}
+                      onChange={(e) => handleChange(e)}
+                      name="message"
+                      required
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      Please provide a valid message.
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                  <div className="d-flex flex-wrap gap-3 justify-content-center">
+                    <Button
+                      className="btn btn-background text-white border-0 px-5 py-3 fs-5 text-uppercase"
+                      type="submit"
+                      disabled={showLoading}
+                    >
+                      Submit Enquiry
+                      <LoadingSpinner show={showLoading} />
+                    </Button>
+                  </div>
+                </Form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="container-fluid bg-white mb-5">
+        <h2 className="text-center mb-4 fw-bold">FAQs</h2>
+
+        <div className="faq-container">
+          {(projectDetail.faqs || []).map((item, index) => (
+            <div key={`${item.id}-${index}`} className="faq-item mb-3">
+              {/* Question */}
+              <div
+                className="faq-question d-flex justify-content-between align-items-center p-3 rounded-3"
+                onClick={() => toggleAnswer(item.id)}
+              >
+                <h3 className="m-0 fw-semibold h6">
+                  Q{index + 1}: {item.question}
+                </h3>
+                <span className="faq-icon">
+                  {isAnswerVisible[item.id] ? "−" : "+"}
+                </span>
+              </div>
+
+              {/* Answer */}
+              <div
+                className={`faq-answer px-3 pb-3 ${
+                  isAnswerVisible[item.id] ? "show" : ""
+                }`}
+              >
+                <p className="m-0">
+                  <strong className="text-success">Ans:</strong> {item.answer}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Similar Projects */}
+      {Array.isArray(similarProjects) && similarProjects.length > 0 && (
+        <div className="container-fluid py-5 mb-5" id="similar-projects">
+          <div className="container">
+            <h2 className="text-center fw-bold mb-4 mb-lg-5">Similar Projects</h2>
+            <Featured
+              type="Similar"
+              allProjects={similarProjects}
+              title="Similar Projects"
+              autoPlay={false}
+              badgeVariant="default"
+            />
+          </div>
+        </div>
+      )}
+
+      <CommonPopUpform
+        show={showPopUp}
+        handleClose={setShowPopUp}
+        from="Project Detail"
+        data={projectDetail}
+      />
+    </>
+  );
+}

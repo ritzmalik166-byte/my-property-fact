@@ -1,0 +1,31 @@
+.cardHover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.cardHover:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.childList ul {
+  list-style: disc !important;
+}
+
+.childList ul li div p {
+  font-family: sans-serif;
+}
+
+.customAccordion :global(.accordion-button:not(.collapsed)) {
+  background: rgb(255, 249, 249) !important;
+  color: #000000 !important;
+}
+
+.customAccordion :global(.accordion-item) {
+  margin-bottom: 16px;
+}
+
+.modalHeader {
+  background: var( --bg-with-gradient);
+  color: #fff;
+}
