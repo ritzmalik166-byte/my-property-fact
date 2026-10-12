@@ -9,6 +9,7 @@ import { FiYoutube } from "react-icons/fi";
 import { useSiteData } from "@/app/_global_components/contexts/SiteDataContext";
 import FooterCityLinksSection from "./FooterCityLinksSection";
 import { useDeferredStylesheet } from "@/lib/useDeferredStylesheet";
+import { ENABLE_NAVRATRI_THEME } from "@/config/themeFlags";
 import {
   isFooterNavScrollPending,
   markFooterNavScrollTop,
@@ -91,7 +92,7 @@ export default function NewFooterDesign({
       </div>
       <div
         ref={footerRef}
-        className={`new-footer-design-container-fluid${compactTop ? " compact-top" : ""}`}
+        className={`new-footer-design-container-fluid${compactTop ? " compact-top" : ""}${ENABLE_NAVRATRI_THEME ? " new-footer-design-container-fluid--navratri" : ""}`}
       >
         <div className="new-design-container">
           {/* Top Section */}
