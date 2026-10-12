@@ -21,6 +21,10 @@ import {
   scopeHomeProjectsToDelhiNcr,
 } from "@/app/_global_components/popularRightNowProjects";
 import RotatingHeroHeadline from "./RotatingHeroHeadline";
+import NavratriPropertyPicks, {
+  pickNavratriProjects,
+} from "../festive/NavratriPropertyPicks";
+import { ENABLE_NAVRATRI_THEME } from "@/config/themeFlags";
 import { slimProjectListForListing } from "@/lib/slimProjectListing";
 import {
   slimCityForNav,
@@ -205,6 +209,9 @@ export default async function HomePage() {
   const slimCommercial = slimProjectListForListing(commercialProjects);
   const slimRecommendedProperties = slimProjectListForListing(recommendedProperties);
   const slimRecommendedProjects = slimProjectListForListing(recommendedProjects);
+  const navratriPicks = ENABLE_NAVRATRI_THEME
+    ? slimProjectListForListing(pickNavratriProjects(projects))
+    : [];
   const popularSubtitle = `Explore the Best-Selling Properties Today nearby ${HOME_NCR_LABEL}`;
 
   try {
@@ -236,6 +243,9 @@ export default async function HomePage() {
             eagerImageCount={0}
           />,
         )}
+        {ENABLE_NAVRATRI_THEME && navratriPicks.length > 0
+          ? row(1.25, <NavratriPropertyPicks projects={navratriPicks} />)
+          : null}
         {/* {row(
           1.5,
           <section className="mpf-expert-band" aria-label="Talk to an expert">

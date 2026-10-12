@@ -1,0 +1,514 @@
+/* ==========================================================================
+   Navratri festive theme — gated by ENABLE_NAVRATRI_THEME (src/config/themeFlags.js)
+   ========================================================================== */
+
+/* ---------- Top strip (fixed above the fixed .header) ---------- */
+body:has(.mpf-navratri-strip) {
+  --mpf-festive-strip-h: 40px;
+}
+
+@media (max-width: 767.98px) {
+  body:has(.mpf-navratri-strip) {
+    --mpf-festive-strip-h: 36px;
+  }
+}
+
+/* Sits above .header (9999) but below the mobile menu overlay (10001). */
+.mpf-navratri-strip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  height: var(--mpf-festive-strip-h);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  color: #fff1dc;
+  background:
+    radial-gradient(circle at 12% 50%, rgba(255, 183, 3, 0.22), transparent 28%),
+    linear-gradient(90deg, #4a1206 0%, #7a1f08 38%, #8f2c0a 62%, #5c1707 100%);
+  border-bottom: 1px solid rgba(255, 196, 110, 0.28);
+  font-family: var(--mpf-sans, "Outfit", "Segoe UI", sans-serif);
+}
+
+.mpf-navratri-strip-spacer {
+  height: var(--mpf-festive-strip-h);
+}
+
+.mpf-navratri-strip__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  height: 100%;
+}
+
+.mpf-navratri-strip__lead {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.mpf-navratri-strip__diya {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: rgba(255, 212, 59, 0.16);
+  box-shadow: 0 0 12px rgba(255, 183, 3, 0.45);
+  animation: mpfNavratriGlow 2.4s ease-in-out infinite;
+}
+
+.mpf-navratri-strip__badge {
+  flex-shrink: 0;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ffc93c 0%, #fb8500 100%);
+  color: #3b1102;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.mpf-navratri-strip__msg {
+  margin: 0;
+  min-width: 0;
+  font-size: 13.5px;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mpf-navratri-strip__msg-short,
+.mpf-navratri-strip__cta-short {
+  display: none;
+}
+
+.mpf-navratri-strip__cta {
+  flex-shrink: 0;
+  padding: 5px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 214, 150, 0.45);
+  background: rgba(255, 170, 80, 0.18);
+  color: #ffe8c7 !important;
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-decoration: none !important;
+  white-space: nowrap;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.mpf-navratri-strip__cta:hover,
+.mpf-navratri-strip__cta:focus-visible {
+  background: rgba(255, 170, 80, 0.34);
+  border-color: rgba(255, 214, 150, 0.75);
+  color: #fff !important;
+}
+
+body:has(.mpf-navratri-strip) .header {
+  top: var(--mpf-festive-strip-h);
+}
+
+/* Desktop hides the header on scroll-down; slide it fully behind the strip. */
+@media (min-width: 1025px) {
+  body:has(.mpf-navratri-strip) .header.header-hidden {
+    transform: translateY(calc(-100% - var(--mpf-festive-strip-h)));
+  }
+}
+
+@media (max-width: 767.98px) {
+  .mpf-navratri-strip__inner {
+    gap: 8px;
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
+  .mpf-navratri-strip__lead {
+    gap: 6px;
+  }
+
+  .mpf-navratri-strip__diya {
+    width: 20px;
+    height: 20px;
+  }
+
+  .mpf-navratri-strip__badge {
+    padding: 2px 8px;
+    font-size: 10px;
+  }
+
+  .mpf-navratri-strip__msg {
+    font-size: 12px;
+  }
+
+  .mpf-navratri-strip__msg-full,
+  .mpf-navratri-strip__cta-full {
+    display: none;
+  }
+
+  .mpf-navratri-strip__msg-short,
+  .mpf-navratri-strip__cta-short {
+    display: inline;
+  }
+
+  .mpf-navratri-strip__cta {
+    padding: 4px 12px;
+    font-size: 11.5px;
+  }
+}
+
+@media (max-width: 379.98px) {
+  .mpf-navratri-strip__msg {
+    display: none;
+  }
+}
+
+@keyframes mpfNavratriGlow {
+  0%,
+  100% {
+    box-shadow: 0 0 8px rgba(255, 183, 3, 0.35);
+  }
+  50% {
+    box-shadow: 0 0 16px rgba(255, 183, 3, 0.7);
+  }
+}
+
+/* ---------- Navratri Property Picks section ---------- */
+.mpf-navratri-picks {
+  position: relative;
+  padding: 56px 0 64px;
+  scroll-margin-top: 130px;
+  background:
+    radial-gradient(circle at 8% 0%, rgba(255, 193, 7, 0.14), transparent 38%),
+    radial-gradient(circle at 92% 100%, rgba(232, 89, 12, 0.08), transparent 42%),
+    #fbf6ec;
+  font-family: var(--mpf-sans, "Outfit", "Segoe UI", sans-serif);
+}
+
+.mpf-navratri-picks .mpf-navratri-picks__head {
+  max-width: 720px;
+  margin: 0 auto 36px;
+  text-align: center;
+}
+
+.mpf-navratri-picks .mpf-navratri-picks__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid #f5d77a;
+  background: #fff3cd;
+  color: #8a3b00;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.mpf-navratri-picks .mpf-navratri-picks__eyebrow-spark {
+  color: #f59f00;
+}
+
+.mpf-navratri-picks .mpf-navratri-picks__title {
+  margin: 16px 0 10px;
+  color: #1d2a22;
+  font-family: var(--mpf-sans, "Outfit", "Segoe UI", sans-serif);
+  font-size: clamp(1.75rem, 3.2vw, 2.6rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.mpf-navratri-picks .mpf-navratri-picks__subtitle {
+  margin: 0;
+  color: #5f6b66;
+  font-size: 1rem;
+}
+
+.mpf-navratri-picks__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 22px;
+}
+
+.mpf-navratri-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid rgba(120, 80, 20, 0.08);
+  background: #fff;
+  box-shadow: 0 10px 30px rgba(60, 40, 10, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.mpf-navratri-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 40px rgba(60, 40, 10, 0.14);
+}
+
+.mpf-navratri-card__media {
+  position: relative;
+  aspect-ratio: 16 / 11;
+  overflow: hidden;
+  background: #efe7d8;
+}
+
+.mpf-navratri-card__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.mpf-navratri-card:hover .mpf-navratri-card__media img {
+  transform: scale(1.05);
+}
+
+.mpf-navratri-card__media::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 45%;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.35), transparent);
+  pointer-events: none;
+}
+
+.mpf-navratri-card__badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: rgba(20, 20, 20, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.mpf-navratri-card__badge svg {
+  color: #ffd43b;
+}
+
+.mpf-navratri-card .mpf-shortlist-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  color: #3d4450;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.16);
+  cursor: pointer;
+}
+
+.mpf-navratri-card .mpf-shortlist-btn.is-saved {
+  color: #e03131;
+}
+
+.mpf-navratri-card__location {
+  position: absolute;
+  left: 12px;
+  bottom: 22px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: calc(100% - 24px);
+  padding: 5px 10px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #2b2f36;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.mpf-navratri-card__location svg {
+  flex-shrink: 0;
+}
+
+.mpf-navratri-card__location span {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.mpf-navratri-card__body {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  margin-top: -12px;
+  padding: 18px;
+  border-radius: 16px 16px 0 0;
+  background: #fff;
+}
+
+.mpf-navratri-card .mpf-navratri-card__name {
+  margin: 0;
+  color: #1a1d23;
+  font-family: var(--mpf-sans, "Outfit", "Segoe UI", sans-serif);
+  font-size: 1.12rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.mpf-navratri-card .mpf-navratri-card__name a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.mpf-navratri-card .mpf-navratri-card__name a:hover {
+  color: var(--nv-accent-btn);
+}
+
+.mpf-navratri-card .mpf-navratri-card__builder {
+  margin: 4px 0 14px;
+  color: #6b7280;
+  font-size: 0.85rem;
+}
+
+.mpf-navratri-card__footer {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px solid rgba(26, 29, 35, 0.08);
+}
+
+.mpf-navratri-card__price-label {
+  display: block;
+  color: #8a929c;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mpf-navratri-card__price strong {
+  display: block;
+  margin-top: 2px;
+  color: #0d3b26;
+  font-size: 1.3rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.mpf-navratri-card .mpf-navratri-card__cta {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: var(--nv-accent-btn);
+  color: #fff;
+  font-size: 13.5px;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.mpf-navratri-card .mpf-navratri-card__cta:hover,
+.mpf-navratri-card .mpf-navratri-card__cta:focus-visible {
+  color: #fff;
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+@media (max-width: 1199.98px) {
+  .mpf-navratri-picks__grid {
+    gap: 16px;
+  }
+
+  .mpf-navratri-card__body {
+    padding: 16px 14px;
+  }
+
+  .mpf-navratri-card .mpf-navratri-card__cta {
+    padding: 8px 14px;
+  }
+}
+
+@media (max-width: 991.98px) {
+  .mpf-navratri-picks {
+    padding: 44px 0 52px;
+  }
+
+  .mpf-navratri-picks__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 575.98px) {
+  .mpf-navratri-picks {
+    padding: 36px 0 44px;
+    scroll-margin-top: 110px;
+  }
+
+  .mpf-navratri-picks .mpf-navratri-picks__head {
+    margin-bottom: 24px;
+  }
+
+  .mpf-navratri-picks__grid {
+    display: flex;
+    gap: 14px;
+    margin: 0 -12px;
+    padding: 4px 12px 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .mpf-navratri-picks__grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .mpf-navratri-card {
+    flex: 0 0 82%;
+    scroll-snap-align: start;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mpf-navratri-strip__diya {
+    animation: none;
+  }
+
+  .mpf-navratri-card,
+  .mpf-navratri-card__media img,
+  .mpf-navratri-card .mpf-navratri-card__cta {
+    transition: none;
+  }
+}

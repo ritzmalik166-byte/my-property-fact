@@ -9,6 +9,8 @@ import BrokerLoginModal from "../_homecomponents/BrokerLoginModal";
 import WebsiteOtpModal from "../_homecomponents/WebsiteOtpModal";
 import HeaderAccountMenu from "./HeaderAccountMenu";
 import HeaderLatestSpark from "./HeaderLatestSpark";
+import NavratriTopStrip from "../festive/NavratriTopStrip";
+import { ENABLE_NAVRATRI_THEME } from "@/config/themeFlags";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -363,7 +365,7 @@ const HeaderComponent = () => {
         setIsOverLightSection(false);
         return;
       }
-      const expectedBottom = header.offsetHeight;
+      const expectedBottom = header.offsetTop + header.offsetHeight;
       const sectionTop = section.getBoundingClientRect().top;
       setIsOverLightSection(sectionTop <= expectedBottom + 8);
     };
@@ -629,8 +631,8 @@ const HeaderComponent = () => {
       setHeaderVisible(true);
 
       const header = document.querySelector(".header");
-      const headerHeight = header?.getBoundingClientRect().height || 80;
-      const desiredTop = headerHeight + 16;
+      const headerBottom = header ? header.offsetTop + header.offsetHeight : 80;
+      const desiredTop = headerBottom + 16;
       const currentTop = target.getBoundingClientRect().top;
       const alreadyInPlace = Math.abs(currentTop - desiredTop) < 28;
       const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -971,6 +973,7 @@ const HeaderComponent = () => {
 
   return (
     <>
+      {ENABLE_NAVRATRI_THEME && isHomePage ? <NavratriTopStrip /> : null}
       <div
         className={`d-flex justify-content-between align-items-center px-2 px-lg-4 header ${isHomePage ? "header--home-ss" : ""} ${isScrolled ? "fixed-header" : ""
           } ${isOverLightSection ? "header--on-light" : ""} ${isPropertiesRoute ? "properties-header" : ""} ${isProjectTypeRoute || isCityRoute || isBuilderRoute ? "projects-header" : ""} ${isAboutUsRoute ? "about-us-header" : ""} ${pathname.includes("/properties/") ? "conditional-header" : ""} ${!headerVisible ? "header-hidden" : ""}`}
