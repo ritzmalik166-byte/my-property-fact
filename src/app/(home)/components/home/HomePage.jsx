@@ -38,6 +38,7 @@ const HOME_FEATURED_TAB_LIMIT = 6;
 const HOME_MARQUEE_LOGO_LIMIT = 16;
 
 const HOME_NCR_LABEL = "Delhi NCR";
+const SHOW_FEATURED_PROPERTIES = false;
 
 const TopDevelopersMarquee = dynamic(
   () => import("../_homecomponents/TopDevelopersMarquee"),
@@ -112,7 +113,7 @@ export default async function HomePage() {
     fetchProjectTypes(),
     fetchTopPicksProjects(),
     fetchLatestBlogs(3),
-    fetchFeaturedProperties(),
+    SHOW_FEATURED_PROPERTIES ? fetchFeaturedProperties() : [],
   ]);
 
   const cityList = Array.isArray(cityListRaw)
