@@ -91,7 +91,6 @@ export const sectionsConfig = {
       label: "UP RERA No.",
       number: "UPRERAPRJ125342/02/2026",
       website: "www.up-rera.in",
-      url: "https://www.up-rera.in",
     },
     disclaimer: "*T&C apply.",
   },

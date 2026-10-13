@@ -27,7 +27,6 @@ const festival = {
     label: "UP RERA No.",
     number: "UPRERAPRJ106523/01/2026",
     website: "www.up-rera.in",
-    url: "https://www.up-rera.in",
   },
   disclaimer:
     "**Scheme in partnership with Tata Capital Housing Finance. *T&C apply.",
@@ -347,14 +346,7 @@ export default function FestivalSection() {
           <p className="m-0">
             {rera.label}: <span className="font-semibold text-white/85">{rera.number}</span>
             <span className="mx-2 text-white/30" aria-hidden="true">|</span>
-            <a
-              href={rera.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white/75 transition-colors hover:text-white"
-            >
-              {rera.website}
-            </a>
+            <span className="text-white/75">{rera.website}</span>
           </p>
           <p className="m-0">{festival.disclaimer}</p>
         </div>
