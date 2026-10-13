@@ -86,6 +86,7 @@ export default function PropertyDetailClient({
   const [tabsPinned, setTabsPinned] = useState(false);
   const tabsSlotRef = useRef(null);
   const tabsBarRef = useRef(null);
+  const spyLockUntilRef = useRef(0);
   const [descExpanded, setDescExpanded] = useState(false);
   const [showContactModal, setShowContactModal] = useState(false);
   const [contactForm, setContactForm] = useState({
@@ -232,15 +233,23 @@ export default function PropertyDetailClient({
     }
   };
 
+  const handleTabClick = (tab, sectionId) => {
+    spyLockUntilRef.current = Date.now() + 1000;
+    setActiveTab(tab);
+    scrollToSection(sectionId);
+  };
+
   // Scroll spy to update active tab based on scroll position
   useEffect(() => {
     const handleScroll = () => {
+      if (Date.now() < spyLockUntilRef.current) return;
+
+      // Articles lives in the sticky sidebar, so its position can't drive the spy.
       const sections = [
         { id: "overview-section", tab: "Overview" },
         { id: "dealer-section", tab: "Dealer Details" },
         { id: "price-trends-section", tab: "Price Trends" },
         { id: "locality-section", tab: "Explore Locality" },
-        { id: "recommendation-section", tab: "Articles" },
       ];
 
       const scrollPosition =
@@ -256,7 +265,8 @@ export default function PropertyDetailClient({
       for (let i = sections.length - 1; i >= 0; i--) {
         const section = document.getElementById(sections[i].id);
         if (section) {
-          const sectionTop = section.offsetTop;
+          const sectionTop =
+            section.getBoundingClientRect().top + window.scrollY;
           if (scrollPosition >= sectionTop) {
             setActiveTab(sections[i].tab);
             break;
@@ -569,6 +579,17 @@ export default function PropertyDetailClient({
           .replace(/(^-|-$)/g, "")}-${related.id}`
       : String(related?.id ?? "");
 
+  const relatedTitleOf = (related) =>
+    related?.projectName?.trim() ||
+    related?.title ||
+    [
+      related?.bedrooms ? `${related.bedrooms} BHK` : null,
+      related?.subType || related?.listingType || "Property",
+      related?.locality ? `in ${related.locality}` : null,
+    ]
+      .filter(Boolean)
+      .join(" ");
+
   if (loading) {
     return (
       <div className="container my-5">
@@ -614,6 +635,21 @@ export default function PropertyDetailClient({
   if (property.pincode) locationParts.push(property.pincode);
 
   const locationLabel = locationParts.filter(Boolean).join(", ");
+  const fullAddress = (() => {
+    const clean = (v) => String(v || "").replace(/\s+/g, " ").trim();
+    const parts = [];
+    [property.address, property.locality, property.city, property.pincode]
+      .map(clean)
+      .filter(Boolean)
+      .forEach((part) => {
+        const joined = parts.join(", ").toLowerCase();
+        if (!joined.includes(part.toLowerCase())) parts.push(part);
+      });
+    return parts.join(", ");
+  })();
+  const projectNameLabel = String(property.projectName || "")
+    .replace(/\s+/g, " ")
+    .trim();
   const primaryArea =
     property.superBuiltUpArea ||
     property.builtUpArea ||
@@ -753,9 +789,29 @@ export default function PropertyDetailClient({
               Verified
             </span>
           ) : null}
-          <h1 className="pdp99-title pdp99-title--inline">
+          <h1
+            className={`pdp99-title pdp99-title--inline${
+              fullAddress || projectNameLabel ? " has-address" : ""
+            }`}
+          >
             {property.title || "Property for sale"}
           </h1>
+          {(projectNameLabel || fullAddress) && (
+            <div className="pdp99-meta">
+              {projectNameLabel && (
+                <p className="pdp99-address pdp99-project">
+                  <FontAwesomeIcon icon={faBuilding} />
+                  <span>{projectNameLabel}</span>
+                </p>
+              )}
+              {fullAddress && (
+                <p className="pdp99-address">
+                  <FontAwesomeIcon icon={faMapMarkerAlt} />
+                  <span>{fullAddress}</span>
+                </p>
+              )}
+            </div>
+          )}
         </div>
 
         <section className="pdp99-hero" aria-label="Property overview">
@@ -826,78 +882,93 @@ export default function PropertyDetailClient({
             )}
           </div>
 
-          <div className="pdp99-kvgrid">
-            <div className="pdp99-kv">
-              <FontAwesomeIcon icon={faRulerCombined} />
-              <div>
-                <span>Area</span>
-                <strong>{formatArea(primaryArea) || "—"}</strong>
-                {areaLines.length > 0 && <em>{areaLines.join(" · ")}</em>}
-              </div>
-            </div>
-            <div className="pdp99-kv">
-              <FontAwesomeIcon icon={faBed} />
-              <div>
-                <span>Configuration</span>
-                <strong>{configLabel || "—"}</strong>
-              </div>
-            </div>
-            <div className="pdp99-kv">
-              <FontAwesomeIcon icon={faIndianRupeeSign} />
-              <div>
-                <span>Price</span>
-                <strong>{formatPrice(property.totalPrice)}</strong>
-                <button
-                  type="button"
-                  className="pdp99-readmore"
-                  onClick={() => setShowContactModal(true)}
-                >
-                  View Price Details
-                </button>
-              </div>
-            </div>
-            <div className="pdp99-kv">
-              <FontAwesomeIcon icon={faMapMarkerAlt} />
-              <div>
-                <span>Address</span>
-                <strong>{locationLabel || "—"}</strong>
-              </div>
-            </div>
-            <div className="pdp99-kv">
-              <FontAwesomeIcon icon={faBuilding} />
-              <div>
-                <span>Floor Number</span>
-                <strong>{floorLabel || "—"}</strong>
-              </div>
-            </div>
-            {highlightText && (
+          <div className="pdp99-hero__info">
+            <div className="pdp99-kvgrid">
               <div className="pdp99-kv">
-                <FontAwesomeIcon icon={faStar} />
+                <FontAwesomeIcon icon={faRulerCombined} />
                 <div>
-                  <span>Highlights</span>
-                  <strong>{highlightText}</strong>
+                  <span>Area</span>
+                  <strong>{formatArea(primaryArea) || "—"}</strong>
+                  {areaLines.length > 0 && <em>{areaLines.join(" · ")}</em>}
                 </div>
               </div>
-            )}
-            {property.facing && (
               <div className="pdp99-kv">
-                <FontAwesomeIcon icon={faRoad} />
+                <FontAwesomeIcon icon={faBed} />
                 <div>
-                  <span>Facing / Overlooking</span>
-                  <strong>{property.facing}</strong>
+                  <span>Configuration</span>
+                  <strong>{configLabel || "—"}</strong>
                 </div>
               </div>
-            )}
-            <div className="pdp99-kv">
-              <FontAwesomeIcon icon={faClock} />
-              <div>
-                <span>Property Age</span>
-                <strong>
-                  {property.ageOfConstruction != null
-                    ? formatAgeOfConstruction(property.ageOfConstruction)
-                    : property.status || "—"}
-                </strong>
+              <div className="pdp99-kv">
+                <FontAwesomeIcon icon={faIndianRupeeSign} />
+                <div>
+                  <span>Price</span>
+                  <strong>{formatPrice(property.totalPrice)}</strong>
+                  {property.pricePerSqft && (
+                    <em>@ {formatPricePerSqft(property.pricePerSqft)}</em>
+                  )}
+                </div>
               </div>
+              <div className="pdp99-kv">
+                <FontAwesomeIcon icon={faMapMarkerAlt} />
+                <div>
+                  <span>Address</span>
+                  <strong>{locationLabel || "—"}</strong>
+                </div>
+              </div>
+              <div className="pdp99-kv">
+                <FontAwesomeIcon icon={faBuilding} />
+                <div>
+                  <span>Floor Number</span>
+                  <strong>{floorLabel || "—"}</strong>
+                </div>
+              </div>
+              {highlightText && (
+                <div className="pdp99-kv">
+                  <FontAwesomeIcon icon={faStar} />
+                  <div>
+                    <span>Highlights</span>
+                    <strong>{highlightText}</strong>
+                  </div>
+                </div>
+              )}
+              {property.facing && (
+                <div className="pdp99-kv">
+                  <FontAwesomeIcon icon={faRoad} />
+                  <div>
+                    <span>Facing / Overlooking</span>
+                    <strong>{property.facing}</strong>
+                  </div>
+                </div>
+              )}
+              <div className="pdp99-kv">
+                <FontAwesomeIcon icon={faClock} />
+                <div>
+                  <span>Property Age</span>
+                  <strong>
+                    {property.ageOfConstruction != null
+                      ? formatAgeOfConstruction(property.ageOfConstruction)
+                      : property.status || "—"}
+                  </strong>
+                </div>
+              </div>
+            </div>
+            <div className="pdp99-hero__actions">
+              <button
+                type="button"
+                className="pdp99-btn pdp99-btn--outline"
+                onClick={() => setShowContactModal(true)}
+              >
+                <FontAwesomeIcon icon={faPhone} />
+                {isBroker ? "Contact Broker" : "Contact Owner"}
+              </button>
+              <button
+                type="button"
+                className="pdp99-btn pdp99-btn--primary"
+                onClick={() => setShowContactModal(true)}
+              >
+                View Number
+              </button>
             </div>
           </div>
         </section>
@@ -946,10 +1017,7 @@ export default function PropertyDetailClient({
               key={item.tab}
               type="button"
               className={`pdp99-tab${activeTab === item.tab ? " is-active" : ""}`}
-              onClick={() => {
-                setActiveTab(item.tab);
-                scrollToSection(item.id);
-              }}
+              onClick={() => handleTabClick(item.tab, item.id)}
             >
               {item.tab}
             </button>
@@ -1250,6 +1318,7 @@ export default function PropertyDetailClient({
                     related.imageUrls && related.imageUrls.length > 0
                       ? getImageUrl(related.imageUrls[0])
                       : null;
+                  const relatedTitle = relatedTitleOf(related);
                   return (
                     <Link
                       key={`aside-${related.id}`}
@@ -1258,27 +1327,60 @@ export default function PropertyDetailClient({
                     >
                       {relatedImageUrl ? (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={relatedImageUrl} alt="Similar Property" title="Similar Property" />
+                        <img
+                          src={relatedImageUrl}
+                          alt={relatedTitle}
+                          title={relatedTitle}
+                        />
                       ) : (
                         <div className="pdp99-aside-ph" />
                       )}
-                      <div>
-                        <strong>{formatPrice(related.totalPrice)}</strong>
-                        <span>
-                          {[related.locality, related.city].filter(Boolean).join(", ")}
+                      <div className="pdp99-aside-item__body">
+                        <p className="pdp99-aside-item__title" title={relatedTitle}>
+                          {relatedTitle}
+                        </p>
+                        <strong className="pdp99-aside-item__price">
+                          {formatPrice(related.totalPrice)}
+                        </strong>
+                        <span className="pdp99-aside-item__loc">
+                          {[related.locality, related.city]
+                            .map((part) => String(part || "").replace(/\s+/g, " ").trim())
+                            .filter(Boolean)
+                            .join(", ")}
                         </span>
-                        <span>
-                          {formatArea(related.carpetArea || related.builtUpArea) || ""}
-                          {related.subType || related.listingType
-                            ? ` · ${related.subType || related.listingType}`
-                            : " · Property"}
-                        </span>
+                        {/* <span>
+                          {[
+                            formatArea(related.carpetArea || related.builtUpArea),
+                            related.subType || related.listingType || "Property",
+                          ]
+                            .filter(Boolean)
+                            .join(" · ")}
+                        </span> */}
                       </div>
                     </Link>
                   );
                 })}
               </div>
             )}
+
+            <div className="pdp99-aside-cta">
+              <p className="pdp99-aside-cta__title">Interested in this property?</p>
+              <p className="pdp99-aside-cta__text">
+                {isBroker
+                  ? "Get price details, inventory and a site visit from the broker."
+                  : "Connect directly with the owner for price and availability."}
+              </p>
+              <button
+                type="button"
+                className="pdp99-aside-cta__btn"
+                onClick={() => setShowContactModal(true)}
+              >
+                <span className="pdp99-aside-cta__icon">
+                  <FontAwesomeIcon icon={faPhone} />
+                </span>
+                {isBroker ? "Contact Broker" : "Contact Owner"}
+              </button>
+            </div>
           </aside>
         </div>
       </div>

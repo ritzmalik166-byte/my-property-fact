@@ -26,6 +26,7 @@ import NavratriPropertyPicks, {
 } from "../festive/NavratriPropertyPicks";
 import { ENABLE_NAVRATRI_THEME } from "@/config/themeFlags";
 import { slimProjectListForListing } from "@/lib/slimProjectListing";
+import { fetchFeaturedProperties } from "./featured-properties/featuredPropertiesData";
 import {
   slimCityForNav,
   slimProjectTypeForNav,
@@ -102,6 +103,7 @@ export default async function HomePage() {
     projectTypeListRaw,
     mpfTopPickProjectsRaw,
     homeBlogsRaw,
+    featuredProperties,
   ] = await Promise.all([
     getAllProjects(),
     fetchBuilderData(),
@@ -110,6 +112,7 @@ export default async function HomePage() {
     fetchProjectTypes(),
     fetchTopPicksProjects(),
     fetchLatestBlogs(3),
+    fetchFeaturedProperties(),
   ]);
 
   const cityList = Array.isArray(cityListRaw)
@@ -307,6 +310,7 @@ export default async function HomePage() {
           cityList={cityList}
           testimonials={testimonials}
           homeBlogs={homeBlogs}
+          featuredProperties={featuredProperties}
         />
       </>
     );
