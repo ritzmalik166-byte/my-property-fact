@@ -1003,6 +1003,7 @@
     transition: transform 0.25s var(--fp-ease), box-shadow 0.25s ease;
   }
 
+  
   .mpf-fp__enquire svg {
     width: 18px;
     height: 18px;
