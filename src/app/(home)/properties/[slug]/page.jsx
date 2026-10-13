@@ -78,10 +78,14 @@ function slimRelatedPropertyPayload(p) {
   const urls = Array.isArray(p.imageUrls) ? p.imageUrls : [];
   return {
     id: p.id,
-    title: p.title,
+    title: p.title || p.propertyTitle || p.name || null,
+    projectName: p.projectName || null,
     locality: p.locality,
     city: p.city,
     bedrooms: p.bedrooms,
+    subType: p.subType,
+    listingType: p.listingType,
+    transaction: p.transaction,
     totalPrice: p.totalPrice,
     carpetArea: p.carpetArea,
     builtUpArea: p.builtUpArea,
