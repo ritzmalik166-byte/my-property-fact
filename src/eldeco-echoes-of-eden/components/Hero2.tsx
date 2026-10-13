@@ -10,7 +10,7 @@ export const Hero2 = () => {
     props: { srcSet: desktop },
   } = getImageProps({
     ...common,
-    src: "/eldeco-echoes-of-eden/navratri/navratri_fest_eoe_desktop.jpg",
+    src: "/eldeco-echoes-of-eden/navratri/navratri_fest_eoe_new_desktop.jpg",
     width: 1280,
     height: 669,
   });
