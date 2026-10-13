@@ -4,9 +4,19 @@ import SiteHeader from "./SiteHeader";
 import { CtaButton } from "./Popup";
 import EnquiryForm from "./EnquiryForm";
 import SmoothScroll from "./SmoothScroll";
+import FestivalSection from "./FestivalSection";
+
+// /eldeco-7-peak/navratri_fest_7_peaks_tab.jpg
+// /eldeco-7-peak/navratri_fest_7_peaks_desktop.jpg
+// /eldeco-7-peak/navratri_fest_7_peaks_mobile.jpg
 
 const assets = {
-  hero: "/eldeco-7-peak/hero-bg.jpg",
+  // hero: "/eldeco-7-peak/hero-bg.jpg", 
+  hero: {
+    desktop: "/eldeco-7-peak/navratri_fest_7_peaks_desktop.jpg",
+    tab: "/eldeco-7-peak/navratri_fest_7_peaks_tab.jpg",
+    mobile: "/eldeco-7-peak/navratri_fest_7_peaks_tab.jpg",
+  },
   logo: "/eldeco-7-peak/e-logo.png",
   highlightImage: "/eldeco-7-peak/heighlight-bg.jpg",
   highlightMask:
@@ -200,11 +210,16 @@ export default function Home() {
         <SiteHeader logoSrc={assets.logo} />
         <main className="w-full overflow-x-hidden">
           <section id="top" className="w-full">
-            <img
-              src={assets.hero}
-              alt="Eldeco 7 Peaks Residences" title="Eldeco 7 Peaks Residences"
-              className="block h-auto w-full"
-            />
+            <picture>
+              <source media="(min-width: 1024px)" srcSet={assets.hero.desktop} />
+              <source media="(min-width: 768px)" srcSet={assets.hero.tab} />
+              <img
+                src={assets.hero.mobile}
+                alt="Eldeco 7 Peaks Residences" title="Eldeco 7 Peaks Residences"
+                className="block h-auto w-full"
+                fetchPriority="high"
+              />
+            </picture>
           </section>
           <section
             id="overview"
@@ -226,6 +241,7 @@ export default function Home() {
               <Button>Enquire Now</Button>
             </div>
           </section>
+          <FestivalSection />
           <section
             id="highlights"
             className="relative mx-auto flex h-[667px] w-[min(1094px,calc(100%-48px))] items-center justify-center text-white max-[800px]:h-auto max-[800px]:min-h-[667px] max-[800px]:py-[60px] mb-[60px]"
