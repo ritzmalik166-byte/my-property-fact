@@ -13,7 +13,7 @@ import FestivalSection from "./FestivalSection";
 const assets = {
   // hero: "/eldeco-7-peak/hero-bg.jpg", 
   hero: {
-    desktop: "/eldeco-7-peak/navratri_fest_7_peaks_desktop.jpg",
+    desktop: "/eldeco-7-peak/navratri_fest_7_peaks_new_desktop.jpg",
     tab: "/eldeco-7-peak/navratri_fest_7_peaks_tab.jpg",
     mobile: "/eldeco-7-peak/navratri_fest_7_peaks_tab.jpg",
   },
