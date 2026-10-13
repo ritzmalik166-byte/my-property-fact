@@ -24,10 +24,10 @@ const Featured = dynamic(() => import("./featured/featured"), {
   ssr: false,
   loading: () => sectionPlaceholder(360),
 });
-const FeaturedPropertiesSection = dynamic(
-  () => import("./featured-properties/FeaturedPropertiesSection"),
-  { ssr: false, loading: () => sectionPlaceholder(600) },
-);
+// const FeaturedPropertiesSection = dynamic(
+//   () => import("./featured-properties/FeaturedPropertiesSection"),
+//   { ssr: false, loading: () => sectionPlaceholder(600) },
+// );
 const SocialFeedsOfMPF = dynamic(
   () => import("../_homecomponents/SocialFeedsOfMPF"),
   { ssr: false, loading: () => sectionPlaceholder(320) },
@@ -128,11 +128,11 @@ export default function HomeDeferredSections({
           eagerImageCount={0}
         />,
       )}
-      {featuredProperties.length > 0 &&
+      {/* {featuredProperties.length > 0 &&
         row(
           5.5,
           <FeaturedPropertiesSection properties={featuredProperties} />,
-        )}
+        )} */}
 
       <div className="position-relative">
         {row(6, <NewInsight />)}
