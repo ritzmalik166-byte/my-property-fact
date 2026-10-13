@@ -457,14 +457,7 @@ export const NewSection = () => {
             <p>
               {fest.rera.label}: <span className="font-semibold text-white/85">{fest.rera.number}</span>
               <span className="mx-2 text-white/30" aria-hidden="true">|</span>
-              <a
-                href={fest.rera.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline-offset-2 transition-colors hover:text-white hover:underline"
-              >
-                {fest.rera.website}
-              </a>
+              <span>{fest.rera.website}</span>
             </p>
             <p>{fest.disclaimer}</p>
           </div>

@@ -219,7 +219,7 @@ export default function Thanks() {
                     <img src={`${IMG}/barcode.png`} alt="QR Code" title="QR Code" className="qr-image" />
                     <p className="rera-text mt-3">
                         <strong>RERA NO.: UPRERAPRJ136219/04/2024</strong>{" "}
-                        <a href="https://www.up-rera.in" target="_blank" rel="noopener noreferrer">www.up-rera.in</a>
+                        <span className="font-weight-bold">www.up-rera.in</span>
                     </p>
                     <p className="disclaimer-text">
                         <strong>Disclaimer</strong> - The content and visuals in this advertisement are solely an artistic
