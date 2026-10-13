@@ -71,6 +71,38 @@ export const sectionsConfig = {
       ] satisfies EnquiryField[],
     },
   },
+  navratriFest: {
+    badge: "Navratri Fest",
+    titleLead: "This Navratri, celebrate",
+    titleHighlight: "new beginnings",
+    titleTail: "at Eldeco Echoes of Eden.",
+    description:
+      "Join us at our Navratri Fest from 13th to 19th October, 11 AM onwards, and enjoy the colours, devotion and joy of the season while you explore our 3 BR VRV air-conditioned homes on the Yamuna Expressway.",
+    details: [
+      { icon: "calendar", label: "Dates", value: "13th – 19th October" },
+      { icon: "clock", label: "Timings", value: "11 AM onwards" },
+      {
+        icon: "location",
+        label: "Venue",
+        value: "Eldeco Sales Gallery, Sector 22D, Yamuna Expressway",
+      },
+    ],
+    rera: {
+      label: "UP RERA No.",
+      number: "UPRERAPRJ125342/02/2026",
+      website: "www.up-rera.in",
+      url: "https://www.up-rera.in",
+    },
+    disclaimer: "*T&C apply.",
+  },
+  festiveOffer: {
+    badge: "Festive Offer*",
+    plan: [
+      { percent: 30, title: "Pay 30% Now", note: "Book your home this festive season" },
+      { percent: 70, title: "70% Nearing Possession", note: "Pay the balance closer to handover" },
+    ],
+    ctaLabel: "Claim Festive Offer",
+  },
   overview: {
     id: "overview",
     title: "Eldeco Echoes of Eden",

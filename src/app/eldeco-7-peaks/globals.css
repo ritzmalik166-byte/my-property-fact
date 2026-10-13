@@ -20,6 +20,59 @@ html.eldeco-7peaks-hide-scrollbar *::-webkit-scrollbar,
   background: transparent !important;
 }
 
+/* Navratri festival section */
+@keyframes peaks-flicker {
+  0%,
+  100% {
+    transform: scale(1) rotate(-2deg);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.08, 0.92) rotate(2deg);
+    opacity: 0.88;
+  }
+}
+
+@keyframes peaks-twinkle {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.7);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes peaks-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.peaks-flicker {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: peaks-flicker 1.4s ease-in-out infinite;
+}
+
+.peaks-twinkle {
+  animation: peaks-twinkle 2.6s ease-in-out infinite;
+}
+
+.peaks-spin-slow {
+  animation: peaks-spin 90s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .peaks-flicker,
+  .peaks-twinkle,
+  .peaks-spin-slow {
+    animation: none;
+  }
+}
+
 /* Enquire CTA — filled slide left on hover */
 @layer components {
   .btn-7peaks-slide {

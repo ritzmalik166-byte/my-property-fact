@@ -8,12 +8,16 @@ import { LocationAdvantages } from "@/eldeco-echoes-of-eden/components/LocationA
 import { Overview } from "@/eldeco-echoes-of-eden/components/Overview";
 import { Price } from "@/eldeco-echoes-of-eden/components/Price";
 import { PromoCta } from "@/eldeco-echoes-of-eden/components/PromoCta";
+import { Hero2 } from "@/eldeco-echoes-of-eden/components/Hero2";
+import { NewSection } from "@/eldeco-echoes-of-eden/components/NewSection";
 
 export default function EldecoEchoesOfEden() {
   return (
     <main className="flex-1">
-      <Hero />
+      {/* <Hero /> */}
+      <Hero2 />
       <Overview />
+      <NewSection />
       <Highlights />
       <PromoCta />
       <Price />
