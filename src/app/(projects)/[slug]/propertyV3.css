@@ -993,12 +993,24 @@
   object-fit: cover;
 }
 
+.pd3-location {
+  container-type: inline-size;
+}
+
 .pd3-location-map-wrap {
   margin-top: 16px;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(280px, 430px);
   gap: 18px;
   align-items: stretch;
+}
+
+/* The main column beside the sidebar can be too narrow for facts + map side
+   by side (e.g. ~1000–1280px screens): stack them so the map never covers the facts. */
+@container (max-width: 640px) {
+  .pd3-location-map-wrap {
+    grid-template-columns: 1fr;
+  }
 }
 
 .pd3-location-map-wrap .pd3-map {
