@@ -53,6 +53,15 @@ export default function ProjectsAmenity({
   const onRemove = (removedList) => {
     setSelectedValue(removedList); // Update selected values state
   };
+  // The modal body scrolls, so bring the freshly opened list into view
+  const revealAmenityList = (e) => {
+    const wrapper = e.currentTarget;
+    requestAnimationFrame(() => {
+      wrapper
+        .querySelector(".optionListContainer")
+        ?.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    });
+  };
   const openAddModel = () => {
     setIsDisabled(false);
     setProjectId("");
@@ -226,18 +235,19 @@ export default function ProjectsAmenity({
               <Form.Label>
                 <b>Select Amenities</b>
               </Form.Label>
-              <Multiselect
-                options={amenityList}
-                selectedValues={selectedValue}
-                onSelect={onSelect}
-                onRemove={onRemove}
-                displayValue="title"
-                className={
-                  showAmenityError
-                    ? "border border-danger rounded rounded-1"
-                    : ""
-                }
-              />
+              <div onFocusCapture={revealAmenityList}>
+                <Multiselect
+                  options={amenityList}
+                  selectedValues={selectedValue}
+                  onSelect={onSelect}
+                  onRemove={onRemove}
+                  displayValue="title"
+                  placeholder="Search amenities"
+                  showCheckbox
+                  avoidHighlightFirstOption
+                  className={`admin-amenity-multiselect${showAmenityError ? " is-invalid" : ""}`}
+                />
+              </div>
               {showAmenityError && (
                 <div className="text-danger mt-1">
                   At least one amenity is required!
