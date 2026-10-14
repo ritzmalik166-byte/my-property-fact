@@ -382,26 +382,13 @@
   overflow: hidden;
   isolation: isolate;
   background: #e9e9e7;
-  perspective: 1200px;
 }
 
-/* Oversized layer: the photo tilts in 3D inside the frame and drifts with
-   scroll (parallax) without exposing its edges. */
+/* The photo fills the frame exactly — full width, no zoom or oversize — so
+   none of it is cropped beyond what `object-fit: cover` needs. */
 .mpf-fp__media-layer {
   position: absolute;
-  inset: -40px;
-  transform: translate3d(calc(var(--mx, 0) * -12px),
-      calc(var(--my, 0) * -10px + var(--fp-par, 0) * -24px),
-      0) rotateX(calc(var(--my, 0) * -3deg)) rotateY(calc(var(--mx, 0) * 4deg));
-  transition: transform 0.8s var(--fp-ease);
-}
-
-.mpf-fp__slide.is-active .mpf-fp__media-layer {
-  will-change: transform;
-}
-
-.mpf-fp__media.is-tilting .mpf-fp__media-layer {
-  transition: transform 0.25s ease-out;
+  inset: 0;
 }
 
 /* Light glare that follows the pointer across the photo. */
@@ -425,18 +412,6 @@
 .mpf-fp .mpf-fp__img {
   object-fit: cover;
   object-position: center 60%;
-  transform: scale(1.12);
-  transition: transform 2.4s var(--fp-ease);
-  backface-visibility: hidden;
-}
-
-.mpf-fp__slide.is-active .mpf-fp__img {
-  transform: scale(1);
-}
-
-.mpf-fp__slide.is-active .mpf-fp__media:hover .mpf-fp__img {
-  transform: scale(1.05);
-  transition-duration: 1.6s;
 }
 
 /* Soft shade behind the top-left copy so white text reads on any photo. */
@@ -618,43 +593,14 @@
 
 /* ------------------------------------------------------------ responsive */
 
-/* Desktop: the section fills one screen (below the fixed strip/header)
-   and the photo stretches to take whatever height is left. */
+/* Desktop: full-width photo at a fixed height. */
 @media (min-width: 1025px) {
   .mpf-fp {
-    display: flex;
-    flex-direction: column;
-    height: calc(100svh - var(--fp-screen-top, 0px) + 100px);
-    min-height: 660px;
     padding: clamp(14px, 2.4vh, 28px) 0;
   }
 
-  .mpf-fp .mpf-fp__inner,
-  .mpf-fp__viewport {
-    display: flex;
-    flex-direction: column;
-    flex: 1 1 auto;
-    min-height: 0;
-  }
-
-  .mpf-fp__rail {
-    flex: 1 1 auto;
-    min-height: 0;
-  }
-
-  .mpf-fp__slide {
-    display: flex;
-  }
-
-  .mpf-fp__card {
-    flex: 1 1 auto;
-    height: auto;
-    min-height: 0;
-  }
-
   .mpf-fp__media {
-    flex: 1 1 auto;
-    min-height: 260px;
+    height: 480px;
   }
 }
 
@@ -664,25 +610,11 @@
   }
 }
 
-/* Tablet + mobile: centred header and a fixed-height photo shown at the
-   card's full width — no oversized tilt/parallax layer and no zoom, so its
-   edges aren't cropped away. */
+/* Tablet + mobile: centred header. */
 @media (max-width: 1024px) {
   .mpf-fp__head,
   .mpf-fp .mpf-fp__title {
     text-align: center;
-  }
-
-  .mpf-fp__media-layer,
-  .mpf-fp__slide.is-active .mpf-fp__media-layer {
-    inset: 0;
-    transform: none;
-    will-change: auto;
-  }
-
-  .mpf-fp .mpf-fp__slide .mpf-fp__img,
-  .mpf-fp__slide.is-active .mpf-fp__media:hover .mpf-fp__img {
-    transform: none;
   }
 }
 
@@ -722,17 +654,11 @@
     border-bottom: 0;
   }
 
-  .mpf-fp .mpf-fp__usps {
-    display: none;
-  }
-
-  .mpf-fp__overlay {
-    max-width: calc(100% - 80px);
-  }
-
+  /* Clean photo: no location, tagline, arrow or text shade on top of it. */
+  .mpf-fp__overlay,
+  .mpf-fp__scrim,
   .mpf-fp .mpf-fp__go {
-    width: 42px;
-    height: 42px;
+    display: none;
   }
 
   /* Logo + badge on one row, then name and price. */
@@ -907,10 +833,7 @@
     transition: none !important;
   }
 
-  .mpf-fp__media-layer,
-  .mpf-fp__overlay,
-  .mpf-fp .mpf-fp__img,
-  .mpf-fp__slide.is-active .mpf-fp__media:hover .mpf-fp__img {
+  .mpf-fp__overlay {
     transform: none;
   }
 

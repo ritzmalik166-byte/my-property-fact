@@ -1,7 +1,7 @@
 "use client";
 
 import { memo, useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import {
@@ -41,6 +41,7 @@ const AUTOPLAY_RATIO = 0.35;
 const MOTION_QUERY = "(prefers-reduced-motion: no-preference)";
 const TILT_QUERY = `(hover: hover) and (pointer: fine) and ${MOTION_QUERY}`;
 const IMAGE_SIZES = "(max-width: 767.98px) 96vw, (max-width: 1199.98px) 85vw, 1150px";
+const DESKTOP_MEDIA = "(min-width: 1025px)";
 
 /* ------------------------------------------------------------------ hooks */
 
@@ -61,7 +62,6 @@ function useMediaQuery(query) {
  * `reveal` is "armed" only when the section starts off-screen, so nothing hides without JS.
  */
 function useSectionVisibility(ref) {
-  const [visible, setVisible] = useState(false);
   const [inView, setInView] = useState(false);
   const [reveal, setReveal] = useState("idle");
 
@@ -69,7 +69,6 @@ function useSectionVisibility(ref) {
     const node = ref.current;
     if (!node) return undefined;
     if (typeof IntersectionObserver === "undefined") {
-      setVisible(true);
       setInView(true);
       return undefined;
     }
@@ -80,7 +79,6 @@ function useSectionVisibility(ref) {
     const observer = new IntersectionObserver(
       ([entry]) => {
         const ratio = entry.isIntersecting ? entry.intersectionRatio : 0;
-        setVisible(entry.isIntersecting);
         setInView(ratio >= AUTOPLAY_RATIO);
         if (ratio >= REVEAL_RATIO) setReveal("in");
       },
@@ -90,61 +88,7 @@ function useSectionVisibility(ref) {
     return () => observer.disconnect();
   }, [ref]);
 
-  return { visible, inView, reveal };
-}
-
-/**
- * Height of the fixed chrome over the page — the festive strip, plus the header
- * at ≤1024px where it doesn't hide on scroll — as `--fp-screen-top`, so the
- * section can fill exactly the rest of the screen.
- */
-function useScreenTopOffset(ref) {
-  useEffect(() => {
-    const section = ref.current;
-    if (!section) return undefined;
-    const update = () => {
-      const strip = document.querySelector(".mpf-navratri-strip");
-      const header = document.querySelector(".header");
-      const headerHeight = window.innerWidth <= 1024 && header ? header.offsetHeight : 0;
-      section.style.setProperty(
-        "--fp-screen-top",
-        `${(strip?.offsetHeight ?? 0) + headerHeight}px`,
-      );
-    };
-    update();
-    window.addEventListener("resize", update);
-    return () => window.removeEventListener("resize", update);
-  }, [ref]);
-}
-
-/** Section progress through the viewport as `--fp-par` (-1 → 1) for the photo parallax. */
-function useScrollParallax(ref, enabled) {
-  useEffect(() => {
-    const section = ref.current;
-    if (!enabled || !section) return undefined;
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      const rect = section.getBoundingClientRect();
-      const vh = window.innerHeight || 1;
-      const progress = (vh - rect.top) / (vh + rect.height);
-      section.style.setProperty(
-        "--fp-par",
-        Math.min(1, Math.max(-1, progress * 2 - 1)).toFixed(3),
-      );
-    };
-    const request = () => {
-      if (!frame) frame = requestAnimationFrame(update);
-    };
-    update();
-    window.addEventListener("scroll", request, { passive: true });
-    window.addEventListener("resize", request);
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener("scroll", request);
-      window.removeEventListener("resize", request);
-    };
-  }, [ref, enabled]);
+  return { inView, reveal };
 }
 
 function clearTilt(node) {
@@ -254,6 +198,7 @@ function buildSlide(project) {
       preferThumbnail: false,
       fallback: DEFAULT_PROJECT_CARD_IMAGE,
     }),
+    desktopImage: editorial.desktopImage ?? "",
     imageAlt: projectName
       ? `${projectName} — My Property Fact Top Picks featured project`
       : "Featured project — My Property Fact Top Picks",
@@ -265,6 +210,31 @@ function buildSlide(project) {
 }
 
 /* ------------------------------------------------------------------ slide */
+
+/** Listing photo; slides with a curated `desktopImage` swap to it above 1024px
+ *  (art direction via <picture>, so each device downloads only one file). */
+function SlidePhoto({ slide }) {
+  const common = {
+    alt: slide.imageAlt,
+    title: slide.imageAlt,
+    fill: true,
+    quality: 88,
+    sizes: IMAGE_SIZES,
+    className: "mpf-fp__img",
+  };
+
+  if (!slide.desktopImage) return <Image src={slide.image} {...common} />;
+
+  const { props: desktop } = getImageProps({ ...common, src: slide.desktopImage });
+  const { props: fallback } = getImageProps({ ...common, src: slide.image });
+
+  return (
+    <picture>
+      <source media={DESKTOP_MEDIA} srcSet={desktop.srcSet} sizes={desktop.sizes} />
+      <img {...fallback} />
+    </picture>
+  );
+}
 
 const TopPickSlide = memo(function TopPickSlide({
   slide,
@@ -371,15 +341,7 @@ const TopPickSlide = memo(function TopPickSlide({
           onPointerLeave={isActive ? tilt.onPointerLeave : undefined}
         >
           <div className="mpf-fp__media-layer">
-            <Image
-              src={slide.image}
-              alt={slide.imageAlt}
-              title={slide.imageAlt}
-              fill
-              quality={88}
-              sizes={IMAGE_SIZES}
-              className="mpf-fp__img"
-            />
+            <SlidePhoto slide={slide} />
           </div>
           <span className="mpf-fp__scrim" aria-hidden="true" />
 
@@ -442,9 +404,7 @@ export default function MpfTopPicks({ topProjects }) {
 
   const motionOk = useMediaQuery(MOTION_QUERY);
   const tilt = useTilt(useMediaQuery(TILT_QUERY));
-  const { visible, inView, reveal } = useSectionVisibility(sectionRef);
-  useScreenTopOffset(sectionRef);
-  useScrollParallax(sectionRef, motionOk && visible);
+  const { inView, reveal } = useSectionVisibility(sectionRef);
 
   const autoplay = hasMultiple && motionOk;
   const halted = paused || !inView || Boolean(enquiryProject);
