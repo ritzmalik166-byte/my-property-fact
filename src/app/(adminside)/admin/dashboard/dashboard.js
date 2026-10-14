@@ -214,6 +214,8 @@ export default function Dashboard({
       links.push({ href: "/admin/dashboard/live-listings", label: "Live listings" });
     if (isSuperAdmin)
       links.push({ href: "/admin/dashboard/project-activity", label: "Project listings" });
+    if (isSuperAdmin)
+      links.push({ href: "/admin/dashboard/listing-averages", label: "Listing averages" });
     if (canApprovals)
       links.push({ href: "/admin/dashboard/property-approvals", label: "Approvals" });
     if (isSuperAdmin)

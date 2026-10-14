@@ -307,6 +307,22 @@ export default function SideNav({ onLinkClick }) {
         )}
         {isSuperAdmin && (
           <li
+            className={
+              isActive("/admin/dashboard/listing-averages") ? "active" : ""
+            }
+          >
+            <Link
+              title="Listing Averages"
+              href="/admin/dashboard/listing-averages"
+              onClick={handleLinkClick}
+            >
+              <FontAwesomeIcon icon={faChartLine} className="admin-nav-ico" />
+              <span>Listing Averages</span>
+            </Link>
+          </li>
+        )}
+        {isSuperAdmin && (
+          <li
             className={isActive("/admin/dashboard/manage-users") ? "active" : ""}
           >
             <Link title="Manage Users" href="/admin/dashboard/manage-users" onClick={handleLinkClick}>
