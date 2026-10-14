@@ -282,6 +282,95 @@
   max-height: 240px;
 }
 
+/* Amenity multiselect: the modal body scrolls, so the option list sits in the
+   normal flow instead of floating, otherwise it is clipped by the body. */
+.admin-modal-surface .admin-amenity-multiselect .searchWrapper {
+  min-height: 44px;
+  padding: 0.35rem 2.25rem 0.35rem 0.6rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #f9fafb;
+  transition: all 0.2s ease;
+}
+
+.admin-modal-surface .admin-amenity-multiselect .searchWrapper:focus-within {
+  border-color: #007d51;
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(0, 125, 81, 0.1);
+}
+
+.admin-modal-surface .admin-amenity-multiselect.is-invalid .searchWrapper {
+  border-color: #dc3545;
+}
+
+.admin-modal-surface .admin-amenity-multiselect .searchBox {
+  margin-top: 0;
+  padding: 0.3rem 0.25rem;
+  font-size: 0.9375rem;
+  color: #111827;
+}
+
+.admin-modal-surface .admin-amenity-multiselect .chip {
+  margin: 0.15rem 0.3rem 0.15rem 0;
+  padding: 0.25rem 0.6rem;
+  border-radius: 999px;
+  background: rgba(0, 125, 81, 0.1);
+  color: #00452a;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.admin-modal-surface .admin-amenity-multiselect .chip .closeIcon {
+  filter: invert(23%) sepia(60%) saturate(1200%) hue-rotate(120deg) brightness(70%);
+}
+
+.admin-modal-surface .admin-amenity-multiselect .optionListContainer {
+  position: relative;
+  margin-top: 0.4rem;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 10px 24px -8px rgba(17, 24, 39, 0.18);
+}
+
+.admin-modal-surface .admin-amenity-multiselect .optionContainer {
+  max-height: 240px;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+}
+
+.admin-modal-surface .admin-amenity-multiselect li.option {
+  display: flex;
+  align-items: center;
+  padding: 0.55rem 0.85rem;
+  border-bottom: 1px solid #f3f4f6;
+  color: #1f2937;
+  font-size: 0.9rem;
+}
+
+.admin-modal-surface .admin-amenity-multiselect li.option:last-child {
+  border-bottom: none;
+}
+
+.admin-modal-surface .admin-amenity-multiselect li.option:hover,
+.admin-modal-surface .admin-amenity-multiselect li.highlightOption {
+  background: rgba(0, 125, 81, 0.08);
+  color: #00452a;
+}
+
+.admin-modal-surface .admin-amenity-multiselect .checkbox {
+  width: 16px;
+  height: 16px;
+  margin: 0 0.6rem 0 0;
+  accent-color: #007d51;
+  cursor: pointer;
+}
+
+.admin-modal-surface .admin-amenity-multiselect .notFound {
+  padding: 0.75rem 0.85rem;
+  color: #6b7280;
+  font-size: 0.875rem;
+}
+
 .admin-modal-surface .form-check {
   margin-bottom: 0.45rem;
 }
@@ -1504,6 +1593,50 @@ html[data-admin-theme="dark"] .admin-modal-surface .admin-user-type-option-hint 
 html[data-admin-theme="dark"] .admin-modal-surface .admin-modal-check-scroll {
   border-color: #444444;
   background: #0a0a0a;
+}
+
+html[data-admin-theme="dark"] .admin-modal-surface .admin-amenity-multiselect .searchWrapper {
+  border-color: #555555;
+  background: #0a0a0a;
+}
+
+html[data-admin-theme="dark"] .admin-modal-surface .admin-amenity-multiselect .searchWrapper:focus-within {
+  border-color: #ffffff;
+  background: #000000;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.12);
+}
+
+html[data-admin-theme="dark"] .admin-modal-surface .admin-amenity-multiselect .searchBox {
+  color: #ffffff;
+}
+
+html[data-admin-theme="dark"] .admin-modal-surface .admin-amenity-multiselect .chip {
+  background: rgba(134, 239, 172, 0.16);
+  color: #bbf7d0;
+}
+
+html[data-admin-theme="dark"] .admin-modal-surface .admin-amenity-multiselect .chip .closeIcon {
+  filter: invert(1);
+}
+
+html[data-admin-theme="dark"] .admin-modal-surface .admin-amenity-multiselect .optionListContainer {
+  background: #0a0a0a;
+  box-shadow: 0 10px 24px -8px rgba(0, 0, 0, 0.8);
+}
+
+html[data-admin-theme="dark"] .admin-modal-surface .admin-amenity-multiselect .optionContainer {
+  border-color: #444444;
+}
+
+html[data-admin-theme="dark"] .admin-modal-surface .admin-amenity-multiselect li.option {
+  border-bottom-color: #1f1f1f;
+  color: #f3f4f6;
+}
+
+html[data-admin-theme="dark"] .admin-modal-surface .admin-amenity-multiselect li.option:hover,
+html[data-admin-theme="dark"] .admin-modal-surface .admin-amenity-multiselect li.highlightOption {
+  background: rgba(134, 239, 172, 0.12);
+  color: #ffffff;
 }
 
 html[data-admin-theme="dark"] .admin-modal-surface .btn-admin-secondary {
