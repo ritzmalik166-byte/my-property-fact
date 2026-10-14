@@ -1,6 +1,7 @@
 import "./navratri.css";
 import { DiyaIcon } from "./NavratriIcons";
 import { NAVRATRI_PICKS_SECTION_ID, NAVRATRI_STRIP } from "./navratriContent";
+import NavratriPicksLink from "./NavratriPicksLink";
 
 export default function NavratriTopStrip() {
   return (
@@ -17,14 +18,14 @@ export default function NavratriTopStrip() {
               <span className="mpf-navratri-strip__msg-short">{NAVRATRI_STRIP.shortMessage}</span>
             </p>
           </div>
-          <a
-            href={`#${NAVRATRI_PICKS_SECTION_ID}`}
+          <NavratriPicksLink
+            targetId={NAVRATRI_PICKS_SECTION_ID}
             className="mpf-navratri-strip__cta"
             title={NAVRATRI_STRIP.ctaLabel}
           >
             <span className="mpf-navratri-strip__cta-full">{NAVRATRI_STRIP.ctaLabel}</span>
             <span className="mpf-navratri-strip__cta-short">{NAVRATRI_STRIP.ctaShortLabel}</span>
-          </a>
+          </NavratriPicksLink>
         </div>
       </div>
       <div className="mpf-navratri-strip-spacer" aria-hidden="true" />
