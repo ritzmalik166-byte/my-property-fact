@@ -151,6 +151,20 @@ export default function ProjectActivityPage() {
   const menuRef = useRef(null);
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const fromUrl = {};
+    Object.keys(EMPTY_FILTERS).forEach((key) => {
+      const value = params.get(key);
+      if (value) fromUrl[key] = value;
+    });
+    if (!Object.keys(fromUrl).length) return;
+    const next = { ...EMPTY_FILTERS, ...fromUrl };
+    setFilters(next);
+    setDebouncedFilters(next);
+    setFiltersOpen(true);
+  }, []);
+
+  useEffect(() => {
     const t = setTimeout(() => setDebouncedQuery(query), 320);
     return () => clearTimeout(t);
   }, [query]);

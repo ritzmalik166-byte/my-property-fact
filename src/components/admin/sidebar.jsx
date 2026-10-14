@@ -47,6 +47,7 @@ import {
   FileText,
   Radio,
   CalendarClock,
+  BarChart3,
 } from "lucide-react";
 
 const navItems = [
@@ -90,6 +91,13 @@ const navItems = [
     label: "Project Listings",
     icon: CalendarClock,
     href: "/admin/dashboard/project-activity",
+    superAdminOnly: true,
+  },
+  {
+    id: "listing-averages",
+    label: "Listing Averages",
+    icon: BarChart3,
+    href: "/admin/dashboard/listing-averages",
     superAdminOnly: true,
   },
   {

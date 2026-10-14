@@ -1,0 +1,125 @@
+.la-metrics {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.la-custom {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  color: #64748b;
+}
+
+.la-top {
+  margin: -0.5rem 0 1rem;
+  font-size: 0.84rem;
+  color: #475569;
+}
+
+.la-top strong {
+  color: #0d5834;
+}
+
+.la-select {
+  height: 36px;
+  border: 1px solid #d7e0da;
+  border-radius: 8px;
+  padding: 0 10px;
+  background: #fff;
+  color: #0f172a;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.la-sortable {
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.la-sortable:hover {
+  color: #0d5834;
+}
+
+.la-share {
+  font-size: 0.7rem;
+  color: #64748b;
+}
+
+.la-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  min-width: 150px;
+}
+
+.la-bar__value {
+  min-width: 42px;
+  font-weight: 800;
+  color: #0f172a;
+  font-size: 0.84rem;
+}
+
+.la-bar__track {
+  flex: 1;
+  height: 6px;
+  border-radius: 999px;
+  background: #eef2f6;
+  overflow: hidden;
+}
+
+.la-bar__fill {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #34a26b, #0d5834);
+}
+
+.la-foot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 12px 1rem;
+}
+
+.la-foot a {
+  color: #0d5834;
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.la-foot a:hover {
+  text-decoration: underline;
+}
+
+@media (max-width: 1200px) {
+  .la-metrics {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 800px) {
+  .la-metrics {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+html[data-admin-theme="dark"] .listing-averages .la-select {
+  background: #111111;
+  border-color: #333333;
+  color: #ffffff;
+}
+
+html[data-admin-theme="dark"] .listing-averages .la-bar__value,
+html[data-admin-theme="dark"] .listing-averages .la-top {
+  color: #ffffff;
+}
+
+html[data-admin-theme="dark"] .listing-averages .la-bar__track {
+  background: #1f1f1f;
+}
+
+html[data-admin-theme="dark"] .listing-averages .la-top strong {
+  color: #6ee7b7;
+}
