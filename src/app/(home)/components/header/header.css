@@ -1780,7 +1780,7 @@ a.dropdown-footer-right:focus-visible .dropdown-footer-email {
 }
 
 .city-dropdown .city-dropdown-right {
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(max(150px, calc((100% - 78px) / 4)), 1fr));
   gap: 5px 26px;
   max-height: 300px;
   overflow-y: auto;
@@ -1825,7 +1825,8 @@ a.dropdown-footer-right:focus-visible .dropdown-footer-email {
 }
 
 .builder-dropdown .city-dropdown-right {
-  grid-template-columns: repeat(4, minmax(180px, 1fr));
+  /* Up to 4 columns; drops to 3/2 when the panel is too narrow instead of clipping. */
+  grid-template-columns: repeat(auto-fill, minmax(max(180px, calc((100% - 78px) / 4)), 1fr));
   gap: 5px 26px;
   max-height: 300px;
   overflow-y: auto;
@@ -3784,5 +3785,26 @@ ul {
 @media (min-width: 1024px) {
   .mbMenuContainer .mbMenu {
     max-width: 420px;
+  }
+}
+
+/* Laptop widths: 75% is too narrow for the mega menus, so links were clipped on the right. */
+@media (max-width: 1399.98px) {
+  .menu ul li.hasChild .dropdown.dropdown-lg {
+    width: calc(100vw - 48px);
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .menu ul li.hasChild .dropdown.dropdown-lg .city-dropdown-content {
+    gap: 24px;
+  }
+
+  .menu ul li.hasChild .dropdown.dropdown-lg .city-dropdown-left {
+    min-width: 200px;
+  }
+
+  .menu ul li.hasChild .dropdown.dropdown-lg .city-dropdown-item {
+    font-size: 14px;
   }
 }

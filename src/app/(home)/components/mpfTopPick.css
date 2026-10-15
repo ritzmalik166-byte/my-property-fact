@@ -50,12 +50,12 @@
 /* ---------------------------------------------------------------- header */
 
 .mpf-fp__head {
-  margin-bottom: clamp(14px, 1.8vw, 22px);
+  margin-bottom: clamp(20px, 2.4vw, 30px);
 }
 
 .mpf-fp__kicker {
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
   font-size: 0.78rem;
   font-weight: 500;
   letter-spacing: 0.01em;
@@ -113,7 +113,7 @@
 .mpf-fp__progress {
   position: relative;
   height: 3px;
-  margin-top: 12px;
+  margin-top: 16px;
   overflow: hidden;
   border-radius: 3px;
   background: #e6e6e4;
@@ -163,7 +163,7 @@
 
 .mpf-fp__info {
   position: relative;
-  padding: 14px 18px 14px 12px;
+  padding: 20px 24px 20px 20px;
   background: linear-gradient(180deg, #fafaf9 0%, var(--fp-panel) 100%);
   border-bottom: 1px solid var(--fp-line);
 }
@@ -221,7 +221,7 @@
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: start;
-  gap: 16px;
+  gap: 22px;
 }
 
 .mpf-fp__logo-box {
@@ -262,7 +262,7 @@
 }
 
 .mpf-fp .mpf-fp__project {
-  margin: 0 0 6px;
+  margin: 0 0 10px;
   font-family: var(--fp-sans) !important;
   font-weight: 500;
   font-size: clamp(1.4rem, 1rem + 1vw, 1.75rem);
@@ -338,17 +338,17 @@
 .mpf-fp .mpf-fp__facts {
   display: flex;
   flex-wrap: wrap;
-  row-gap: 8px;
-  margin: 14px 0 0;
+  row-gap: 12px;
+  margin: 20px 0 0;
 }
 
 .mpf-fp__fact {
   min-width: 0;
-  padding-right: 18px;
+  padding-right: 24px;
 }
 
 .mpf-fp__fact+.mpf-fp__fact {
-  padding-left: 16px;
+  padding-left: 24px;
   border-left: 1px solid var(--fp-line);
 }
 
@@ -361,7 +361,7 @@
 }
 
 .mpf-fp .mpf-fp__fact dd {
-  margin: 4px 0 0;
+  margin: 6px 0 0;
   font-size: 0.8rem;
   font-weight: 600;
   font-variant-numeric: tabular-nums;
@@ -447,7 +447,7 @@
 }
 
 .mpf-fp .mpf-fp__loc {
-  margin: 4px 0 0;
+  margin: 8px 0 0;
   font-size: 0.8rem;
   font-weight: 500;
   line-height: 1.4;
@@ -455,7 +455,7 @@
 }
 
 .mpf-fp .mpf-fp__tagline {
-  margin: 14px 0 0;
+  margin: 20px 0 0;
   font-size: clamp(0.92rem, 0.8rem + 0.35vw, 1.12rem);
   font-weight: 500;
   line-height: 1.35;
@@ -466,14 +466,14 @@
 .mpf-fp .mpf-fp__usps {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin: 14px 0 0;
+  gap: 8px;
+  margin: 18px 0 0;
   padding: 0;
   list-style: none;
 }
 
 .mpf-fp__usp {
-  padding: 5px 10px;
+  padding: 6px 12px;
   border-radius: 3px;
   background: rgba(255, 255, 255, 0.94);
   box-shadow: 0 4px 12px -6px rgba(0, 0, 0, 0.3);
