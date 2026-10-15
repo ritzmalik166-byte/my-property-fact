@@ -117,6 +117,7 @@ function HeroBannerPicture() {
 export default function HeroSection({
   projectTypeList,
   cityList,
+  availablePropertyTypeKeys = null,
   title = "Find Flats & Property Across India | Buy & Invest",
   subtitle = "Browse flats, apartments, and commercial properties in India with verified listings, price trends, and expert insights.",
 }) {
@@ -139,6 +140,7 @@ export default function HeroSection({
         <SearchFilter
           projectTypeList={projectTypeList}
           cityList={cityList}
+          availablePropertyTypeKeys={availablePropertyTypeKeys}
           layout="home-hero"
         />
       </div>

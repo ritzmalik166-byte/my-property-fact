@@ -18,13 +18,28 @@ function cityFromPayload(data) {
   return city || "";
 }
 
-export async function resolveIpCity() {
-  try {
-    const data = await readJson("/api/home/ip-city");
-    return cityFromPayload(data);
-  } catch {
-    return "";
-  }
+/** Header and home rails ask at the same time; share one lookup per page for a few minutes. */
+const LOOKUP_TTL_MS = 5 * 60 * 1000;
+const lookups = new Map();
+
+function sharedLookup(key, factory) {
+  const now = Date.now();
+  const hit = lookups.get(key);
+  if (hit && now - hit.at < LOOKUP_TTL_MS) return hit.promise;
+  const promise = factory();
+  lookups.set(key, { promise, at: now });
+  return promise;
+}
+
+export function resolveIpCity() {
+  return sharedLookup("ip", async () => {
+    try {
+      const data = await readJson("/api/home/ip-city");
+      return cityFromPayload(data);
+    } catch {
+      return "";
+    }
+  });
 }
 
 function readBrowserCoords() {
@@ -61,15 +76,17 @@ export async function resolveCityFromCoords(coords) {
  * Prefer the device GPS city (Noida vs Gurugram). IP is only a fallback —
  * NCR ISPs often geolocate Noida devices as Gurugram/Delhi.
  */
-export async function resolveDeviceCity() {
-  try {
-    const coords = await readBrowserCoords();
-    const gpsCity = await resolveCityFromCoords(coords);
-    if (gpsCity) return { city: gpsCity, source: "gps" };
-  } catch {
-    /* permission denied, timeout, or unsupported */
-  }
+export function resolveDeviceCity() {
+  return sharedLookup("device", async () => {
+    try {
+      const coords = await readBrowserCoords();
+      const gpsCity = await resolveCityFromCoords(coords);
+      if (gpsCity) return { city: gpsCity, source: "gps" };
+    } catch {
+      /* permission denied, timeout, or unsupported */
+    }
 
-  const ipCity = await resolveIpCity();
-  return { city: ipCity, source: "ip" };
+    const ipCity = await resolveIpCity();
+    return { city: ipCity, source: "ip" };
+  });
 }

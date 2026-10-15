@@ -1,12 +1,11 @@
 "use client";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import "./header.css";
 import { useEffect, useState, useRef, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { usePathname } from "next/navigation";
 import { Spinner } from "react-bootstrap";
-import BrokerLoginModal from "../_homecomponents/BrokerLoginModal";
-import WebsiteOtpModal from "../_homecomponents/WebsiteOtpModal";
 import HeaderAccountMenu from "./HeaderAccountMenu";
 import HeaderLatestSpark from "./HeaderLatestSpark";
 import NavratriTopStrip from "../festive/NavratriTopStrip";
@@ -31,7 +30,6 @@ import {
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
 import { useSiteData } from "@/app/_global_components/contexts/SiteDataContext";
-import { motion } from "framer-motion";
 import { resolveIpCity } from "@/lib/resolveIpCity";
 import {
   clearChosenHeaderCity,
@@ -41,8 +39,17 @@ import {
   writeChosenHeaderCity,
   writeSessionHeaderCity,
 } from "@/lib/headerChosenCity";
+import { fetchProjectSuggestions } from "@/lib/fetchProjectListingPage";
+
+const BrokerLoginModal = dynamic(() => import("../_homecomponents/BrokerLoginModal"), {
+  ssr: false,
+});
+const WebsiteOtpModal = dynamic(() => import("../_homecomponents/WebsiteOtpModal"), {
+  ssr: false,
+});
 
 const LOGO_ON_LIGHT = "/logo.webp";
+const HEADER_SEARCH_RESULT_LIMIT = 12;
 
 /** Ultimate fallback when GPS/IP city has no listings. */
 const DEFAULT_CITY_WITHOUT_GEO = "Delhi NCR";
@@ -92,43 +99,22 @@ function formatHeaderCityLabel(city) {
 const LOGO_ON_DARK = "/logo.webp";
 
 const NewBadge = ({ isVisible }) => (
-  <span className="city-dropdown-badge">
+  <span className={`city-dropdown-badge${isVisible ? " city-dropdown-badge--animate" : ""}`}>
     {["N", "e", "w"].map((char, i) => (
-      <motion.span
-        key={i}
-        className="new-char"
-        initial={{ opacity: 0, y: 6, scale: 0.8 }}
-        animate={
-          isVisible
-            ? {
-              opacity: [0, 1, 1, 0],
-              y: [6, 0, 0, 6],
-              scale: [0.8, 1, 1, 0.8],
-            }
-            : { opacity: 0, y: 6, scale: 0.8 }
-        }
-        transition={
-          isVisible
-            ? {
-              duration: 2.5,
-              repeat: Infinity,
-              repeatDelay: 0.5,
-              delay: i * 0.15,
-              times: [0, 0.12, 0.75, 0.9],
-              ease: "easeInOut",
-            }
-            : { duration: 0.2 }
-        }
-      >
+      <span key={i} className="new-char" style={{ animationDelay: `${i * 0.15}s` }}>
         {char}
-      </motion.span>
+      </span>
     ))}
   </span>
 );
 
 const HeaderComponent = () => {
-  const { cityList = [], projectTypes = [], builderList = [], projectList = [], searchProjects, ensureProjectCatalog } = useSiteData();
+  const { cityList = [], projectTypes = [], builderList = [] } = useSiteData();
   const [isMounted, setIsMounted] = useState(false);
+  /** City/builder lists add ~1k nodes per menu; build them only once the menu is first used. */
+  const [desktopNavArmed, setDesktopNavArmed] = useState(false);
+  const [mobileMenuArmed, setMobileMenuArmed] = useState(false);
+  const armDesktopNav = useCallback(() => setDesktopNavArmed(true), []);
   const [activeDropdown, setActiveDropdown] = useState(null);
   const [isDropdownHovered, setIsDropdownHovered] = useState(false);
   const [isNavDropdownDismissed, setIsNavDropdownDismissed] = useState(false);
@@ -421,6 +407,7 @@ const HeaderComponent = () => {
       window.scrollTo(0, scrollPositionRef.current);
     } else {
       // Open the menu
+      setMobileMenuArmed(true);
       for (let i = 0; i < menuButtons.length; i++) {
         menuButtons[i].classList.add("closeMenuBtn");
       }
@@ -475,6 +462,7 @@ const HeaderComponent = () => {
       setIsSearchingProjects(false);
       return;
     }
+    const controller = new AbortController();
     const timeoutId = setTimeout(() => {
       const q = projectSearchInput.trim();
       if (q.length < 2) {
@@ -485,20 +473,23 @@ const HeaderComponent = () => {
       }
       setProjectSearchQuery(q);
       setIsSearchingProjects(true);
-      Promise.resolve()
-        .then(() => (ensureProjectCatalog ? ensureProjectCatalog() : null))
-        .then(() => searchProjects(q))
-        .then((filtered) => {
-          setProjectSearchResults(filtered || []);
+      fetchProjectSuggestions(q, { limit: HEADER_SEARCH_RESULT_LIMIT, signal: controller.signal })
+        .then((results) => {
+          if (controller.signal.aborted) return;
+          setProjectSearchResults(results || []);
           setIsSearchingProjects(false);
         })
         .catch(() => {
+          if (controller.signal.aborted) return;
           setProjectSearchResults([]);
           setIsSearchingProjects(false);
         });
     }, 280);
-    return () => clearTimeout(timeoutId);
-  }, [ensureProjectCatalog, projectSearchInput, searchProjects]);
+    return () => {
+      clearTimeout(timeoutId);
+      controller.abort();
+    };
+  }, [projectSearchInput]);
 
   /** Open project detail in a new tab (header search bar). */
   const openProjectInNewTab = (project) => {
@@ -1078,7 +1069,11 @@ const HeaderComponent = () => {
             ) : null}
             {isHomePage ? <HeaderLatestSpark /> : null}
           </div>
-          <nav className="d-none d-lg-flex flex-grow-1 justify-content-end align-items-center">
+          <nav
+            className="d-none d-lg-flex flex-grow-1 justify-content-end align-items-center"
+            onPointerEnter={armDesktopNav}
+            onFocus={armDesktopNav}
+          >
             <div className={`menu position-relative${isHomePage ? " header-home-ss__menu" : ""}`}>
               <ul className="d-flex gap-5 m-0 align-items-center header-links list-unstyled fw-bold">
                 <li
@@ -1099,7 +1094,7 @@ const HeaderComponent = () => {
                     Cities
                   </button>
                   <div className="dropdown dropdown-lg z-3 city-dropdown">
-                    {!isMounted || !cityList?.length ? (
+                    {!desktopNavArmed || !cityList?.length ? (
                       <div className="d-flex align-items-center justify-content-center p-3">
                         <Spinner animation="border" variant="light" />
                       </div>
@@ -1204,7 +1199,7 @@ const HeaderComponent = () => {
                     Builders
                   </button>
                   <div className="dropdown dropdown-lg z-3 builder-dropdown">
-                    {!isMounted || builderList.length === 0 ? (
+                    {!desktopNavArmed || builderList.length === 0 ? (
                       <div className="d-flex align-items-center justify-content-center p-3">
                         <Spinner animation="border" variant="light" />
                       </div>
@@ -1336,7 +1331,7 @@ const HeaderComponent = () => {
                       className="dropdown dropdown-lg projects-dropdown z-3"
                       ref={projectsDropdownRef}
                     >
-                      {!isMounted || !projectTypes?.length ? (
+                      {!desktopNavArmed || !projectTypes?.length ? (
                         <div className="d-flex align-items-center justify-content-center p-3">
                           <Spinner animation="border" variant="light" />
                         </div>
@@ -2015,7 +2010,7 @@ const HeaderComponent = () => {
                       }`}
                   >
                     <ul className="list-inline list-unstyled">
-                      {(isMounted ? cityList : [])?.map((city) => (
+                      {(mobileMenuArmed ? cityList : [])?.map((city) => (
                         <li key={city.id}>
                           <Link
                             href={`/city/${city.slugURL}`}
@@ -2055,7 +2050,7 @@ const HeaderComponent = () => {
                       }`}
                   >
                     <ul className="list-inline list-unstyled">
-                      {(isMounted ? builderList : [])?.map((builder) => (
+                      {(mobileMenuArmed ? builderList : [])?.map((builder) => (
                         <li key={builder.id}>
                           <Link
                             className={`text-decoration-none builder-link${pathname === `/builder/${builder.slugUrl}` ? " header-link-active" : ""}`}
@@ -2113,7 +2108,7 @@ const HeaderComponent = () => {
                       className={`dropdown mobile-dropdown ${activeDropdown === "projects" ? "activeHeader" : ""}`}
                     >
                       <ul className="list-inline list-unstyled">
-                        {(isMounted ? projectTypes : [])?.map((project) => (
+                        {(mobileMenuArmed ? projectTypes : [])?.map((project) => (
                           <li key={project.id}>
                             <Link
                               href={`/projects/${project.slugUrl}`}
@@ -2249,12 +2244,16 @@ const HeaderComponent = () => {
           </div>
         </div>
       ) : null}
-      <BrokerLoginModal show={showBrokerLoginModal} onClose={setShowBrokerLoginModal} />
-      <WebsiteOtpModal
-        show={showWebsiteLoginModal}
-        onClose={setShowWebsiteLoginModal}
-        initialFlow={websiteAuthFlow}
-      />
+      {showBrokerLoginModal ? (
+        <BrokerLoginModal show onClose={setShowBrokerLoginModal} />
+      ) : null}
+      {showWebsiteLoginModal ? (
+        <WebsiteOtpModal
+          show
+          onClose={setShowWebsiteLoginModal}
+          initialFlow={websiteAuthFlow}
+        />
+      ) : null}
     </>
   );
 };

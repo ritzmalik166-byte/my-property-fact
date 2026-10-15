@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
-import { motion, useReducedMotion } from "framer-motion";
 import { FaFacebookF, FaInstagram, FaLinkedinIn } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { FiYoutube } from "react-icons/fi";
@@ -23,20 +22,11 @@ const FOOTER_EMAIL_HREF = "mailto:social@mypropertyfact.com";
 const GOOGLE_PREFERRED_SOURCE_HREF =
   "https://www.google.com/preferences/source?q=mypropertyfact.in";
 
-const contentSnapTransition = {
-  duration: 0.45,
-  times: [0, 0.55, 0.78, 1],
-  ease: [0.16, 1.2, 0.3, 1],
-  repeat: Infinity,
-  repeatDelay: 2.1,
-};
-
 export default function NewFooterDesign({
   compactTop = false,
   cityList: cityListProp,
 }) {
   useDeferredStylesheet(() => import("./newfooter.css"));
-  const reduceMotion = useReducedMotion();
   const { cityList: contextCityList = [] } = useSiteData();
   const cityList = cityListProp ?? contextCityList;
   const footerRef = useRef(null);
@@ -133,20 +123,9 @@ export default function NewFooterDesign({
                     title="Add My Property Fact as a preferred source on Google"
                     aria-label="Add My Property Fact as a preferred source on Google"
                   >
-                    <motion.span
+                    <span
                       className="google-preferred-source-btn__icon"
                       aria-hidden="true"
-                      initial={false}
-                      animate={
-                        reduceMotion
-                          ? { x: 0, opacity: 1 }
-                          : { x: [-40, 6, -2, 0], opacity: [0, 1, 1, 1] }
-                      }
-                      transition={
-                        reduceMotion
-                          ? { duration: 0 }
-                          : contentSnapTransition
-                      }
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -173,24 +152,11 @@ export default function NewFooterDesign({
                           d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
                         />
                       </svg>
-                    </motion.span>
-                    <motion.span
-                      className="google-preferred-source-btn__text"
-                      initial={false}
-                      animate={
-                        reduceMotion
-                          ? { x: 0, opacity: 1 }
-                          : { x: [-40, 6, -2, 0], opacity: [0, 1, 1, 1] }
-                      }
-                      transition={
-                        reduceMotion
-                          ? { duration: 0 }
-                          : { ...contentSnapTransition, delay: 0.06 }
-                      }
-                    >
+                    </span>
+                    <span className="google-preferred-source-btn__text">
                       <span>Add as a preferred</span>
                       <span>source on Google</span>
-                    </motion.span>
+                    </span>
                   </a>
                 </div>
               </div>

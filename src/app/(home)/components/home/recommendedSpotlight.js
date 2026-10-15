@@ -361,10 +361,11 @@ export function buildMixedRecommendationsForRegion({
   return combined.slice(0, limit).map(({ itemKind, payload }) => ({ itemKind, ...payload }));
 }
 
-export async function fetchSpotlightDataForApi() {
+/** Public listings are only needed for the mixed (projects + listings) rail. */
+export async function fetchSpotlightDataForApi({ includeListings = true } = {}) {
   const [projects, latestPublicListings] = await Promise.all([
     getAllProjects(),
-    loadPublicPropertiesForSpotlight(),
+    includeListings ? loadPublicPropertiesForSpotlight() : [],
   ]);
   return { projects, latestPublicListings };
 }

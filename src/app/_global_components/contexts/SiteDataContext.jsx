@@ -9,11 +9,10 @@ import {
   useMemo,
   Suspense,
 } from "react";
-import { useSearchParams, usePathname } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { projectMatchesCityFilter } from "../cityAliasUtils";
 import { matchesBudgetRangeForProject } from "../projectFilterUtils";
-import { fetchSiteDataFromApi, fetchSiteMetaFromApi } from "../siteData/fetchSiteDataApi";
-import { projectNameMatchesSearch, scoreProjectFieldsSearchMatch } from "../projectSearchUtils";
+import { fetchProjectCatalogFromApi, fetchSiteMetaFromApi } from "../siteData/fetchSiteDataApi";
 
 const DEFAULT_PROJECT_FILTERS = {
   propertyType: "",
@@ -64,8 +63,25 @@ function createByIdMap(list) {
   return map;
 }
 
-let siteDataCache = null;
-let siteDataPromise = null;
+let projectCatalogCache = null;
+let projectCatalogPromise = null;
+let siteMetaPromise = null;
+
+function loadProjectCatalog() {
+  if (projectCatalogCache) return Promise.resolve(projectCatalogCache);
+  if (!projectCatalogPromise) {
+    projectCatalogPromise = fetchProjectCatalogFromApi()
+      .then((list) => {
+        projectCatalogCache = list;
+        return list;
+      })
+      .catch((err) => {
+        projectCatalogPromise = null;
+        throw err;
+      });
+  }
+  return projectCatalogPromise;
+}
 
 const SiteDataContext = createContext({});
 
@@ -100,8 +116,6 @@ function QueryFiltersFromSearchParams({ onFiltersFromUrl }) {
 }
 
 export function SiteDataProvider({ children, initialData = null }) {
-  const pathname = usePathname();
-  const deferProjectCatalog = pathname === "/projects";
   const initialHasProjects = hasProjectCatalog(initialData);
 
   const [cityList, setCityList] = useState(() =>
@@ -120,16 +134,17 @@ export function SiteDataProvider({ children, initialData = null }) {
     initialData ? initialData.projectStatuses || [] : []
   );
   const [projectList, setProjectList] = useState(() =>
-    initialHasProjects ? initialData.projectList : []
+    initialHasProjects ? initialData.projectList : projectCatalogCache || []
+  );
+  const [catalogLoaded, setCatalogLoaded] = useState(
+    () => initialHasProjects || Boolean(projectCatalogCache),
   );
 
   const [quickProjectFilter, setQuickProjectFilter] = useState("All");
   const [projectFilters, setProjectFiltersState] = useState(DEFAULT_PROJECT_FILTERS);
   const [queryFilters, setQueryFiltersState] = useState(DEFAULT_QUERY_FILTERS);
 
-  const [loading, setLoading] = useState(
-    () => !initialData || !initialHasProjects,
-  );
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const citiesById = useMemo(() => createByIdMap(cityList), [cityList]);
@@ -138,111 +153,58 @@ export function SiteDataProvider({ children, initialData = null }) {
   const buildersById = useMemo(() => createByIdMap(builderList), [builderList]);
 
   useEffect(() => {
-    let cancelled = false;
-
-    async function loadData() {
-      try {
-        if (deferProjectCatalog) {
-          if (!initialData && !cityList.length) {
-            const meta = await fetchSiteMetaFromApi();
-            if (!cancelled) {
-              setCityList(meta.cityList || []);
-              setAllCityList(meta.allCityList || meta.cityList || []);
-              setBuilderList(meta.builderList || []);
-              setProjectTypes(meta.projectTypes || []);
-              setProjectStatuses(meta.projectStatuses || []);
-            }
-          }
-          if (!cancelled) setLoading(false);
-          return;
-        }
-
-        if (siteDataCache?.projectList?.length) {
-          if (!cancelled) {
-            setCityList(siteDataCache.cityList);
-            setAllCityList(siteDataCache.allCityList || siteDataCache.cityList);
-            setBuilderList(siteDataCache.builderList);
-            setProjectTypes(siteDataCache.projectTypes);
-            setProjectStatuses(siteDataCache.projectStatuses);
-            setProjectList(siteDataCache.projectList);
-            setLoading(false);
-          }
-          return;
-        }
-
-        if (initialData && initialHasProjects) {
-          const data = {
-            cityList: initialData.cityList || [],
-            allCityList: initialData.allCityList || initialData.cityList || [],
-            builderList: initialData.builderList || [],
-            projectTypes: initialData.projectTypes || [],
-            projectStatuses: initialData.projectStatuses || [],
-            projectList: initialData.projectList || [],
-          };
-          siteDataCache = data;
-          siteDataPromise = null;
-          if (!cancelled) setLoading(false);
-          return;
-        }
-
-        if (!siteDataPromise) {
-          siteDataPromise = fetchSiteDataFromApi()
-            .then((data) => {
-              siteDataCache = data;
-              return data;
-            })
-            .catch((err) => {
-              siteDataPromise = null;
-              throw err;
-            });
-        }
-
-        const data = await siteDataPromise;
-
-        if (!cancelled) {
-          if (!initialData) {
-            setCityList(data.cityList);
-            setAllCityList(data.allCityList || data.cityList);
-            setBuilderList(data.builderList);
-            setProjectTypes(data.projectTypes);
-            setProjectStatuses(data.projectStatuses);
-          }
-          setProjectList(data.projectList || []);
-          setError(null);
-        }
-      } catch (err) {
-        if (!cancelled) setError(err?.message || "Failed to load site data");
-      } finally {
-        if (!cancelled) setLoading(false);
-      }
+    if (initialHasProjects && !projectCatalogCache) {
+      projectCatalogCache = initialData.projectList;
     }
+  }, [initialData, initialHasProjects]);
 
-    loadData();
-
+  // Meta normally arrives from the root layout; fetch it only if the server fetch failed.
+  useEffect(() => {
+    if (initialData) return;
+    let cancelled = false;
+    if (!siteMetaPromise) {
+      siteMetaPromise = fetchSiteMetaFromApi().catch((err) => {
+        siteMetaPromise = null;
+        throw err;
+      });
+    }
+    siteMetaPromise
+      .then((meta) => {
+        if (cancelled) return;
+        setCityList(meta.cityList || []);
+        setAllCityList(meta.allCityList || meta.cityList || []);
+        setBuilderList(meta.builderList || []);
+        setProjectTypes(meta.projectTypes || []);
+        setProjectStatuses(meta.projectStatuses || []);
+      })
+      .catch((err) => {
+        if (!cancelled) setError(err?.message || "Failed to load site data");
+      });
     return () => {
       cancelled = true;
     };
-  }, [deferProjectCatalog, initialData, initialHasProjects]);
+  }, [initialData]);
 
+  /** Loads the full slim project catalog once per session. Only call where the whole list is really needed. */
   const ensureProjectCatalog = useCallback(async () => {
-    if (siteDataCache?.projectList?.length) {
-      setProjectList(siteDataCache.projectList);
-      return siteDataCache.projectList;
+    if (projectCatalogCache) {
+      setProjectList(projectCatalogCache);
+      setCatalogLoaded(true);
+      return projectCatalogCache;
     }
-    if (!siteDataPromise) {
-      siteDataPromise = fetchSiteDataFromApi()
-        .then((data) => {
-          siteDataCache = data;
-          return data;
-        })
-        .catch((err) => {
-          siteDataPromise = null;
-          throw err;
-        });
+    setLoading(true);
+    try {
+      const list = await loadProjectCatalog();
+      setProjectList(list);
+      setCatalogLoaded(true);
+      setError(null);
+      return list;
+    } catch (err) {
+      setError(err?.message || "Failed to load projects");
+      throw err;
+    } finally {
+      setLoading(false);
     }
-    const data = await siteDataPromise;
-    setProjectList(data.projectList || []);
-    return data.projectList || [];
   }, []);
 
   const setProjectFilters = useCallback((nextFilters) => {
@@ -459,34 +421,6 @@ export function SiteDataProvider({ children, initialData = null }) {
     return Object.values(projectFilters).filter(Boolean).length;
   }, [projectFilters]);
 
-  const searchProjects = useCallback(async (query) => {
-    const q = normalizeText(query);
-    if (q.length < 2) return [];
-
-    const source = projectList?.length
-      ? projectList
-      : siteDataCache?.projectList || [];
-
-    return source.filter((project) => {
-      const name = project?.projectName || project?.name || "";
-      if (projectNameMatchesSearch(name, q)) return true;
-
-      if (scoreProjectFieldsSearchMatch(project, q) >= 0) return true;
-
-      const haystack = normalizeText(
-        [
-          name,
-          project?.cityName || "",
-          project?.builderName || "",
-          project?.projectAddress || "",
-          project?.projectLocality || "",
-        ].join(" "),
-      );
-      const words = q.split(" ").filter(Boolean);
-      return words.every((word) => haystack.includes(word));
-    });
-  }, [projectList]);
-
   const value = {
     cityList,
     builderList,
@@ -507,7 +441,7 @@ export function SiteDataProvider({ children, initialData = null }) {
     clearQueryFilters,
     loading,
     error,
-    searchProjects,
+    catalogLoaded,
     ensureProjectCatalog,
   };
 
@@ -523,4 +457,23 @@ export function SiteDataProvider({ children, initialData = null }) {
 
 export function useSiteData() {
   return useContext(SiteDataContext);
+}
+
+/**
+ * Full project catalog for components that filter it client-side.
+ * Triggers the one-time catalog download when `enabled`; `loading` stays true until it arrives.
+ */
+export function useProjectCatalog({ enabled = true } = {}) {
+  const { projectList = [], catalogLoaded = false, error, ensureProjectCatalog } = useSiteData();
+
+  useEffect(() => {
+    if (!enabled || catalogLoaded || !ensureProjectCatalog) return;
+    ensureProjectCatalog().catch(() => {});
+  }, [enabled, catalogLoaded, ensureProjectCatalog]);
+
+  return {
+    projectList,
+    loading: enabled && !catalogLoaded && !error,
+    error,
+  };
 }

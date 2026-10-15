@@ -463,7 +463,11 @@ export async function GET(request) {
       });
     }
 
-    const { projects, latestPublicListings } = await fetchSpotlightDataForApi();
+    const isMixedIntent =
+      intent !== "projects" && intent !== "latest-projects" && intent !== "popular-promo";
+    const { projects, latestPublicListings } = await fetchSpotlightDataForApi({
+      includeListings: isMixedIntent,
+    });
 
     if (intent === "projects") {
       const newLaunchProjects = normalizeProjectsArray(projects).filter(isNewLaunchProject);

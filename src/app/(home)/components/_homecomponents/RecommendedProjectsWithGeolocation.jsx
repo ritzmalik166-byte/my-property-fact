@@ -175,6 +175,17 @@ export default function RecommendedProjectsWithGeolocation({
     [applyCityResults, locationIntent],
   );
 
+  /** SSR fallback cards are already Delhi NCR — only fetch when they are missing. */
+  const applyDefaultCity = useCallback(() => {
+    cityOverrideRef.current = DEFAULT_CITY_WITHOUT_LOCATION;
+    citySourceRef.current = "ip";
+    if (fallbackItemsRef.current?.length > 0) {
+      setActiveCity(DEFAULT_CITY_WITHOUT_LOCATION);
+      return Promise.resolve();
+    }
+    return fetchForCity(DEFAULT_CITY_WITHOUT_LOCATION);
+  }, [fetchForCity]);
+
   const applyDetectedCity = useCallback(async () => {
     try {
       // Header stays mounted across city-page navigation; this rail remounts.
@@ -194,10 +205,8 @@ export default function RecommendedProjectsWithGeolocation({
       if (citySourceRef.current === "gps" || citySourceRef.current === "manual") {
         return;
       }
-      if (!city) {
-        cityOverrideRef.current = DEFAULT_CITY_WITHOUT_LOCATION;
-        citySourceRef.current = "ip";
-        await fetchForCity(DEFAULT_CITY_WITHOUT_LOCATION);
+      if (!city || (isDelhiNcrLabel(city) && fallbackItemsRef.current?.length > 0)) {
+        applyDefaultCity();
         return;
       }
       cityOverrideRef.current = city;
@@ -205,11 +214,9 @@ export default function RecommendedProjectsWithGeolocation({
       await fetchForCity(city, { fallbackToNcrOnEmpty: source !== "gps" });
     } catch {
       if (citySourceRef.current === "gps" || citySourceRef.current === "manual") return;
-      cityOverrideRef.current = DEFAULT_CITY_WITHOUT_LOCATION;
-      citySourceRef.current = "ip";
-      await fetchForCity(DEFAULT_CITY_WITHOUT_LOCATION);
+      applyDefaultCity();
     }
-  }, [fetchForCity]);
+  }, [fetchForCity, applyDefaultCity]);
 
   useEffect(() => {
     applyDetectedCity();

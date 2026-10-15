@@ -381,12 +381,13 @@ export default function HomeRecommendationCards({
       const width = el?.clientWidth || window.innerWidth - 360;
       setVisibleCount(tilesThatFit(width));
     };
-    update();
     const ro =
       el && typeof ResizeObserver !== "undefined"
         ? new ResizeObserver(update)
         : null;
+    // The observer's initial callback runs after layout; measuring here would force a sync reflow.
     if (el && ro) ro.observe(el);
+    else update();
     return () => {
       ro?.disconnect();
     };

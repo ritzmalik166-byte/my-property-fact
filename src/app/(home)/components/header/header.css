@@ -1532,9 +1532,42 @@ button.header-nav-dropdown-trigger {
   display: inline-flex;
 }
 
-/* New badge - letters animated via framer-motion (inline-block for transform) */
+/* New badge - letters loop while the dropdown is hovered (inline-block for transform) */
 .city-dropdown-badge .new-char {
   display: inline-block;
+  opacity: 0;
+  transform: translateY(6px) scale(0.8);
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+/* 2.5s keyframes + 0.5s pause = 3s cycle (0/12/75/90% of 2.5s -> 0/10/62.5/75%). */
+.city-dropdown-badge--animate .new-char {
+  animation: mpf-new-badge-char 3s ease-in-out infinite;
+}
+
+@keyframes mpf-new-badge-char {
+  0% {
+    opacity: 0;
+    transform: translateY(6px) scale(0.8);
+  }
+  10%,
+  62.5% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  75%,
+  100% {
+    opacity: 0;
+    transform: translateY(6px) scale(0.8);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .city-dropdown-badge--animate .new-char {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
 }
 
 .city-dropdown-right {

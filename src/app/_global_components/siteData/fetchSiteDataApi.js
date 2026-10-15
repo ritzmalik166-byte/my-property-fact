@@ -9,6 +9,7 @@ import {
   filterHiddenBuilders,
   filterHiddenProjects,
 } from "../hiddenBuilderUtils";
+import { fetchRawCityNav } from "@/lib/fetchCityNav";
 
 const fetchInit =
   typeof window === "undefined" ? { next: { revalidate: 60 } } : {};
@@ -31,8 +32,8 @@ export async function fetchSiteMetaFromApi() {
     throw new Error("NEXT_PUBLIC_API_URL is not defined");
   }
 
-  const [citiesRes, buildersRes, typesRes, statusesRes] = await Promise.all([
-    fetch(`${apiBase}city/all`, fetchInit),
+  const [cities, buildersRes, typesRes, statusesRes] = await Promise.all([
+    fetchRawCityNav(apiBase, fetchInit),
     fetch(`${apiBase}builder/get-all`, fetchInit),
     fetch(`${apiBase}project-types/get-all`, fetchInit),
     fetch(`${apiBase}project-status`, fetchInit),
@@ -49,8 +50,7 @@ export async function fetchSiteMetaFromApi() {
     return res.json();
   };
 
-  const [cities, buildersData, typesData, statusesData] = await Promise.all([
-    parseJson(citiesRes, "city/all"),
+  const [buildersData, typesData, statusesData] = await Promise.all([
     parseJson(buildersRes, "builder/get-all"),
     parseJson(typesRes, "project-types/get-all"),
     parseJson(statusesRes, "project-status"),
@@ -67,23 +67,26 @@ export async function fetchSiteMetaFromApi() {
 }
 
 /**
- * Full site data including slim project catalog.
- * Used client-side by SiteDataContext (not embedded in SSR HTML).
+ * Slim full project catalog. Client-side only, loaded on demand by SiteDataContext
+ * (chatbot, BHK / floor-type hubs) — never on page load.
  */
-export async function fetchSiteDataFromApi() {
+export async function fetchProjectCatalogFromApi() {
   const apiBase = process.env.NEXT_PUBLIC_API_URL || "";
-  const meta = await fetchSiteMetaFromApi();
-
   const projectsRes = await fetch(`${apiBase}projects`, fetchInit);
   if (!projectsRes.ok) {
     throw new Error(`Failed to load projects (${projectsRes.status})`);
   }
   const projectsData = await projectsRes.json();
+  return slimProjectListForListing(
+    filterHiddenProjects(unwrapProjectList(projectsData)),
+  );
+}
 
-  return {
-    ...meta,
-    projectList: slimProjectListForListing(
-      filterHiddenProjects(unwrapProjectList(projectsData)),
-    ),
-  };
+/** Site meta plus the full project catalog. */
+export async function fetchSiteDataFromApi() {
+  const [meta, projectList] = await Promise.all([
+    fetchSiteMetaFromApi(),
+    fetchProjectCatalogFromApi(),
+  ]);
+  return { ...meta, projectList };
 }

@@ -198,8 +198,7 @@
 }
 
 /*
-  Button FIXED. Content slide handled by Framer Motion (JS).
-  CSS only does heavy-load pulse on the button shell.
+  Button FIXED. Content stays static; CSS only does heavy-load pulse on the button shell.
 */
 .google-preferred-source-btn--breathe {
     transform-origin: center center;

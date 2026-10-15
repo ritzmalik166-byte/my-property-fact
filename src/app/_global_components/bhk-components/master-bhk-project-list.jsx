@@ -14,7 +14,7 @@ import {
 import { isBhkFloorSlugSegment } from "@/app/_global_components/masterFunction";
 import { projectMatchesListingHubCategory } from "@/lib/listingFloorValidation";
 import Link from "next/link";
-import { useSiteData } from "../contexts/SiteDataContext";
+import { useProjectCatalog } from "../contexts/SiteDataContext";
 
 const HUB_CITY_SLUG_PREFIXES = [
   "/flats-in-",
@@ -56,7 +56,7 @@ function resolveListingCategory(pathName) {
 export default function MasterBHKProjectList() {
   const pathName = usePathname();
   const searchParams = useSearchParams();
-  const { projectList: projects = [], loading: siteDataLoading } = useSiteData();
+  const { projectList: projects = [], loading: siteDataLoading } = useProjectCatalog();
   const cityName = useMemo(() => parseHubCityName(pathName), [pathName]);
   const { cat, urlCategorySegment } = useMemo(
     () => resolveListingCategory(pathName),

@@ -1,3 +1,5 @@
+import { filterHiddenProjects } from "@/app/_global_components/hiddenBuilderUtils";
+
 const API_BASE = String(process.env.NEXT_PUBLIC_API_URL || "").trim();
 
 export function buildProjectListingParams({
@@ -61,4 +63,18 @@ export async function fetchProjectListingPage(options, { signal } = {}) {
     limit: Number(data?.limit) || 10,
     quickFilterCounts: data?.quickFilterCounts || {},
   };
+}
+
+/**
+ * Ranked project matches for a search box (server-side; no full catalog download).
+ * Returns slim listing cards, or [] for queries shorter than 2 characters.
+ */
+export async function fetchProjectSuggestions(query, { limit = 8, filters = {}, tab = "all", signal } = {}) {
+  const q = String(query || "").trim();
+  if (q.length < 2) return [];
+  const { projects } = await fetchProjectListingPage(
+    { page: 1, limit, tab, filters, q, suggest: true },
+    { signal },
+  );
+  return filterHiddenProjects(projects);
 }

@@ -23,6 +23,7 @@ import {
   saveRecentSearch,
 } from "@/app/_global_components/smartSearchParser";
 import { PROJECT_BUDGET_OPTIONS } from "@/app/_global_components/projectFilterUtils";
+import { fetchProjectSuggestions } from "@/lib/fetchProjectListingPage";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Spinner } from "react-bootstrap";
@@ -233,6 +234,23 @@ function useDebouncedValue(value, wait) {
   return [debounced, setDebounced];
 }
 const SUGGESTION_LIMIT = 8;
+/** Server-ranked candidates per query; client ranking picks the final suggestions from these. */
+const SEARCH_POOL_LIMIT = 24;
+const SEARCH_POOL_CACHE_SIZE = 30;
+
+function mergeProjectPools(...pools) {
+  const seen = new Set();
+  const out = [];
+  for (const pool of pools) {
+    for (const project of pool || []) {
+      const key = project?.id ?? project?.slugURL;
+      if (key == null || seen.has(key)) continue;
+      seen.add(key);
+      out.push(project);
+    }
+  }
+  return out;
+}
 const SUGGESTION_KIND_LABELS = {
   intent: "Search",
   project: "Project",
@@ -348,57 +366,6 @@ function resolveFilterPayload(selectedPropertyKeys, filterMode) {
   return { bhkType, configType, labels: selected.map((item) => item.label) };
 }
 
-function normalizeCommercialConfigKey(rawType = "") {
-  const t = String(rawType || "")
-    .toLowerCase()
-    .trim()
-    .replace(/\s+/g, " ");
-  if (!t) return null;
-  if (t === "shop" || t === "shops") return "shops";
-  if (t === "office" || t === "offices") return "office";
-  if (t === "kiosk" || t === "kiosks") return "kiosk";
-  if (t === "food court" || t === "food courts") return "food-court";
-  if (t === "restaurant" || t === "restaurants") return "restaurant";
-  if (t === "showroom" || t === "showrooms") return "showroom";
-  if (t === "sco plots" || t === "sco plot") return "sco-plots";
-  return null;
-}
-
-/** Keys that exist in live projectConfiguration values across the catalog. */
-function getAvailablePropertyTypeKeys(projectList = []) {
-  const residential = new Set();
-  const commercial = new Set();
-
-  for (const project of projectList) {
-    const config = String(project?.projectConfiguration || "");
-    if (!config) continue;
-
-    if (/\d+\s*bhk/i.test(config)) residential.add("flat");
-    if (/\bbuilder\s*floor\b/i.test(config)) residential.add("builder-floor");
-    if (/\bvilla\b/i.test(config)) residential.add("villa");
-    if (/\bplot(s)?\b/i.test(config) || /\bland\b/i.test(config)) residential.add("plots");
-    if (/\bserviced\b/i.test(config)) residential.add("serviced");
-    if (/\brk\b/i.test(config) || /\bstudio\b/i.test(config)) residential.add("1rk");
-    if (/\bfarm\s*house\b/i.test(config)) residential.add("farm-house");
-
-    const parts = config.split(",").map((p) => p.trim()).filter(Boolean);
-    for (const part of parts) {
-      const cleaned = part.replace(/\s*-\s*\d+\s*(?:sq\.?\s*ft|sq\.?ft)\s*/gi, "").trim();
-      const key = normalizeCommercialConfigKey(cleaned);
-      if (key) commercial.add(key);
-      if (/\bsco\s*plots?\b/i.test(cleaned)) commercial.add("sco-plots");
-      if (/\bshops?\b/i.test(cleaned)) commercial.add("shops");
-      if (/\boffices?\b/i.test(cleaned)) commercial.add("office");
-      if (/\bshowrooms?\b/i.test(cleaned)) commercial.add("showroom");
-      if (/\bfood\s*courts?\b/i.test(cleaned)) commercial.add("food-court");
-      if (/\bkiosks?\b/i.test(cleaned)) commercial.add("kiosk");
-      if (/\brestaurants?\b/i.test(cleaned)) commercial.add("restaurant");
-    }
-  }
-
-  return { residential, commercial };
-}
-
 function isPlotsContext(activeTab, parsed = {}) {
   return activeTab === "Plots" || parsed.quickTab === "Plots" || parsed.bhkType === "Plots";
 }
@@ -421,7 +388,12 @@ function resolveNavigationQuickTab({ activeTab, parsed }) {
   return parsed?.quickTab || activeTab;
 }
 
-export default function SearchFilter({ projectTypeList = [], cityList = [], layout = "default" }) {
+export default function SearchFilter({
+  projectTypeList = [],
+  cityList = [],
+  layout = "default",
+  availablePropertyTypeKeys: availablePropertyTypeKeysProp = null,
+}) {
   const isClassicHero = layout === "home-hero-classic";
   const isHomeHero = layout === "home-hero" || isClassicHero;
   const displayTabs = isClassicHero ? SEARCH_TABS : isHomeHero ? HOME_HERO_TABS : SEARCH_TABS;
@@ -430,8 +402,6 @@ export default function SearchFilter({ projectTypeList = [], cityList = [], layo
     projectTypes: contextProjectTypes = [],
     cityList: contextCityList = [],
     builderList = [],
-    projectList = [],
-    loading: siteDataLoading = false,
     setQueryFilters,
     setQuickProjectFilter,
     resetProjectFilters,
@@ -461,6 +431,21 @@ export default function SearchFilter({ projectTypeList = [], cityList = [], layo
   const [voiceOriginQuery, setVoiceOriginQuery] = useState(false);
   const [voiceError, setVoiceError] = useState("");
   const [HeroSelect, setHeroSelect] = useState(null);
+  const [searchPool, setSearchPool] = useState({ query: "", projects: [] });
+  const [voicePool, setVoicePool] = useState([]);
+  const searchPoolCacheRef = useRef(new Map());
+
+  const getSearchPool = useCallback(async (query, signal) => {
+    const q = String(query || "").trim();
+    if (q.length < 2) return [];
+    const key = q.toLowerCase();
+    const cache = searchPoolCacheRef.current;
+    if (cache.has(key)) return cache.get(key);
+    const projects = await fetchProjectSuggestions(q, { limit: SEARCH_POOL_LIMIT, signal });
+    cache.set(key, projects);
+    if (cache.size > SEARCH_POOL_CACHE_SIZE) cache.delete(cache.keys().next().value);
+    return projects;
+  }, []);
 
   const ensureHeroSelect = useCallback(() => {
     if (HeroSelect) return Promise.resolve(HeroSelect);
@@ -520,13 +505,30 @@ export default function SearchFilter({ projectTypeList = [], cityList = [], layo
   const propertyPanelRef = useRef(null);
   const recognitionRef = useRef(null);
   const trimmedInput = searchInput.trim();
+  const debouncedQuery = debouncedSearch.trim();
+  const projectList = useMemo(
+    () => mergeProjectPools(voicePool, searchPool.query === debouncedQuery ? searchPool.projects : []),
+    [voicePool, searchPool, debouncedQuery],
+  );
   const isSuggestionsLoading =
     dropdownOpen &&
     trimmedInput.length >= 2 &&
-    (siteDataLoading ||
-      !projectList.length ||
+    (searchPool.query !== debouncedQuery ||
       !suggestionsReady ||
       trimmedInput !== debouncedSearch);
+
+  useEffect(() => {
+    if (debouncedQuery.length < 2) return undefined;
+    const controller = new AbortController();
+    getSearchPool(debouncedQuery, controller.signal)
+      .then((projects) => {
+        if (!controller.signal.aborted) setSearchPool({ query: debouncedQuery, projects });
+      })
+      .catch(() => {
+        if (!controller.signal.aborted) setSearchPool({ query: debouncedQuery, projects: [] });
+      });
+    return () => controller.abort();
+  }, [debouncedQuery, getSearchPool]);
 
   const effectiveProjectTypes = useMemo(
     () =>
@@ -680,23 +682,24 @@ export default function SearchFilter({ projectTypeList = [], cityList = [], layo
     label: budget,
   }));
 
-  const availablePropertyTypeKeys = useMemo(
-    () => getAvailablePropertyTypeKeys(projectList),
-    [projectList],
-  );
+  const availablePropertyTypeKeys = useMemo(() => {
+    if (!availablePropertyTypeKeysProp) return null;
+    return {
+      residential: new Set(availablePropertyTypeKeysProp.residential || []),
+      commercial: new Set(availablePropertyTypeKeysProp.commercial || []),
+    };
+  }, [availablePropertyTypeKeysProp]);
 
   const activeFilterOptions = useMemo(() => {
-    if (filterMode === "commercial") {
-      const { commercial } = availablePropertyTypeKeys;
-      // Until catalog loads, avoid flashing every hardcoded option.
-      if (!projectList.length) return [];
-      return COMMERCIAL_PROPERTY_TYPES.filter((opt) => commercial.has(opt.key));
-    }
-
-    const { residential } = availablePropertyTypeKeys;
-    if (!projectList.length) return [];
-    return RESIDENTIAL_PROPERTY_TYPES.filter((opt) => residential.has(opt.key));
-  }, [availablePropertyTypeKeys, filterMode, projectList.length]);
+    const options =
+      filterMode === "commercial" ? COMMERCIAL_PROPERTY_TYPES : RESIDENTIAL_PROPERTY_TYPES;
+    if (!availablePropertyTypeKeys) return options;
+    const available =
+      filterMode === "commercial"
+        ? availablePropertyTypeKeys.commercial
+        : availablePropertyTypeKeys.residential;
+    return options.filter((opt) => available.has(opt.key));
+  }, [availablePropertyTypeKeys, filterMode]);
 
   useEffect(() => {
     if (!categoryOpen) return undefined;
@@ -840,7 +843,7 @@ export default function SearchFilter({ projectTypeList = [], cityList = [], layo
   }, []);
 
   const applySpokenProjectSearch = useCallback(
-    (spokenRaw, alternatives = []) => {
+    async (spokenRaw, alternatives = []) => {
       const transcripts = [
         ...new Set(
           [spokenRaw, ...alternatives]
@@ -850,10 +853,27 @@ export default function SearchFilter({ projectTypeList = [], cityList = [], layo
       ];
       if (!transcripts.length) return;
 
+      setVoiceOriginQuery(true);
+      setVoiceError("");
+      setDropdownOpen(true);
+
+      const candidateQueries = [
+        ...new Set(
+          transcripts.flatMap((text) => [text, normalizeSpokenSearchQuery(text)]).filter(
+            (text) => String(text || "").trim().length >= 2,
+          ),
+        ),
+      ].slice(0, 6);
+      const pools = await Promise.all(
+        candidateQueries.map((text) => getSearchPool(text).catch(() => [])),
+      );
+      const pool = mergeProjectPools(...pools);
+      setVoicePool(pool);
+
       let bestMatches = [];
       let bestTranscript = transcripts[0];
       for (const transcript of transcripts) {
-        const matches = findVoiceMatchedProjects(transcript, projectList);
+        const matches = findVoiceMatchedProjects(transcript, pool);
         if (!bestMatches.length && matches.length) {
           bestMatches = matches;
           bestTranscript = transcript;
@@ -866,9 +886,6 @@ export default function SearchFilter({ projectTypeList = [], cityList = [], layo
       }
 
       const cleaned = normalizeSpokenSearchQuery(bestTranscript) || bestTranscript;
-      setVoiceOriginQuery(true);
-      setVoiceError("");
-      setDropdownOpen(true);
 
       if (!bestMatches.length) {
         setSearchInput(cleaned);
@@ -884,8 +901,12 @@ export default function SearchFilter({ projectTypeList = [], cityList = [], layo
       setSearchInput(displayName);
       setDebouncedSearch(displayName);
     },
-    [projectList],
+    [getSearchPool],
   );
+
+  useEffect(() => {
+    if (!voiceOriginQuery) setVoicePool([]);
+  }, [voiceOriginQuery]);
 
   const toggleVoiceSearch = useCallback(() => {
     if (typeof window === "undefined") return;
@@ -1132,8 +1153,17 @@ export default function SearchFilter({ projectTypeList = [], cityList = [], layo
       return;
     }
 
+    let searchCandidates = projectList;
+    if (debouncedQuery !== q || searchPool.query !== q) {
+      try {
+        searchCandidates = mergeProjectPools(voicePool, await getSearchPool(q));
+      } catch {
+        searchCandidates = projectList;
+      }
+    }
+
     if (voiceOriginQuery) {
-      const voiceMatches = findVoiceMatchedProjects(q, projectList);
+      const voiceMatches = findVoiceMatchedProjects(q, searchCandidates);
       if (!voiceMatches.length) {
         setDropdownOpen(true);
         return;
@@ -1152,7 +1182,7 @@ export default function SearchFilter({ projectTypeList = [], cityList = [], layo
       projectTypes: effectiveProjectTypes,
     });
 
-    const projectMatch = findBestProjectBySearch(q, projectList);
+    const projectMatch = findBestProjectBySearch(q, searchCandidates);
     const matchedProjectByName =
       projectMatch &&
       projectNameLooksLikeDirectMatch(projectMatch, q, [parsed.cleanQuery]);
@@ -1197,7 +1227,7 @@ export default function SearchFilter({ projectTypeList = [], cityList = [], layo
     }
 
     const correction = findBestSearchCorrection(q, {
-      projectList,
+      projectList: searchCandidates,
       builderList,
       cities: effectiveCityList,
       cleanQuery: parsed.cleanQuery,

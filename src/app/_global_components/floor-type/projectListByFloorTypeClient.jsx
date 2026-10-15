@@ -7,7 +7,7 @@ import {
 } from "@/app/_global_components/projectListingPagination";
 import { useMemo, useRef } from "react";
 import { cityNameMatchesFilter } from "../cityAliasUtils";
-import { useSiteData } from "../contexts/SiteDataContext";
+import { useProjectCatalog } from "../contexts/SiteDataContext";
 import {
   configTypeMatchesWanted,
   configTypesForFloorSlug,
@@ -77,13 +77,15 @@ export default function ProjectListByFloorTypeClient({
   categorySlug = null,
   initialProjects = [],
 }) {
-  const { projectList = [], loading: siteDataLoading } = useSiteData();
+  const hasInitialProjects = initialProjects.length > 0;
+  const { projectList = [], loading: siteDataLoading } = useProjectCatalog({
+    enabled: !hasInitialProjects,
+  });
   const { floorType, cityName } = useMemo(
     () => resolveFloorTypeAndCity({ title, floorTypeProp, cityNameProp }),
     [title, floorTypeProp, cityNameProp],
   );
 
-  const hasInitialProjects = initialProjects.length > 0;
   const showLoading = siteDataLoading && !hasInitialProjects;
 
   const filteredProjectsByBrType = useMemo(() => {

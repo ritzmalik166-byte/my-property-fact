@@ -12,7 +12,7 @@ import {
   faChevronDown,
   faChevronUp,
 } from "@fortawesome/free-solid-svg-icons";
-import { useSiteData } from "@/app/_global_components/contexts/SiteDataContext";
+import { useProjectCatalog, useSiteData } from "@/app/_global_components/contexts/SiteDataContext";
 import { cityNameMatchesFilter } from "@/app/_global_components/cityAliasUtils";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -163,8 +163,6 @@ export default function ProjectsRedesigned({
     cityList: cities,
     projectTypes: propertyTypes,
     projectStatuses,
-    projectList: allProjectsList,
-    loading: siteDataLoading,
     queryFilters,
     clearQueryFilters,
   } = useSiteData();
@@ -226,6 +224,9 @@ export default function ProjectsRedesigned({
     !String(initialBhkType || "").trim() &&
     !String(initialConfigType || "").trim() &&
     !lockCity;
+  const { projectList: allProjectsList, loading: siteDataLoading } = useProjectCatalog({
+    enabled: !useServerListing,
+  });
 
   const pinnedSearch = selectedSearchProjectKey.startsWith("id:")
     ? { projectId: selectedSearchProjectKey.slice(3), slug: "" }

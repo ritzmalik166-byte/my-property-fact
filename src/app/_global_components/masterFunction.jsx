@@ -19,6 +19,7 @@ import {
   hasFloorListingDataInCity as hasFloorListingDataForProjects,
 } from "../../lib/listingFloorValidation";
 import { slimCityListForNav } from "../../lib/slimSiteCatalog";
+import { fetchRawCityNav } from "../../lib/fetchCityNav";
 
 export { floorSlugToListingLabel } from "../../lib/listingFloorValidation";
 
@@ -68,11 +69,7 @@ export const fetchCityData = cache(async () => {
     return [];
   }
   try {
-    const res = await fetch(`${apiUrl}city/all`, {
-      next: { revalidate: 60 }, // revalidate every 60 seconds
-    });
-    if (!res.ok) throw new Error("Failed to fetch cities");
-    const data = await res.json();
+    const data = await fetchRawCityNav(apiUrl, { next: { revalidate: 60 } });
     return slimCityListForNav(getDisplayCityList(data));
   } catch (error) {
     console.error("Error fetching cities:", error);
@@ -124,6 +121,27 @@ export const fetchBuilderData = cache(async () => {
     console.error("Error fetching builders:", error);
     return { builders: [] };
   }
+});
+
+/**
+ * Builders that have a logo (id, name, slug, logo) for marquees.
+ * Falls back to the full `get-all-builders` payload on older backends.
+ */
+export const fetchBuilderLogoData = cache(async () => {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+  if (!apiUrl) return { builders: [] };
+  try {
+    const res = await fetch(`${apiUrl}builder/with-logos`, {
+      next: { revalidate: 60 },
+    });
+    if (res.ok) {
+      const data = await res.json();
+      if (Array.isArray(data)) return filterHiddenBuilders(data);
+    }
+  } catch {
+    // fall through to the full builder list
+  }
+  return fetchBuilderData();
 });
 
 export const fetchProjectDetailsBySlug = cache(async (slug) => {

@@ -5,7 +5,7 @@ import {
   fetchCityData,
   fetchProjectTypes,
   getAllProjects,
-  fetchBuilderData,
+  fetchBuilderLogoData,
   fetchTopPicksProjects,
   fetchLatestBlogs,
 } from "@/app/_global_components/masterFunction";
@@ -31,6 +31,11 @@ import {
   slimCityForNav,
   slimProjectTypeForNav,
 } from "@/lib/slimSiteCatalog";
+import { getAvailablePropertyTypeKeys } from "@/lib/availablePropertyTypeKeys";
+import {
+  buildHomeCityCards,
+  SHOW_HOME_DESTINATIONS,
+} from "./noida-projects/homeCityCards";
 
 /** Keep first HTML small — carousels still work; client sections hydrate below the fold. */
 const HOME_SSR_CARD_LIMIT = 6;
@@ -107,7 +112,7 @@ export default async function HomePage() {
     featuredProperties,
   ] = await Promise.all([
     getAllProjects(),
-    fetchBuilderData(),
+    fetchBuilderLogoData(),
     fetchHomeTestimonials(),
     fetchCityData(),
     fetchProjectTypes(),
@@ -217,6 +222,8 @@ export default async function HomePage() {
     ? slimProjectListForListing(pickNavratriProjects(projects))
     : [];
   const popularSubtitle = `Explore the Best-Selling Properties Today nearby ${HOME_NCR_LABEL}`;
+  const availablePropertyTypeKeys = getAvailablePropertyTypeKeys(projects);
+  const homeCityCards = SHOW_HOME_DESTINATIONS ? buildHomeCityCards(projects, cityList) : null;
 
   try {
     const row = (i, node) => <div key={i}>{node}</div>;
@@ -228,6 +235,7 @@ export default async function HomePage() {
           <HeroSection
             projectTypeList={projectTypeList}
             cityList={cityList}
+            availablePropertyTypeKeys={availablePropertyTypeKeys}
           />,
         )}
         {row(
@@ -312,6 +320,7 @@ export default async function HomePage() {
           testimonials={testimonials}
           homeBlogs={homeBlogs}
           featuredProperties={featuredProperties}
+          homeCityCards={homeCityCards}
         />
       </>
     );
