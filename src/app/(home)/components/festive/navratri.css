@@ -188,10 +188,7 @@ body:has(.mpf-navratri-strip) .header {
   position: relative;
   padding: 56px 0 64px;
   scroll-margin-top: 130px;
-  background:
-    radial-gradient(circle at 8% 0%, rgba(255, 193, 7, 0.14), transparent 38%),
-    radial-gradient(circle at 92% 100%, rgba(232, 89, 12, 0.08), transparent 42%),
-    #fbf6ec;
+  background: #fff;
   font-family: var(--mpf-sans, "Outfit", "Segoe UI", sans-serif);
 }
 
