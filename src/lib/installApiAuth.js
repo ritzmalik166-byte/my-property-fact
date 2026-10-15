@@ -2,6 +2,11 @@
 
 import axios from "axios";
 import { getAccessToken, isMpfBackendUrl } from "./apiAuth";
+import {
+  isAdminRefreshCandidate,
+  isAuthFailureStatus,
+  recoverAdminSession,
+} from "./adminSessionRefresh";
 
 const INSTALL_FLAG = "__mpfApiAuthInstalled";
 
@@ -13,6 +18,12 @@ function resolveRequestUrl(config) {
     return `${String(base).replace(/\/+$/, "")}/${String(url).replace(/^\/+/, "")}`;
   }
   return `${base}${url}`;
+}
+
+function requestUrlOf(input) {
+  if (typeof input === "string") return input;
+  if (input instanceof URL) return input.href;
+  return input?.url;
 }
 
 function toSameOriginApiUrl(url) {
@@ -74,11 +85,31 @@ export function installApiAuth() {
   if (window[INSTALL_FLAG]) return;
   window[INSTALL_FLAG] = true;
 
-  axios.interceptors.request.use(attachAxiosAuth);
-
   const originalFetch = window.fetch.bind(window);
-  window.fetch = (input, init = {}) => {
-    const url = typeof input === "string" ? input : input?.url;
+
+  axios.interceptors.request.use((config) => {
+    config.__mpfStartedAt = Date.now();
+    return attachAxiosAuth(config);
+  });
+
+  axios.interceptors.response.use(undefined, async (error) => {
+    const config = error?.config;
+    if (
+      !config ||
+      config.__mpfAuthRetried ||
+      !isAuthFailureStatus(error.response?.status) ||
+      !isAdminRefreshCandidate(resolveRequestUrl(config))
+    ) {
+      throw error;
+    }
+    const recovered = await recoverAdminSession(config.__mpfStartedAt || 0, originalFetch);
+    if (!recovered) throw error;
+    config.__mpfAuthRetried = true;
+    return axios(config);
+  });
+
+  const fetchWithAuth = (input, init) => {
+    const url = requestUrlOf(input);
     if (!isMpfBackendUrl(url)) {
       return originalFetch(input, init);
     }
@@ -107,6 +138,18 @@ export function installApiAuth() {
     }
 
     return originalFetch(input, nextInit);
+  };
+
+  window.fetch = async (input, init = {}) => {
+    if (!isAdminRefreshCandidate(requestUrlOf(input))) {
+      return fetchWithAuth(input, init);
+    }
+    const replayInput = input instanceof Request ? input.clone() : input;
+    const startedAt = Date.now();
+    const res = await fetchWithAuth(input, init);
+    if (!isAuthFailureStatus(res.status)) return res;
+    const recovered = await recoverAdminSession(startedAt, originalFetch);
+    return recovered ? fetchWithAuth(replayInput, init) : res;
   };
 }
 
