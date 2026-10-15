@@ -24,36 +24,13 @@
     left: 0;
 }
 
-/* Navratri theme (ENABLE_NAVRATRI_THEME). Fill colour matches the artwork's dark green. */
+/* Navratri theme (ENABLE_NAVRATRI_THEME). */
 .new-footer-design-container-fluid--navratri {
-    background: #01160f url("/static/banners/navratri-footer-bg-1024x364.webp") center bottom / cover no-repeat;
-}
-
-/* Dims the artwork under the link columns so footer text stays readable. */
-.new-footer-design-container-fluid--navratri::before {
-    background: linear-gradient(180deg,
-            rgba(1, 22, 15, 0.55) 0%,
-            rgba(1, 22, 15, 0.3) 45%,
-            rgba(1, 22, 15, 0.55) 100%);
+    background: #01160f;
 }
 
 .new-footer-design-container-fluid--navratri .footer-disclaimer-block {
     border-color: rgba(255, 213, 106, 0.18);
-}
-
-/* Tall stacked footer: keep the full artwork along the bottom instead of a cropped middle. */
-@media (min-width: 768px) and (max-width: 991.98px) {
-    .new-footer-design-container-fluid--navratri {
-        background-size: 100% auto;
-    }
-}
-
-@media (max-width: 767.98px) {
-    .new-footer-design-container-fluid--navratri {
-        background-image: url("/static/banners/navratri-footer-bg-mobile-405x1024.webp");
-        background-size: cover;
-        background-position: center bottom;
-    }
 }
 
 .new-design-container {

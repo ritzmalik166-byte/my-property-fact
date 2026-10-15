@@ -26,14 +26,82 @@ function buildCookieHeader(req) {
   }
 }
 
-// checking session validity and extracting roles
-async function checkSession(req) {
+function readSetCookies(res) {
+  if (typeof res.headers.getSetCookie === "function") {
+    return res.headers.getSetCookie();
+  }
+  const raw = res.headers.get("set-cookie");
+  return raw ? raw.split(/,\s*(?=[^;,\s]+=)/) : [];
+}
+
+function withCookie(cookieHeader, name, value) {
+  const parts = cookieHeader
+    .split(/;\s*/)
+    .filter((part) => part && !part.startsWith(`${name}=`));
+  parts.push(`${name}=${value}`);
+  return parts.join("; ");
+}
+
+// Mint a new access token from the refreshToken cookie (access token lapses before the refresh token).
+async function refreshAccessToken(req, apiBase, cookieHeader) {
+  if (!req.cookies.get("refreshToken")?.value) return null;
   try {
-    const apiBase = getPublicApiBase();
-    if (!apiBase) {
-      return { valid: false };
-    }
-    const cookieHeader = buildCookieHeader(req);
+    const res = await fetch(`${apiBase}admin-portal/auth/refresh-token`, {
+      method: "POST",
+      headers: { Cookie: cookieHeader },
+      cache: "no-store",
+    });
+    if (!res.ok) return null;
+    const data = await res.json().catch(() => ({}));
+    const token = data.token || data.accessToken;
+    if (!token) return null;
+    return {
+      setCookies: readSetCookies(res),
+      cookieHeader: withCookie(cookieHeader, "token", token),
+    };
+  } catch (err) {
+    console.error("refreshAccessToken error:", err);
+    return null;
+  }
+}
+
+// checking session validity and extracting roles
+async function checkSession(req, { allowRefresh = false } = {}) {
+  const apiBase = getPublicApiBase();
+  if (!apiBase) {
+    return { valid: false };
+  }
+  const cookieHeader = buildCookieHeader(req);
+  const session = await fetchSession(apiBase, cookieHeader);
+  if (session.valid || !allowRefresh) return session;
+
+  const refreshed = await refreshAccessToken(req, apiBase, cookieHeader);
+  if (!refreshed) return session;
+  const retried = await fetchSession(apiBase, refreshed.cookieHeader);
+  return retried.valid ? { ...retried, refreshed } : retried;
+}
+
+/** Forward refreshed auth cookies to the browser. */
+function withSessionCookies(response, session) {
+  session?.refreshed?.setCookies.forEach((cookie) =>
+    response.headers.append("Set-Cookie", cookie),
+  );
+  return response;
+}
+
+/** Continue the request; server components must also see the refreshed token this render. */
+function nextWithSession(req, session) {
+  if (!session?.refreshed) return NextResponse.next();
+  const requestHeaders = new Headers(req.headers);
+  requestHeaders.set("cookie", session.refreshed.cookieHeader);
+  return withSessionCookies(
+    NextResponse.next({ request: { headers: requestHeaders } }),
+    session,
+  );
+}
+
+async function fetchSession(apiBase, cookieHeader) {
+  try {
     const res = await fetch(`${apiBase}admin-portal/auth/session`, {
       headers: {
         Cookie: cookieHeader || "",
@@ -138,17 +206,21 @@ export async function middleware(req) {
     // Check if accessDenied query parameter is already present
     const accessDenied = req.nextUrl.searchParams.get("accessDenied");
 
-    const session = await checkSession(req);
+    const session = await checkSession(req, { allowRefresh: true });
     if (session.valid) {
       if (hasAdminDashboardAccess(session.roles)) {
-        return NextResponse.redirect(new URL("/admin/dashboard", req.url));
+        return withSessionCookies(
+          NextResponse.redirect(new URL("/admin/dashboard", req.url)),
+          session,
+        );
       }
       // Logged in but wrong role
       if (accessDenied === "true") {
-        return NextResponse.next(); // allow page to show toast
+        return nextWithSession(req, session); // allow page to show toast
       }
-      return NextResponse.redirect(
-        new URL("/admin?accessDenied=true", req.url),
+      return withSessionCookies(
+        NextResponse.redirect(new URL("/admin?accessDenied=true", req.url)),
+        session,
       );
     }
     return NextResponse.next();
@@ -179,21 +251,23 @@ export async function middleware(req) {
     path !== "/portal" &&
     path !== "/portal/"
   ) {
-    const session = await checkSession(req);
+    const isAdminRoute = path.startsWith("/admin");
+    const isPortalRoute = path.startsWith("/portal");
+    const session = await checkSession(req, { allowRefresh: isAdminRoute });
 
     if (!session.valid) {
-      const redirectTo = path.startsWith("/portal") ? "/portal" : "/admin";
+      const redirectTo = isPortalRoute ? "/portal" : "/admin";
 
       return NextResponse.redirect(new URL(redirectTo, req.url));
     }
 
-    const isAdminRoute = path.startsWith("/admin");
-    const isPortalRoute = path.startsWith("/portal");
-
     // ---- ROLE BASED ACCESS ----
     if (isAdminRoute) {
       if (!hasAdminDashboardAccess(session.roles)) {
-        return NextResponse.redirect(new URL("/portal", req.url));
+        return withSessionCookies(
+          NextResponse.redirect(new URL("/portal", req.url)),
+          session,
+        );
       }
       if (
         path.startsWith("/admin/dashboard") &&
@@ -206,7 +280,10 @@ export async function middleware(req) {
           path,
         );
         if (!gate.ok && gate.redirect) {
-          return NextResponse.redirect(new URL(gate.redirect, req.url));
+          return withSessionCookies(
+            NextResponse.redirect(new URL(gate.redirect, req.url)),
+            session,
+          );
         }
       }
     }
@@ -217,7 +294,7 @@ export async function middleware(req) {
       }
     }
     // All good → allow request
-    return NextResponse.next();
+    return nextWithSession(req, session);
   }
   return NextResponse.next();
 }

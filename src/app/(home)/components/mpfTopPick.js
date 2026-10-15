@@ -1,50 +1,140 @@
 "use client";
 
-import { useCallback, useEffect, useId, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
+import Image, { getImageProps } from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import {
-  LuArrowLeft,
   LuArrowRight,
+  LuArrowUpRight,
+  LuBuilding2,
+  LuCalendarDays,
+  LuCoins,
+  LuCrown,
   LuLeaf,
-  LuMapPin,
-  LuShieldCheck,
   LuSparkles,
   LuUsers,
 } from "react-icons/lu";
-import { PiBuildingsFill, PiChartLineUpBold } from "react-icons/pi";
 import {
   buildGalleryImageUrl,
   buildProjectImageUrl,
   DEFAULT_PROJECT_CARD_IMAGE,
 } from "@/lib/projectImageUrl";
 import { getTopPickEditorial } from "./topPicksContent";
-import { buildHomeCardImageProps, HOME_POSTER_CARD_SIZES } from "@/lib/optimizedImage";
 import "./common.css";
 import "./mpfTopPick.css";
 
-const USP_ICONS = {
-  green: LuLeaf,
-  amenities: LuUsers,
-  gated: LuShieldCheck,
+const CommonPopUpform = dynamic(() => import("./common/popupform"), { ssr: false });
+
+const USP_ICONS = { green: LuLeaf, amenities: LuCrown, gated: LuUsers };
+const FACT_ICONS = {
+  Possession: LuCalendarDays,
+  "Starting from": LuCoins,
+  Configuration: LuBuilding2,
 };
 
-const pad2 = (value) => String(value).padStart(2, "0");
+const MODAL_FLEX_CLASS = "lead-form-popup-trigger--modal-flex";
+const AUTO_ADVANCE_MS = 6000;
+const SWIPE_THRESHOLD_PX = 48;
+const REVEAL_RATIO = 0.15;
+const AUTOPLAY_RATIO = 0.35;
+const MOTION_QUERY = "(prefers-reduced-motion: no-preference)";
+const TILT_QUERY = `(hover: hover) and (pointer: fine) and ${MOTION_QUERY}`;
+const IMAGE_SIZES = "(max-width: 767.98px) 96vw, (max-width: 1199.98px) 85vw, 1150px";
+const DESKTOP_MEDIA = "(min-width: 1025px)";
+
+/* ------------------------------------------------------------------ hooks */
+
+function useMediaQuery(query) {
+  const [matches, setMatches] = useState(false);
+  useEffect(() => {
+    const media = window.matchMedia(query);
+    const update = () => setMatches(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, [query]);
+  return matches;
+}
 
 /**
- * Half-ellipse matching the curve language of the cream plaque.
- * Object-bounding-box units keep it proportional without matching plaque size.
+ * One observer for both the entrance reveal and autoplay visibility.
+ * `reveal` is "armed" only when the section starts off-screen, so nothing hides without JS.
  */
-const MEDIA_CLIP_PATH =
-  "M1,0 H0.24 C0.1075,0 0,0.2239 0,0.5 C0,0.7761 0.1075,1 0.24,1 H1 Z";
+function useSectionVisibility(ref) {
+  const [inView, setInView] = useState(false);
+  const [reveal, setReveal] = useState("idle");
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return undefined;
+    if (typeof IntersectionObserver === "undefined") {
+      setInView(true);
+      return undefined;
+    }
+
+    const rect = node.getBoundingClientRect();
+    setReveal(rect.top < window.innerHeight && rect.bottom > 0 ? "in" : "armed");
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const ratio = entry.isIntersecting ? entry.intersectionRatio : 0;
+        setInView(ratio >= AUTOPLAY_RATIO);
+        if (ratio >= REVEAL_RATIO) setReveal("in");
+      },
+      { threshold: [0, REVEAL_RATIO, AUTOPLAY_RATIO] },
+    );
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [ref]);
+
+  return { inView, reveal };
+}
+
+function clearTilt(node) {
+  node.classList.remove("is-tilting");
+  node.style.removeProperty("--mx");
+  node.style.removeProperty("--my");
+}
+
+/** Pointer position over the photo as `--mx` / `--my` (-1 → 1) for the 3D tilt. */
+function useTilt(enabled) {
+  const frameRef = useRef(0);
+
+  useEffect(() => () => cancelAnimationFrame(frameRef.current), []);
+
+  return useMemo(
+    () => ({
+      onPointerMove(event) {
+        if (!enabled || event.pointerType !== "mouse") return;
+        const node = event.currentTarget;
+        const { clientX, clientY } = event;
+        cancelAnimationFrame(frameRef.current);
+        frameRef.current = requestAnimationFrame(() => {
+          const rect = node.getBoundingClientRect();
+          const x = ((clientX - rect.left) / rect.width) * 2 - 1;
+          const y = ((clientY - rect.top) / rect.height) * 2 - 1;
+          node.style.setProperty("--mx", Math.max(-1, Math.min(1, x)).toFixed(3));
+          node.style.setProperty("--my", Math.max(-1, Math.min(1, y)).toFixed(3));
+          node.classList.add("is-tilting");
+        });
+      },
+      onPointerLeave(event) {
+        cancelAnimationFrame(frameRef.current);
+        clearTilt(event.currentTarget);
+      },
+    }),
+    [enabled],
+  );
+}
+
+/* ------------------------------------------------------------------- data */
 
 /** "2 BHK-863 sq.ft, 3 BHK-990 sq.ft, 4 BHK-1552 sq.ft" → "2, 3 & 4 BHK" */
 function summariseConfiguration(configuration) {
   const raw = String(configuration ?? "").trim();
   if (!raw) return "";
-
-  const sizes = [...new Set(raw.match(/\d+(?=\s*BHK)/gi) ?? [])].sort(
-    (a, b) => Number(a) - Number(b),
-  );
+  const sizes = [...new Set(raw.match(/\d+(?=\s*BHK)/gi) ?? [])].sort((a, b) => a - b);
   if (sizes.length === 0) return raw.split(",")[0].trim();
   if (sizes.length === 1) return `${sizes[0]} BHK`;
   return `${sizes.slice(0, -1).join(", ")} & ${sizes[sizes.length - 1]} BHK`;
@@ -52,9 +142,7 @@ function summariseConfiguration(configuration) {
 
 function formatStartingPrice(price) {
   const raw = String(price ?? "").trim();
-  if (!raw) return "";
-  if (/[a-z]/i.test(raw)) return raw;
-
+  if (!raw || /[a-z]/i.test(raw)) return raw;
   const value = Number.parseFloat(raw);
   if (!Number.isFinite(value)) return raw;
   return value < 1 ? `₹ ${Math.round(value * 100)} Lakh*` : `₹ ${value} Cr*`;
@@ -63,378 +151,393 @@ function formatStartingPrice(price) {
 /** The CMS stores "New Launched"; the badge reads better as "New Launch". */
 function formatStatusBadge(status) {
   const raw = String(status ?? "").trim();
-  if (!raw) return "";
   return /^new launched$/i.test(raw) ? "New Launch" : raw;
 }
 
 function buildSlide(project) {
-  const slug = String(project.slugURL ?? "").trim();
+  const text = (value) => String(value ?? "").trim();
+  const slug = text(project.slugURL);
   const editorial = getTopPickEditorial(slug);
-  const projectName = String(project.projectName ?? "").trim();
-  const builderName = String(project.builderName ?? "").trim();
-  const isCommercial = project.propertyTypeName === "Commercial";
-
-  // Each stat has a bold "strong" line and a muted caption. `strongFirst`
-  // controls which sits on top — the config value leads, the others caption-first.
-  const stats = [];
+  const projectName = text(project.projectName);
+  const builderName = text(project.builderName);
+  const locality = text(project.projectLocality);
+  const city = text(project.cityName);
+  const projectLogo = text(project.projectLogo);
   const configuration = summariseConfiguration(project.projectConfiguration);
-  if (configuration) {
-    stats.push({
-      key: "configuration",
-      Icon: PiBuildingsFill,
-      strong: configuration,
-      muted: isCommercial ? "Commercial Spaces" : "Premium Residences",
-      strongFirst: true,
-    });
-  }
-  if (editorial.possession) {
-    stats.push({
-      key: "possession",
-      Icon: LuLeaf,
-      strong: editorial.possession,
-      muted: "Possession",
-      strongFirst: false,
-    });
-  }
+  const configurationLabel = configuration
+    ? `${configuration} ${project.propertyTypeName === "Commercial" ? "Commercial" : "Residences"}`
+    : "";
   const price = formatStartingPrice(project.projectPrice);
-  if (price) {
-    stats.push({
-      key: "price",
-      Icon: PiChartLineUpBold,
-      strong: price,
-      muted: "Starting From",
-      strongFirst: false,
-    });
-  }
-
-  const imageAlt = projectName
-    ? `${projectName} — My Property Fact Top Picks featured project`
-    : "Featured project — My Property Fact Top Picks";
-  const logoAlt = builderName
-    ? `${builderName} — builder logo, My Property Fact Top Picks`
-    : "Builder logo — My Property Fact Top Picks";
 
   return {
     slug,
     href: slug ? `/${slug}` : "/projects",
     projectName,
-    shortName: editorial.shortName || projectName,
     builderName,
-    builderSlug: String(project.builderSlug ?? "").trim(),
-    address: String(project.projectAddress ?? "").trim(),
-    locality: String(project.projectLocality ?? "").trim(),
-    city: String(project.cityName ?? "").trim(),
+    location: [locality, city].filter(Boolean).join(", ") || text(project.projectAddress),
     tagline: editorial.tagline ?? "",
-    plaqueTitle: editorial.plaqueTitle ?? "",
+    facts: [
+      editorial.possession && { label: "Possession", value: editorial.possession },
+      price && { label: "Starting from", value: price },
+      !editorial.possession &&
+        configurationLabel && { label: "Configuration", value: configurationLabel },
+    ].filter(Boolean),
     usps: Array.isArray(editorial.usps) ? editorial.usps : [],
-    videoUrl: editorial.videoUrl ?? "",
-    statusFull: String(project.projectStatusName ?? "").trim(),
+    statusFull: text(project.projectStatusName),
     status: formatStatusBadge(project.projectStatusName),
-    stats,
+    headlinePrice: price || configurationLabel,
+    enquiry: {
+      id: project.id,
+      slugURL: slug,
+      projectName,
+      builderName,
+      cityName: city,
+      location: locality,
+    },
     image: buildProjectImageUrl(project, {
       preferThumbnail: false,
       fallback: DEFAULT_PROJECT_CARD_IMAGE,
     }),
-    imageAlt,
-    logo: buildGalleryImageUrl(slug, project.projectLogo, {
-      fallback: "/logo.webp",
-    }),
-    logoAlt,
+    desktopImage: editorial.desktopImage ?? "",
+    imageAlt: projectName
+      ? `${projectName} — My Property Fact Top Picks featured project`
+      : "Featured project — My Property Fact Top Picks",
+    logo: projectLogo ? buildGalleryImageUrl(slug, projectLogo) : "",
+    logoAlt: builderName
+      ? `${builderName} — ${projectName} logo, My Property Fact Top Picks`
+      : "Project logo — My Property Fact Top Picks",
   };
 }
+
+/* ------------------------------------------------------------------ slide */
+
+/** Listing photo; slides with a curated `desktopImage` swap to it above 1024px
+ *  (art direction via <picture>, so each device downloads only one file). */
+function SlidePhoto({ slide }) {
+  const common = {
+    alt: slide.imageAlt,
+    title: slide.imageAlt,
+    fill: true,
+    quality: 88,
+    sizes: IMAGE_SIZES,
+    className: "mpf-fp__img",
+  };
+
+  if (!slide.desktopImage) return <Image src={slide.image} {...common} />;
+
+  const { props: desktop } = getImageProps({ ...common, src: slide.desktopImage });
+  const { props: fallback } = getImageProps({ ...common, src: slide.image });
+
+  return (
+    <picture>
+      <source media={DESKTOP_MEDIA} srcSet={desktop.srcSet} sizes={desktop.sizes} />
+      <img {...fallback} />
+    </picture>
+  );
+}
+
+const TopPickSlide = memo(function TopPickSlide({
+  slide,
+  index,
+  total,
+  isActive,
+  isBefore,
+  tilt,
+  onEnquire,
+}) {
+  const viewTitle = `View ${slide.projectName} — floor plans, pricing, and details`;
+  const uspKey = (usp) => `${usp.title}-${usp.note}`;
+
+  return (
+    <div
+      className={`mpf-fp__slide${isActive ? " is-active" : isBefore ? " is-before" : ""}`}
+      role="group"
+      aria-roledescription="slide"
+      aria-label={`${index + 1} of ${total}: ${slide.projectName}`}
+    >
+      <article className="mpf-fp__card" aria-hidden={!isActive} inert={isActive ? undefined : ""}>
+        <div className="mpf-fp__info">
+          <div className="mpf-fp__top">
+            <div className="mpf-fp__logo-box">
+              {slide.logo ? (
+                <Image
+                  src={slide.logo}
+                  alt={slide.logoAlt}
+                  title={slide.logoAlt}
+                  width={180}
+                  height={80}
+                  quality={88}
+                  sizes="160px"
+                  className="mpf-fp__logo"
+                />
+              ) : (
+                <span className="mpf-fp__wordmark">{slide.builderName || slide.projectName}</span>
+              )}
+            </div>
+
+            <div className="mpf-fp__headline">
+              <h3 className="mpf-fp__project">
+                <Link href={slide.href} title={viewTitle}>
+                  {slide.projectName}
+                </Link>
+              </h3>
+              {slide.headlinePrice && <p className="mpf-fp__price">{slide.headlinePrice}</p>}
+            </div>
+
+            {slide.status && (
+              <p className="mpf-fp__badge" title={`Project status: ${slide.statusFull}`}>
+                {slide.status}
+              </p>
+            )}
+          </div>
+
+          {slide.facts.length > 0 && (
+            <dl className="mpf-fp__facts">
+              {slide.facts.map(({ label, value }) => {
+                const FactIcon = FACT_ICONS[label];
+                return (
+                  <div className="mpf-fp__fact" key={label}>
+                    <dt>
+                      {FactIcon && <FactIcon className="mpf-fp__fact-ico" aria-hidden="true" />}
+                      {label}
+                    </dt>
+                    <dd>{value}</dd>
+                  </div>
+                );
+              })}
+            </dl>
+          )}
+
+          {slide.usps.length > 0 && (
+            <ul className="mpf-fp__perks">
+              {slide.usps.map((usp) => {
+                const UspIcon = USP_ICONS[usp.icon] ?? LuSparkles;
+                return (
+                  <li className="mpf-fp__perk" key={uspKey(usp)}>
+                    <UspIcon aria-hidden="true" />
+                    <span>
+                      {usp.title} {usp.note}
+                    </span>
+                  </li>
+                );
+              })}
+            </ul>
+          )}
+
+          <button
+            type="button"
+            className="mpf-fp__enquire"
+            onClick={() => onEnquire(slide.enquiry)}
+            title={`Enquire about ${slide.projectName}`}
+          >
+            <span>Enquire Now</span>
+            <LuArrowRight aria-hidden="true" />
+          </button>
+        </div>
+
+        <div
+          className="mpf-fp__media"
+          onPointerMove={isActive ? tilt.onPointerMove : undefined}
+          onPointerLeave={isActive ? tilt.onPointerLeave : undefined}
+        >
+          <div className="mpf-fp__media-layer">
+            <SlidePhoto slide={slide} />
+          </div>
+          <span className="mpf-fp__scrim" aria-hidden="true" />
+
+          <div className="mpf-fp__overlay">
+            {slide.location && (
+              <>
+                <span className="mpf-fp__eyebrow">Location</span>
+                <p className="mpf-fp__loc">{slide.location}</p>
+              </>
+            )}
+            {slide.tagline && <p className="mpf-fp__tagline">{slide.tagline}</p>}
+            {slide.usps.length > 0 && (
+              <ul className="mpf-fp__usps">
+                {slide.usps.map((usp) => (
+                  <li className="mpf-fp__usp" key={uspKey(usp)}>
+                    {usp.title} {usp.note}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+
+          <Link
+            href={slide.href}
+            className="mpf-fp__go"
+            aria-label={`View ${slide.projectName}`}
+            title={viewTitle}
+          >
+            <LuArrowUpRight aria-hidden="true" />
+          </Link>
+        </div>
+      </article>
+    </div>
+  );
+});
+
+/* ---------------------------------------------------------------- section */
 
 export default function MpfTopPicks({ topProjects }) {
   const slides = useMemo(
     () =>
       (Array.isArray(topProjects) ? topProjects : [])
-        .filter((project) => project && project.projectName)
+        .filter((project) => project?.projectName)
         .map(buildSlide),
     [topProjects],
   );
 
-  const [activeIndex, setActiveIndex] = useState(0);
+  const sectionRef = useRef(null);
+  const swipeStart = useRef(null);
+  const elapsedRef = useRef(0);
   const baseId = useId();
-  // useId output contains characters that are unsafe inside a CSS url() fragment.
-  const clipId = `mpf-tp-clip-${baseId.replace(/[^a-zA-Z0-9_-]/g, "")}`;
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
+  const [enquiryProject, setEnquiryProject] = useState(null);
 
   const total = slides.length;
   const hasMultiple = total > 1;
   const safeIndex = activeIndex < total ? activeIndex : 0;
 
+  const motionOk = useMediaQuery(MOTION_QUERY);
+  const tilt = useTilt(useMediaQuery(TILT_QUERY));
+  const { inView, reveal } = useSectionVisibility(sectionRef);
+
+  const autoplay = hasMultiple && motionOk;
+  const halted = paused || !inView || Boolean(enquiryProject);
+
   const step = useCallback(
-    (delta) => {
+    (delta) =>
       setActiveIndex((current) => {
-        if (total < 1) return 0;
-        return (current + delta + total) % total;
-      });
-    },
+        const from = current < total ? current : 0;
+        return (from + delta + total) % total;
+      }),
     [total],
   );
 
-  // Auto-advance between projects every minute. The timer resets on every slide
-  // change (safeIndex dependency), so a manual click also restarts the countdown.
   useEffect(() => {
-    if (!hasMultiple) return undefined;
-    const id = setInterval(() => step(1), 60000);
-    return () => clearInterval(id);
-  }, [hasMultiple, safeIndex, step]);
+    if (!enquiryProject) return undefined;
+    document.body.classList.add(MODAL_FLEX_CLASS);
+    return () => document.body.classList.remove(MODAL_FLEX_CLASS);
+  }, [enquiryProject]);
+
+  // A slide change restarts the countdown and drops any leftover tilt.
+  useEffect(() => {
+    elapsedRef.current = 0;
+    sectionRef.current?.querySelectorAll(".mpf-fp__media.is-tilting").forEach(clearTilt);
+  }, [safeIndex, autoplay]);
+
+  // Autoplay: pausing (hover/focus, off-screen, enquiry open) keeps the elapsed time,
+  // so the countdown resumes in step with the CSS progress fill.
+  useEffect(() => {
+    if (!autoplay || halted) return undefined;
+    const startedAt = performance.now();
+    const id = setTimeout(() => step(1), Math.max(0, AUTO_ADVANCE_MS - elapsedRef.current));
+    return () => {
+      clearTimeout(id);
+      elapsedRef.current += performance.now() - startedAt;
+    };
+  }, [autoplay, halted, safeIndex, step]);
+
+  const onPointerDown = (event) => {
+    if (hasMultiple && event.pointerType !== "mouse") {
+      swipeStart.current = { x: event.clientX, y: event.clientY };
+    }
+  };
+
+  const onPointerUp = (event) => {
+    const start = swipeStart.current;
+    swipeStart.current = null;
+    if (!start) return;
+    const dx = event.clientX - start.x;
+    const dy = event.clientY - start.y;
+    if (Math.abs(dx) >= SWIPE_THRESHOLD_PX && Math.abs(dx) >= Math.abs(dy)) {
+      step(dx < 0 ? 1 : -1);
+    }
+  };
+
+  const onKeyDown = (event) => {
+    if (!hasMultiple) return;
+    if (event.key === "ArrowRight") step(1);
+    if (event.key === "ArrowLeft") step(-1);
+  };
 
   if (total === 0) return null;
 
+  const sectionClass = [
+    "mpf-fp",
+    reveal !== "idle" && `is-${reveal}`,
+    autoplay && "is-autoplay",
+    halted && "is-paused",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <section
-      className="mpf-tp"
+      ref={sectionRef}
+      className={sectionClass}
+      style={{ "--fp-autoplay": `${AUTO_ADVANCE_MS}ms` }}
       aria-labelledby={`${baseId}-heading`}
-      style={{ "--mpf-tp-clip": `url(#${clipId})` }}
+      aria-roledescription="carousel"
     >
-      <svg className="mpf-tp__defs" aria-hidden="true" focusable="false">
-        <defs>
-          <clipPath id={clipId} clipPathUnits="objectBoundingBox">
-            <path d={MEDIA_CLIP_PATH} />
-          </clipPath>
-        </defs>
-      </svg>
-      <div className="mpf-tp__band">
-        <div className="container">
-          <header className="mpf-tp__head">
-            <div className="mpf-tp__head-copy">
-              <span className="mpf-tp__kicker">Featured pick</span>
-              <h2
-                id={`${baseId}-heading`}
-                className="mpf-tp__title plus-jakarta-sans-semi-bold"
-              >
-                My Property Fact&apos;s{" "}
-                <span className="mpf-tp__title-accent">Top Picks</span>
-              </h2>
-              <p className="mpf-tp__sub">
-                A curated, verified project we spotlight for buyers and
-                investors on MPF
-              </p>
-            </div>
+      <div className="container mpf-fp__inner">
+        <header className="mpf-fp__head">
+          <span className="mpf-fp__kicker">Featured pick</span>
+          <h2 id={`${baseId}-heading`} className="mpf-fp__title">
+            My Property Fact&apos;s Top Picks
+          </h2>
+        </header>
 
-            {hasMultiple && (
-              <div className="mpf-tp__nav">
-                <p className="mpf-tp__count">
-                  <span className="mpf-tp__count-now">
-                    {pad2(safeIndex + 1)}
-                  </span>
-                  <span className="mpf-tp__count-sep" aria-hidden="true">
-                    /
-                  </span>
-                  <span className="mpf-tp__count-all">{pad2(total)}</span>
-                </p>
-                <span className="mpf-tp__track" aria-hidden="true">
-                  <span
-                    className="mpf-tp__track-fill"
-                    style={{ width: `${((safeIndex + 1) / total) * 100}%` }}
-                  />
-                </span>
-                <button
-                  type="button"
-                  className="mpf-tp__arrow"
-                  onClick={() => step(-1)}
-                  aria-label="Show previous top pick"
-                  title="Show previous top pick"
-                >
-                  <LuArrowLeft aria-hidden="true" />
-                </button>
-                <button
-                  type="button"
-                  className="mpf-tp__arrow mpf-tp__arrow--next"
-                  onClick={() => step(1)}
-                  aria-label="Show next top pick"
-                  title="Show next top pick"
-                >
-                  <LuArrowRight aria-hidden="true" />
-                </button>
-              </div>
-            )}
-          </header>
-
-          <div className="mpf-tp__stage">
-            {slides.map((slide, index) => {
-              const isActive = index === safeIndex;
-              return (
-                <article
-                  key={slide.slug || slide.projectName}
-                  id={`${baseId}-panel-${index}`}
-                  aria-label={`${slide.projectName} — featured top pick`}
-                  aria-hidden={!isActive}
-                  className={`mpf-tp__card${isActive ? " is-active" : ""}`}
-                >
-                  <div className="mpf-tp__media">
-                    {isActive ? (
-                      <img
-                        {...buildHomeCardImageProps({
-                          src: slide.image,
-                          width: 960,
-                          height: 540,
-                          alt: slide.imageAlt,
-                          sizes: HOME_POSTER_CARD_SIZES,
-                          quality: 65,
-                        })}
-                        className="mpf-tp__img"
-                      />
-                    ) : null}
-                    <span className="mpf-tp__scrim" aria-hidden="true" />
-
-                    {slide.plaqueTitle && (
-                      <div className="mpf-tp__plaque">
-                        <p className="mpf-tp__plaque-title">
-                          {slide.plaqueTitle}
-                        </p>
-                        <span
-                          className="mpf-tp__plaque-rule"
-                          aria-hidden="true"
-                        />
-                        {(slide.locality || slide.city) && (
-                          <p className="mpf-tp__plaque-loc">
-                            {slide.locality && <span>{slide.locality}</span>}
-                            {slide.city && <span>{slide.city}</span>}
-                          </p>
-                        )}
-                      </div>
-                    )}
-
-                    {slide.usps.length > 0 && (
-                      <ul className="mpf-tp__usps">
-                        {slide.usps.map((usp) => {
-                          const Icon = USP_ICONS[usp.icon] ?? LuSparkles;
-                          return (
-                            <li
-                              className="mpf-tp__usp"
-                              key={`${usp.title}-${usp.note}`}
-                            >
-                              <Icon
-                                className="mpf-tp__usp-icon"
-                                aria-hidden="true"
-                              />
-                              <span className="mpf-tp__usp-txt">
-                                <strong>{usp.title}</strong>
-                                {usp.note}
-                              </span>
-                            </li>
-                          );
-                        })}
-                      </ul>
-                    )}
-
-                    {slide.status && (
-                      <p
-                        className="mpf-tp__badge"
-                        title={`Project status: ${slide.statusFull}`}
-                      >
-                        {slide.status}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="mpf-tp__panel">
-                    <div className="mpf-tp__dev">
-                      {isActive ? (
-                        <img
-                          {...buildHomeCardImageProps({
-                            src: slide.logo,
-                            width: 160,
-                            height: 64,
-                            alt: slide.logoAlt,
-                            sizes: "160px",
-                            quality: 70,
-                          })}
-                          className="mpf-tp__dev-logo"
-                          width={160}
-                          height={64}
-                        />
-                      ) : null}
-                      <span className="mpf-tp__dev-rule" aria-hidden="true" />
-                      <div className="mpf-tp__dev-txt">
-                        <span className="mpf-tp__eyebrow">Developer</span>
-                        {slide.builderSlug ? (
-                          <Link
-                            href={`/builder/${slide.builderSlug}`}
-                            className="mpf-tp__dev-name"
-                            title={`View projects by ${slide.builderName}`}
-                          >
-                            {slide.builderName}
-                          </Link>
-                        ) : (
-                          <p className="mpf-tp__dev-name">
-                            {slide.builderName}
-                          </p>
-                        )}
-                      </div>
-                    </div>
-
-                    <h3 className="mpf-tp__project plus-jakarta-sans-semi-bold">
-                      {slide.projectName}
-                    </h3>
-
-                    {slide.address && (
-                      <p className="mpf-tp__addr">
-                        <LuMapPin
-                          className="mpf-tp__addr-icon"
-                          aria-hidden="true"
-                        />
-                        <span>{slide.address}</span>
-                      </p>
-                    )}
-
-                    {slide.tagline && (
-                      <p className="mpf-tp__tag">{slide.tagline}</p>
-                    )}
-
-                    {slide.stats.length > 0 && (
-                      <ul className="mpf-tp__stats">
-                        {slide.stats.map(
-                          ({ key, Icon, strong, muted, strongFirst }) => {
-                            const strongLine = (
-                              <strong
-                                className="mpf-tp__stat-strong"
-                                key="strong"
-                              >
-                                {strong}
-                              </strong>
-                            );
-                            const mutedLine = (
-                              <span className="mpf-tp__stat-muted" key="muted">
-                                {muted}
-                              </span>
-                            );
-                            return (
-                              <li className="mpf-tp__stat" key={key}>
-                                <Icon
-                                  className="mpf-tp__stat-icon"
-                                  aria-hidden="true"
-                                />
-                                <span className="mpf-tp__stat-txt">
-                                  {strongFirst
-                                    ? [strongLine, mutedLine]
-                                    : [mutedLine, strongLine]}
-                                </span>
-                              </li>
-                            );
-                          },
-                        )}
-                      </ul>
-                    )}
-
-                    <div className="mpf-tp__actions">
-                      <Link
-                        href={slide.href}
-                        className="mpf-tp__cta plus-jakarta-sans-semi-bold"
-                        title={`View ${slide.projectName} — floor plans, pricing, and details`}
-                      >
-                        <span>Explore Project</span>
-                        <LuArrowRight aria-hidden="true" />
-                      </Link>
-                    </div>
-                  </div>
-                </article>
-              );
-            })}
+        <div
+          className="mpf-fp__viewport"
+          onPointerDown={onPointerDown}
+          onPointerUp={onPointerUp}
+          onPointerCancel={() => {
+            swipeStart.current = null;
+          }}
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          onFocus={() => setPaused(true)}
+          onBlur={() => setPaused(false)}
+          onKeyDown={onKeyDown}
+        >
+          <div className="mpf-fp__rail" style={{ "--mpf-fp-index": safeIndex }}>
+            {slides.map((slide, index) => (
+              <TopPickSlide
+                key={slide.slug || slide.projectName}
+                slide={slide}
+                index={index}
+                total={total}
+                isActive={index === safeIndex}
+                isBefore={index < safeIndex}
+                tilt={tilt}
+                onEnquire={setEnquiryProject}
+              />
+            ))}
           </div>
+
+          {hasMultiple && (
+            <div className="mpf-fp__progress" aria-hidden="true">
+              <span key={safeIndex} className="mpf-fp__progress-fill" />
+            </div>
+          )}
         </div>
       </div>
+
+      {enquiryProject && (
+        <CommonPopUpform
+          show
+          handleClose={(open) => {
+            if (!open) setEnquiryProject(null);
+          }}
+          from="Project Detail"
+          data={enquiryProject}
+        />
+      )}
     </section>
   );
 }

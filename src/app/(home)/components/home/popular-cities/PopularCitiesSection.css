@@ -227,6 +227,12 @@
   animation-delay: -5s;
 }
 
+/* Pause a row while a city pill in it is hovered or keyboard-focused */
+.pc__track:has(.pc__pill:hover),
+.pc__track:has(.pc__pill:focus-visible) {
+  animation-play-state: paused;
+}
+
 @keyframes pc-marquee {
   0% {
     transform: translate3d(0, 0, 0);
@@ -266,9 +272,8 @@
   font-size: 0.8rem;
   font-weight: 500;
   letter-spacing: 0.01em;
-  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease,
-    background 0.2s ease;
+  box-shadow: none;
+  transition: transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
   -webkit-tap-highlight-color: transparent;
   cursor: pointer;
 }
@@ -285,7 +290,6 @@
 .pc__pill:hover,
 .pc__pill:focus-visible {
   transform: scale(1.04);
-  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.1);
   border-color: rgba(201, 162, 77, 0.55);
   background: #fffef9;
   color: #0f172a;

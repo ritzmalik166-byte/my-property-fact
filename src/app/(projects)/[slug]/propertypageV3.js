@@ -1404,7 +1404,7 @@ export default function PropertyV3({
               <section
                 id="location"
                 ref={(el) => (sectionRefs.current.location = el)}
-                className="pd3-card"
+                className="pd3-card pd3-location"
               >
                 <div className="pd3-card__head">
                   <h2 className="pd3-card__title">Location</h2>
