@@ -4060,7 +4060,20 @@ body:has(.mpf-home-r26) .home-right-type-rail {
 }
 
 .mpf-home-r26 .popular-cities-section {
-  background: #fff !important;
+  background: var(--mpf-page) !important;
+}
+
+.mpf-home-r26 .social-feeds-section {
+  background: #fff;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  padding: 1.5rem 0;
+}
+
+@media (min-width: 992px) {
+  .mpf-home-r26 .social-feeds-section {
+    padding: 3rem 0;
+  }
 }
 
 .mpf-home-r26 .pc__kicker {

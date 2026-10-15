@@ -34,7 +34,7 @@ const FACT_ICONS = {
 };
 
 const MODAL_FLEX_CLASS = "lead-form-popup-trigger--modal-flex";
-const AUTO_ADVANCE_MS = 6000;
+const AUTO_ADVANCE_MS = 4000;
 const SWIPE_THRESHOLD_PX = 48;
 const REVEAL_RATIO = 0.15;
 const AUTOPLAY_RATIO = 0.35;
