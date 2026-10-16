@@ -786,8 +786,11 @@ export default function PropertyV3({
     ]
       .filter(Boolean)
       .join(", ");
-  const mapHref = mapQuery
-    ? `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(mapQuery)}`
+  const mapLinkQuery = hasMapCoords
+    ? mapQuery
+    : [projectDetail?.projectName, projectDetail?.city].filter(Boolean).join(" ");
+  const mapHref = mapLinkQuery
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapLinkQuery)}`
     : null;
   const mapEmbedSrc = mapQuery
     ? `https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&z=15&output=embed`
