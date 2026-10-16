@@ -1440,6 +1440,10 @@ button.header-nav-dropdown-trigger {
   z-index: 999;
 }
 
+.header--home-ss .menu ul li.hasChild .dropdown.dropdown-lg {
+  top: 132px;
+}
+
 
 .menu ul li.hasChild .dropdown.dropdown-lg::before {
   content: "";
