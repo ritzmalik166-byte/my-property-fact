@@ -323,7 +323,10 @@ export default function PropertyContainer({
           <div className="home-project-card__title-row">
             <h3 className="home-project-card__title">{projectTitle}</h3>
             <p className="home-project-card__price">
-              <strong>{price}</strong>
+              <strong>
+                {price}
+                {onwards ? "*" : null}
+              </strong>
               {onwards ? <span>Onwards</span> : null}
             </p>
           </div>

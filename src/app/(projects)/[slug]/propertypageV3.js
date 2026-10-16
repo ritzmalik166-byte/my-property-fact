@@ -653,6 +653,19 @@ export default function PropertyV3({
     return [...d, ...g];
   }, [heroSlidesProp, desktopImages, galleryImages, projectImageSrc]);
   const totalMediaCount = allImagesForHero.length;
+  const galleryStripImages = useMemo(
+    () => allImagesForHero.filter((src) => src && !src.includes("no_image")),
+    [allImagesForHero],
+  );
+  const galleryAltBySrc = useMemo(() => {
+    const map = new Map();
+    galleryImages.forEach((img) => {
+      if (img?.imageName && img.altTag) {
+        map.set(projectImageSrc(img.imageName), img.altTag);
+      }
+    });
+    return map;
+  }, [galleryImages, projectImageSrc]);
 
   const aboutBuilderImageSrc = useMemo(() => {
     if (!projectDetail) return "/static/no_image.png";
@@ -693,9 +706,30 @@ export default function PropertyV3({
   const scrollGalleryStrip = useCallback((direction) => {
     const el = galleryStripRef.current;
     if (!el) return;
-    const amount = Math.max(220, Math.round(el.clientWidth * 0.7));
-    el.scrollBy({ left: direction * amount, behavior: "smooth" });
+    const maxScroll = el.scrollWidth - el.clientWidth;
+    if (maxScroll <= 1) return;
+    const item = el.querySelector(".pd3-gallery-strip__item");
+    const step = item
+      ? item.getBoundingClientRect().width + 10
+      : Math.round(el.clientWidth * 0.7);
+    let target = el.scrollLeft + direction * step;
+    if (direction > 0 && el.scrollLeft >= maxScroll - 2) target = 0;
+    else if (direction < 0 && el.scrollLeft <= 2) target = maxScroll;
+    el.scrollTo({ left: Math.max(0, Math.min(target, maxScroll)), behavior: "smooth" });
   }, []);
+
+  const [galleryOverflows, setGalleryOverflows] = useState(false);
+  const galleryCount = galleryStripImages.length;
+  useEffect(() => {
+    const el = galleryStripRef.current;
+    if (!el) return undefined;
+    const update = () => setGalleryOverflows(el.scrollWidth - el.clientWidth > 1);
+    update();
+    if (typeof ResizeObserver === "undefined") return undefined;
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [galleryCount]);
 
   useEffect(() => {
     if (!showGalleryModal) return undefined;
@@ -1354,7 +1388,7 @@ export default function PropertyV3({
             ) : null}
 
             {/* Gallery */}
-            {galleryImages.length ? (
+            {galleryStripImages.length ? (
               <section
                 id="gallery"
                 ref={(el) => (sectionRefs.current.gallery = el)}
@@ -1369,11 +1403,11 @@ export default function PropertyV3({
                       fontWeight: 500,
                     }}
                   >
-                    {galleryImages.length} photos
+                    {galleryStripImages.length} photos
                   </span>
                 </div>
                 <div className="pd3-gallery-slider">
-                  {galleryImages.length > 1 ? (
+                  {galleryStripImages.length > 1 && galleryOverflows ? (
                     <>
                       <button
                         type="button"
@@ -1394,22 +1428,23 @@ export default function PropertyV3({
                     </>
                   ) : null}
                   <div className="pd3-gallery-strip" ref={galleryStripRef}>
-                    {galleryImages.map((img, i) => {
-                      const src = projectImageSrc(img.imageName);
-                      const lbIdx = allImagesForHero.indexOf(src);
-                      const openIdx = lbIdx >= 0 ? lbIdx : i;
+                    {galleryStripImages.map((src, i) => {
+                      const alt = galleryAltBySrc.get(src) || `${projectDetail.projectName || "Project"} image ${i + 1}`;
                       return (
                         <button
                           type="button"
-                          key={`${img?.id || i}`}
+                          key={`${src}-${i}`}
                           className="pd3-gallery-strip__item"
-                          onClick={() => openLightboxAt(openIdx)}
+                          onClick={() => {
+                            const lbIdx = allImagesForHero.indexOf(src);
+                            openLightboxAt(lbIdx >= 0 ? lbIdx : i);
+                          }}
                           aria-label={`Open gallery image ${i + 1}`}
                         >
                           <img
                             src={src}
-                            alt={img.altTag || `Gallery image ${i + 1}`}
-                            title={img.altTag || `Gallery image ${i + 1}`}
+                            alt={alt}
+                            title={alt}
                             className="pd3-tile-img"
                             style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
                         </button>

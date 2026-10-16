@@ -5509,6 +5509,17 @@ body:has(.mpf-home-r26) .lead-form-popup-trigger__enquire-label {
   .mpf-home-r26 .home-projects-preview__slide {
     scroll-snap-align: start;
   }
+
+  .mpf-home-r26 .home-projects-preview--tiles.container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .mpf-home-r26 .home-projects-preview--tiles .home-projects-preview__viewport {
+    margin-inline: 0;
+    padding-inline: 0;
+    scroll-padding-left: 0;
+  }
 }
 
 .mpf-home-r26 .recommended-properties-section.home-projects-preview {

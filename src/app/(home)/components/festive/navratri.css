@@ -421,6 +421,13 @@ body:has(.mpf-navratri-strip) .header {
   white-space: nowrap;
 }
 
+.mpf-navratri-card__price-asterisk {
+  margin-left: 2px;
+  font-size: 0.8em;
+  vertical-align: super;
+  line-height: 0;
+}
+
 .mpf-navratri-card .mpf-navratri-card__cta {
   flex-shrink: 0;
   display: inline-flex;
@@ -478,11 +485,16 @@ body:has(.mpf-navratri-strip) .header {
     margin-bottom: 24px;
   }
 
+  .mpf-navratri-picks > .container {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
   .mpf-navratri-picks__grid {
     display: flex;
     gap: 14px;
-    margin: 0 -12px;
-    padding: 4px 12px 12px;
+    margin: 0;
+    padding: 4px 0 12px;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
     scrollbar-width: none;
