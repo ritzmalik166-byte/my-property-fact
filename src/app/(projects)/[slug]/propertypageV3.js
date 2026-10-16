@@ -761,18 +761,36 @@ export default function PropertyV3({
   const locationState = projectDetail?.state || "";
   const locationCity = projectDetail?.city || "";
   const locationCountry = projectDetail?.country || "India";
-  const mapQuery = [
-    projectDetail?.projectName,
-    projectDetail?.projectAddress,
-    projectDetail?.projectLocality,
-    projectDetail?.city,
-    projectDetail?.state,
-    projectDetail?.country,
-  ]
-    .filter(Boolean)
-    .join(", ");
+  const mapLat = Number(
+    projectDetail?.latitude ??
+    projectDetail?.projectLatitude ??
+    projectDetail?.lat ??
+    projectDetail?.geoLat ??
+    NaN,
+  );
+  const mapLng = Number(
+    projectDetail?.longitude ??
+    projectDetail?.projectLongitude ??
+    projectDetail?.lng ??
+    projectDetail?.geoLng ??
+    NaN,
+  );
+  const hasMapCoords =
+    Number.isFinite(mapLat) && Number.isFinite(mapLng) && (mapLat !== 0 || mapLng !== 0);
+  const mapQuery = hasMapCoords
+    ? `${mapLat},${mapLng}`
+    : [
+      projectDetail?.projectName,
+      projectDetail?.projectLocality,
+      projectDetail?.city,
+    ]
+      .filter(Boolean)
+      .join(", ");
   const mapHref = mapQuery
-    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`
+    ? `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(mapQuery)}`
+    : null;
+  const mapEmbedSrc = mapQuery
+    ? `https://maps.google.com/maps?q=${encodeURIComponent(mapQuery)}&z=15&output=embed`
     : null;
   const faqs = Array.isArray(projectDetail?.faqs) ? projectDetail.faqs : [];
 
@@ -1400,7 +1418,7 @@ export default function PropertyV3({
             ) : null}
 
             {/* Location */}
-            {(locationBenefits.length || projectDetail.locationMap) ? (
+            {(locationBenefits.length || projectDetail.locationMap || mapEmbedSrc) ? (
               <section
                 id="location"
                 ref={(el) => (sectionRefs.current.location = el)}
@@ -1465,7 +1483,7 @@ export default function PropertyV3({
                     })}
                   </div>
                 ) : null}
-                {projectDetail.locationMap ? (
+                {(projectDetail.locationMap || mapEmbedSrc) ? (
                   <div className="pd3-location-map-wrap">
                     <div className="pd3-location-facts">
                       <div className="pd3-location-facts__grid">
@@ -1501,11 +1519,33 @@ export default function PropertyV3({
                       ) : null}
                     </div>
                     <div className="pd3-map">
-                      <img
-                        src={projectImageSrc(projectDetail.locationMap)}
-                        alt="Project location map"
-                        title="Project location map"
-                        style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+                      {mapEmbedSrc ? (
+                        <>
+                          <iframe
+                            src={mapEmbedSrc}
+                            title={`${projectDetail.projectName || "Project"} location map`}
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"
+                            allowFullScreen
+                          />
+                          <a
+                            href={mapHref}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="pd3-map__link"
+                            aria-label={`Open ${projectDetail.projectName || "project"} location in Google Maps`}
+                            title="Open in Google Maps"
+                          >
+                            <span className="pd3-map__badge">Open in Google Maps</span>
+                          </a>
+                        </>
+                      ) : (
+                        <img
+                          src={projectImageSrc(projectDetail.locationMap)}
+                          alt="Project location map"
+                          title="Project location map"
+                          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+                      )}
                     </div>
                   </div>
                 ) : null}
