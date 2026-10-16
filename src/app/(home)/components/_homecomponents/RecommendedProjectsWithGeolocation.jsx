@@ -4,6 +4,7 @@ import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react
 import HomeRecommendationCards from "./HomeRecommendationCards";
 import { getCityPageHref } from "@/app/_global_components/cityAliasUtils";
 import { resolveDeviceCity } from "@/lib/resolveIpCity";
+import { fetchRecommendedByLocation } from "@/lib/fetchRecommendedByLocation";
 import {
   isSpecificHeaderCity,
   readChosenHeaderCity,
@@ -112,12 +113,10 @@ export default function RecommendedProjectsWithGeolocation({
       setActiveCity(city);
       setLoading(true);
       try {
-        const q = new URLSearchParams({
+        const { data } = await fetchRecommendedByLocation({
           city,
           intent: locationIntent,
         });
-        const res = await fetch(`/api/home/recommended-by-location?${q.toString()}`);
-        const data = await res.json();
         if (gen !== fetchGenRef.current) return;
 
         // Prefer the city the user picked — never let an empty→NCR API swap rename the rail.

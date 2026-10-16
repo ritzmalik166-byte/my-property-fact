@@ -1,5 +1,7 @@
 /** City lookup: GPS first, then official IP providers via /api/home/ip-city. */
 
+import { fetchRecommendedByLocation } from "./fetchRecommendedByLocation";
+
 async function readJson(url) {
   const res = await fetch(url, {
     cache: "no-store",
@@ -52,23 +54,32 @@ function readBrowserCoords() {
       reject,
       {
         enableHighAccuracy: true,
-        timeout: 8000,
+        timeout: 10000,
         maximumAge: 0,
       },
     );
   });
 }
 
+/**
+ * One GPS read per page load, shared by the header and home rails so they resolve
+ * the same coordinates (and therefore the same city request). Rejects with the
+ * GeolocationPositionError so callers can still react to `code === 1` (denied).
+ */
+export function readSharedBrowserCoords() {
+  return sharedLookup("coords", readBrowserCoords);
+}
+
 export async function resolveCityFromCoords(coords) {
   const lat = coords?.latitude;
   const lon = coords?.longitude;
   if (lat == null || lon == null) return "";
-  const q = new URLSearchParams({
-    lat: String(lat),
-    lon: String(lon),
+  const { ok, data } = await fetchRecommendedByLocation({
+    lat,
+    lon,
     intent: "projects",
   });
-  const data = await readJson(`/api/home/recommended-by-location?${q}`);
+  if (!ok) return "";
   return cityFromPayload(data?.region);
 }
 
@@ -79,7 +90,7 @@ export async function resolveCityFromCoords(coords) {
 export function resolveDeviceCity() {
   return sharedLookup("device", async () => {
     try {
-      const coords = await readBrowserCoords();
+      const coords = await readSharedBrowserCoords();
       const gpsCity = await resolveCityFromCoords(coords);
       if (gpsCity) return { city: gpsCity, source: "gps" };
     } catch {

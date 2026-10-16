@@ -30,7 +30,8 @@ import {
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
 import { useSiteData } from "@/app/_global_components/contexts/SiteDataContext";
-import { resolveIpCity } from "@/lib/resolveIpCity";
+import { readSharedBrowserCoords, resolveIpCity } from "@/lib/resolveIpCity";
+import { fetchRecommendedByLocation } from "@/lib/fetchRecommendedByLocation";
 import {
   clearChosenHeaderCity,
   isSpecificHeaderCity,
@@ -687,16 +688,23 @@ const HeaderComponent = () => {
   }, []);
 
   const resolveFromCoords = useCallback(async (coords) => {
-    const response = await fetch(
-      `/api/home/recommended-by-location?lat=${coords.latitude}&lon=${coords.longitude}&intent=projects`,
-    );
-    if (!response.ok) throw new Error("Failed to fetch location");
-    const data = await response.json();
+    const { ok, data } = await fetchRecommendedByLocation({
+      lat: coords.latitude,
+      lon: coords.longitude,
+      intent: "projects",
+    });
+    if (!ok) throw new Error("Failed to fetch location");
     return data.success && data.region?.city ? data.region.city : "";
   }, []);
 
   const requestBrowserLocation = useCallback(
-    ({ forceToast = false, preferGps = true, scrollToListings = false, replaceSavedCity = false } = {}) => {
+    ({
+      forceToast = false,
+      preferGps = true,
+      scrollToListings = false,
+      replaceSavedCity = false,
+      sharedCoords = false,
+    } = {}) => {
       const requestId = ++locationRequestIdRef.current;
       setIsLocating(true);
 
@@ -749,40 +757,46 @@ const HeaderComponent = () => {
         return;
       }
 
-      // Call synchronously inside the click handler so Chrome can show the prompt
-      // when permission state is still "prompt".
-      navigator.geolocation.getCurrentPosition(
-        async ({ coords }) => {
-          if (requestId !== locationRequestIdRef.current) return;
-          try {
-            const fromGps = await resolveFromCoords(coords);
-            if (isSpecificCity(fromGps)) {
-              applyIfCurrent(fromGps, { source: "gps" });
-              return;
-            }
-          } catch (error) {
-            console.error("Location Error:", error);
-          }
-          fallbackToIp();
-        },
-        (error) => {
-          if (error?.code !== 1) {
-            console.error("Geolocation Error:", error);
-          }
-          if (requestId !== locationRequestIdRef.current) return;
-          // Denied, or Chrome temporarily blocked after the prompt was ignored several times.
-          if (error?.code === 1) {
-            showBlockedHintAndFallback();
+      const onPosition = async ({ coords }) => {
+        if (requestId !== locationRequestIdRef.current) return;
+        try {
+          const fromGps = await resolveFromCoords(coords);
+          if (isSpecificCity(fromGps)) {
+            applyIfCurrent(fromGps, { source: "gps" });
             return;
           }
-          fallbackToIp();
-        },
-        {
-          enableHighAccuracy: true,
-          timeout: 10000,
-          maximumAge: 0,
-        },
-      );
+        } catch (error) {
+          console.error("Location Error:", error);
+        }
+        fallbackToIp();
+      };
+
+      const onPositionError = (error) => {
+        if (error?.code !== 1) {
+          console.error("Geolocation Error:", error);
+        }
+        if (requestId !== locationRequestIdRef.current) return;
+        // Denied, or Chrome temporarily blocked after the prompt was ignored several times.
+        if (error?.code === 1) {
+          showBlockedHintAndFallback();
+          return;
+        }
+        fallbackToIp();
+      };
+
+      // Page-load lookup: reuse the GPS read the home rails share, so both resolve one city request.
+      if (sharedCoords) {
+        readSharedBrowserCoords().then((coords) => onPosition({ coords }), onPositionError);
+        return;
+      }
+
+      // Call synchronously inside the click handler so Chrome can show the prompt
+      // when permission state is still "prompt".
+      navigator.geolocation.getCurrentPosition(onPosition, onPositionError, {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0,
+      });
     },
     [finishWithCity, resolveFromCoords, resolveFromIpCity],
   );
@@ -807,7 +821,7 @@ const HeaderComponent = () => {
         persist: true,
       });
     } else {
-      requestBrowserLocationRef.current({ preferGps: true });
+      requestBrowserLocationRef.current({ preferGps: true, sharedCoords: true });
     }
 
     return () => {
