@@ -2,8 +2,42 @@ import "./builderpage.css";
 import PropertyContainer from "@/app/(home)/components/common/PropertyContainer";
 import CommonHeaderBanner from "../../components/common/commonheaderbanner";
 import { LoadingSpinner } from "@/app/_global_components/LoadingSpinner";
+
+const HTML_ENTITIES = {
+  "&nbsp;": " ",
+  "&amp;": "&",
+  "&lt;": "<",
+  "&gt;": ">",
+  "&quot;": '"',
+  "&#39;": "'",
+  "&apos;": "'",
+  "&rsquo;": "\u2019",
+  "&lsquo;": "\u2018",
+  "&rdquo;": "\u201D",
+  "&ldquo;": "\u201C",
+  "&ndash;": "\u2013",
+  "&mdash;": "\u2014",
+  "&hellip;": "\u2026",
+};
+
+function htmlToPlainText(html) {
+  if (typeof html !== "string" || !html.trim()) return "";
+  return html
+    .replace(/<(script|style)[^>]*>[\s\S]*?<\/\1>/gi, "")
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<\/(p|div|li|h[1-6]|tr|blockquote)>/gi, "\n\n")
+    .replace(/<[^>]+>/g, "")
+    .replace(/&#(\d+);/g, (_, code) => String.fromCharCode(Number(code)))
+    .replace(/&[a-z]+;|&#39;/gi, (entity) => HTML_ENTITIES[entity.toLowerCase()] ?? entity)
+    .replace(/[ \t]+/g, " ")
+    .replace(/ *\n */g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
 export default function BuilderPage({ builderDetail, projectsList }) {
   const builderName = builderDetail?.builderName?.trim() || "Builder";
+  const builderDescriptionText = htmlToPlainText(builderDetail?.builderDescription);
   const aboutBuilderLeftAlt = `${builderName} — about the builder section, left illustration on My Property Fact`;
   const aboutBuilderRightAlt = `${builderName} — about the builder section, right illustration on My Property Fact`;
  
@@ -42,11 +76,7 @@ export default function BuilderPage({ builderDetail, projectsList }) {
           />
         </div>
         <div>
-          <div
-            dangerouslySetInnerHTML={{
-              __html: builderDetail?.builderDescription || "",
-            }}
-          />
+          <p style={{ whiteSpace: "pre-line" }}>{builderDescriptionText}</p>
         </div>
         <div>
           <img
