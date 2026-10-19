@@ -11,7 +11,7 @@ function toTime(value) {
 
 export async function GET() {
   try {
-    const [blogs, projects] = await Promise.all([fetchLatestBlogs(1), fetchAllProjects()]);
+    const [blogs, projects] = await Promise.all([fetchLatestBlogs(3), fetchAllProjects()]);
     const blog = Array.isArray(blogs) ? blogs[0] : null;
     const blogSlug = blog?.slugUrl || blog?.slugURL;
     const project = Array.isArray(projects)

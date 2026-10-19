@@ -1,8 +1,15 @@
-"use client";
+import Image from "next/image";
 import Link from "next/link";
 import { getBlogAuthorDisplayName } from "./blogAuthor";
-import { buildHomeCardImageProps, HOME_BLOG_CARD_SIZES } from "@/lib/optimizedImage";
+import { HOME_BLOG_CARD_SIZES } from "@/lib/optimizedImage";
 import './common.css';
+
+const truncateWords = (text, wordLimit) => {
+    const words = text.trim().split(/\s+/);
+    if (words.length <= wordLimit) return text;
+    return words.slice(0, wordLimit).join(" ") + " ...";
+};
+
 export default function BlogCard({ blog }) {
 
     const featuredImageAlt = blog.blogTitle
@@ -11,32 +18,27 @@ export default function BlogCard({ blog }) {
 
     const authorLabel = getBlogAuthorDisplayName(blog, "My Property Fact");
 
-    const truncateWords = (text, wordLimit) => {
-        const words = text.trim().split(/\s+/);
-        if (words.length <= wordLimit) return text;
-        return words.slice(0, wordLimit).join(" ") + " ...";
-    };
+    const imageSrc = blog.blogImage
+      ? `${process.env.NEXT_PUBLIC_IMAGE_URL}blog/${blog.blogImage}`
+      : "/static/no_image.png";
 
     return (
         <>
             <Link href={`/blog/${blog.slugUrl}`}
                 className="card border-0 rounded-4 overflow-hidden blog-card my-3 text-decoration-none"
                 title={blog?.blogTitle ? `Read ${blog.blogTitle}` : "Read blog post"}
-                onMouseEnter={(e) => e.currentTarget.style.transform = 'translateY(-5px)'}
-                onMouseLeave={(e) => e.currentTarget.style.transform = 'translateY(0)'}
             >
-                <img
-                    {...buildHomeCardImageProps({
-                      src: `${process.env.NEXT_PUBLIC_IMAGE_URL}blog/${blog.blogImage}`,
-                      width: 800,
-                      height: 450,
-                      alt: featuredImageAlt,
-                      sizes: HOME_BLOG_CARD_SIZES,
-                      quality: 65,
-                    })}
-                    className="img-fluid"
+                <Image
+                    src={imageSrc}
+                    alt={featuredImageAlt}
+                    title={featuredImageAlt}
                     width={800}
                     height={450}
+                    sizes={HOME_BLOG_CARD_SIZES}
+                    quality={65}
+                    loading="lazy"
+                    fetchPriority="low"
+                    className="img-fluid"
                 />
                 <div className="card-body d-flex flex-column plus-jakarta-semi-bold">
                     <p className="blog-date m-0 mb-1 text-muted small">

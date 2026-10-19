@@ -1,11 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { useDeferredStylesheet } from "@/lib/useDeferredStylesheet";
-import {
-  buildHomeCardImageProps,
-  HOME_CITY_PILL_SIZES,
-} from "@/lib/optimizedImage";
+import "./PopularCitiesSection.css";
 
 /* Row 1 marquee starts with Agra; row 2 uses the same list in reverse */
 const cities = [
@@ -19,31 +16,18 @@ const cities = [
   { name: "Mumbai", link: "/city/mumbai", image: "/dream-cities/pills/mumbai_pill.webp" },
 ];
 
-const CITY_PILL_W = 48;
-const CITY_PILL_H = 48;
+/** Matches `.pc__pill-icon` (2rem); fixed size lets next/image emit a 1x/2x srcset. */
+const CITY_PILL_PX = 32;
 
-function getRowCities(rowIndex) {
-  /** One row forward, one reverse; double the sequence so each strip is long enough to fill very wide viewports. */
-  const doubled = [...cities, ...cities];
-  if (rowIndex === 0) {
-    return doubled;
-  }
-  return [...doubled].reverse();
-}
+/** One row forward, one reverse; double the sequence so each strip is long enough to fill very wide viewports. */
+const DOUBLED_CITIES = [...cities, ...cities];
+const ROW_CITIES = [DOUBLED_CITIES, [...DOUBLED_CITIES].reverse()];
 
 function CityStrip({ list, idPrefix, ariaHidden = false }) {
   return (
     <div className="pc__group" aria-hidden={ariaHidden} role={ariaHidden ? "none" : undefined}>
       {list.map((city, cityIndex) => {
-        const pillAlt = `${city.name} — city image on My Property Fact`;
-        const iconProps = buildHomeCardImageProps({
-          src: city.image,
-          width: CITY_PILL_W,
-          height: CITY_PILL_H,
-          alt: pillAlt,
-          sizes: HOME_CITY_PILL_SIZES,
-          quality: 75,
-        });
+        const pillAlt = ariaHidden ? "" : `${city.name} — city image on My Property Fact`;
         return (
           <Link
             key={`${idPrefix}-${city.name}-${cityIndex}`}
@@ -54,13 +38,17 @@ function CityStrip({ list, idPrefix, ariaHidden = false }) {
             tabIndex={ariaHidden ? -1 : undefined}
           >
             <span className="pc__pill-icon" aria-hidden>
-              <img
-                {...iconProps}
+              <Image
+                src={city.image}
+                alt={pillAlt}
+                title={pillAlt || undefined}
+                width={CITY_PILL_PX}
+                height={CITY_PILL_PX}
+                quality={75}
+                loading="lazy"
+                fetchPriority="low"
+                decoding="async"
                 className="pc__pill-img"
-                width={22}
-                height={22}
-                loading={ariaHidden ? "lazy" : iconProps.loading}
-                fetchPriority={ariaHidden ? "low" : iconProps.fetchPriority}
               />
             </span>
             <span className="pc__pill-text">{city.name}</span>
@@ -72,7 +60,7 @@ function CityStrip({ list, idPrefix, ariaHidden = false }) {
 }
 
 function MarqueeRow({ rowIndex }) {
-  const list = getRowCities(rowIndex);
+  const list = ROW_CITIES[rowIndex % 2];
   const reverse = rowIndex % 2 === 1;
   const rowClass = [
     "pc__row",
@@ -94,8 +82,6 @@ function MarqueeRow({ rowIndex }) {
 }
 
 export default function PopularCitiesSection() {
-  useDeferredStylesheet(() => import("./PopularCitiesSection.css"));
-
   return (
     <section className="popular-cities-section" aria-labelledby="popular-cities-heading">
       <div className="pc__head-wrap">
