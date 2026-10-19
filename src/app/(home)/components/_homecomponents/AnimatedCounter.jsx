@@ -77,6 +77,7 @@ export default function AnimatedCounter({ targetValue, suffix = "+" }) {
       }
     );
 
+    
     const currentElement = counterRef.current;
     if (currentElement) {
       observer.observe(currentElement);

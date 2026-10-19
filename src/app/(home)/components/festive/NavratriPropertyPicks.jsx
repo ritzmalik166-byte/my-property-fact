@@ -100,7 +100,12 @@ export default function NavratriPropertyPicks({ projects = [] }) {
                   <div className="mpf-navratri-card__footer">
                     <div className="mpf-navratri-card__price">
                       <span className="mpf-navratri-card__price-label">Starting Price</span>
-                      <strong>{formatStartingPrice(project.projectPrice)}</strong>
+                      <strong>
+                        {formatStartingPrice(project.projectPrice)}
+                        {/^₹/.test(formatStartingPrice(project.projectPrice)) ? (
+                          <span className="mpf-navratri-card__price-asterisk">*</span>
+                        ) : null}
+                      </strong>
                     </div>
                     <Link
                       href={href}

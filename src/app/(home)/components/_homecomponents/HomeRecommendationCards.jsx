@@ -776,7 +776,10 @@ export default function HomeRecommendationCards({
             <div className="home-project-card__title-row">
               <h3 className="home-project-card__title">{card.title}</h3>
               <p className="home-project-card__price">
-                <strong>{card.price}</strong>
+                <strong>
+                  {card.price}
+                  {card.onwards ? "*" : null}
+                </strong>
                 {card.onwards ? <span>Onwards</span> : null}
               </p>
             </div>
