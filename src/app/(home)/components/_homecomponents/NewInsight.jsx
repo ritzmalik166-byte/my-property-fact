@@ -1,13 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Plus_Jakarta_Sans } from "next/font/google";
-import { useDeferredStylesheet } from "@/lib/useDeferredStylesheet";
-import {
-  buildHomeCardImageProps,
-  HOME_SECTION_BG_SIZES,
-} from "@/lib/optimizedImage";
+import { HOME_SECTION_BG_SIZES } from "@/lib/optimizedImage";
+import "./newinsight.css";
 
 const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
@@ -55,9 +53,9 @@ const INSIGHTS = [
   },
 ];
 
-export default function NewInsight() {
-  useDeferredStylesheet(() => import("./newinsight.css"));
+const BG_ALT = "Expert Insights and Resources Background";
 
+export default function NewInsight() {
   const [activeId, setActiveId] = useState("emi-calculator");
   const activeInsight =
     INSIGHTS.find((insight) => insight.id === activeId) ?? INSIGHTS[1];
@@ -69,15 +67,16 @@ export default function NewInsight() {
         aria-labelledby="expert-insights-heading"
       >
         <div className="expert-insights-bg" aria-hidden="true">
-          <img
-            {...buildHomeCardImageProps({
-              src: "/static/home-meta-data/bg-image-home.webp",
-              width: 1920,
-              height: 720,
-              alt: "Expert Insights and Resources Background",
-              sizes: HOME_SECTION_BG_SIZES,
-              quality: 70,
-            })}
+          <Image
+            src="/static/home-meta-data/bg-image-home.webp"
+            alt={BG_ALT}
+            title={BG_ALT}
+            width={1920}
+            height={720}
+            sizes={HOME_SECTION_BG_SIZES}
+            quality={70}
+            loading="lazy"
+            fetchPriority="low"
             className="expert-insights-bg-image"
           />
         </div>
@@ -103,7 +102,9 @@ export default function NewInsight() {
                   type="button"
                   role="tab"
                   aria-selected={isActive}
-                  aria-controls={`expert-insights-panel-${insight.id}`}
+                  aria-controls={
+                    isActive ? `expert-insights-panel-${insight.id}` : undefined
+                  }
                   id={`expert-insights-tab-${insight.id}`}
                   className={`expert-insights-tab${isActive ? " is-active" : ""}`}
                   title={insight.iconTitle}

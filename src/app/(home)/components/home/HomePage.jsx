@@ -27,6 +27,7 @@ import NavratriPropertyPicks, {
 import { ENABLE_NAVRATRI_THEME } from "@/config/themeFlags";
 import { slimProjectListForListing } from "@/lib/slimProjectListing";
 import { fetchFeaturedProperties } from "./featured-properties/featuredPropertiesData";
+import { DeferredSectionsPlaceholder } from "./deferredSectionPlaceholders";
 import {
   slimCityForNav,
   slimProjectTypeForNav,
@@ -47,21 +48,7 @@ const TopDevelopersMarquee = dynamic(
 
 const HomeDeferredSections = dynamic(() => import("./HomeDeferredSections"), {
   ssr: true,
-  loading: () => (
-    <>
-      <section className="py-4" style={{ minHeight: 180 }} aria-busy="true" />
-      <section className="py-4" style={{ minHeight: 320 }} aria-busy="true" />
-      <section className="py-4" style={{ minHeight: 320 }} aria-busy="true" />
-      <section className="py-4" style={{ minHeight: 200 }} aria-busy="true" />
-      <section className="py-4" style={{ minHeight: 360 }} aria-busy="true" />
-      <section className="py-4" style={{ minHeight: 400 }} aria-busy="true" />
-      <section className="py-4" style={{ minHeight: 280 }} aria-busy="true" />
-      <section className="py-4" style={{ minHeight: 280 }} aria-busy="true" />
-      <section className="py-4" style={{ minHeight: 160 }} aria-busy="true" />
-      <section className="py-4" style={{ minHeight: 320 }} aria-busy="true" />
-      <section className="py-4" style={{ minHeight: 200 }} aria-busy="true" />
-    </>
-  ),
+  loading: () => <DeferredSectionsPlaceholder />,
 });
 
 function slimBlogForHome(blog) {

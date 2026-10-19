@@ -1,11 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { useDeferredStylesheet } from "@/lib/useDeferredStylesheet";
-import {
-  buildHomeCardImageProps,
-  HOME_SECTION_BG_SIZES,
-} from "@/lib/optimizedImage";
+import { HOME_SECTION_BG_SIZES } from "@/lib/optimizedImage";
+import DreamCityIcon from "./DreamCityIcon";
+import "./DreamPropertySection.css";
 
 const CITY_ORDER = [
   "Bareilly",
@@ -63,21 +62,54 @@ const cities = CITY_ORDER.map((name, index) => {
   };
 });
 
-const DreamPropertySection = () => {
-  useDeferredStylesheet(() => import("./DreamPropertySection.css"));
+const BG_ALT =
+  "Decorative cityscape background for Find Your Dream Property section";
 
+/** The marquee renders the list twice; the second copy is visual-only. */
+function DreamCityItem({ city, isClone }) {
+  return (
+    <Link
+      href={city.link}
+      prefetch={false}
+      className="dream-city-item"
+      role="listitem"
+      title={`Explore ${city.name} real estate, projects and local trends on My Property Fact`}
+      aria-label={`Explore properties in ${city.name}`}
+      aria-hidden={isClone || undefined}
+      tabIndex={isClone ? -1 : undefined}
+      style={{
+        "--float-base": `${city.floatBase}px`,
+        "--float-delay": city.floatDelay,
+      }}
+    >
+      <div className="dream-city-icon-circle">
+        <DreamCityIcon
+          src={city.image}
+          fallbackSrc={city.imageFallback}
+          alt={city.name}
+        />
+      </div>
+      <span className="dream-city-label plus-jakarta-sans-semi-bold">
+        {city.name}
+      </span>
+    </Link>
+  );
+}
+
+const DreamPropertySection = () => {
   return (
     <section className="dream-property-section mb-4 mb-lg-5">
       <div className="dream-property-section-bg" aria-hidden="true">
-        <img
-          {...buildHomeCardImageProps({
-            src: "/dream-cities/dream-section-bg.webp",
-            width: 1920,
-            height: 600,
-            alt: "Decorative cityscape background for Find Your Dream Property section",
-            sizes: HOME_SECTION_BG_SIZES,
-            quality: 70,
-          })}
+        <Image
+          src="/dream-cities/dream-section-bg.webp"
+          alt={BG_ALT}
+          title={BG_ALT}
+          width={1920}
+          height={600}
+          sizes={HOME_SECTION_BG_SIZES}
+          quality={70}
+          loading="lazy"
+          fetchPriority="low"
           className="dream-property-bg-image"
         />
       </div>
@@ -89,45 +121,11 @@ const DreamPropertySection = () => {
 
         <div className="dream-city-wave" role="list">
           <div className="dream-city-track" aria-hidden="false">
-            {[...cities, ...cities].map((city, index) => (
-              <Link
-                key={`${city.name}-${index}`}
-                href={city.link}
-                prefetch={false}
-                className="dream-city-item"
-                role="listitem"
-                title={`Explore ${city.name} real estate, projects and local trends on My Property Fact`}
-                aria-label={`Explore properties in ${city.name}`}
-                style={{
-                  "--float-base": `${city.floatBase}px`,
-                  "--float-delay": city.floatDelay,
-                }}
-              >
-                <div className="dream-city-icon-circle">
-                  <img
-                    {...buildHomeCardImageProps({
-                      src: city.image,
-                      width: 72,
-                      height: 72,
-                      alt: city.name,
-                      sizes: "72px",
-                      quality: 75,
-                    })}
-                    data-fallback={city.imageFallback}
-                    width={72}
-                    height={72}
-                    onError={(e) => {
-                      const fallback = e.currentTarget.dataset.fallback;
-                      if (!fallback) return;
-                      e.currentTarget.src = fallback;
-                      delete e.currentTarget.dataset.fallback;
-                    }}
-                  />
-                </div>
-                <span className="dream-city-label plus-jakarta-sans-semi-bold">
-                  {city.name}
-                </span>
-              </Link>
+            {cities.map((city) => (
+              <DreamCityItem key={city.name} city={city} />
+            ))}
+            {cities.map((city) => (
+              <DreamCityItem key={`${city.name}-clone`} city={city} isClone />
             ))}
           </div>
         </div>

@@ -1,54 +1,18 @@
 "use client";
 import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import "./featured.css";
 import Link from "next/link";
 import PropertyContainer from "../../common/PropertyContainer";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useDeferredStylesheet } from "@/lib/useDeferredStylesheet";
+import {
+  FeaturedArrowButton,
+  SLICK_NEXT_ARROW,
+  SLICK_PREV_ARROW,
+} from "./FeaturedArrows";
 
-function NextArrow(props) {
-  const { className, style, onClick } = props;
-  return (
-    <button
-      type="button"
-      className={`${className} custom-featured-arrow custom-featured-arrow-next`}
-      style={style}
-      onClick={onClick}
-      aria-label="Next slide"
-    >
-      <img
-        src="/icon/arrow-right-s-line.svg"
-        alt="Next slide"
-        title="Next slide"
-        width={32}
-        height={32}
-        aria-hidden
-      />
-    </button>
-  );
-}
-
-function PrevArrow(props) {
-  const { className, style, onClick } = props;
-  return (
-    <button
-      type="button"
-      className={`${className} custom-featured-arrow custom-featured-arrow-prev`}
-      style={style}
-      onClick={onClick}
-      aria-label="Previous slide"
-    >
-      <img
-        src="/icon/arrow-left-s-line.svg"
-        alt="Previous slide"
-        title="Previous slide"
-        width={32}
-        height={32}
-        aria-hidden
-      />
-    </button>
-  );
-}
+const SWIPE_RAIL_QUERY = "(max-width: 768px)";
 
 export default function Featured({
   url = "",
@@ -60,13 +24,6 @@ export default function Featured({
   residentialProjects,
   commercialProjects,
 }) {
-  useDeferredStylesheet(() =>
-    Promise.all([
-      import("slick-carousel/slick/slick.css"),
-      import("slick-carousel/slick/slick-theme.css"),
-    ]),
-  );
-
   const [projectType, setProjectType] = useState("Residential");
   const [isLoading, setIsLoading] = useState(false);
   const swipeViewportRef = useRef(null);
@@ -78,7 +35,13 @@ export default function Featured({
       : type === "Featured"
         ? "overlap"
         : "default";
-  const [useSwipeRail, setUseSwipeRail] = useState(isPremierTypeTabs);
+  // Read the media query on first client render so desktop mounts Slick directly instead of
+  // mounting the swipe rail and swapping. The premier-tabs rail is only rendered client-side.
+  const [useSwipeRail, setUseSwipeRail] = useState(
+    () =>
+      isPremierTypeTabs &&
+      (typeof window === "undefined" || window.matchMedia(SWIPE_RAIL_QUERY).matches),
+  );
 
   // When residentialProjects + commercialProjects are passed, use them per tab (no filter). Else filter allProjects by type.
   const filteredProjects = useMemo(() => {
@@ -97,7 +60,7 @@ export default function Featured({
   // Native swipe rail on phones — Slick drag fights page scroll and parent overflow-x: clip.
   useEffect(() => {
     if (!isPremierTypeTabs || typeof window === "undefined") return undefined;
-    const mq = window.matchMedia("(max-width: 768px)");
+    const mq = window.matchMedia(SWIPE_RAIL_QUERY);
     const sync = () => setUseSwipeRail(mq.matches);
     sync();
     mq.addEventListener("change", sync);
@@ -137,91 +100,95 @@ export default function Featured({
 
   // Show arrows for Featured, Similar, and Residential/Commercial (autoPlay true)
   const showArrows = autoPlay || type === "Featured" || type === "Similar";
-  const premierRailSettings = {
-    slidesToShow: 4,
-    infinite: filteredProjects.length > 4,
-    responsive: [
-      {
-        // Small laptop: 3 cards fill the rail (1024–1120)
-        breakpoint: 1199,
-        settings: {
-          slidesToShow: 3,
-          infinite: filteredProjects.length > 3,
-          swipe: true,
-          touchMove: true,
-          swipeToSlide: true,
+  const projectCount = filteredProjects.length;
+
+  const settings = useMemo(() => {
+    const premierRailSettings = {
+      slidesToShow: 4,
+      infinite: projectCount > 4,
+      responsive: [
+        {
+          // Small laptop: 3 cards fill the rail (1024–1120)
+          breakpoint: 1199,
+          settings: {
+            slidesToShow: 3,
+            infinite: projectCount > 3,
+            swipe: true,
+            touchMove: true,
+            swipeToSlide: true,
+          },
         },
-      },
-      {
-        // Tablet: 2 wider cards (768–1023)
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 2,
-          infinite: filteredProjects.length > 2,
-          swipe: true,
-          touchMove: true,
-          swipeToSlide: true,
+        {
+          // Tablet: 2 wider cards (768–1023)
+          breakpoint: 1024,
+          settings: {
+            slidesToShow: 2,
+            infinite: projectCount > 2,
+            swipe: true,
+            touchMove: true,
+            swipeToSlide: true,
+          },
         },
-      },
-      {
-        breakpoint: 481,
-        settings: {
-          slidesToShow: 1.15,
-          infinite: filteredProjects.length > 1,
-          swipe: true,
-          touchMove: true,
-          swipeToSlide: true,
-          arrows: true,
-          autoplay: false,
+        {
+          breakpoint: 481,
+          settings: {
+            slidesToShow: 1.15,
+            infinite: projectCount > 1,
+            swipe: true,
+            touchMove: true,
+            swipeToSlide: true,
+            arrows: true,
+            autoplay: false,
+          },
         },
-      },
-    ],
-  };
-  const showcaseSettings = {
-    slidesToShow: 6,
-    infinite: filteredProjects.length > 6,
-    responsive: [
-      { breakpoint: 1400, settings: { slidesToShow: 5 } },
-      { breakpoint: 1200, settings: { slidesToShow: 4 } },
-      {
-        breakpoint: 1025,
-        settings: {
-          slidesToShow: 2,
-          swipe: true,
-          touchMove: true,
-          swipeToSlide: true,
+      ],
+    };
+    const showcaseSettings = {
+      slidesToShow: 6,
+      infinite: projectCount > 6,
+      responsive: [
+        { breakpoint: 1400, settings: { slidesToShow: 5 } },
+        { breakpoint: 1200, settings: { slidesToShow: 4 } },
+        {
+          breakpoint: 1025,
+          settings: {
+            slidesToShow: 2,
+            swipe: true,
+            touchMove: true,
+            swipeToSlide: true,
+          },
         },
-      },
-      {
-        breakpoint: 576,
-        settings: {
-          slidesToShow: 1,
-          swipe: true,
-          touchMove: true,
-          swipeToSlide: true,
+        {
+          breakpoint: 576,
+          settings: {
+            slidesToShow: 1,
+            swipe: true,
+            touchMove: true,
+            swipeToSlide: true,
+          },
         },
-      },
-    ],
-  };
-  const layoutSettings = isHomeFeaturedShowcase ? showcaseSettings : premierRailSettings;
-  const settings = {
-    dots: false,
-    speed: 400,
-    autoplay: autoPlay && !useSwipeRail,
-    autoplaySpeed: 5000,
-    pauseOnHover: true,
-    pauseOnFocus: true,
-    arrows: showArrows,
-    nextArrow: showArrows && filteredProjects.length > 1 ? <NextArrow /> : null,
-    prevArrow: showArrows && filteredProjects.length > 1 ? <PrevArrow /> : null,
-    slidesToScroll: 1,
-    swipe: true,
-    touchMove: true,
-    swipeToSlide: true,
-    draggable: true,
-    waitForAnimate: false,
-    ...layoutSettings,
-  };
+      ],
+    };
+    const showSlickArrows = showArrows && projectCount > 1;
+    return {
+      dots: false,
+      speed: 400,
+      autoplay: autoPlay && !useSwipeRail,
+      autoplaySpeed: 5000,
+      pauseOnHover: true,
+      pauseOnFocus: true,
+      arrows: showArrows,
+      nextArrow: showSlickArrows ? SLICK_NEXT_ARROW : null,
+      prevArrow: showSlickArrows ? SLICK_PREV_ARROW : null,
+      slidesToScroll: 1,
+      swipe: true,
+      touchMove: true,
+      swipeToSlide: true,
+      draggable: true,
+      waitForAnimate: false,
+      ...(isHomeFeaturedShowcase ? showcaseSettings : premierRailSettings),
+    };
+  }, [autoPlay, isHomeFeaturedShowcase, projectCount, showArrows, useSwipeRail]);
 
   // Memoized section title
   const sectionTitle = useMemo(() => {
@@ -235,7 +202,7 @@ export default function Featured({
     } else {
       return title;
     }
-  }, [projectType, autoPlay, title]);
+  }, [projectType, autoPlay, title, type]);
 
   // Fast tab switching handler with loading state
   const handleProjectType = (nextType) => {
@@ -278,7 +245,7 @@ export default function Featured({
             {isPremierTypeTabs ? (
               <div className="home-featured-section-kicker">
                 <span className="home-featured-section-kicker__label">
-                  Explore Top Projects
+                  Explore Top Projects1
                 </span>
                 <Link
                   title="View all projects"
@@ -299,36 +266,8 @@ export default function Featured({
               </h2>
               {isPremierTypeTabs && useSwipeRail && filteredProjects.length > 1 ? (
                 <div className="featured-swipe-rail__nav" aria-label="Project slides">
-                  <button
-                    type="button"
-                    className="custom-featured-arrow custom-featured-arrow-prev"
-                    onClick={() => scrollSwipeRail(-1)}
-                    aria-label="Previous slide"
-                  >
-                    <img
-                      src="/icon/arrow-left-s-line.svg"
-                      alt="Previous slide"
-                      title="Previous slide"
-                      width={32}
-                      height={32}
-                      aria-hidden
-                    />
-                  </button>
-                  <button
-                    type="button"
-                    className="custom-featured-arrow custom-featured-arrow-next"
-                    onClick={() => scrollSwipeRail(1)}
-                    aria-label="Next slide"
-                  >
-                    <img
-                      src="/icon/arrow-right-s-line.svg"
-                      alt="Next slide"
-                      title="Next slide"
-                      width={32}
-                      height={32}
-                      aria-hidden
-                    />
-                  </button>
+                  <FeaturedArrowButton direction="prev" onClick={() => scrollSwipeRail(-1)} />
+                  <FeaturedArrowButton direction="next" onClick={() => scrollSwipeRail(1)} />
                 </div>
               ) : null}
             </div>

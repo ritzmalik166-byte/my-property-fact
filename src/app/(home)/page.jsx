@@ -3,7 +3,7 @@ import HeroLcpPreloads from "./components/_homecomponents/HeroLcpPreloads";
 import "./components/home/home-new.css";
 import JsonLdScript from "@/app/_global_components/jsonLd/JsonLdScript";
 import { buildFaqJsonLd } from "@/app/_global_components/jsonLd/buildJsonLd";
-import { HOME_FAQ_ITEMS } from "./components/home/noida-projects/homeFaqItems";
+import { HOME_FAQ_ITEMS } from "./components/home/faq/homeFaqItems";
 
 /** ISR: keep homepage HTML cacheable for CDN / faster TTFB (matches project data revalidate). */
 export const revalidate = 60;

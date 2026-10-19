@@ -2,27 +2,34 @@
 
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
+import {
+  DeferredSectionsPlaceholder,
+  PLACEHOLDER_HEIGHT,
+  SectionPlaceholder,
+} from "./deferredSectionPlaceholders";
 
 const sectionPlaceholder = (minHeight) => (
-  <section className="py-4" style={{ minHeight }} aria-busy="true" />
+  <SectionPlaceholder minHeight={minHeight} />
 );
+
+const EMPTY_PROJECTS = [];
 
 const TopPicksWithRotation = dynamic(() => import("../TopPicksWithRotation"), {
   ssr: false,
-  loading: () => sectionPlaceholder(180),
+  loading: () => sectionPlaceholder(PLACEHOLDER_HEIGHT.topPicks),
 });
 const NewInsight = dynamic(() => import("../_homecomponents/NewInsight"), {
   ssr: false,
-  loading: () => sectionPlaceholder(520),
+  loading: () => sectionPlaceholder(PLACEHOLDER_HEIGHT.insight),
 });
 const DreamPropertySection = dynamic(
   () => import("./dream-project/DreamPropertySection"),
-  { ssr: false, loading: () => sectionPlaceholder(200) },
+  { ssr: false, loading: () => sectionPlaceholder(PLACEHOLDER_HEIGHT.dream) },
 );
 /** Client Featured UI — do not dynamic-import async RSC FeaturedPage (causes remount/fetch loops). */
 const Featured = dynamic(() => import("./featured/featured"), {
   ssr: false,
-  loading: () => sectionPlaceholder(360),
+  loading: () => sectionPlaceholder(PLACEHOLDER_HEIGHT.featured),
 });
 // const FeaturedPropertiesSection = dynamic(
 //   () => import("./featured-properties/FeaturedPropertiesSection"),
@@ -30,31 +37,43 @@ const Featured = dynamic(() => import("./featured/featured"), {
 // );
 const SocialFeedsOfMPF = dynamic(
   () => import("../_homecomponents/SocialFeedsOfMPF"),
-  { ssr: false, loading: () => sectionPlaceholder(320) },
+  {
+    ssr: false,
+    loading: () => sectionPlaceholder(PLACEHOLDER_HEIGHT.socialFeeds),
+  },
 );
 const PopularCitiesSection = dynamic(
   () => import("./popular-cities/PopularCitiesSection"),
-  { ssr: false, loading: () => sectionPlaceholder(200) },
+  {
+    ssr: false,
+    loading: () => sectionPlaceholder(PLACEHOLDER_HEIGHT.popularCities),
+  },
 );
 const NoidaProjectsSection = dynamic(
   () => import("./noida-projects/NoidaProjectsSection"),
-  { ssr: false, loading: () => sectionPlaceholder(400) },
+  { ssr: false, loading: () => sectionPlaceholder(PLACEHOLDER_HEIGHT.noida) },
 );
 const VaastuStripSection = dynamic(
   () => import("./vaastu-strip/VaastuStripSection"),
-  { ssr: false, loading: () => sectionPlaceholder(160) },
+  { ssr: false, loading: () => sectionPlaceholder(PLACEHOLDER_HEIGHT.vaastu) },
 );
 const TestimonialSection = dynamic(
   () => import("./testimonials/TestimonialSection"),
-  { ssr: false, loading: () => sectionPlaceholder(280) },
+  {
+    ssr: false,
+    loading: () => sectionPlaceholder(PLACEHOLDER_HEIGHT.testimonials),
+  },
 );
 const RecommendedProjectsWithGeolocation = dynamic(
   () => import("../_homecomponents/RecommendedProjectsWithGeolocation"),
-  { ssr: false, loading: () => sectionPlaceholder(320) },
+  {
+    ssr: false,
+    loading: () => sectionPlaceholder(PLACEHOLDER_HEIGHT.popularProjects),
+  },
 );
 const SocialFeed = dynamic(() => import("./social-feed/socialfeed"), {
   ssr: false,
-  loading: () => sectionPlaceholder(240),
+  loading: () => sectionPlaceholder(PLACEHOLDER_HEIGHT.blogs),
 });
 
 /**
@@ -92,22 +111,10 @@ export default function HomeDeferredSections({
     return () => window.clearTimeout(timeoutId);
   }, []);
 
+  const hasBlogs = homeBlogs?.length > 0;
+
   if (!ready) {
-    return (
-      <>
-        {sectionPlaceholder(180)}
-        {sectionPlaceholder(320)}
-        {sectionPlaceholder(320)}
-        {sectionPlaceholder(200)}
-        {sectionPlaceholder(360)}
-        {sectionPlaceholder(400)}
-        {sectionPlaceholder(280)}
-        {sectionPlaceholder(280)}
-        {sectionPlaceholder(160)}
-        {sectionPlaceholder(320)}
-        {sectionPlaceholder(200)}
-      </>
-    );
+    return <DeferredSectionsPlaceholder hasBlogs={hasBlogs} />;
   }
 
   const row = (i, node) => <div key={i}>{node}</div>;
@@ -142,7 +149,7 @@ export default function HomeDeferredSections({
           <Featured
             title="Explore Our Premier Residential Projects"
             autoPlay={true}
-            allProjects={[]}
+            allProjects={EMPTY_PROJECTS}
             badgeVariant="home-featured"
             residentialProjects={slimResidential}
             commercialProjects={slimCommercial}
@@ -151,7 +158,7 @@ export default function HomeDeferredSections({
         {row(9, <NoidaProjectsSection cities={cityList} />)}
         {row(
           10,
-          homeBlogs?.length ? <SocialFeed data={homeBlogs} /> : null,
+          hasBlogs ? <SocialFeed data={homeBlogs} /> : null,
         )}
         {row(11, <TestimonialSection testimonials={testimonials} />)}
         {row(12, <VaastuStripSection />)}

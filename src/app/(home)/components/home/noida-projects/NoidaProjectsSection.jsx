@@ -6,8 +6,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import { useSiteData } from "@/app/_global_components/contexts/SiteDataContext";
 import { buildProjectImageUrl } from "@/lib/projectImageUrl";
-import { HOME_FAQ_ITEMS } from "./homeFaqItems";
 import { useDeferredStylesheet } from "@/lib/useDeferredStylesheet";
+import HomeFAQ from "../faq/HomeFAQ";
 import {
   buildHomeCardImageProps,
   HOME_CITY_HERO_SIZES,
@@ -95,8 +95,6 @@ const CITY_CARDS = [
   },
 ];
 
-const FAQ_ITEMS = HOME_FAQ_ITEMS;
-
 export default function NoidaProjectsSection() {
   useDeferredStylesheet(() =>
     Promise.all([
@@ -106,7 +104,6 @@ export default function NoidaProjectsSection() {
   );
 
   const [cityCards, setCityCards] = useState(CITY_CARDS);
-  const [openFaqId, setOpenFaqId] = useState(FAQ_ITEMS[0]?.id || null);
   const { cityList, projectList } = useSiteData();
   useEffect(() => {
       try {
@@ -299,10 +296,6 @@ export default function NoidaProjectsSection() {
     [cityCards],
   );
 
-  const toggleFaq = (faqId) => {
-    setOpenFaqId((prev) => (prev === faqId ? null : faqId));
-  };
-
   // Hidden for now — flip to true to restore Popular Real Estate Destinations
   const showDestinations = false;
 
@@ -353,75 +346,7 @@ export default function NoidaProjectsSection() {
         </div>
       )}
 
-      <div className="destination-faq" id="home-faq">
-        <div className="destination-faq__inner">
-          <div className="destination-faq__left">
-            <span className="destination-faq__tag">Trusted By</span>
-            <h2 className="destination-faq__title">Frequently Asked Questions</h2>
-          </div>
-
-          <div className="destination-faq__right">
-            <div
-              className="destination-faq__scroll-area"
-              role="region"
-              aria-label="FAQ answers list"
-            >
-            {FAQ_ITEMS.map((item) => {
-              const isOpen = openFaqId === item.id;
-              return (
-                <div
-                  key={item.id}
-                  className={`destination-faq__item ${isOpen ? "is-open" : ""}`}
-                >
-                  <h3 className="destination-faq__question">
-                    <button
-                      type="button"
-                      className="destination-faq__question-btn"
-                      onClick={() => toggleFaq(item.id)}
-                      aria-expanded={isOpen}
-                      aria-controls={`faq-panel-${item.id}`}
-                      id={`faq-trigger-${item.id}`}
-                    >
-                      <span className="destination-faq__question-text">
-                        {item.question}
-                      </span>
-                    </button>
-                  </h3>
-                  <div
-                    id={`faq-panel-${item.id}`}
-                    role="region"
-                    aria-labelledby={`faq-trigger-${item.id}`}
-                    className={`destination-faq__answer-wrap ${isOpen ? "is-open" : ""}`}
-                  >
-                    <div className="destination-faq__answer-inner">
-                      <div className="destination-faq__answer">
-                        <p>{item.answer}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-            </div>
-          </div>
-
-          <div className="destination-faq__contact">
-            <p className="destination-faq__contact-title">Still have questions ?</p>
-            <p className="destination-faq__contact-text">
-              We&apos;re here to answer all your questions. Reach out today!
-            </p>
-            <Link
-              href="/contact-us"
-              className="destination-faq__mail-btn"
-              aria-label="Open contact us page"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Send Mail
-            </Link>
-          </div>
-        </div>
-      </div>
+      <HomeFAQ />
     </section>
   );
 }

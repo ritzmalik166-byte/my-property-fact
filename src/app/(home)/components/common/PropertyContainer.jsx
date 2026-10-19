@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLocationDot
 } from "@fortawesome/free-solid-svg-icons";
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import ProjectStatusRibbon from "./ProjectStatusRibbon";
@@ -15,9 +16,10 @@ import {
   DEFAULT_PROJECT_CARD_IMAGE,
 } from "@/lib/projectImageUrl";
 import {
-  buildHomeCardImageProps,
+  HOME_CARD_IMAGE_QUALITY,
   HOME_FEATURED_OVERLAP_SIZES,
   HOME_POSTER_CARD_SIZES,
+  HOME_TILE_CARD_SIZES,
 } from "@/lib/optimizedImage";
 import { buildProjectDisplayName } from "@/lib/projectDisplayName";
 import {
@@ -105,6 +107,25 @@ function getLocationChip(data) {
   return resolveProjectCardLocationLabel(data);
 }
 
+function ProjectCardImage({ src, alt, width, height, sizes, priority, className, onError, draggable }) {
+  return (
+    <Image
+      src={src}
+      alt={alt}
+      title={alt}
+      width={width}
+      height={height}
+      sizes={sizes}
+      quality={HOME_CARD_IMAGE_QUALITY}
+      loading={priority ? "eager" : "lazy"}
+      fetchPriority={priority ? "high" : "low"}
+      className={className}
+      draggable={draggable}
+      onError={onError}
+    />
+  );
+}
+
 export default function PropertyContainer({
   data,
   badgeVariant = "default",
@@ -177,40 +198,7 @@ export default function PropertyContainer({
       ? `${data.projectName} — ${data.propertyTypeName || "real estate project"} thumbnail${locationSummary ? `, ${locationSummary}` : ""}`
       : "Real estate project thumbnail — My Property Fact";
 
-  const tileImageProps = buildHomeCardImageProps({
-    src: imageSrc,
-    width: 400,
-    height: 168,
-    alt: projectCardImageAlt,
-    priority: imagePriority,
-  });
-
-  const overlapImageProps = buildHomeCardImageProps({
-    src: imageSrc,
-    width: 510,
-    height: 300,
-    alt: projectCardImageAlt,
-    sizes: HOME_FEATURED_OVERLAP_SIZES,
-    priority: imagePriority,
-  });
-
-  const posterImageProps = buildHomeCardImageProps({
-    src: imageSrc,
-    width: 400,
-    height: 360,
-    alt: projectCardImageAlt,
-    sizes: HOME_POSTER_CARD_SIZES,
-    priority: imagePriority,
-  });
-
-  const defaultCardImageProps = buildHomeCardImageProps({
-    src: imageSrc,
-    width: 400,
-    height: 230,
-    alt: projectCardImageAlt,
-    sizes: HOME_POSTER_CARD_SIZES,
-    priority: imagePriority,
-  });
+  const handleImageError = () => setImageError(true);
 
   const getFeaturedPillBadgeModifier = (status) => {
     const normalized = status?.trim().toLowerCase();
@@ -294,12 +282,15 @@ export default function PropertyContainer({
           title={projectLinkTitle}
         />
         <div className="home-project-card__media">
-          <img
-            {...tileImageProps}
-            className="home-project-card__image"
+          <ProjectCardImage
+            src={imageSrc}
+            alt={projectCardImageAlt}
             width={400}
             height={168}
-            onError={() => setImageError(true)}
+            sizes={HOME_TILE_CARD_SIZES}
+            priority={imagePriority}
+            className="home-project-card__image"
+            onError={handleImageError}
           />
           {badge ? (
             <span className={`home-project-card__chip home-project-card__chip--${getBadgeTone(badge)}`}>
@@ -393,12 +384,15 @@ export default function PropertyContainer({
         title={projectLinkTitle}
       >
         <div className="home-featured-image-card">
-          <img
-            {...overlapImageProps}
-            className="home-featured-image"
+          <ProjectCardImage
+            src={imageSrc}
+            alt={projectCardImageAlt}
             width={510}
             height={300}
-            onError={() => setImageError(true)}
+            sizes={HOME_FEATURED_OVERLAP_SIZES}
+            priority={imagePriority}
+            className="home-featured-image"
+            onError={handleImageError}
           />
 
           {renderStatusBadge()}
@@ -448,13 +442,16 @@ export default function PropertyContainer({
       >
         <div className="home-project-card__media">
           <div className="home-project-card__image-wrap">
-            <img
-              {...posterImageProps}
-              className="home-project-card__image"
+            <ProjectCardImage
+              src={imageSrc}
+              alt={projectCardImageAlt}
               width={400}
               height={360}
+              sizes={HOME_POSTER_CARD_SIZES}
+              priority={imagePriority}
+              className="home-project-card__image"
               draggable={false}
-              onError={() => setImageError(true)}
+              onError={handleImageError}
             />
           </div>
           <LuxuryPricePlaque price={data.projectPrice} />
@@ -509,12 +506,15 @@ export default function PropertyContainer({
         title={projectLinkTitle}
       >
         <div className="w-100 project-image-container">
-          <img
-            {...defaultCardImageProps}
-            className="img-fluid w-100 rounded-top-4 object-fit-cover"
+          <ProjectCardImage
+            src={imageSrc}
+            alt={projectCardImageAlt}
             width={400}
             height={230}
-            onError={() => setImageError(true)}
+            sizes={HOME_POSTER_CARD_SIZES}
+            priority={imagePriority}
+            className="img-fluid w-100 rounded-top-4 object-fit-cover"
+            onError={handleImageError}
           />
         </div>
         {renderStatusBadge()}
