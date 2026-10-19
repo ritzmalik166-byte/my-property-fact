@@ -37,6 +37,10 @@ function generateSlug(prefix) {
   return `/${prefix.replace(/ /g, "-").toLowerCase().trim()}`;
 }
 
+function formatCityName(name) {
+  return (name || "").trim().replace(/(^|\s)(\S)/g, (_, space, ch) => space + ch.toUpperCase());
+}
+
 function sortCitiesDelhiNCRFirst(cities) {
   if (!Array.isArray(cities) || cities.length === 0) return cities;
   const ncrSet = new Set(DELHI_NCR_CITY_NAMES.map((n) => n.toLowerCase().trim()));
@@ -69,12 +73,12 @@ function renderCityList(cities, category, prefix, generateSlugFn) {
                 href={`${generateSlugFn(prefix)}${city.slugURL}`}
                 prefetch={false}
                 className="footer-new-link"
-                title={`${prefix}${city.cityName}`}
+                title={`${prefix}${formatCityName(city.cityName)}`}
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 {prefix}
-                {city.cityName}
+                {formatCityName(city.cityName)}
               </Link>
             </li>
           ))}

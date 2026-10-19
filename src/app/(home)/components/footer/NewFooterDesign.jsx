@@ -307,7 +307,7 @@ export default function NewFooterDesign({
                         Address
                       </div>
                       <p className="footer-contact-detail footer-contact-address">
-                        6th Floor Tower A1, Corporate Park Noida-142, India
+                        6th Floor, Tower A1, Corporate Park, Sector 142, Noida, Uttar Pradesh, India
                       </p>
                     </div>
                     <div className="footer-contact-item">

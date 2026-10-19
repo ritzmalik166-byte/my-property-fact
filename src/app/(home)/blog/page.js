@@ -11,9 +11,9 @@ import { BLOG_LISTING_FAQ_ITEMS } from "./blogFaqItems";
 
 export const metadata = {
   title:
-    "Real Estate Blogs | Market Trends & Property Insights – MyPropertyFact",
+    "Real Estate Blogs & Property Tips | My Property Fact",
   description:
-    "Explore expert articles on real estate trends, property investment tips, and market insights across India. Stay informed with MyPropertyFact's latest blogs.",
+    "Explore real estate blogs, property investment tips, market trends and home-buying guides for India and Delhi NCR on My Property Fact. Make informed decisions.",
   alternates: {
     canonical: "/blog",
   },
