@@ -131,7 +131,7 @@ export default function HeroSection({
         <HeroBannerPicture />
         <div className="home-banner-overlay" aria-hidden="true" />
         <h1 id="mpf-page-heading" className="visually-hidden">
-          {title}. {subtitle}
+        Verified properties across Noida, Greater Noida, Delhi NCR & major Indian cities
         </h1>
       </div>
 
