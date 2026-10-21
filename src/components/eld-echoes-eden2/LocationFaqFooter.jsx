@@ -8,7 +8,7 @@ const faqs = [
   ['Where is Eldeco Echoes of Eden located?', 'Eldeco Echoes of Eden is in Sector 22D on the Yamuna Expressway in Greater Noida. The expressway is about 2 minutes away, Galgotias University about 10 minutes, and Noida International Airport at Jewar about 15 minutes by road, based on typical travel times.'],
   ['What sizes and configurations are available?', 'The project offers 3 BHK homes in two sizes, 1550 sq ft and 1850 sq ft. You can request the floor plan for either size through the enquiry form on this page.'],
   ['What is the price of Eldeco Echoes of Eden?', 'The 1550 sq ft 3 BHK starts at ₹1.99 Cr*. The price of the 1850 sq ft home is shared on request. Request the price sheet for current rates, payment schedule and applicable charges.'],
-  ['What is the 10:24 payment plan?', 'Under the current offer, buyers pay 10% of the price at booking and make no further payment for 24 months**. Ask for the plan details before you book.'],
+  ['What is the 30:70 payment plan?', 'Under the current offer, buyers pay 30% of the price at booking and the remaining 70% near possession**. Ask for the plan details before you book.'],
   ['Is Eldeco Echoes of Eden RERA registered?', 'Yes. The project is registered with the Uttar Pradesh Real Estate Regulatory Authority under UPRERAPRJ125342/02/2026.'],
   ['Is Eldeco Echoes of Eden a good investment?', 'The project is on the Yamuna Expressway corridor, close to Noida International Airport and several universities. Compare price, timeline and your own goals before you invest.'],
   ['Which amenities does the project offer?', 'The project plans more than 50 amenities, including a 3-acre central green, palm tree avenue, amphitheatre, multipurpose hall, open gym, kids’ swing area, convenience retail, CCTV security and power backup.'],
@@ -156,7 +156,7 @@ export function DeveloperFooter({ openModal }) {
               <strong className={s.footerStrong}>Disclaimer:</strong> The content on this website is for information purposes only and does not constitute an offer to avail any service. Images are artist’s impressions.
             </p>
             <p>
-              *Starting price is for the 1550 sq ft home and excludes <span className={s.confirm}>taxes and charges</span>. **Pay 10% now, nothing till 24 months: <span className={s.confirm}>offer terms</span>.
+              *Starting price is for the 1550 sq ft home and excludes <span className={s.confirm}>taxes and charges</span>. **Pay 30% now, 70% near possession: <span className={s.confirm}>offer terms</span>.
             </p>
             <div className={s.copyright}>
               <span>© 2026 My Property Fact</span>

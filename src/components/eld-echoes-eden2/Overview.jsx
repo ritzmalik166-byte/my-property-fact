@@ -50,7 +50,7 @@ export function Overview({ openModal }) {
           <div className={s.copy}>
             <h2 className={s.heading}>A green, low-density address in Sector 22D</h2>
             <p>Eldeco Echoes of Eden, located in Sector 22D, Yamuna Expressway, Greater Noida, offers premium 3 BHK VRV air-conditioned homes designed for modern and comfortable living. Starting at ₹1.99 Cr*, these luxury residences combine elegant design, green surroundings and strategic connectivity to the Yamuna Expressway.</p>
-            <p>With the attractive Pay 10% Now and Nothing for 24 Months scheme, homebuyers can explore a flexible payment option. Eldeco Echoes of Eden is an ideal choice for those looking for luxury 3 BHK flats in Greater Noida, premium apartments on Yamuna Expressway, residential property in Sector 22D, and a well-connected home in Greater Noida.</p>
+            <p>With the attractive Pay 30% now, 70% near possession scheme, homebuyers can explore a flexible payment option. Eldeco Echoes of Eden is an ideal choice for those looking for luxury 3 BHK flats in Greater Noida, premium apartments on Yamuna Expressway, residential property in Sector 22D, and a well-connected home in Greater Noida.</p>
             <div className={s.actions}>
               <button className={`${s.gold} ${s.sectionBtn}`} onClick={() => openModal('visit')}>Book a free site visit</button>
               <button className={`${s.outline} ${s.sectionBtn}`} onClick={() => openModal('brochure')}>Download brochure</button>
