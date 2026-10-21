@@ -359,3 +359,16 @@ body:has(.mpf-home-r26) .mpf-account-trigger {
     left: auto;
   }
 }
+
+@media (max-width: 767px) {
+  .mpf-account-menu .mpf-account-panel {
+    position: fixed;
+    top: auto;
+    left: 0;
+    right: 0;
+    width: min(360px, calc(100vw - 24px));
+    margin: 10px auto 0;
+    max-height: calc(100dvh - 90px);
+    overflow-y: auto;
+  }
+}
