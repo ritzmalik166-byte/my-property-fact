@@ -190,8 +190,8 @@ export function Hero({ openModal, unlockPlan }) {
           <h1 className={s.heroTitle}>Eldeco Echoes of Eden: premium 3 BHK homes on the Yamuna Expressway</h1>
           <p className={s.heroText}>Five acres planned around a 3-acre central green, with 80% of the land left open.</p>
           <div className={s.offerBadge}>
-            <span className={s.offerNumber}>10:24</span>
-            <span><strong>Pay 10% now,</strong><br />nothing more for 24 months**</span>
+            <span className={s.offerNumber}>30:70</span>
+            <span><strong>Pay 30% now,</strong><br />70% near possession</span>
           </div>
           <div className={s.heroActions}>
             <div className={s.heroPrice}>

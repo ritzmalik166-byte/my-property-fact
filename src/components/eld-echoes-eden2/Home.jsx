@@ -21,7 +21,7 @@ const modalCopy = {
   plan: ['Unlock the floor plan', 'See room sizes and orientation. We will also send it on WhatsApp.'],
   amen: ['Get the full amenities list', 'All 50+ amenities, with the clubhouse and landscape plan.'],
   visit: ['Book a free site visit', 'Pick a time on the call. Pickup can be arranged on request.'],
-  planDetails: ['Get the 10:24 payment plan', 'The full schedule, eligibility and what you pay when.'],
+  planDetails: ['Get the 30:70 payment plan', 'The full schedule, eligibility and what you pay when.'],
 };
 
 function hasFilledForm() {
