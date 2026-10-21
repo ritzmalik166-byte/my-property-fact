@@ -95,9 +95,7 @@ const CITY_CARDS = [
   },
 ];
 
-const FAQ_ITEMS = HOME_FAQ_ITEMS;
-
-export default function NoidaProjectsSection() {
+export default function NoidaProjectsSection({ faqItems: FAQ_ITEMS = HOME_FAQ_ITEMS }) {
   useDeferredStylesheet(() =>
     Promise.all([
       import("swiper/css"),
@@ -417,7 +415,7 @@ export default function NoidaProjectsSection() {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Send Mail
+              Contact Us
             </Link>
           </div>
         </div>

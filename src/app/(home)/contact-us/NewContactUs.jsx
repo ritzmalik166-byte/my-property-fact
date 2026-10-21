@@ -337,7 +337,7 @@ export default function NewContactUs() {
                         +91 8920024793
                       </span>
                       <p className="contact-expert-phone-hours mb-0">
-                        Mon-Sat, 10am - 7pm
+                        Mon-Sun, 9:30am - 6:30pm
                       </p>
                     </div>
                   </a>
