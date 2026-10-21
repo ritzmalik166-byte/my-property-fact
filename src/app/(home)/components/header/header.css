@@ -1441,7 +1441,11 @@ button.header-nav-dropdown-trigger {
 }
 
 .header--home-ss .menu ul li.hasChild .dropdown.dropdown-lg {
-  top: 132px;
+  top: calc(var(--mpf-home-header-stack, 74px) + 23px);
+}
+
+body:has(.mpf-navratri-strip) .header--home-ss .menu ul li.hasChild .dropdown.dropdown-lg {
+  top: calc(var(--mpf-home-header-stack, 74px) + var(--mpf-festive-strip-h, 40px) + 23px);
 }
 
 

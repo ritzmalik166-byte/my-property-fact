@@ -5,7 +5,8 @@
 .city-page-redesign {
   background: #f7f8f7;
   min-height: 100vh;
-
+  /* Header is fixed; keep the hero image from sliding underneath it */
+  padding-top: var(--mpf-site-header-height, 92px);
 }
 
 .city-page-redesign__body {
