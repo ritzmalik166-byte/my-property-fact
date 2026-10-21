@@ -8,6 +8,7 @@ import CityGuideSection from "./components/CityGuideSection";
 import ListingPageSeoContent from "@/app/(home)/components/common/ListingPageSeoContent";
 import { useMemo } from "react";
 import { slimProjectListForListing } from "@/lib/slimProjectListing";
+import { useSiteHeaderHeight } from "@/hooks/useSiteHeaderHeight";
 
 export default function CityPage({
   cityData,
@@ -18,6 +19,7 @@ export default function CityPage({
     () => slimProjectListForListing(initialProjects),
     [initialProjects],
   );
+  useSiteHeaderHeight();
 
   return (
     <div className="city-page-redesign">

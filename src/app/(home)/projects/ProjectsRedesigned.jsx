@@ -41,6 +41,7 @@ import {
 import { isListingOriginPath } from "@/lib/listingProjectsViewConfig";
 import { trackSearchEvent } from "@/lib/trackSearchEvent";
 import { fetchProjectListingPage } from "@/lib/fetchProjectListingPage";
+import { useSiteHeaderHeight } from "@/hooks/useSiteHeaderHeight";
 
 import {
   scrollToProjectListings,
@@ -373,42 +374,7 @@ export default function ProjectsRedesigned({
     if (activeQuickFilter === "rera") setActiveQuickFilter("");
   }, [activeQuickFilter]);
 
-  useEffect(() => {
-    if (typeof window === "undefined") return undefined;
-
-    const root = document.documentElement;
-    const header = document.querySelector(".header");
-    if (!header) return undefined;
-
-    let raf = null;
-    const compute = () => {
-      const rect = header.getBoundingClientRect?.();
-      const hRaw = rect?.height || header.offsetHeight || 0;
-      const h = Math.max(0, Math.round(hRaw));
-      if (h) root.style.setProperty("--mpf-site-header-height", `${h}px`);
-    };
-    const schedule = () => {
-      if (raf != null) return;
-      raf = window.requestAnimationFrame(() => {
-        raf = null;
-        compute();
-      });
-    };
-
-    // Initial sync
-    compute();
-
-    const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(schedule) : null;
-    ro?.observe(header);
-
-    window.addEventListener("resize", schedule);
-
-    return () => {
-      if (raf != null) window.cancelAnimationFrame(raf);
-      ro?.disconnect();
-      window.removeEventListener("resize", schedule);
-    };
-  }, []);
+  useSiteHeaderHeight();
 
   useEffect(() => {
     const hasFilters =
