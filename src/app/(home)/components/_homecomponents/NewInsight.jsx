@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import { useDeferredStylesheet } from "@/lib/useDeferredStylesheet";
 import {
@@ -58,6 +59,7 @@ const INSIGHTS = [
 export default function NewInsight() {
   useDeferredStylesheet(() => import("./newinsight.css"));
 
+  const router = useRouter();
   const [activeId, setActiveId] = useState("emi-calculator");
   const activeInsight =
     INSIGHTS.find((insight) => insight.id === activeId) ?? INSIGHTS[1];
@@ -107,7 +109,13 @@ export default function NewInsight() {
                   id={`expert-insights-tab-${insight.id}`}
                   className={`expert-insights-tab${isActive ? " is-active" : ""}`}
                   title={insight.iconTitle}
-                  onClick={() => setActiveId(insight.id)}
+                  onClick={() => {
+                    if (isActive) {
+                      router.push(insight.href);
+                    } else {
+                      setActiveId(insight.id);
+                    }
+                  }}
                 >
                   {insight.tabLabel}
                 </button>
