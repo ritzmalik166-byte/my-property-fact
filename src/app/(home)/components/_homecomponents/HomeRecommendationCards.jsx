@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { buildProjectImageUrl } from "@/lib/projectImageUrl";
 import { buildHomeCardImageProps } from "@/lib/optimizedImage";
@@ -9,6 +10,11 @@ import { resolveProjectCardLocationLabel } from "@/lib/projectCardHelpers";
 import ProjectShortlistButton from "@/app/(home)/components/common/ProjectShortlistButton";
 import "@/app/(home)/components/common/luxuryPropertyCard.css";
 import "./newmpfmetadata.css";
+
+const CommonPopUpform = dynamic(
+  () => import("@/app/(home)/components/common/popupform"),
+  { ssr: false },
+);
 
 function apiBaseUrl() {
   const raw = process.env.NEXT_PUBLIC_API_URL || "";
@@ -256,11 +262,113 @@ function tilesThatFit(width) {
   return Math.max(1, Math.floor((width + TILE_GAP) / (TILE_WIDTH + TILE_GAP)));
 }
 
-const FEW_ITEMS_THRESHOLD = 4;
+function getViewAllLabel(kind) {
+  return kind === "property" ? "View All Properties" : "View All Projects";
+}
 
-function getViewAllLabel(cityName, kind) {
-  const noun = kind === "property" ? "Properties" : "Projects";
-  return cityName ? `View All ${noun} in ${cityName}` : `View All ${noun}`;
+function isLaunchRail(title) {
+  return /launch/i.test(String(title || ""));
+}
+
+const ALERT_PERKS = [
+  "Pre-launch pricing",
+  "Floor plans & offers",
+  "Free site visit",
+];
+
+function BellIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M6 16V11a6 6 0 1 1 12 0v5l1.5 2h-15L6 16Z"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinejoin="round"
+      />
+      <path d="M10 20.5a2 2 0 0 0 4 0" stroke="currentColor" strokeWidth="1.7" />
+    </svg>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M5 12.5l4.2 4.2L19 7"
+        stroke="currentColor"
+        strokeWidth="2.4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+/** Fills the empty part of the rail when a city has only a few matches. */
+function LaunchAlertPanel({ count, cityName, title, onEnquire, standalone = false }) {
+  const launches = isLaunchRail(title);
+  const noun = launches
+    ? count === 1
+      ? "new launch"
+      : "new launches"
+    : count === 1
+      ? "project"
+      : "projects";
+  const place = cityName || "your city";
+  const heading =
+    count > 0
+      ? `More ${launches ? "launches" : "projects"} in ${place} are on the way`
+      : `Be first to know about ${launches ? "launches" : "projects"} in ${place}`;
+
+  return (
+    <aside
+      className={`home-projects-preview__alert${standalone ? " home-projects-preview__alert--standalone" : ""}`}
+      aria-label={`${launches ? "Launch" : "Project"} alerts for ${place}`}
+    >
+      <div className="home-projects-preview__alert-top">
+        <span className="home-projects-preview__alert-kicker">
+          <BellIcon />
+          {launches ? "Launch alerts" : "Project alerts"}
+        </span>
+        <p className="home-projects-preview__alert-count">
+          <strong>{count}</strong>
+          <span>
+            {noun} live in {place}
+          </span>
+        </p>
+      </div>
+      <h3 className="home-projects-preview__alert-title">{heading}</h3>
+      <p className="home-projects-preview__alert-text">
+        Our advisors hear about upcoming projects before they are listed. Share
+        your requirement and get early access.
+      </p>
+      <ul className="home-projects-preview__alert-perks">
+        {ALERT_PERKS.map((perk) => (
+          <li key={perk}>
+            <CheckIcon />
+            {perk}
+          </li>
+        ))}
+      </ul>
+      <button
+        type="button"
+        className="home-projects-preview__alert-cta"
+        onClick={onEnquire}
+        title={`Get early access to ${launches ? "launches" : "projects"} in ${place}`}
+      >
+        Get Early Access
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path
+            d="M5 12h14M13 6l6 6-6 6"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </button>
+    </aside>
+  );
 }
 
 function PinIcon() {
@@ -345,6 +453,7 @@ export default function HomeRecommendationCards({
   const [startIndex, setStartIndex] = useState(0);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [enquireOpen, setEnquireOpen] = useState(false);
   const viewportRef = useRef(null);
   const dragStartRef = useRef({ x: 0, pointerId: null });
   const hasDraggedRef = useRef(false);
@@ -601,11 +710,21 @@ export default function HomeRecommendationCards({
     };
   }, [canSlide, loading, maxStartIndex, tileStep]);
 
-  const showViewMore = Boolean(
-    cityHref && !loading && safeItems.length < FEW_ITEMS_THRESHOLD,
-  );
-  const viewMoreHref = cityHref || viewAllHref;
-  const viewMoreLabel = getViewAllLabel(cityName, kind);
+  // Only a handful of matches for the picked city: cards + alert panel, no city "view all".
+  const isFewLayout =
+    Boolean(cityHref) && !loading && safeItems.length > 0 && !canSlide;
+  const viewMoreHref = cityHref ? "" : viewAllHref;
+  const viewMoreLabel = getViewAllLabel(kind);
+  const openEnquire = useCallback(() => setEnquireOpen(true), []);
+  const renderEnquireForm = () =>
+    enquireOpen ? (
+      <CommonPopUpform
+        show={enquireOpen}
+        handleClose={(open) => setEnquireOpen(Boolean(open))}
+        from="Home Page"
+        data={null}
+      />
+    ) : null;
   const sectionClass =
     `container home-projects-preview home-projects-preview--tiles home-projects-preview--showcase ${className}`.trim();
 
@@ -689,35 +808,6 @@ export default function HomeRecommendationCards({
           />
         </svg>
       </Link>
-    ) : null;
-
-  const renderViewMoreCard = () =>
-    showViewMore && viewMoreHref ? (
-      <div className="home-projects-preview__slide home-projects-preview__slide--more">
-        <Link
-          href={viewMoreHref}
-          className="home-projects-preview__more-card"
-          title={viewMoreLabel}
-        >
-          <span
-            className="home-projects-preview__more-card-icon"
-            aria-hidden="true"
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
-              <path
-                d="M5 12h14M13 6l6 6-6 6"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-          </span>
-          <span className="home-projects-preview__more-card-label">
-            {viewMoreLabel}
-          </span>
-        </Link>
-      </div>
     ) : null;
 
   const renderCard = (item, idx) => {
@@ -837,18 +927,22 @@ export default function HomeRecommendationCards({
         </section>
       );
     }
-    if (!emptyMessage && !showViewMore) return null;
+    if (!emptyMessage) return null;
     return (
       <section className={sectionClass} aria-label={title}>
         {renderHead()}
-        {emptyMessage ? (
+        {cityHref ? (
+          <LaunchAlertPanel
+            count={0}
+            cityName={cityName}
+            title={title}
+            onEnquire={openEnquire}
+            standalone
+          />
+        ) : (
           <p className="home-projects-preview__sub">{emptyMessage}</p>
-        ) : null}
-        {showViewMore ? (
-          <div className="home-projects-preview__actions home-projects-preview__actions--end">
-            {renderViewMoreLink()}
-          </div>
-        ) : null}
+        )}
+        {renderEnquireForm()}
       </section>
     );
   }
@@ -869,11 +963,18 @@ export default function HomeRecommendationCards({
           onPointerDown={handleViewportPointerDown}
         >
           <div
-            className={`home-projects-preview__track${showViewMore ? " is-compact" : ""}`}
+            className={`home-projects-preview__track${isFewLayout ? " is-few" : ""}`}
             style={trackStyle}
           >
             {safeItems.map(renderCard)}
-            {renderViewMoreCard()}
+            {isFewLayout ? (
+              <LaunchAlertPanel
+                count={safeItems.length}
+                cityName={cityName}
+                title={title}
+                onEnquire={openEnquire}
+              />
+            ) : null}
           </div>
         </div>
       </div>
@@ -883,6 +984,7 @@ export default function HomeRecommendationCards({
           {renderViewMoreLink()}
         </div>
       ) : null}
+      {renderEnquireForm()}
     </section>
   );
 }

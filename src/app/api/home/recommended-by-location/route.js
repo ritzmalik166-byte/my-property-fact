@@ -22,6 +22,11 @@ import {
   scopeHomeProjectsToDelhiNcr,
 } from "@/app/_global_components/popularRightNowProjects";
 import { slimProjectListForListing } from "@/lib/slimProjectListing";
+import {
+  buildCityStateLookup,
+  resolveCitySlug,
+} from "@/app/_global_components/cityAliasUtils";
+import { fetchCityData } from "@/app/_global_components/masterFunction";
 
 function parseCoord(value) {
   const n = Number.parseFloat(String(value ?? ""));
@@ -465,6 +470,11 @@ export async function GET(request) {
 
     const { projects, latestPublicListings } = await fetchSpotlightDataForApi();
 
+    const cityStateLookup =
+      resolveCitySlug(region.city) === "delhi"
+        ? buildCityStateLookup(await fetchCityData())
+        : null;
+
     if (intent === "projects") {
       const newLaunchProjects = normalizeProjectsArray(projects).filter(isNewLaunchProject);
       const locationScope = scopeHomeProjectsForLocation({
@@ -475,6 +485,7 @@ export async function GET(request) {
         lat,
         lon,
         source: region.source,
+        cityStateLookup,
       });
 
       const allowNcrFallback = region.source !== "dropdown";
@@ -494,6 +505,7 @@ export async function GET(request) {
           geoTokens,
           lat,
           lon,
+          cityStateLookup,
         });
         const soft = buildScopedListingItems({
           projects: normalizeProjectsArray(projects),
@@ -537,6 +549,7 @@ export async function GET(request) {
         lat,
         lon,
         source: region.source,
+        cityStateLookup,
       });
 
       const { items, scope: resolvedScope } = buildScopedListingItems({

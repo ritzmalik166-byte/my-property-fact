@@ -2,6 +2,7 @@ import { normalizePlaceToken } from "@/app/(home)/components/home/recommendedSpo
 import {
   cityNameMatchesFilter,
   normalizeCitySearchQuery,
+  resolveCitySlug,
 } from "@/app/_global_components/cityAliasUtils";
 
 /** Delhi-NCR cities used for "Popular right now" curated list. */
@@ -112,12 +113,18 @@ export function scopeHomeProjectsToDelhiNcr({
   };
 }
 
-function projectMatchesSelectedCity(project, cityName) {
+function projectMatchesSelectedCity(project, cityName, cityStateLookup = null) {
   if (!project || !cityName) return false;
 
   const selectedNorm = normalizeCitySearchQuery(cityName);
   const projectCityNorm = normalizeCitySearchQuery(project.cityName || "");
   if (selectedNorm && projectCityNorm && selectedNorm === projectCityNorm) return true;
+
+  // Delhi projects are identified by state / address / locality (same as /city/delhi);
+  // the Delhi matcher already blocks non-Delhi primary cities like Gurugram.
+  if (resolveCitySlug(cityName) === "delhi") {
+    return cityNameMatchesFilter(cityName, project, cityStateLookup);
+  }
 
   // Header city filter must use the project city only. Address/locality substring
   // matches (e.g. "agra" inside "Bagral") leak other cities into the rails.
@@ -139,6 +146,7 @@ export function scopeHomeProjectsForLocation({
   geoTokens = [],
   lat = null,
   lon = null,
+  cityStateLookup = null,
 } = {}) {
   const selectedCity = String(city || "").trim();
   const specificCity = selectedCity && !isDelhiNcrUmbrellaLabel(selectedCity);
@@ -146,7 +154,9 @@ export function scopeHomeProjectsForLocation({
   if (specificCity) {
     const list = Array.isArray(projects) ? projects : [];
     return {
-      projects: list.filter((project) => projectMatchesSelectedCity(project, selectedCity)),
+      projects: list.filter((project) =>
+        projectMatchesSelectedCity(project, selectedCity, cityStateLookup),
+      ),
       geoCity: selectedCity,
       geoState: state || "",
       geoTokens: Array.isArray(geoTokens) && geoTokens.length ? geoTokens : [selectedCity],
