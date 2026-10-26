@@ -1,4 +1,4 @@
-import Calculator from "./calculator";
+import EmiCalculatorPage from "./EmiCalculator";
 import JsonLdScript from "@/app/_global_components/jsonLd/JsonLdScript";
 import { buildFaqJsonLd } from "@/app/_global_components/jsonLd/buildJsonLd";
 import { EMI_CALCULATOR_FAQ_ITEMS } from "./emiCalculatorFaqItems";
@@ -33,7 +33,7 @@ export default function EmiCalculator() {
     return (
         <>
             <JsonLdScript data={buildFaqJsonLd(EMI_CALCULATOR_FAQ_ITEMS)} />
-            <Calculator />
+            <EmiCalculatorPage />
         </>
     )
 }
