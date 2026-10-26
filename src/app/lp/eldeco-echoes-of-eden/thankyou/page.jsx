@@ -54,6 +54,28 @@ export default function ThankYouPage() {
           `,
         }}
       />
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=AW-17892647835"
+        strategy="afterInteractive"
+      />
+      {/* Event snippet for EOE Submit lead form conversion page */}
+      <Script
+        id="gtag-eoe-submit-lead-conversion"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'AW-17892647835');
+            gtag('event', 'conversion', {
+              'send_to': 'AW-17892647835/YpkuCP-vlfAcEJvH8NNC',
+              'value': 1.0,
+              'currency': 'INR'
+            });
+          `,
+        }}
+      />
     <main className={styles.page}>
       <div className={styles.glowTop} aria-hidden="true" />
       <div className={styles.glowBottom} aria-hidden="true" />
