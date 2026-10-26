@@ -12,6 +12,11 @@ export function normalizeListingConfigType(value = "") {
     .trim();
 }
 
+/** CMS has used both "New Launched" and "New Launch" for the same status. */
+export function isNewLaunchStatus(statusName) {
+  return normalizeListingConfigType(statusName).includes("new launch");
+}
+
 export function normalizeFloorSlugSegment(segment) {
   if (segment == null || segment === "") return "";
   const s = String(segment)
@@ -423,14 +428,13 @@ function projectHasCommercialConfiguration(projectConfiguration) {
 /** Hub pages above the footer: category + city, not floor-plan shape. */
 export function projectMatchesListingHubCategory(project, hubKey) {
   const propType = String(project?.propertyTypeName || "").toLowerCase();
-  const status = String(project?.projectStatusName || "").toLowerCase();
   switch (hubKey) {
     case "apartments":
     case "flats":
       return propType === "residential";
     case "new-projects":
     case "newProjects":
-      return status === "new launched";
+      return isNewLaunchStatus(project?.projectStatusName);
     case "commercial":
       // The listing API sometimes has inconsistent propertyTypeName values for
       // clearly-commercial configurations (e.g. Offices/Shops marked Residential).
@@ -447,10 +451,9 @@ export function projectMatchesListingHubCategory(project, hubKey) {
 
 export function projectMatchesCompoundCategory(project, categorySlug) {
   const propType = String(project?.propertyTypeName || "").toLowerCase();
-  const status = String(project?.projectStatusName || "").toLowerCase();
   switch (categorySlug) {
     case "new-projects":
-      return status === "new launched";
+      return isNewLaunchStatus(project?.projectStatusName);
     case "apartments":
     case "flats":
       return propType === "residential";

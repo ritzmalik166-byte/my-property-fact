@@ -1061,6 +1061,12 @@ export default function ProjectsRedesigned({
         return;
       }
 
+      // Only `{n}-bhk-new-projects-in-{city}` exists; other types filter in place
+      // so the list stays limited to new launches.
+      if (isNewLaunchHubPage && !/^\d+\s*BHK/i.test(String(nextBhkType))) {
+        return;
+      }
+
       if (isListingOriginPath(pathname)) {
         saveListingOriginPath(pathname);
       }
@@ -1104,6 +1110,7 @@ export default function ProjectsRedesigned({
       citySlugForUrl,
       hubUrlCategorySegment,
       isListingPage,
+      isNewLaunchHubPage,
       pathname,
       resolveListingReturnPath,
       router,

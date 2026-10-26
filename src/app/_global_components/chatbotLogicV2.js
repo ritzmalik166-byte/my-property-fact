@@ -542,7 +542,7 @@ function buildProjectsRedirect(data = {}) {
   const cityName = encodeURIComponent(normalizedCity || "");
   let targetPath = `/projects?propertyType=${typeId}&propertyLocation=${cityId}&cityName=${cityName}&budget=${encodeURIComponent(budget)}`;
   if (normalizeText(data.type) === "new launch") {
-    targetPath += `&projectStatus=${encodeURIComponent("New Launched")}`;
+    targetPath += `&projectStatus=${encodeURIComponent("New Launch")}`;
   }
   if (data.bhk) {
     targetPath += `&bhkType=${encodeURIComponent(data.bhk)}`;
@@ -685,7 +685,7 @@ async function fetchProjectsForSession(session) {
   const launchFiltered =
     normalizeText(session.data.type) === "new launch"
       ? cityMatchedProjects.filter(
-          (project) => project?.projectStatusName === "New Launched",
+          (project) => normalizeText(project?.projectStatusName).includes("new launch"),
         )
       : cityMatchedProjects;
   const bhkFiltered = session.data.bhk

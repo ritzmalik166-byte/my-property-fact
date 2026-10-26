@@ -388,7 +388,7 @@ function applyWebsiteLikeFilters(projects, session, projectTypes = []) {
     // Mirror Projects page behavior for property-type filtering.
     if (selectedTypeMeta) {
       if (normalizeText(selectedTypeMeta.projectTypeName || "") === "new launches") {
-        if (project?.projectStatusName !== "New Launched") return false;
+        if (!normalizeText(project?.projectStatusName).includes("new launch")) return false;
       } else {
         const projectTypeId = toNumber(project?.propertyTypeId);
         const selectedId = toNumber(selectedTypeMeta.id);
@@ -408,7 +408,7 @@ function applyWebsiteLikeFilters(projects, session, projectTypes = []) {
       const projectTypeId = toNumber(project?.propertyTypeId);
       if (project?.propertyTypeName !== "Residential" && projectTypeId !== 1) return false;
     } else if (selectedType === "new launch") {
-      if (project?.projectStatusName !== "New Launched") return false;
+      if (!normalizeText(project?.projectStatusName).includes("new launch")) return false;
     }
 
     if (selectedType === "new launch" && selectedCategory === "commercial") {
