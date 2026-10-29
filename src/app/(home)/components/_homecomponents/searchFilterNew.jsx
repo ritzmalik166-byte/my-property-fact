@@ -577,26 +577,29 @@ export default function SearchFilter({ projectTypeList = [], cityList = [], layo
     return () => window.clearInterval(timer);
   }, []);
 
-  useEffect(() => {
-    if (!isHomeHero) return undefined;
-    const card = cardRef.current;
-    if (!card) return undefined;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        const sticky = !entry.isIntersecting && entry.boundingClientRect.top < 80;
-        setIsSearchSticky(sticky);
-        document.body.classList.toggle("mpf-search-sticky", sticky);
-        if (!sticky) setSearchTourStep(null);
-      },
-      { threshold: 0, rootMargin: "-72px 0px 0px 0px" },
-    );
-    observer.observe(card);
-    return () => {
-      observer.disconnect();
-      document.body.classList.remove("mpf-search-sticky");
-    };
-  }, [isHomeHero]);
+useEffect(() => {
+  if (!isHomeHero) return undefined;
+
+  const wrap = searchWrapRef.current;
+
+  const preload = () => {
+    loadReactSelectModule().then((Select) => {
+      setHeroSelect(() => Select);
+    });
+  };
+
+  wrap?.addEventListener("pointerenter", preload, {
+    once: true,
+    passive: true,
+  });
+  wrap?.addEventListener("focusin", preload, { once: true });
+
+  return () => {
+    wrap?.removeEventListener("pointerenter", preload);
+    wrap?.removeEventListener("focusin", preload);
+  };
+}, [isHomeHero]);
 
   const finishSearchTour = useCallback(() => {
     setSearchTourStep(null);

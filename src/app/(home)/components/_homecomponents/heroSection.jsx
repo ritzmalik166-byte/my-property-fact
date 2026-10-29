@@ -1,8 +1,9 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useEffect } from "react";
 import { getImageProps } from "next/image";
-import SearchFilter from "./searchFilterNew";
+const SearchFilter = dynamic(() => import("./searchFilterNew"));
 import "../home/home.css";
 import "./newmpfmetadata.css";
 import { MPF_GATEWAY_HIDDEN_EVENT } from "@/app/_global_components/mpfGatewayEvents";
@@ -56,7 +57,7 @@ function HeroBannerPicture() {
     props: { srcSet: mobileSrcSet },
   } = getImageProps({
     ...common,
-    quality: 88,
+    quality: HERO_IMAGE_QUALITY,
     src: BANNER_MOBILE.src,
     width: BANNER_MOBILE.width,
     height: BANNER_MOBILE.height,
@@ -66,7 +67,7 @@ function HeroBannerPicture() {
     props: { srcSet: tabletSrcSet },
   } = getImageProps({
     ...common,
-    quality: 88,
+    quality: HERO_IMAGE_QUALITY,
     src: BANNER_TABLET.src,
     width: BANNER_TABLET.width,
     height: BANNER_TABLET.height,
@@ -101,11 +102,10 @@ function HeroBannerPicture() {
             srcSet={desktopSrcSet}
             sizes={sizes}
             alt={BANNER_ALT}
-            title={BANNER_ALT}
             className="hero-banner-image hero-banner-image--full"
             loading="eager"
             fetchPriority="high"
-            decoding="sync"
+            decoding="async"
             draggable={false}
           />
         </picture>
@@ -117,8 +117,8 @@ function HeroBannerPicture() {
 export default function HeroSection({
   projectTypeList,
   cityList,
-  title = "Find Flats & Property Across India | Buy & Invest",
-  subtitle = "Browse flats, apartments, and commercial properties in India with verified listings, price trends, and expert insights.",
+  // title = "Find Flats & Property Across India | Buy & Invest",
+  // subtitle = "Browse flats, apartments, and commercial properties in India with verified listings, price trends, and expert insights.",
 }) {
   useHomeHeroHashScroll();
   return (
@@ -131,7 +131,7 @@ export default function HeroSection({
         <HeroBannerPicture />
         <div className="home-banner-overlay" aria-hidden="true" />
         <h1 id="mpf-page-heading" className="visually-hidden">
-        Verified properties across Noida, Greater Noida, Delhi NCR & major Indian cities
+          Verified properties across Noida, Greater Noida, Delhi NCR & major Indian cities
         </h1>
       </div>
 
