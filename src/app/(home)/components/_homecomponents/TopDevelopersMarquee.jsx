@@ -11,20 +11,23 @@ function sanitizeMetaText(value, fallback = "Developer") {
   return text;
 }
 
+
 function LogoCell({ item, suppressA11y }) {
   const safeName = sanitizeMetaText(item.name, "Developer");
   const logoMeta = `${safeName} — developer logo`;
-  const alt = suppressA11y ? "" : logoMeta;
+
   const img = (
     <img
       {...buildHomeCardImageProps({
         src: item.src,
         width: 176,
         height: 56,
-        alt,
+        alt: logoMeta,
         sizes: "176px",
         quality: 65,
       })}
+      alt={logoMeta}
+      title={logoMeta}
       className="transform-home-developers-logo"
       width={176}
       height={56}
@@ -39,6 +42,7 @@ function LogoCell({ item, suppressA11y }) {
         className="transform-home-developers-link"
         title={safeName}
         draggable={false}
+        tabIndex={suppressA11y ? -1 : undefined}
       >
         {img}
       </Link>
