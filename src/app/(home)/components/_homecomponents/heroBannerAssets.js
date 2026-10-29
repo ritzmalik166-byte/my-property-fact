@@ -50,5 +50,5 @@ export const BANNER_WIDTH = BANNER_DESKTOP.width;
 export const BANNER_HEIGHT = BANNER_DESKTOP.height;
 export const BANNER_SRC = BANNER_DESKTOP.src;
 
-export const HERO_IMAGE_QUALITY = 88;
+export const HERO_IMAGE_QUALITY = 75;
 export const HERO_IMAGE_SIZES = "100vw";
