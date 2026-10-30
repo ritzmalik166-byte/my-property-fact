@@ -57,7 +57,7 @@ function HeroBannerPicture() {
     props: { srcSet: mobileSrcSet },
   } = getImageProps({
     ...common,
-    quality: HERO_IMAGE_QUALITY,
+    // quality: HERO_IMAGE_QUALITY,
     src: BANNER_MOBILE.src,
     width: BANNER_MOBILE.width,
     height: BANNER_MOBILE.height,
@@ -67,7 +67,7 @@ function HeroBannerPicture() {
     props: { srcSet: tabletSrcSet },
   } = getImageProps({
     ...common,
-    quality: HERO_IMAGE_QUALITY,
+    // quality: HERO_IMAGE_QUALITY,
     src: BANNER_TABLET.src,
     width: BANNER_TABLET.width,
     height: BANNER_TABLET.height,
@@ -102,6 +102,7 @@ function HeroBannerPicture() {
             srcSet={desktopSrcSet}
             sizes={sizes}
             alt={BANNER_ALT}
+            title={BANNER_ALT}
             className="hero-banner-image hero-banner-image--full"
             loading="eager"
             fetchPriority="high"

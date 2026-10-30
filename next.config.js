@@ -331,7 +331,7 @@ const nextConfig = {
   // Ensure MUI and other packages are transpiled so vendor chunks are generated correctly
   transpilePackages: ["@mui/material", "@mui/system", "@mui/utils"],
   images: {
-
+formats: ["image/avif", "image/webp"],
     qualities: [45, 60, 65, 68, 70, 75, 88, 100],
     // Cache optimized images longer so repeat visits aren't re-rushed through the optimizer.
     minimumCacheTTL: 60 * 60 * 24 * 30,

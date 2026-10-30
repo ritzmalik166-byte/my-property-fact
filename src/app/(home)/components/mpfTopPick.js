@@ -218,7 +218,7 @@ function SlidePhoto({ slide }) {
     alt: slide.imageAlt,
     title: slide.imageAlt,
     fill: true,
-    quality: 88,
+    quality: 75,
     sizes: IMAGE_SIZES,
     className: "mpf-fp__img",
   };
