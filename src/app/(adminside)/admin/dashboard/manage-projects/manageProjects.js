@@ -813,6 +813,17 @@ export default function ManageProjects({
     setUploadZipFile(null);
   };
 
+  const IMPORT_POLL_MS = 2000;
+  const importProgressText = (job) => {
+    if (job?.phase === "images") {
+      return `Processing images… ${job.imagesDone} / ${job.imagesTotal}`;
+    }
+    if (job?.phase === "rows") {
+      return `Saving projects… ${job.rowsDone} / ${job.rowsTotal}`;
+    }
+    return "Upload received, starting import…";
+  };
+
   const handleUploadProjectsSubmit = async (e) => {
     e?.preventDefault();
     if (!uploadExcelFile) {
@@ -836,16 +847,13 @@ export default function ManageProjects({
       if (uploadZipFile) {
         formData.append("imagesZip", uploadZipFile);
       }
-      const token =
-        typeof window !== "undefined" ? Cookies.get("token") : undefined;
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}excel-upload/projects`,
+      // The server imports in the background; this request only carries the files.
+      const started = await axios.post(
+        `${process.env.NEXT_PUBLIC_API_URL}excel-upload/projects/async`,
         formData,
         {
           withCredentials: true,
           timeout: 600000,
-          headers: {
-          },
           onUploadProgress: (event) => {
             if (!toastId || !event.total) return;
             const pct = Math.round((event.loaded * 100) / event.total);
@@ -856,6 +864,19 @@ export default function ManageProjects({
           },
         },
       );
+
+      let job = started.data;
+      while (!job?.done) {
+        await new Promise((resolve) => setTimeout(resolve, IMPORT_POLL_MS));
+        const { data } = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_URL}excel-upload/projects/jobs/${job.jobId}`,
+          { withCredentials: true, timeout: 30000 },
+        );
+        job = data;
+        toast.update(toastId, { render: importProgressText(job), isLoading: true });
+      }
+
+      const response = { data: job };
       if (response.data?.isSuccess === 1) {
         const successText =
           response.data?.message?.trim() || "Data is uploaded";
