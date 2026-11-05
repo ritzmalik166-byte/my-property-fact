@@ -17,6 +17,7 @@ import { useRouter } from "next/navigation";
 import ExcelJS from "exceljs";
 import { saveAs } from "file-saver";
 import Cookies from "js-cookie";
+import BulkProjectUploadModal from "./BulkProjectUploadModal";
 // Dynamically import JoditEditor with SSR disabled
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
@@ -152,23 +153,6 @@ export default function ManageProjects({
   const [states, setStates] = useState([]);
   const [cities, setCities] = useState([]);
   const [showUploadModal, setShowUploadModal] = useState(false);
-  const [uploadExcelFile, setUploadExcelFile] = useState(null);
-  const [uploadZipFile, setUploadZipFile] = useState(null);
-  const [uploadLoading, setUploadLoading] = useState(false);
-  const allowedZipTypes = new Set([
-    "application/zip",
-    "application/x-zip-compressed",
-    "multipart/x-zip",
-    "application/octet-stream",
-    "",
-  ]);
-
-  const isZipFile = (file) => {
-    if (!file) return false;
-    const type = (file.type || "").toLowerCase();
-    if (allowedZipTypes.has(type)) return true;
-    return /\.zip$/i.test(file.name || "");
-  };
   const handleCountryChange = (e) => {
     const countryId = parseInt(e.target.value, 10) || 0;
     setFormData((prev) => ({
@@ -801,124 +785,8 @@ export default function ManageProjects({
     saveAs(new Blob([buffer]), fileName);
     toast.success("Export downloaded.");
   };
-  const openUploadModal = () => {
-    setShowUploadModal(true);
-    setUploadExcelFile(null);
-    setUploadZipFile(null);
-  };
-
-  const closeUploadModal = () => {
-    setShowUploadModal(false);
-    setUploadExcelFile(null);
-    setUploadZipFile(null);
-  };
-
-  const IMPORT_POLL_MS = 2000;
-  const importProgressText = (job) => {
-    if (job?.phase === "images") {
-      return `Processing images… ${job.imagesDone} / ${job.imagesTotal}`;
-    }
-    if (job?.phase === "rows") {
-      return `Saving projects… ${job.rowsDone} / ${job.rowsTotal}`;
-    }
-    return "Upload received, starting import…";
-  };
-
-  const handleUploadProjectsSubmit = async (e) => {
-    e?.preventDefault();
-    if (!uploadExcelFile) {
-      toast.error("Please select an Excel file (.xlsx or .xls)");
-      return;
-    }
-    if (!uploadZipFile) {
-      toast.error("Please select a zip file with project images");
-      return;
-    }
-    if (!isZipFile(uploadZipFile)) {
-      toast.error("Please select a valid .zip file");
-      return;
-    }
-    setUploadLoading(true);
-    let toastId = null;
-    try {
-      toastId = toast.loading("Uploading data…");
-      const formData = new FormData();
-      formData.append("file", uploadExcelFile);
-      if (uploadZipFile) {
-        formData.append("imagesZip", uploadZipFile);
-      }
-      // The server imports in the background; this request only carries the files.
-      const started = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}excel-upload/projects/async`,
-        formData,
-        {
-          withCredentials: true,
-          timeout: 600000,
-          onUploadProgress: (event) => {
-            if (!toastId || !event.total) return;
-            const pct = Math.round((event.loaded * 100) / event.total);
-            toast.update(toastId, {
-              render: `Uploading data… ${pct}%`,
-              isLoading: true,
-            });
-          },
-        },
-      );
-
-      let job = started.data;
-      while (!job?.done) {
-        await new Promise((resolve) => setTimeout(resolve, IMPORT_POLL_MS));
-        const { data } = await axios.get(
-          `${process.env.NEXT_PUBLIC_API_URL}excel-upload/projects/jobs/${job.jobId}`,
-          { withCredentials: true, timeout: 30000 },
-        );
-        job = data;
-        toast.update(toastId, { render: importProgressText(job), isLoading: true });
-      }
-
-      const response = { data: job };
-      if (response.data?.isSuccess === 1) {
-        const successText =
-          response.data?.message?.trim() || "Data is uploaded";
-        toast.update(toastId, {
-          render: successText,
-          type: "success",
-          isLoading: false,
-          duration: 4000,
-        });
-        closeUploadModal();
-        router.refresh();
-      } else {
-        toast.update(toastId, {
-          render: response.data?.message ?? "Upload failed",
-          type: "error",
-          isLoading: false,
-          duration: 5000,
-        });
-      }
-    } catch (error) {
-      console.log(error);
-
-      const message =
-        error.response?.data?.message ??
-        (error.code === "ECONNABORTED"
-          ? "Upload timed out. The file may be too large or the server is busy — try again."
-          : error.message) ??
-        "Upload failed";
-      if (toastId != null) {
-        toast.update(toastId, {
-          render: message,
-          type: "error",
-          isLoading: false,
-          duration: 5000,
-        });
-      } else {
-        toast.error(message);
-      }
-    } finally {
-      setUploadLoading(false);
-    }
-  };
+  const openUploadModal = () => setShowUploadModal(true);
+  const closeUploadModal = () => setShowUploadModal(false);
 
   return (
     <>
@@ -1057,67 +925,12 @@ export default function ManageProjects({
           </Form>
         </Modal.Body>
       </Modal>
-      {/* Upload Projects Modal (Excel + optional Zip) */}
-      <Modal show={showUploadModal} onHide={closeUploadModal} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Upload Projects</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Form onSubmit={handleUploadProjectsSubmit}>
-            <Form.Group className="mb-3" controlId="uploadExcel">
-              <Form.Label className="fw-bold">
-                Excel file <span className="text-danger">*</span>
-              </Form.Label>
-              <Form.Control
-                type="file"
-                accept=".xlsx,.xls"
-                onChange={(e) =>
-                  setUploadExcelFile(e.target.files?.[0] ?? null)
-                }
-                required
-              />
-              <Form.Text className="text-muted">
-                .xlsx or .xls with project data
-              </Form.Text>
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="uploadZip">
-              <Form.Label className="fw-bold">Images zip</Form.Label>
-              <Form.Control
-                type="file"
-                accept=".zip"
-                onChange={(e) => setUploadZipFile(e.target.files?.[0] ?? null)}
-                required
-              />
-              <Form.Text className="text-muted">
-                .zip with images named like
-                ProjectName_ImageType_My-Property-Fact
-              </Form.Text>
-            </Form.Group>
-            <div className="d-flex gap-2 justify-content-end">
-              <Button
-                variant="secondary"
-                onClick={closeUploadModal}
-                disabled={uploadLoading}
-              >
-                Cancel
-              </Button>
-              <button
-                className="admin-header-btn admin-header-btn--primary"
-                type="submit"
-                disabled={uploadLoading || !uploadExcelFile || !uploadZipFile}
-              >
-                {uploadLoading ? (
-                  <>
-                    <LoadingSpinner show={true} /> Uploading…
-                  </>
-                ) : (
-                  "Upload"
-                )}
-              </button>
-            </div>
-          </Form>
-        </Modal.Body>
-      </Modal>
+      {/* Bulk upload: any number of projects, Excel + image zips/folder, sent in batches */}
+      <BulkProjectUploadModal
+        show={showUploadModal}
+        onHide={closeUploadModal}
+        onFinished={() => router.refresh()}
+      />
       <CommonModal
         confirmBox={confirmBox}
         setConfirmBox={setConfirmBox}
