@@ -7,6 +7,10 @@ const SearchFilter = dynamic(() => import("./searchFilterNew"));
 import "../home/home.css";
 import "./newmpfmetadata.css";
 import { MPF_GATEWAY_HIDDEN_EVENT } from "@/app/_global_components/mpfGatewayEvents";
+import { ENABLE_DIWALI_THEME } from "@/config/themeFlags";
+import "../festive/diwali.css";
+// canvas animation loads after hydration — keeps it off the LCP path
+const DiwaliHeroEffects = dynamic(() => import("../festive/DiwaliHeroEffects"), { ssr: false });
 import {
   BANNER_ALT,
   BANNER_DESKTOP,
@@ -124,12 +128,19 @@ export default function HeroSection({
   return (
     <section
       id="mpf-home-hero"
-      className="position-relative hero-section-wrapper"
+      className={`position-relative hero-section-wrapper${ENABLE_DIWALI_THEME ? " mpf-hero--diwali" : ""}`}
       aria-label="Hero Banner"
     >
       <div className="mpf-hero-banner position-relative">
         <HeroBannerPicture />
         <div className="home-banner-overlay" aria-hidden="true" />
+        {ENABLE_DIWALI_THEME ? (
+          <>
+            {/* invisible: marks where the greeting sits in the artwork so fireworks steer clear */}
+            <div className="mpf-diwali-zone" aria-hidden="true" />
+            <DiwaliHeroEffects />
+          </>
+        ) : null}
         <h1 id="mpf-page-heading" className="visually-hidden">
           Verified properties across Noida, Greater Noida, Delhi NCR & major Indian cities
         </h1>
