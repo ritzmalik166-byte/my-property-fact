@@ -1,0 +1,88 @@
+/* ==========================================================================
+   Home hero — Diwali campaign
+   Supplied artwork (diwali-mpf-hero-*.webp) shown whole + live fireworks
+   canvas on top. No overlays, gradients, filters or shadows on the art.
+   ========================================================================== */
+
+/* Hero box takes the artwork's aspect ratio so nothing is cropped:
+   desktop 3:1, tablet 2:1, mobile 1.6:1 (matches build-diwali-hero-banners.mjs). */
+.mpf-home-r26 .hero-section-wrapper.mpf-hero--diwali {
+  --mpf-hero-banner-h: calc(100vw / 3);
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .mpf-home-r26 .hero-section-wrapper.mpf-hero--diwali {
+    --mpf-hero-banner-h: calc(100vw / 2);
+  }
+}
+
+@media (max-width: 767.98px) {
+  .mpf-home-r26 .hero-section-wrapper.mpf-hero--diwali {
+    --mpf-hero-banner-h: calc(100vw / 1.6);
+  }
+}
+
+#mpf-home-hero.mpf-hero--diwali .hero-art-direction {
+  background: #0d2a22;
+}
+
+#mpf-home-hero.mpf-hero--diwali .home-banner.hero-art-direction img.hero-banner-image,
+#mpf-home-hero.mpf-hero--diwali .hero-banner-image--full {
+  object-fit: cover !important;
+  object-position: center center !important;
+  filter: none !important;
+}
+
+/* no shade over the artwork */
+#mpf-home-hero.mpf-hero--diwali .home-banner-overlay {
+  background: none !important;
+  animation: none;
+}
+
+#mpf-home-hero.mpf-hero--diwali .mpf-hero-banner {
+  cursor: crosshair;
+}
+
+/* ---------- Fireworks canvas ---------- */
+.mpf-diwali-fx {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: block;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* ---------- Invisible "keep clear" zone over the greeting in the art ---------- */
+.mpf-diwali-zone {
+  position: absolute;
+  z-index: 0;
+  visibility: hidden;
+  pointer-events: none;
+  /* desktop: logo + "शुभ दीपावली" block, left 0–55% of the art */
+  left: 2%;
+  top: 0;
+  width: 53%;
+  height: 78%;
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .mpf-diwali-zone {
+    left: 3%;
+    width: 80%;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .mpf-diwali-zone {
+    left: 0;
+    width: 66%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #mpf-home-hero.mpf-hero--diwali .mpf-hero-banner {
+    cursor: auto;
+  }
+}
