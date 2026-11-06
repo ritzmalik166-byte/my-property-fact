@@ -122,6 +122,11 @@ export default function DiwaliHeroEffects() {
         const y = rand(yTop, yBot);
         if (!inTitle(x, y, pad)) return { x, y };
       }
+      // greeting fills the sky band (stacked mobile layout): burst just below it,
+      // over the towers' sky
+      if (title.x1 - title.x0 > w * 0.8) {
+        return { x: rand(0.1, 0.9) * w, y: Math.min(h * 0.8, title.y1 + rand(18, 70) * unit) };
+      }
       return { x: Math.random() < 0.5 ? rand(0.04, 0.14) * w : rand(0.86, 0.96) * w, y: rand(yTop, yBot) };
     }
 

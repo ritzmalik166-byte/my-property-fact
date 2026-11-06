@@ -54,14 +54,14 @@ const DIWALI_BANNER = {
     height: 1280,
   },
   tablet: {
-    src: "/static/banners/diwali-mpf-hero-tablet.webp",
+    src: "/static/banners/diwali-mpf-hero-tablet-v2.webp",
     width: 2400,
-    height: 1200,
+    height: 998,
   },
   mobile: {
-    src: "/static/banners/diwali-mpf-hero-mobile.webp",
-    width: 1600,
-    height: 1000,
+    src: "/static/banners/diwali-mpf-hero-mobile-v3.webp",
+    width: 1400,
+    height: 1528,
   },
 };
 

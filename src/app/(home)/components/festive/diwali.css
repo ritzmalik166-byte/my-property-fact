@@ -5,20 +5,20 @@
    ========================================================================== */
 
 /* Hero box takes the artwork's aspect ratio so nothing is cropped:
-   desktop 3:1, tablet 2:1, mobile 1.6:1 (matches build-diwali-hero-banners.mjs). */
+   desktop 3:1, tablet 2.4:1, mobile 1400:1528 (greeting stacked over towers) (matches build-diwali-hero-banners.mjs). */
 .mpf-home-r26 .hero-section-wrapper.mpf-hero--diwali {
   --mpf-hero-banner-h: calc(100vw / 3);
 }
 
 @media (min-width: 768px) and (max-width: 991.98px) {
   .mpf-home-r26 .hero-section-wrapper.mpf-hero--diwali {
-    --mpf-hero-banner-h: calc(100vw / 2);
+    --mpf-hero-banner-h: calc(100vw / 2.4);
   }
 }
 
 @media (max-width: 767.98px) {
   .mpf-home-r26 .hero-section-wrapper.mpf-hero--diwali {
-    --mpf-hero-banner-h: calc(100vw / 1.6);
+    --mpf-hero-banner-h: calc(100vw * 1528 / 1400);
   }
 }
 
@@ -69,15 +69,17 @@
 
 @media (min-width: 768px) and (max-width: 991.98px) {
   .mpf-diwali-zone {
-    left: 3%;
-    width: 80%;
+    left: 0;
+    width: 45%;
   }
 }
 
+/* mobile: greeting spans the full width of the top ~60% */
 @media (max-width: 767.98px) {
   .mpf-diwali-zone {
     left: 0;
-    width: 66%;
+    width: 100%;
+    height: 60%;
   }
 }
 
