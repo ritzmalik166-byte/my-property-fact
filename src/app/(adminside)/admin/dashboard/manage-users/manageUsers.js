@@ -325,11 +325,16 @@ export default function ManageUsers({
 
   const isCreateMode = !formData.id;
 
+  // Super Admins may grant the SUPERADMIN role (the API enforces the same rule); others never see it.
   const assignableRoles = useMemo(
     () =>
       (roles || []).filter(
-        (r) => String(r?.roleName || "").toUpperCase() !== "SUPERADMIN",
+        (r) => isSuperAdmin || String(r?.roleName || "").toUpperCase() !== "SUPERADMIN",
       ),
+    [roles, isSuperAdmin],
+  );
+  const superAdminRoleId = useMemo(
+    () => (roles || []).find((r) => String(r?.roleName || "").toUpperCase() === "SUPERADMIN")?.id,
     [roles],
   );
 
@@ -387,7 +392,7 @@ export default function ManageUsers({
     const roleNames = (user.roles || []).map((r) =>
       String(r?.roleName || "").toUpperCase(),
     );
-    if (roleNames.includes("SUPERADMIN")) {
+    if (roleNames.includes("SUPERADMIN") && !isSuperAdmin) {
       toast.error(
         "Super Admin accounts cannot be edited here. Permissions are always full access.",
       );
@@ -1735,13 +1740,34 @@ export default function ManageUsers({
                           key={role.id}
                           type="checkbox"
                           id={`role-${role.id}`}
-                          label={role.roleName}
+                          label={
+                            String(role.roleName || "").toUpperCase() === "SUPERADMIN"
+                              ? "SUPERADMIN (Super Admin, full access to everything)"
+                              : role.roleName
+                          }
                           checked={formData.roleIds.includes(role.id)}
-                          onChange={() => handleRoleChange(role.id)}
+                          onChange={() => {
+                            const isSuperRole = role.id === superAdminRoleId;
+                            if (
+                              isSuperRole &&
+                              !formData.roleIds.includes(role.id) &&
+                              !window.confirm(
+                                "Make this user a Super Admin? They will get full access to everything, including users, enquiries and settings.",
+                              )
+                            ) {
+                              return;
+                            }
+                            handleRoleChange(role.id);
+                          }}
                         />
                       ))
                     )}
                   </div>
+                  {superAdminRoleId && formData.roleIds.includes(superAdminRoleId) && (
+                    <small className="d-block mt-2 text-danger">
+                      Super Admin has unrestricted access. The account signs in at /admin with its email and password; no admin permissions or enquiry PIN are needed.
+                    </small>
+                  )}
                 </Form.Group>
               </Col>
             </Row>
