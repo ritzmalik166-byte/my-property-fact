@@ -8,4 +8,4 @@
  * ENABLE_NAVRATRI_THEME — same idea for Navratri (Diwali wins if both are true).
  */
 export const ENABLE_NAVRATRI_THEME = false;
-export const ENABLE_DIWALI_THEME = true;
+export const ENABLE_DIWALI_THEME = false;
