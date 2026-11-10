@@ -113,6 +113,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en-IN">
       <head>
+        <script
+          defer
+          src="https://rmw-analytics.onrender.com/tracker.js"
+          data-site-id="site_04gt1cxs1rmj"
+        />
         {organizationJsonLdHtml ? (
           <script
             type="application/ld+json"
