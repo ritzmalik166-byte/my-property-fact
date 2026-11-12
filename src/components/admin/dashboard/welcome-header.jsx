@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { WeatherLocationBanner } from "./weather-location-banner";
+import { ThoughtCard } from "./thought-card";
 
 function prettyName(raw, isSuperAdmin) {
   const name = (raw && raw.trim()) || (isSuperAdmin ? "Super Admin" : "Admin");
@@ -50,7 +50,7 @@ export function WelcomeHeader({
         </p>
       </div>
       <div className="mpf-dash-welcome__right">
-        <WeatherLocationBanner />
+        <ThoughtCard />
       </div>
     </div>
   );
