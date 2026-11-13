@@ -1,9 +1,14 @@
 "use client";
 import ErrorPage from "./portal/_components/ErrorPage";
 import Link from "next/link";
+import { useEffect } from "react";
+import { reloadOnChunkError } from "@/lib/chunkErrorReload";
 
 export default function GlobalError({ error, reset }) {
   console.error('Global error:', error);
+  useEffect(() => {
+    reloadOnChunkError(error);
+  }, [error]);
 
   const getErrorType = () => {
     if (error?.message?.includes('404')) return '404';

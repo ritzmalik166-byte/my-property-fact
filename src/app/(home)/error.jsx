@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect } from "react";
+import { reloadOnChunkError } from "@/lib/chunkErrorReload";
 
 export default function HomeErrorPage({ error, reset }) {
   useEffect(() => {
     // Log the error to an error reporting service
     console.error(error);
+    reloadOnChunkError(error);
   }, [error]);
 
   return (
