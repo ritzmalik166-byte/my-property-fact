@@ -3,7 +3,6 @@ import Script from "next/script";
 const CONVERSION_ID = "AW-17892647835";
 const CONVERSION_SEND_TO = "AW-17892647835/R2h7CIDYta0cEJvH8NNC";
 
-/** Conversion only — base gtag is loaded in ../layout.jsx */
 export default function EldecoThankYouLayout({ children }) {
   return (
     <>

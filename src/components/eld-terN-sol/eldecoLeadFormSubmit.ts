@@ -11,6 +11,63 @@ import {
 
 const ENABLE_CRM_SUBMISSION = false;
 
+// RMW CRM Lead Capture API: leads land in CRM > Client Leads ("Eldeco Terra & Sol - Google Ads").
+// gclid / UTM tags from the ad click are stored as attribution, so Google Ads leads show as google / cpc.
+const RMW_CRM_ENDPOINT = "https://crm.ritzmediaworld.com/api/public/leads";
+const RMW_CRM_API_KEY = "lc__06hJPiGjXfB6JH4j9mttgt0dQaQa1F1";
+const RMW_CRM_PROJECT = "Eldeco Terra & Sol";
+const AD_TRACK_KEYS = [
+  "gclid", "gbraid", "wbraid", "fbclid",
+  "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content",
+];
+
+// Remember the ad click (gclid / UTM) as soon as the page loads, so it survives in-page navigation and return visits.
+if (typeof window !== "undefined") {
+  const qs = new URLSearchParams(window.location.search);
+  AD_TRACK_KEYS.forEach((k) => {
+    const v = qs.get(k);
+    if (v) try { localStorage.setItem(`crm_${k}`, v); } catch { /* storage blocked */ }
+  });
+  try {
+    if (!sessionStorage.getItem("crm_landing")) sessionStorage.setItem("crm_landing", window.location.href);
+  } catch { /* storage blocked */ }
+}
+
+function getAdTracking() {
+  const qs = new URLSearchParams(window.location.search);
+  const out: Record<string, string> = {};
+  AD_TRACK_KEYS.forEach((k) => {
+    let v = qs.get(k);
+    if (!v) try { v = localStorage.getItem(`crm_${k}`); } catch { /* storage blocked */ }
+    if (v) out[k] = v;
+  });
+  return out;
+}
+
+/** Send the lead to the RMW CRM. Never blocks or fails the visitor's submission. */
+function sendToRmwCrm(lead: { name: string; email: string; phone: string; message: string }) {
+  let landing = window.location.href;
+  try { landing = sessionStorage.getItem("crm_landing") || landing; } catch { /* storage blocked */ }
+  return fetch(RMW_CRM_ENDPOINT, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    keepalive: true, // finishes even if the page redirects to the thank-you page
+    body: JSON.stringify({
+      api_key: RMW_CRM_API_KEY,
+      name: lead.name,
+      phone: lead.phone,
+      email: lead.email,
+      message: lead.message,
+      project: RMW_CRM_PROJECT,
+      form_name: "Eldeco Terra & Sol - Landing page",
+      page_url: window.location.href,
+      landing_page: landing,
+      referrer: document.referrer,
+      ...getAdTracking(),
+    }),
+  }).catch(() => undefined);
+}
+
 function getCurrentDateTime() {
   const now = new Date();
   const hours = now.getHours();
@@ -99,6 +156,8 @@ export async function handleEldecoLeadFormSubmit(
     throw new Error("Could not save your enquiry. Please try again.");
   });
 
-  await Promise.all([crmPromise, sheetPromise]);
+  const rmwCrmPromise = sendToRmwCrm(formData);
+
+  await Promise.all([crmPromise, sheetPromise, rmwCrmPromise]);
   return { ok: true };
 }
