@@ -447,6 +447,11 @@ const STATIC_PUBLIC_PAGES = [
   { loc: "/privacy-policy",          priority: 0.68, changefreq: "weekly"  },
 ];
 
+// ─── Always-included paths (added even when API-driven hub logic skips them) ──
+const FORCED_SITEMAP_PATHS = [
+  "/new-projects-in-bareilly",
+];
+
 // ─── Block-list ───────────────────────────────────────────────────────────────
 
 const SITEMAP_BLOCKED_EXACT = new Set([
@@ -604,6 +609,7 @@ module.exports = {
     for (const page of STATIC_PUBLIC_PAGES) {
       pushLoc(page.loc, { priority: page.priority, changefreq: page.changefreq });
     }
+    for (const loc of FORCED_SITEMAP_PATHS) pushLoc(loc);
 
     let cities            = [];
     let projectsData      = [];
