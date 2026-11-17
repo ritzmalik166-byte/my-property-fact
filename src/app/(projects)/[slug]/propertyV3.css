@@ -3924,3 +3924,21 @@ button.pd3-gallery-strip__item {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.72; }
 }
+
+/* Configurations: one chip per unit type, wrapping instead of one long line */
+.pd3-meta-item:has(.pd3-config-list) {
+  flex: 1 1 320px;
+  min-width: 0;
+}
+.pd3-config-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 8px;
+}
+.pd3-config-chip {
+  padding: 3px 10px;
+  border: 1px solid var(--pd3-border);
+  border-radius: 999px;
+  font-size: 13px;
+  white-space: nowrap;
+}

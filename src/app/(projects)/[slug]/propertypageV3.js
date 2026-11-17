@@ -1130,8 +1130,13 @@ export default function PropertyV3({
               {projectDetail.projectConfiguration ? (
                 <div className="pd3-meta-item">
                   <span className="pd3-meta-item__label">Configurations</span>
-                  <span className="pd3-meta-item__value">
-                    {projectDetail.projectConfiguration}
+                  <span className="pd3-meta-item__value pd3-config-list">
+                    {String(projectDetail.projectConfiguration)
+                      .split(/\s*[,|]\s*/)
+                      .filter(Boolean)
+                      .map((c, i) => (
+                        <span key={i} className="pd3-config-chip">{c}</span>
+                      ))}
                   </span>
                 </div>
               ) : null}
