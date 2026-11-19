@@ -994,12 +994,13 @@
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
-  scroll-padding-inline: 4px;
+  scroll-padding-inline: 0;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior-x: contain;
   scrollbar-width: none;
-  margin-inline: calc(var(--bs-gutter-x, 1.5rem) * -0.5);
-  padding-inline: calc(var(--bs-gutter-x, 1.5rem) * 0.5);
+  /* Stay inside the container like the other home sections (no edge bleed). */
+  margin-inline: 0;
+  padding-inline: 0;
   padding-bottom: 8px;
 }
 
