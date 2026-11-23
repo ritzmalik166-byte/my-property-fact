@@ -2,6 +2,7 @@ import {
   hasCompoundListingDataInCity,
   hasFloorListingDataInCity,
 } from "./listingFloorValidation.js";
+import { getHubListingProjects } from "./listingProjectsViewConfig.js";
 
 /** Hub page prefixes used in footer links (e.g. new-projects-in-noida). */
 export const LISTING_HUB_PREFIXES = [
@@ -130,6 +131,15 @@ export function buildListingPageSlugOptions(
     if (includeHubPages) {
       for (const hub of LISTING_HUB_PREFIXES) {
         if (!hubMatchesCategory(hub, cat)) continue;
+        // Only offer hub pages that actually have projects (empty hubs return 404).
+        if (projectList.length) {
+          const hubProjects = getHubListingProjects({
+            slug: `${hub.prefix}${citySlug}`,
+            projects: projectList,
+            cityList,
+          });
+          if (hubProjects && hubProjects.length === 0) continue;
+        }
         options.push({
           pageSlug: `${hub.prefix}${citySlug}`,
           pageTitle: `${hub.label} ${placeLabel}`,

@@ -33,6 +33,16 @@ function normalizeEditorHtml(value) {
   return withoutTags;
 }
 
+/** Plain text for meta tags: strips HTML pasted from Docs/editors and collapses whitespace. */
+function toPlainText(value) {
+  return normalizeEditorHtml(value)
+    .replace(/&amp;/gi, "&")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function buildCitySaveFormData(formData, monumentImageFile) {
   const data = new FormData();
   data.append("id", String(formData.id || 0));
@@ -49,7 +59,8 @@ function buildCitySaveFormData(formData, monumentImageFile) {
   ];
 
   textFields.forEach((key) => {
-    const value = formData[key];
+    let value = formData[key];
+    if (key === "metaDescription" || key === "metaTitle") value = toPlainText(value);
     if (value !== undefined && value !== null) {
       data.append(key, String(value));
     }
@@ -94,7 +105,7 @@ export default function City({ list, stateList }) {
     {
       id: "metaDescription",
       label: "Meta Description",
-      type: "editor",
+      type: "textarea",
     },
     {
       id: "cityDescription",
@@ -132,6 +143,7 @@ export default function City({ list, stateList }) {
     setFormData({
       id: data.id || 0,
       ...data,
+      metaDescription: toPlainText(data.metaDescription),
       stateId: data.stateId ?? "",
     });
   };
@@ -368,16 +380,23 @@ export default function City({ list, stateList }) {
           <Form noValidate validated={validated} onSubmit={handleSubmit}>
             {inputFields.map((item, index) => (
               <div key={`${item.id}-${index}`}>
-                {item.type === "text" || item.type === "number" ? (
+                {item.type === "text" || item.type === "number" || item.type === "textarea" ? (
                   <Form.Group className="mb-3" controlId={item.id}>
                     <Form.Label>{item.label}</Form.Label>
                     <Form.Control
-                      type={item.type}
+                      {...(item.type === "textarea"
+                        ? { as: "textarea", rows: 3 }
+                        : { type: item.type })}
                       placeholder={`Enter ${item.label}`}
                       value={formData[item.id] || ""}
                       onChange={handleChange}
                       required={item.id === "cityName"}
                     />
+                    {item.type === "textarea" ? (
+                      <Form.Text muted>
+                        {`${String(formData[item.id] || "").length} characters (aim for 140–160)`}
+                      </Form.Text>
+                    ) : null}
                     <Form.Control.Feedback type="invalid">
                       {`${item.label} is required !`}
                     </Form.Control.Feedback>

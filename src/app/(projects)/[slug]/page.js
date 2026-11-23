@@ -36,6 +36,7 @@ import { fetchListingPageFaqsBySlug } from "@/lib/fetchListingPageFaqs";
 import { fetchListingPageContentBySlug } from "@/lib/fetchListingPageContent";
 import { slimProjectForListing } from "@/lib/slimProjectListing";
 import { getProjectsInPriceRange } from "@/app/_global_components/projectFilterUtils";
+import { getHubListingProjects } from "@/lib/listingProjectsViewConfig";
 
 /** ISR-friendly cache for valid project/listing pages. */
 export const revalidate = 120;
@@ -158,6 +159,11 @@ export default async function PropertyPage({ params }) {
       !isCompoundFloorListing && !isCitySlug && Boolean(parsedFloorCity) && isKnownFloorCity;
 
     if (isCitySlug) {
+      // City hub with no matching projects (e.g. commercial-property-in-south-goa) → 404, not an empty page.
+      const hubProjects = getHubListingProjects({ slug, projects: allProjectsForSlug, cityList });
+      if (hubProjects && hubProjects.length === 0 && allProjectsForSlug.length > 0) {
+        notFound();
+      }
       const [listingFaqs, listingContent] = await Promise.all([
         fetchListingPageFaqsBySlug(slug),
         fetchListingPageContentBySlug(slug),

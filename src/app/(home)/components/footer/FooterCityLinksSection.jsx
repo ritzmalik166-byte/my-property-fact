@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useSiteData } from "@/app/_global_components/contexts/SiteDataContext";
+import { getHubListingProjects } from "@/lib/listingProjectsViewConfig";
 
 const DELHI_NCR_CITY_NAMES = [
   "Delhi",
@@ -101,7 +102,7 @@ function renderCityList(cities, category, prefix, generateSlugFn) {
 }
 
 export default function FooterCityLinksSection({ cityList: cityListProp, className = "" }) {
-  const { cityList: contextCityList = [] } = useSiteData();
+  const { cityList: contextCityList = [], projectList = [] } = useSiteData();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -114,39 +115,45 @@ export default function FooterCityLinksSection({ cityList: cityListProp, classNa
     return [];
   }, [cityListProp, contextCityList, isMounted]);
 
+  const hasProjects = Array.isArray(projectList) && projectList.length > 0;
+
+  /** Keep only cities whose hub page has projects (empty hubs 404). Falls back to the static lists until projects load. */
+  const citiesForHub = (hubPrefix, fallbackHidden) =>
+    sortCitiesDelhiNCRFirst(
+      safeCityList.filter((item) => {
+        if (!item?.cityName || !item?.slugURL) return false;
+        if (!hasProjects) return !fallbackHidden.includes(item.cityName);
+        const hubProjects = getHubListingProjects({
+          slug: `${hubPrefix}${item.slugURL}`,
+          projects: projectList,
+          cityList: safeCityList,
+        });
+        return !hubProjects || hubProjects.length > 0;
+      }),
+    );
+
   const apartmentsCities = useMemo(
-    () =>
-      sortCitiesDelhiNCRFirst(
-        safeCityList.filter(
-          (item) =>
-            item?.cityName && !APARTMENTS_HIDDEN_CITY_NAMES.includes(item.cityName),
-        ),
-      ),
-    [safeCityList],
+    () => citiesForHub("apartments-in-", APARTMENTS_HIDDEN_CITY_NAMES),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [safeCityList, projectList],
   );
 
   const newProjectsCities = useMemo(
-    () =>
-      sortCitiesDelhiNCRFirst(
-        safeCityList.filter((item) => item?.cityName && !["Agra"].includes(item.cityName)),
-      ),
-    [safeCityList],
+    () => citiesForHub("new-projects-in-", ["Agra"]),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [safeCityList, projectList],
   );
 
   const flatsCities = useMemo(
-    () => sortCitiesDelhiNCRFirst(safeCityList),
-    [safeCityList],
+    () => citiesForHub("flats-in-", []),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [safeCityList, projectList],
   );
 
   const commercialCities = useMemo(
-    () =>
-      sortCitiesDelhiNCRFirst(
-        safeCityList.filter(
-          (item) =>
-            item?.cityName && !COMMERCIAL_HIDDEN_CITY_NAMES.includes(item.cityName),
-        ),
-      ),
-    [safeCityList],
+    () => citiesForHub("commercial-property-in-", COMMERCIAL_HIDDEN_CITY_NAMES),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [safeCityList, projectList],
   );
 
   if (!safeCityList.length) return null;

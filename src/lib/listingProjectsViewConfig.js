@@ -1,9 +1,10 @@
-import { resolveCitySlug } from "../app/_global_components/cityAliasUtils.js";
+import { cityNameMatchesFilter, resolveCitySlug } from "../app/_global_components/cityAliasUtils.js";
 import {
   floorSlugToListingLabel,
   normalizeFloorSlugSegment,
   parseCompoundListingKey,
   parseFloorInCitySlug,
+  projectMatchesListingHubCategory,
 } from "./listingFloorValidation.js";
 
 const LISTING_HUBS = [
@@ -117,6 +118,25 @@ function parseHubSlug(slug) {
     return { ...hub, citySlug };
   }
   return null;
+}
+
+/**
+ * Projects shown on a city hub URL (`commercial-property-in-south-goa` …), using the same
+ * rules as the ProjectsRedesigned listing (hub category + listing tab + locked city).
+ * Returns null when the slug is not a city hub.
+ */
+export function getHubListingProjects({ slug, projects = [], cityList = [] } = {}) {
+  const hub = parseHubSlug(slug);
+  if (!hub) return null;
+  const cityName = resolveCityDisplayName(hub.citySlug, cityList);
+  const tab = activeTabForListing({ hubCategory: hub.hubCategory });
+  return (Array.isArray(projects) ? projects : []).filter((item) => {
+    if (!projectMatchesListingHubCategory(item, hub.hubCategory)) return false;
+    const type = String(item?.propertyTypeName || "").toLowerCase();
+    if (tab === "residential" && !type.includes("residential")) return false;
+    if (tab === "commercial" && !type.includes("commercial")) return false;
+    return cityNameMatchesFilter(cityName, item);
+  });
 }
 
 /**
