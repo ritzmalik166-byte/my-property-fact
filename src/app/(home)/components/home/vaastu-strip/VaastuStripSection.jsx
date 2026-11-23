@@ -50,15 +50,16 @@ const MEDIA_CARDS = [
     id: "vaastu-simple-solution",
     reelId: "DY9kSk2THeq",
     imageSrc: "/static/vaastu-strip/signal-2026-06-17-173831_002.webp",
-    alt: "AAPKI KAI PROBLEMS KA EK SIMPLE SOLUTION!",
-    title: "AAPKI KAI PROBLEMS KA EK SIMPLE SOLUTION!",
+   
+    alt: "AMBANI HOUSE KA SABSE POWERFUL VASTU",
+    title: "AMBANI HOUSE KA SABSE POWERFUL VASTU",
   },
   {
     id: "vaastu-ambani-house",
     reelId: "DZOyVGPiaPw",
     imageSrc: "/static/vaastu-strip/signal-2026-06-17-173831_004.webp",
-    alt: "AMBANI HOUSE KA SABSE POWERFUL VASTU",
-    title: "AMBANI HOUSE KA SABSE POWERFUL VASTU",
+    alt: "AAPKI KAI PROBLEMS KA EK SIMPLE SOLUTION!",
+    title: "AAPKI KAI PROBLEMS KA EK SIMPLE SOLUTION!",
   },
 ];
 

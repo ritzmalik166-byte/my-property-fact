@@ -3224,8 +3224,8 @@ body:has(.mpf-home-r26) .home-right-type-rail {
   }
 
   .mpf-home-r26 .featured-swipe-rail__viewport {
-    margin-inline: calc(var(--rail-gutter, 12px) * -1);
-    padding-inline: var(--rail-gutter, 12px);
+    margin-inline: 0;
+    padding-inline: 0;
   }
 
   .mpf-home-r26 .featured-swipe-rail__slide {
