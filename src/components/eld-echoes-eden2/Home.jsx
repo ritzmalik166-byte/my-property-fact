@@ -6,6 +6,7 @@ import { Header, Hero, LeadForm } from './HeaderHero';
 import { KeyFacts, Overview } from './Overview';
 import { Pricing } from './Pricing';
 import Amenities from './Amenities';
+import { rememberCrmTracking } from './echoesEdenLeadSubmit';
 import { FloorPlans, Gallery } from './PlansGallery';
 import { DeveloperFooter, Faqs, Location } from './LocationFaqFooter';
 
@@ -35,6 +36,8 @@ function Home() {
   const openModal = type => setModal(type);
   const closeModal = () => setModal(null);
   const copy = modal ? modalCopy[modal] : null;
+
+  useEffect(() => { rememberCrmTracking(); }, []);
 
   useEffect(() => {
     if (modal) {
