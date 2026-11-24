@@ -18,7 +18,8 @@ components/
                       masked line reveal for all text, curtain + zoom for all images,
                       parallax backdrops), lenisStore (pause scroll while popups are open)
 data/content.js       all copy; `{ d, m }` = desktop / mobile wording
-assets/               images (Figma image fills), icons (SVG exports), renders (composites)
+assets/index.js       asset registry → files live in /public/l-p/eldeco-terra-n-soll
+                      (images = Figma image fills, icons = SVG exports, renders = composites)
 styles/landing.css    design tokens + scoped resets (overrides root Lato/Inter rules)
 ```
 

@@ -1,79 +1,86 @@
 /*
   Registry of every asset exported from Figma (file H36LWEBD7Tr4SrlnY18Rzu).
+  The files live in /public/l-p/eldeco-terra-n-soll and are served from /l-p/eldeco-terra-n-soll:
   - images/   original image fills, downloaded via the REST /files/:key/images endpoint
   - icons/    SVG exports of the icon instances; file name = <glyph>-<colour>-<size>
   - renders/  composite layers (blurred floor plans, footer pattern)
+  Each entry is { src, width, height } (same shape as a static import), so it works
+  with next/image, getImageProps and ui/Icon unchanged.
   Raw design data + reference render live in /exports/figma/eldeco-terra-sol.
 */
 
+export const ASSET_BASE = "/l-p/eldeco-terra-n-soll";
+
+const asset = (file, width, height) => ({ src: `${ASSET_BASE}/${file}`, width, height });
+
 // images
-import logo from "./images/logo.png";
-import logoFooter from "./images/logo-footer.png";
-import heroDesktop from "./images/hero-desktop.jpg";
-import gallery1 from "./images/gallery-1.jpg";
-import gallery2 from "./images/gallery-2.jpg";
-import gallery3 from "./images/gallery-3.jpg";
-import gallery5 from "./images/gallery-5.jpg";
-import videoThumbnail from "./images/video-thumbnail.jpg";
-import virtualTour from "./images/virtual-tour.jpg";
-import amenityPool from "./images/amenity-infinity-pool.jpg";
-import priceBanner from "./images/price-banner.jpg";
+const logo = asset("images/logo.png", 355, 90);
+const logoFooter = asset("images/logo-footer.png", 355, 90);
+const heroDesktop = asset("images/hero-desktop.jpg", 2049, 975);
+const gallery1 = asset("images/gallery-1.jpg", 920, 645);
+const gallery2 = asset("images/gallery-2.jpg", 920, 645);
+const gallery3 = asset("images/gallery-3.jpg", 920, 645);
+const gallery5 = asset("images/gallery-5.jpg", 920, 645);
+const videoThumbnail = asset("images/video-thumbnail.jpg", 2049, 975);
+const virtualTour = asset("images/virtual-tour.jpg", 622, 344);
+const amenityPool = asset("images/amenity-infinity-pool.jpg", 1187, 832);
+const priceBanner = asset("images/price-banner.jpg", 1019, 524);
 
 // renders
-import floorplanBlurDesktop from "./renders/floorplan-blur-desktop.png";
-import floorplanBlurMobile from "./renders/floorplan-blur-mobile.png";
-import footerPattern from "./renders/footer-pattern.svg";
+const floorplanBlurDesktop = asset("renders/floorplan-blur-desktop.png", 496, 440);
+const floorplanBlurMobile = asset("renders/floorplan-blur-mobile.png", 480, 400);
+const footerPattern = asset("renders/footer-pattern.svg", 1440, 520);
 
 // icons — feature / highlight glyphs (#b5873b)
-import towers22 from "./icons/towers-b5873b-22.svg";
-import towers20 from "./icons/towers-b5873b-20.svg";
-import lobby22 from "./icons/lobby-b5873b-22.svg";
-import lobby20 from "./icons/lobby-b5873b-20.svg";
-import expand22 from "./icons/expand-b5873b-22.svg";
-import expand20 from "./icons/expand-b5873b-20.svg";
-import corner22 from "./icons/corner-b5873b-22.svg";
-import corner20 from "./icons/corner-b5873b-20.svg";
-import sparkle22 from "./icons/sparkle-b5873b-22.svg";
-import sparkle20 from "./icons/sparkle-b5873b-20.svg";
-import balcony22 from "./icons/balcony-b5873b-22.svg";
-import balcony20 from "./icons/balcony-b5873b-20.svg";
-import lock22 from "./icons/lock-b5873b-22.svg";
-import lock20 from "./icons/lock-b5873b-20.svg";
-import highway22 from "./icons/highway-b5873b-22.svg";
-import highway20 from "./icons/highway-b5873b-20.svg";
-import road22 from "./icons/road-b5873b-22.svg";
-import road20 from "./icons/road-b5873b-20.svg";
-import school22 from "./icons/school-b5873b-22.svg";
-import school20 from "./icons/school-b5873b-20.svg";
+const towers22 = asset("icons/towers-b5873b-22.svg", 22, 22);
+const towers20 = asset("icons/towers-b5873b-20.svg", 20, 20);
+const lobby22 = asset("icons/lobby-b5873b-22.svg", 22, 22);
+const lobby20 = asset("icons/lobby-b5873b-20.svg", 20, 20);
+const expand22 = asset("icons/expand-b5873b-22.svg", 22, 22);
+const expand20 = asset("icons/expand-b5873b-20.svg", 20, 20);
+const corner22 = asset("icons/corner-b5873b-22.svg", 22, 22);
+const corner20 = asset("icons/corner-b5873b-20.svg", 20, 20);
+const sparkle22 = asset("icons/sparkle-b5873b-22.svg", 22, 22);
+const sparkle20 = asset("icons/sparkle-b5873b-20.svg", 20, 20);
+const balcony22 = asset("icons/balcony-b5873b-22.svg", 22, 22);
+const balcony20 = asset("icons/balcony-b5873b-20.svg", 20, 20);
+const lock22 = asset("icons/lock-b5873b-22.svg", 22, 22);
+const lock20 = asset("icons/lock-b5873b-20.svg", 20, 20);
+const highway22 = asset("icons/highway-b5873b-22.svg", 22, 22);
+const highway20 = asset("icons/highway-b5873b-20.svg", 20, 20);
+const road22 = asset("icons/road-b5873b-22.svg", 22, 22);
+const road20 = asset("icons/road-b5873b-20.svg", 20, 20);
+const school22 = asset("icons/school-b5873b-22.svg", 22, 22);
+const school20 = asset("icons/school-b5873b-20.svg", 20, 20);
 
 // icons — UI
-import chevron from "./icons/chevron-090909-18.svg";
-import arrowRight from "./icons/arrowright-b5873b-22.svg";
-import calendarDark from "./icons/calendar-090909-20.svg";
-import calendarGold from "./icons/calendar-e2b04a-20.svg";
-import downloadBronze from "./icons/download-b5873b-20.svg";
-import downloadGold from "./icons/download-e2b04a-22.svg";
-import unlock from "./icons/unlock-090909-20.svg";
-import lockGold from "./icons/lock-e2b04a-20.svg";
-import pinBronze20 from "./icons/pin-b5873b-20.svg";
-import pinMuted16 from "./icons/pin-6b726b-16.svg";
-import pinGold14 from "./icons/pin-e2b04a-14.svg";
-import pinGold18 from "./icons/pin-e2b04a-18.svg";
-import phoneBronze18 from "./icons/phone-b5873b-18.svg";
-import phoneBronze20 from "./icons/phone-b5873b-20.svg";
-import phoneGold18 from "./icons/phone-e2b04a-18.svg";
-import phoneGold20 from "./icons/phone-e2b04a-20.svg";
-import phoneDark20 from "./icons/phone-090909-20.svg";
-import phoneDark22 from "./icons/phone-090909-22.svg";
-import phoneDark26 from "./icons/phone-090909-26.svg";
-import whatsappBronze from "./icons/whatsapp-b5873b-20.svg";
-import whatsappDark from "./icons/whatsapp-090909-26.svg";
-import checkAmenity from "./icons/check-b0632a-14.svg";
-import checkAmenity16 from "./icons/check-b0632a-16.svg";
-import checkDark from "./icons/check-090909-14.svg";
-import checkGold16 from "./icons/check-e2b04a-16.svg";
-import play29 from "./icons/play-1f2b25-29.svg";
-import play22 from "./icons/play-1f2b25-22.svg";
+const chevron = asset("icons/chevron-090909-18.svg", 18, 18);
+const arrowRight = asset("icons/arrowright-b5873b-22.svg", 22, 22);
+const calendarDark = asset("icons/calendar-090909-20.svg", 20, 20);
+const calendarGold = asset("icons/calendar-e2b04a-20.svg", 20, 20);
+const downloadBronze = asset("icons/download-b5873b-20.svg", 20, 20);
+const downloadGold = asset("icons/download-e2b04a-22.svg", 22, 22);
+const unlock = asset("icons/unlock-090909-20.svg", 20, 20);
+const lockGold = asset("icons/lock-e2b04a-20.svg", 20, 20);
+const pinBronze20 = asset("icons/pin-b5873b-20.svg", 20, 20);
+const pinMuted16 = asset("icons/pin-6b726b-16.svg", 16, 16);
+const pinGold14 = asset("icons/pin-e2b04a-14.svg", 14, 14);
+const pinGold18 = asset("icons/pin-e2b04a-18.svg", 18, 18);
+const phoneBronze18 = asset("icons/phone-b5873b-18.svg", 18, 18);
+const phoneBronze20 = asset("icons/phone-b5873b-20.svg", 20, 20);
+const phoneGold18 = asset("icons/phone-e2b04a-18.svg", 18, 18);
+const phoneGold20 = asset("icons/phone-e2b04a-20.svg", 20, 20);
+const phoneDark20 = asset("icons/phone-090909-20.svg", 20, 20);
+const phoneDark22 = asset("icons/phone-090909-22.svg", 22, 22);
+const phoneDark26 = asset("icons/phone-090909-26.svg", 26, 26);
+const whatsappBronze = asset("icons/whatsapp-b5873b-20.svg", 20, 20);
+const whatsappDark = asset("icons/whatsapp-090909-26.svg", 26, 26);
+const checkAmenity = asset("icons/check-b0632a-14.svg", 14, 14);
+const checkAmenity16 = asset("icons/check-b0632a-16.svg", 16, 16);
+const checkDark = asset("icons/check-090909-14.svg", 14, 14);
+const checkGold16 = asset("icons/check-e2b04a-16.svg", 16, 16);
+const play29 = asset("icons/play-1f2b25-29.svg", 29, 29);
+const play22 = asset("icons/play-1f2b25-22.svg", 22, 22);
 
 export const images = {
   logo,
