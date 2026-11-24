@@ -1,9 +1,8 @@
 import Card from "../ui/Card";
-import Button from "../ui/Button";
 import DetailRows from "../ui/DetailRows";
 import EnquiryButton from "../enquiry/EnquiryButton";
 import { icons } from "../../assets";
-import { DIRECTIONS_URL, DISTANCES, MAP_EMBED_URL, SECTION_IDS } from "../../data/content";
+import { DISTANCES, MAP_EMBED_URL, SECTION_IDS } from "../../data/content";
 import prose from "./Prose.module.css";
 import styles from "./LocationCard.module.css";
 
@@ -49,9 +48,15 @@ export default function LocationCard() {
         >
           Book a Site Visit
         </EnquiryButton>
-        <Button variant="outline" icon={icons.pinBronze20} href={DIRECTIONS_URL} className={`${styles.cta} ${styles.directions}`}>
+        <EnquiryButton
+          variant="outline"
+          icon={icons.pinBronze20}
+          className={`${styles.cta} ${styles.directions}`}
+          title="Get Directions to Eldeco Terra & Sol"
+          submitLabel="Get Directions"
+        >
           Get Directions
-        </Button>
+        </EnquiryButton>
       </div>
     </Card>
   );
