@@ -1,0 +1,56 @@
+/* map frame — keeps the Figma slot: 714×320 (mobile 220), r12, 1px border, clip */
+.map {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 320px;
+  border: 1px solid var(--ets-border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #efe7d9; /* shown while the map loads */
+}
+.mapFrame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.address {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.addressLabel {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  color: var(--ets-text);
+}
+
+.divider {
+  height: 1px;
+  margin: 0;
+  border: 0;
+  background: var(--ets-border);
+  opacity: 1;
+}
+
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* 23:902 mobile — map 220, only "Book a Site Visit" (full width) */
+@media (max-width: 767px) {
+  .map {
+    height: 220px;
+  }
+  .ctas .cta {
+    width: 100%;
+  }
+  .ctas .directions {
+    display: none;
+  }
+}

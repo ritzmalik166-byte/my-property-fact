@@ -1,0 +1,85 @@
+.hint {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ets-muted);
+}
+
+/* 23:431 Plans — 3 × fill, gap 16 */
+.plans {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.plan {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+/* 23:433 Locked plan — 200 tall, #faf6ef, 1px border, r12, clip; children centred, gap 12 */
+.locked {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  height: 200px;
+  border: 1px solid var(--ets-border);
+  border-radius: 12px;
+  background: var(--ets-page);
+  overflow: hidden;
+}
+.blur {
+  z-index: -1;
+  object-fit: cover;
+}
+
+/* 23:443 Lock — 44 circle, green, gold glyph */
+.lock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  background: var(--ets-green);
+}
+
+.name {
+  color: var(--ets-text);
+}
+
+@media (max-width: 1279px) and (min-width: 1024px) {
+  .locked .unlock {
+    padding: 0 14px;
+  }
+}
+
+/* 23:862 mobile — horizontal swipe, 220-wide plans, gap 12; plan 180 tall, gap 10 */
+@media (max-width: 767px) {
+  .plans {
+    display: flex;
+    gap: 12px;
+    margin-right: -20px;
+    padding-right: 20px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  .plans::-webkit-scrollbar {
+    display: none;
+  }
+  .plan {
+    flex: 0 0 220px;
+    gap: 10px;
+    scroll-snap-align: start;
+  }
+  .locked {
+    height: 180px;
+    gap: 10px;
+  }
+}

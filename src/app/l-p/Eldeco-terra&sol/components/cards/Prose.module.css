@@ -1,0 +1,18 @@
+/* body copy inside cards — Montserrat 400 16/26, v6/muted */
+.body {
+  font-size: 16px;
+  line-height: 26px;
+  font-weight: 400;
+  color: var(--ets-muted);
+}
+
+.note {
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 400;
+  color: var(--ets-muted);
+}
+
+.subheading {
+  color: var(--ets-text);
+}

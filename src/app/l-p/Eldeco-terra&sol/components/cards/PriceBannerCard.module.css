@@ -1,0 +1,96 @@
+/* 23:301 — fill #f0e5d1, r16, padding 32, row gap 24, centred, clip, shadow 0 12 32 rgba(51,64,51,.14) */
+.banner {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 32px;
+  border-radius: 16px;
+  background: var(--ets-banner);
+  box-shadow: var(--ets-shadow-banner);
+  overflow: hidden;
+}
+
+/* 23:302 + 23:303 — 320×130 image at top-right, 50% opacity, faded in from the left */
+.media {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: -1;
+  width: 320px;
+  height: 130px;
+}
+.image {
+  object-fit: cover;
+  opacity: 0.5;
+}
+.fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, #f0e5d1 0%, rgba(240, 229, 209, 0.1) 100%);
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+}
+
+.tag {
+  display: inline-flex;
+  padding: 5px 10px;
+  border-radius: 6px;
+  background: var(--ets-gold);
+  color: var(--ets-black);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+}
+
+.title {
+  color: var(--ets-text);
+}
+
+.text {
+  font-size: 16px;
+  line-height: 26px;
+  color: var(--ets-text);
+}
+
+.banner .cta {
+  flex-shrink: 0;
+}
+
+@media (max-width: 1279px) and (min-width: 1024px), (max-width: 900px) and (min-width: 768px) {
+  .banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* 23:771 mobile — column, gap 12, padding 20, no image / description / shadow */
+@media (max-width: 767px) {
+  .banner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 20px;
+    box-shadow: none;
+  }
+  .media,
+  .text {
+    display: none;
+  }
+  .copy {
+    gap: 12px;
+  }
+
+  .banner .cta {
+    width: 100%;
+  }
+}

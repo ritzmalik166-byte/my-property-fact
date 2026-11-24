@@ -1,0 +1,354 @@
+/*
+  Eldeco Terra & Sol (v6) — design tokens + shared rules.
+  Values come from the Figma variables used in nodes 23:162 / 23:659 ("v6/*", "v5/*").
+  Everything is scoped under .ets so it cannot leak into the rest of the site.
+
+  Breakpoints
+    ≥1024px  desktop layout (two columns: content + sticky enquiry sidebar)
+    768–1023 tablet: desktop content, single column, enquiry form after the hero
+    ≤767px   mobile frame (390) — mobile copy + layout
+*/
+
+.ets {
+  /* colour */
+  --ets-green: #12684d; /* v6/eldecogreen */
+  --ets-green-deep: #0c4636; /* footer, media overlays */
+  --ets-green-shade: #0a3a2c; /* hero gradients */
+  --ets-card: #fffdf8; /* v6/card */
+  --ets-page: #faf6ef; /* page ground */
+  --ets-border: #e3d6c2; /* v6/border */
+  --ets-text: #1f2b25; /* v6/text */
+  --ets-muted: #6b726b; /* v6/muted */
+  --ets-on-dark: #fbf8f0; /* v6/ondark */
+  --ets-gold: #e2b04a; /* v5/gold */
+  --ets-gold-text: #ebc15c; /* urgency chip text */
+  --ets-bronze: #b5873b; /* icon strokes */
+  --ets-champ: #f4e9d5; /* v6/champtint */
+  --ets-tile: #f3ebdf; /* stat tiles, table head */
+  --ets-banner: #f0e5d1; /* price banner */
+  --ets-brochure-border: #cec8bd;
+  --ets-black: #090909; /* v5/black */
+  --ets-gradient: linear-gradient(90deg, #b4672b 0%, #dca347 38%, #f2c95e 68%, #c98636 100%);
+
+  /* elevation */
+  --ets-shadow-card: 0 4px 16px rgba(51, 64, 51, 0.03);
+  --ets-shadow-form: 0 20px 48px rgba(51, 64, 51, 0.22);
+  --ets-shadow-btn: 0 6px 18px rgba(226, 176, 74, 0.32);
+  --ets-shadow-banner: 0 12px 32px rgba(51, 64, 51, 0.14);
+  --ets-shadow-float: 0 8px 20px rgba(51, 64, 51, 0.2);
+
+  /* layout */
+  --ets-header-h: 84px;
+  /* 120px at 1440 (1200 content); keeps everything on the same 1200 column at any width.
+     % resolves against the element using it, so the scrollbar is accounted for. */
+  --ets-gutter: max(24px, calc((100% - 1200px) / 2));
+  --ets-sidebar-w: 380px;
+  --ets-col-gap: 40px;
+
+  font-family: var(--font-montserrat), "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--ets-text);
+  background: var(--ets-page);
+  min-height: 100vh;
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+@media (max-width: 1279px) {
+  .ets {
+    --ets-sidebar-w: 340px;
+    --ets-col-gap: 32px;
+  }
+}
+
+@media (max-width: 1023px) {
+  .ets {
+    --ets-header-h: 68px;
+    --ets-gutter: 32px;
+  }
+}
+
+@media (max-width: 767px) {
+  .ets {
+    --ets-gutter: 16px;
+  }
+}
+
+/* local reset — the root site stylesheet styles bare elements */
+.ets *,
+.ets *::before,
+.ets *::after {
+  box-sizing: border-box;
+}
+.ets :where(h1, h2, h3, h4, p, ul, ol, figure, blockquote, dl, dd) {
+  margin: 0;
+  padding: 0;
+}
+/* the root stylesheets force `h1–h6 { font-family: var(--heaing-font) !important }` (Lato) */
+.ets h1,
+.ets h2,
+.ets h3,
+.ets h4,
+.ets h5,
+.ets h6 {
+  font-family: var(--font-montserrat), "Montserrat", system-ui, sans-serif !important;
+  font-weight: 600;
+}
+
+/*
+  Heading scale — one size per level for the whole page, on every screen.
+  (These beat the per-component module classes on purpose, so headings stay uniform.)
+    h1  hero title
+    h2  every section / card / form / banner title
+    h3  sub-headings (Location Advantage, plan names, footer columns, "Prefer to talk?")
+*/
+.ets {
+  --ets-h1-size: 60px;
+  --ets-h1-line: 66px;
+  --ets-h1-track: -0.6px;
+  --ets-h2-size: 26px;
+  --ets-h2-line: 32px;
+  --ets-h3-size: 20px;
+  --ets-h3-line: 26px;
+}
+@media (max-width: 1279px) {
+  .ets {
+    --ets-h1-size: 52px;
+    --ets-h1-line: 58px;
+  }
+}
+@media (max-width: 1023px) {
+  .ets {
+    --ets-h1-size: 48px;
+    --ets-h1-line: 54px;
+    --ets-h2-size: 24px;
+    --ets-h2-line: 30px;
+  }
+}
+@media (max-width: 767px) {
+  .ets {
+    --ets-h1-size: 36px;
+    --ets-h1-line: 42px;
+    --ets-h1-track: -0.18px;
+    --ets-h2-size: 22px;
+    --ets-h2-line: 28px;
+    --ets-h3-size: 18px;
+    --ets-h3-line: 24px;
+  }
+}
+.ets h1 {
+  font-size: var(--ets-h1-size);
+  line-height: var(--ets-h1-line);
+  letter-spacing: var(--ets-h1-track);
+}
+.ets h2 {
+  font-size: var(--ets-h2-size);
+  line-height: var(--ets-h2-line);
+  letter-spacing: 0;
+}
+.ets h3 {
+  font-size: var(--ets-h3-size);
+  line-height: var(--ets-h3-line);
+  letter-spacing: 0;
+}
+
+/*
+  "Water" hover — shared by every button on the page (add class `ets-water`).
+  A rotating rounded square rises from below; its edge reads as a rolling wave.
+*/
+.ets-water {
+  --ets-water-color: var(--ets-green-deep);
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  /* leaving: keep the light label until the water has drained past it */
+  transition:
+    color 0.3s ease 0.45s,
+    border-color 0.3s ease 0.45s;
+}
+/*
+  At rest the layer is parked well below the button AND invisible, so no wave edge
+  can peek in. On pointer-leave the water drains back down (the fill in reverse,
+  same speed and curve); only once it is out of the button is it hidden again.
+*/
+.ets-water::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 40px);
+  z-index: -1;
+  width: max(240%, 160px);
+  aspect-ratio: 1;
+  border-radius: 42%;
+  background: var(--ets-water-color);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-50%) rotate(0deg);
+  /* leaving: drain down over 0.6s, then hide */
+  transition:
+    top 0.6s cubic-bezier(0.7, 0, 0.7, 0.4),
+    opacity 0s linear 0.6s,
+    visibility 0s linear 0.6s;
+  /* the wave keeps rolling (also while draining); hidden at rest via visibility */
+  animation: ets-water-wave 5s linear infinite;
+  pointer-events: none;
+}
+/* Figma SVG icons are fixed-colour: turn them white over the water */
+.ets-water img {
+  transition: filter 0.3s ease 0.45s;
+}
+/* filling state (shared by hover / press / keyboard focus) */
+.ets-water:active::before,
+.ets-water:focus-visible::before {
+  top: -30px;
+  opacity: 1;
+  visibility: visible;
+  transition:
+    top 0.6s cubic-bezier(0.3, 0.6, 0.3, 1),
+    opacity 0.2s ease,
+    visibility 0s;
+  animation-play-state: running;
+}
+.ets-water:active,
+.ets-water:focus-visible {
+  color: var(--ets-on-dark) !important;
+  border-color: var(--ets-water-color) !important;
+  transition:
+    color 0.3s ease,
+    border-color 0.3s ease;
+}
+.ets-water:active img,
+.ets-water:focus-visible img {
+  filter: brightness(0) invert(1);
+  transition: filter 0.3s ease;
+}
+/* hover — only on devices that really hover, so taps don't leave it "stuck" */
+@media (hover: hover) {
+  .ets-water:hover::before {
+    top: -30px;
+    opacity: 1;
+    visibility: visible;
+    transition:
+      top 0.6s cubic-bezier(0.3, 0.6, 0.3, 1),
+      opacity 0.2s ease,
+      visibility 0s;
+    animation-play-state: running;
+  }
+  .ets-water:hover {
+    color: var(--ets-on-dark) !important;
+    border-color: var(--ets-water-color) !important;
+    transition:
+      color 0.3s ease,
+      border-color 0.3s ease;
+  }
+  .ets-water:hover img {
+    filter: brightness(0) invert(1);
+    transition: filter 0.3s ease;
+  }
+}
+@keyframes ets-water-wave {
+  to {
+    transform: translateX(-50%) rotate(360deg);
+  }
+}
+/* …and `p, span, li, label, small, input, textarea, select { font-family: var(--text-font) }` (Inter) */
+.ets :is(p, span, li, label, small, a, button, dt, dd, input, textarea, select) {
+  font-family: inherit;
+}
+.ets :where(ul, ol) {
+  list-style: none;
+}
+.ets :where(a) {
+  color: inherit;
+  text-decoration: none;
+}
+.ets :where(button, input, select, textarea) {
+  font: inherit;
+  color: inherit;
+}
+.ets :where(button) {
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+.ets :where(img) {
+  display: block;
+  max-width: 100%;
+}
+
+/* sections scroll below the sticky header */
+.ets [data-ets-section] {
+  scroll-margin-top: calc(var(--ets-header-h) + 16px);
+}
+
+/* desktop/mobile copy + element switches (see <Responsive />) */
+@media (min-width: 768px) {
+  .ets-m {
+    display: none !important;
+  }
+}
+@media (max-width: 767px) {
+  .ets-d {
+    display: none !important;
+  }
+}
+
+/* Lenis (see components/motion/SmoothScroll.jsx). The root stylesheet sets
+   `scroll-behavior: smooth` on html/body, which fights Lenis — turn it off here. */
+html.ets-lenis,
+html.ets-lenis body {
+  height: auto;
+  scroll-behavior: auto !important;
+}
+html.lenis-stopped {
+  overflow: clip;
+}
+[data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+/* SplitText line masks (components/motion/ScrollAnimations.jsx): the reveal only needs
+   a vertical clip — keep text that is wider than its box (e.g. "2.7 Acres") visible. */
+.ets .etsLine-mask {
+  overflow-x: visible !important;
+  overflow-y: clip !important;
+}
+
+.ets-sr-only {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* keyboard focus ring for links/buttons only — form fields get no coloured box on click */
+.ets :is(a, button):focus-visible {
+  outline: 2px solid var(--ets-gold);
+  outline-offset: 2px;
+}
+.ets :is(input, textarea, select):focus,
+.ets :is(input, textarea, select):focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ets *,
+  .ets *::before,
+  .ets *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* water hover: keep the fill, drop the rolling wave */
+  .ets-water::before {
+    animation: none !important;
+  }
+}

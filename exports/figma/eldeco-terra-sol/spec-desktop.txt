@@ -1,0 +1,671 @@
+FRAME "Desktop / 1440 (v6)" [23:162] 0,0 1440x8151 bg:#faf6ef flex:col gap:0 pad:0 0 0 0 main:MIN cross:MIN h:HUG clip
+  FRAME "01 Header (sticky)" [23:163] 0,0 1440x84 bg:#fffdf8 flex:row gap:0 pad:0 120 0 120 main:SPACE_BETWEEN cross:CENTER w:FILL
+    FRAME "Logo box" [23:164] 120,12.5 198x59 bg:#fffdf8 r:10 flex:row gap:0 pad:8 14 8 14 main:MIN cross:MIN w:HUG h:HUG
+      RECTANGLE "Eldeco Terra & Sol logo" [23:165] 14,8 170x43 bg:IMG(9d885e60,FIT)
+    FRAME "Nav" [23:166] 349.5,32 574x20 flex:row gap:32 pad:0 0 0 0 main:MIN cross:MIN w:HUG h:HUG
+      TEXT "Overview" [23:167] 0,0 77x20 w:HUG h:HUG font:Montserrat 500 16/20 ls:0 LEFT   color:#1f2b25 "Overview"
+      TEXT "Highlights" [23:168] 109,0 85x20 w:HUG h:HUG font:Montserrat 500 16/20 ls:0 LEFT   color:#1f2b25 "Highlights"
+      TEXT "Amenities" [23:169] 226,0 83x20 w:HUG h:HUG font:Montserrat 500 16/20 ls:0 LEFT   color:#1f2b25 "Amenities"
+      TEXT "Price" [23:170] 341,0 41x20 w:HUG h:HUG font:Montserrat 500 16/20 ls:0 LEFT   color:#1f2b25 "Price"
+      TEXT "Location" [23:171] 414,0 71x20 w:HUG h:HUG font:Montserrat 500 16/20 ls:0 LEFT   color:#1f2b25 "Location"
+      TEXT "Gallery" [23:172] 517,0 57x20 w:HUG h:HUG font:Montserrat 500 16/20 ls:0 LEFT   color:#1f2b25 "Gallery"
+    FRAME "Header actions" [23:173] 955,19 365x46 flex:row gap:20 pad:0 0 0 0 main:MIN cross:CENTER w:HUG h:HUG
+      FRAME "Phone" [23:174] 0,11 162x24 flex:row gap:8 pad:0 0 0 0 main:MIN cross:CENTER w:HUG h:HUG
+        INSTANCE "Icon/phone" [23:175] 0,3 18x18
+          VECTOR "Glyph" [I23:175;959:786] 2.25,3 12.75x12.75 border:1.5 #b5873b CENTER
+        TEXT "+91-9770708080" [23:176] 26,0 136x24 w:HUG h:HUG font:Montserrat 700 16/24 ls:0 LEFT   color:#1f2b25 "+91-9770708080"
+      FRAME "RERA pill" [23:177] 182,0 183x46 bg:#fffdf8 border:1 #090909 INSIDE r:10 flex:row gap:0 pad:12 18 12 18 main:MIN cross:MIN w:HUG h:HUG
+        TEXT "HARERA/20/2026" [23:178] 19,13 145x20 w:HUG h:HUG font:Montserrat 700 16/20 ls:0 LEFT   color:#1f2b25 "HARERA/20/2026"
+  FRAME "02 Hero" [23:179] 0,84 1440x640 bg:#12684d|IMG(a79621fe,FILL) flex:col gap:24 pad:0 120 88 120 main:MAX cross:MIN w:FILL clip
+    RECTANGLE "Bottom gradient" [23:180] 0,0 1440x640 bg:linear(180deg #0a3a2c/0.12 0%, #0a3a2c/0.2 45%, #0a3a2c/0.74 100%) abs
+    RECTANGLE "Left gradient" [23:181] 0,0 1440x640 bg:linear(90deg #0a3a2c/0.56 0%, #0a3a2c/0 55%) abs
+    FRAME "Hero copy" [23:182] 120,198 760x354 flex:col gap:20 pad:0 0 0 0 main:MIN cross:MIN h:HUG
+      FRAME "Badges" [23:183] 0,0 541x28 flex:row gap:10 pad:0 0 0 0 main:MIN cross:MIN w:HUG h:HUG
+        FRAME "Badge" [23:184] 0,0 122x28 bg:#fffdf8 r:6 flex:row gap:0 pad:6 12 6 12 main:MIN cross:MIN w:HUG h:HUG
+          TEXT "APARTMENTS" [23:185] 12,6 98x16 w:HUG h:HUG font:Montserrat 700 12/16 ls:1.2 LEFT   color:#1f2b25 "APARTMENTS"
+        FRAME "Badge" [23:186] 132,0 181x28 bg:linear(90deg #b4672b 0%, #dca347 38%, #f2c95e 68%, #c98636 100%) r:6 flex:row gap:0 pad:6 12 6 12 main:MIN cross:MIN w:HUG h:HUG
+          TEXT "HARERA REGISTERED" [23:187] 12,6 157x16 w:HUG h:HUG font:Montserrat 700 12/16 ls:1.2 LEFT   color:#090909 "HARERA REGISTERED"
+        FRAME "Badge" [23:188] 323,0 218x28 bg:#ffffff/0.15 r:6 flex:row gap:6 pad:6 12 6 12 main:MIN cross:CENTER w:HUG h:HUG
+          INSTANCE "Icon/pin" [23:189] 12,7 14x14
+            VECTOR "Glyph" [I23:189;959:792] 2.92,1.46 8.17x10.79 border:1.5 #e2b04a CENTER
+          TEXT "SECTOR 80, GURUGRAM" [23:190] 32,6 174x16 w:HUG h:HUG font:Montserrat 700 12/16 ls:1.2 LEFT   color:#fbf8f0 "SECTOR 80, GURUGRAM"
+      TEXT "H1" [23:191] 0,48 760x66 w:FILL h:HUG font:Montserrat 600 60/66 ls:-0.6 LEFT   color:#fbf8f0 "Eldeco Terra & Sol"
+      TEXT "Iconic luxury 3 & 3.5 BHK apartments in Gurgaon, with only 4 homes per core and wrapped balconies." [23:192] 0,134 760x56 w:FILL h:HUG font:Montserrat 400 18/28 ls:0 LEFT   color:#ffffff/0.9 "Iconic luxury 3 & 3.5 BHK apartments in Gurgaon, with only 4 homes per core and wrapped balconies."
+      FRAME "Quick facts" [23:193] 0,210 470x68 flex:row gap:12 pad:0 0 0 0 main:MIN cross:MIN w:HUG h:HUG
+        FRAME "Fact / Starting" [23:194] 0,0 126x68 bg:#12684d border:1 #ffffff/0.25 INSIDE r:10 BACKGROUND_BLUR:10 flex:col gap:2 pad:10 16 10 16 main:MIN cross:MIN w:HUG h:HUG
+          TEXT "Starting" [23:195] 17,11 49x18 w:HUG h:HUG font:Montserrat 400 12/18 ls:0 LEFT   color:#ffffff/0.75 "Starting"
+          TEXT "₹3.33 Cr*" [23:196] 17,31 92x26 w:HUG h:HUG font:Montserrat 600 20/26 ls:0 LEFT   color:#e2b04a "₹3.33 Cr*"
+        FRAME "Fact / Floors" [23:197] 138,0 86x68 bg:#12684d border:1 #ffffff/0.25 INSIDE r:10 BACKGROUND_BLUR:10 flex:col gap:2 pad:10 16 10 16 main:MIN cross:MIN w:HUG h:HUG
+          TEXT "Floors" [23:198] 17,11 37x18 w:HUG h:HUG font:Montserrat 400 12/18 ls:0 LEFT   color:#ffffff/0.75 "Floors"
+          TEXT "G+30" [23:199] 17,31 52x26 w:HUG h:HUG font:Montserrat 600 20/26 ls:0 LEFT   color:#fbf8f0 "G+30"
+        FRAME "Fact / Land parcel" [23:200] 236,0 126x68 bg:#12684d border:1 #ffffff/0.25 INSIDE r:10 BACKGROUND_BLUR:10 flex:col gap:2 pad:10 16 10 16 main:MIN cross:MIN w:HUG h:HUG
+          TEXT "Land parcel" [23:201] 17,11 71x18 w:HUG h:HUG font:Montserrat 400 12/18 ls:0 LEFT   color:#ffffff/0.75 "Land parcel"
+          TEXT "2.7 Acres" [23:202] 17,31 92x26 w:HUG h:HUG font:Montserrat 600 20/26 ls:0 LEFT   color:#fbf8f0 "2.7 Acres"
+        FRAME "Fact / Total units" [23:203] 374,0 96x68 bg:#12684d border:1 #ffffff/0.25 INSIDE r:10 BACKGROUND_BLUR:10 flex:col gap:2 pad:10 16 10 16 main:MIN cross:MIN w:HUG h:HUG
+          TEXT "Total units" [23:204] 17,11 62x18 w:HUG h:HUG font:Montserrat 400 12/18 ls:0 LEFT   color:#ffffff/0.75 "Total units"
+          TEXT "224" [23:205] 17,31 37x26 w:HUG h:HUG font:Montserrat 600 20/26 ls:0 LEFT   color:#fbf8f0 "224"
+      FRAME "Hero CTAs" [23:206] 0,298 479x56 flex:row gap:12 pad:0 0 0 0 main:MIN cross:MIN w:HUG h:HUG
+        INSTANCE "Button / Get Exclusive Price" [23:207] 0,0 243x56 bg:linear(90deg #b4672b 0%, #dca347 38%, #f2c95e 68%, #c98636 100%) r:10 shadow:0 6 18 0 #e2b04a/0.32 flex:row gap:10 pad:0 28 0 28 main:CENTER cross:CENTER w:HUG
+          INSTANCE "Icon" [I23:207;1033:8799] 0,0 20x20 HIDDEN
+            VECTOR "Glyph" [I23:207;1033:8799;959:786] 2.5,3.33 14.17x14.17 border:1.5 #090909 CENTER
+          TEXT "Label" [I23:207;1033:8800] 28,18 159x20 w:HUG h:HUG font:Montserrat 700 16/20 ls:0 LEFT   color:#090909 "Get Exclusive Price"
+          INSTANCE "Arrow" [I23:207;1033:8801] 197,19 18x18
+            VECTOR "Glyph" [I23:207;1033:8801;959:869] 6.75,4.5 4.5x9 border:2.200000047683716 #090909 CENTER
+        INSTANCE "Button / Book a Site Visit" [23:208] 255,0 224x56 border:1 #e3d6c2 INSIDE r:10 flex:row gap:10 pad:0 28 0 28 main:CENTER cross:CENTER w:HUG
+          INSTANCE "Icon" [I23:208;1033:8831] 29,18 20x20
+            VECTOR "Glyph" [I23:208;1033:8831;959:860] 2.5,2.5 15x15 border:1.5 #e2b04a CENTER
+          TEXT "Label" [I23:208;1033:8832] 59,18 136x20 w:HUG h:HUG font:Montserrat 700 16/20 ls:0 LEFT   color:#fbf8f0 "Book a Site Visit"
+          INSTANCE "Arrow" [I23:208;1033:8833] 0,0 18x18 HIDDEN
+            VECTOR "Glyph" [I23:208;1033:8833;959:869] 6.75,4.5 4.5x9 border:2.200000047683716 #e2b04a CENTER
+  FRAME "03 Tab bar (sticky)" [23:209] 0,724 1440x64 bg:#fffdf8 border:0{"top":0,"right":0,"bottom":1,"left":0} #e3d6c2 INSIDE shadow:0 4 12 0 #334033/0.04 flex:row gap:0 pad:0 120 0 120 main:MIN cross:CENTER w:FILL
+    FRAME "Tab / Overview" [23:210] 120,-0.5 112x64 border:0{"top":0,"right":0,"bottom":3,"left":0} #090909 INSIDE flex:row gap:0 pad:0 16 0 16 main:MIN cross:CENTER w:HUG
+      TEXT "Overview" [23:211] 16,18.5 80x24 w:HUG h:HUG font:Montserrat 700 16/24 ls:0 LEFT   color:#1f2b25 "Overview"
+    FRAME "Tab / Highlights" [23:212] 232,-0.5 117x64 flex:row gap:0 pad:0 16 0 16 main:MIN cross:CENTER w:HUG
+      TEXT "Highlights" [23:213] 16,20 85x24 w:HUG h:HUG font:Montserrat 500 16/24 ls:0 LEFT   color:#6b726b "Highlights"
+    FRAME "Tab / Amenities" [23:214] 349,-0.5 115x64 flex:row gap:0 pad:0 16 0 16 main:MIN cross:CENTER w:HUG
+      TEXT "Amenities" [23:215] 16,20 83x24 w:HUG h:HUG font:Montserrat 500 16/24 ls:0 LEFT   color:#6b726b "Amenities"
+    FRAME "Tab / Price" [23:216] 464,-0.5 73x64 flex:row gap:0 pad:0 16 0 16 main:MIN cross:CENTER w:HUG
+      TEXT "Price" [23:217] 16,20 41x24 w:HUG h:HUG font:Montserrat 500 16/24 ls:0 LEFT   color:#6b726b "Price"
+    FRAME "Tab / Floor Plans" [23:218] 537,-0.5 123x64 flex:row gap:0 pad:0 16 0 16 main:MIN cross:CENTER w:HUG
+      TEXT "Floor Plans" [23:219] 16,20 91x24 w:HUG h:HUG font:Montserrat 500 16/24 ls:0 LEFT   color:#6b726b "Floor Plans"
+    FRAME "Tab / Location" [23:220] 660,-0.5 103x64 flex:row gap:0 pad:0 16 0 16 main:MIN cross:CENTER w:HUG
+      TEXT "Location" [23:221] 16,20 71x24 w:HUG h:HUG font:Montserrat 500 16/24 ls:0 LEFT   color:#6b726b "Location"
+    FRAME "Tab / Virtual Tour" [23:222] 763,-0.5 127x64 flex:row gap:0 pad:0 16 0 16 main:MIN cross:CENTER w:HUG
+      TEXT "Virtual Tour" [23:223] 16,20 95x24 w:HUG h:HUG font:Montserrat 500 16/24 ls:0 LEFT   color:#6b726b "Virtual Tour"
+  FRAME "04 Body (content + sticky sidebar)" [23:224] 0,788 1440x6090 flex:row gap:40 pad:32 120 96 120 main:MIN cross:MIN w:FILL h:HUG
+    FRAME "Main column" [23:225] 120,32 780x5962 flex:col gap:24 pad:0 0 0 0 main:MIN cross:MIN h:HUG
+      FRAME "Card / Project title" [23:226] 0,0 780x395 bg:#fffdf8 border:1 #e3d6c2 INSIDE r:16 shadow:0 4 16 0 #334033/0.03 flex:col gap:20 pad:32 32 32 32 main:MIN cross:MIN w:FILL h:HUG
+        FRAME "Title row" [23:227] 33,33 714x116 flex:row gap:0 pad:0 0 0 0 main:SPACE_BETWEEN cross:MIN w:FILL h:HUG
+          FRAME "Title" [23:228] 0,0 327x116 flex:col gap:10 pad:0 0 0 0 main:MIN cross:MIN w:HUG h:HUG
+            FRAME "Badge" [23:229] 0,0 118x26 bg:#12684d r:6 flex:row gap:0 pad:5 10 5 10 main:MIN cross:MIN w:HUG h:HUG
+              TEXT "APARTMENTS" [23:230] 10,5 98x16 w:HUG h:HUG font:Montserrat 700 12/16 ls:1.2 LEFT   color:#fbf8f0 "APARTMENTS"
+            TEXT "Eldeco Terra & Sol" [23:231] 0,36 327x44 w:HUG h:HUG font:Montserrat 600 36/44 ls:-0.18 LEFT   color:#1f2b25 "Eldeco Terra & Sol"
+            FRAME "Location" [23:232] 0,90 264x26 flex:row gap:6 pad:0 0 0 0 main:MIN cross:CENTER w:HUG h:HUG
+              INSTANCE "Icon/pin" [23:233] 0,5 16x16
+                VECTOR "Glyph" [I23:233;959:792] 3.33,1.67 9.33x12.33 border:1.5 #6b726b CENTER
+              TEXT "Sector 80, Gurugram, Haryana" [23:234] 22,0 242x26 w:HUG h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "Sector 80, Gurugram, Haryana"
+          FRAME "Price" [23:235] 519,0 195x106 bg:#f4e9d5 r:12 flex:col gap:2 pad:12 18 12 18 main:MIN cross:MAX w:HUG h:HUG
+            TEXT "Starting price" [23:236] 81,12 96x20 w:HUG h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#6b726b "Starting price"
+            TEXT "₹3.33 Cr*" [23:237] 18,34 159x40 w:HUG h:HUG font:Montserrat 700 34/40 ls:0 LEFT   color:#1f2b25 "₹3.33 Cr*"
+            TEXT "3 BHK onwards" [23:238] 85,76 92x18 w:HUG h:HUG font:Montserrat 400 12/18 ls:0 LEFT   color:#6b726b "3 BHK onwards"
+        RECTANGLE "Rectangle" [23:239] 33,169 714x1 bg:#e3d6c2 w:FILL
+        TEXT "FEATURES:" [23:240] 33,190 79x16 w:HUG h:HUG font:Montserrat 700 12/16 ls:1.2 LEFT   color:#6b726b "FEATURES:"
+        FRAME "Features" [23:241] 33,226 714x60 flex:row gap:28/12 pad:0 0 0 0 main:MIN cross:MIN wrap w:FILL h:HUG
+          FRAME "Feature / 3 & 3.5 BHK Apartments" [23:242] 0,0 227x24 flex:row gap:8 pad:0 0 0 0 main:MIN cross:CENTER w:HUG h:HUG
+            INSTANCE "Icon/towers" [23:243] 0,1 22x22
+              VECTOR "Glyph" [I23:243;959:830] 2.75,2.75 16.5x16.5 border:1.5 #b5873b CENTER
+            TEXT "3 & 3.5 BHK Apartments" [23:244] 30,0 197x24 w:HUG h:HUG font:Montserrat 600 16/24 ls:0 LEFT   color:#1f2b25 "3 & 3.5 BHK Apartments"
+          FRAME "Feature / G+30 Floors" [23:245] 255,0 127x24 flex:row gap:8 pad:0 0 0 0 main:MIN cross:CENTER w:HUG h:HUG
+            INSTANCE "Icon/lobby" [23:246] 0,1 22x22
+              VECTOR "Glyph" [I23:246;959:817] 2.75,2.75 16.5x16.5 border:1.5 #b5873b CENTER
+            TEXT "G+30 Floors" [23:247] 30,0 97x24 w:HUG h:HUG font:Montserrat 600 16/24 ls:0 LEFT   color:#1f2b25 "G+30 Floors"
+          FRAME "Feature / 2.7 Acres" [23:248] 410,0 104x24 flex:row gap:8 pad:0 0 0 0 main:MIN cross:CENTER w:HUG h:HUG
+            INSTANCE "Icon/expand" [23:249] 0,1 22x22
+              VECTOR "Glyph" [I23:249;959:808] 3.67,3.67 14.67x14.67 border:1.5 #b5873b CENTER
+            TEXT "2.7 Acres" [23:250] 30,0 74x24 w:HUG h:HUG font:Montserrat 600 16/24 ls:0 LEFT   color:#1f2b25 "2.7 Acres"
+          FRAME "Feature / Only 4 Homes per Core" [23:251] 0,36 221x24 flex:row gap:8 pad:0 0 0 0 main:MIN cross:CENTER w:HUG h:HUG
+            INSTANCE "Icon/corner" [23:252] 0,1 22x22
+              VECTOR "Glyph" [I23:252;959:799] 3.67,3.67 14.67x14.67 border:1.5 #b5873b CENTER
+            TEXT "Only 4 Homes per Core" [23:253] 30,0 191x24 w:HUG h:HUG font:Montserrat 600 16/24 ls:0 LEFT   color:#1f2b25 "Only 4 Homes per Core"
+        FRAME "CTAs" [23:254] 33,306 493x56 flex:row gap:12 pad:0 0 0 0 main:MIN cross:MIN w:HUG h:HUG
+          INSTANCE "Button / Get Price Details" [23:255] 0,0 224x56 bg:linear(90deg #b4672b 0%, #dca347 38%, #f2c95e 68%, #c98636 100%) r:10 shadow:0 6 18 0 #e2b04a/0.32 flex:row gap:10 pad:0 28 0 28 main:CENTER cross:CENTER w:HUG
+            INSTANCE "Icon" [I23:255;1033:8799] 0,0 20x20 HIDDEN
+              VECTOR "Glyph" [I23:255;1033:8799;959:786] 2.5,3.33 14.17x14.17 border:1.5 #090909 CENTER
+            TEXT "Label" [I23:255;1033:8800] 28,18 140x20 w:HUG h:HUG font:Montserrat 700 16/20 ls:0 LEFT   color:#090909 "Get Price Details"
+            INSTANCE "Arrow" [I23:255;1033:8801] 178,19 18x18
+              VECTOR "Glyph" [I23:255;1033:8801;959:869] 6.75,4.5 4.5x9 border:2.200000047683716 #090909 CENTER
+          INSTANCE "Button / Download Brochure" [23:256] 236,0 257x56 bg:#fffdf8 border:1 #e2b04a INSIDE r:10 flex:row gap:10 pad:0 28 0 28 main:CENTER cross:CENTER w:HUG
+            INSTANCE "Icon" [I23:256;1033:8815] 29,18 20x20
+              VECTOR "Glyph" [I23:256;1033:8815;959:854] 3.33,3.33 13.33x13.33 border:1.5 #b5873b CENTER
+            TEXT "Label" [I23:256;1033:8816] 59,18 169x20 w:HUG h:HUG font:Montserrat 700 16/20 ls:0 LEFT   color:#1f2b25 "Download Brochure"
+            INSTANCE "Arrow" [I23:256;1033:8817] 0,0 18x18 HIDDEN
+              VECTOR "Glyph" [I23:256;1033:8817;959:869] 6.75,4.5 4.5x9 border:2.200000047683716 #b5873b CENTER
+      FRAME "Card / Description" [23:257] 0,419 780x432 bg:#fffdf8 border:1 #e3d6c2 INSIDE r:16 shadow:0 4 16 0 #334033/0.03 flex:col gap:20 pad:32 32 32 32 main:MIN cross:MIN w:FILL h:HUG
+        TEXT "Card title" [23:258] 33,33 714x32 w:FILL h:HUG font:Montserrat 600 26/32 ls:0 LEFT   color:#1f2b25 "Description"
+        TEXT "Eldeco Terra & Sol is a premium residential project in Sector 80, Gurugram, from Eldeco Group. It brings together luxurious comfort, unparalleled connectivity and modern metropolitan living on a 2.7 acre site with 40+ international standard lifestyle features." [23:259] 33,85 714x78 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "Eldeco Terra & Sol is a premium residential project in Sector 80, Gurugram, from Eldeco Group. It brings together luxurious comfort, unparalleled connectivity and modern metropolitan living on a 2.7 acre site with 40+ international standard lifestyle features."
+        TEXT "With only 4 apartments per core, the 3 BHK and 3.5 BHK homes are designed for the select few, offering privacy and exclusivity. Every apartment is planned for refreshing airflow, abundant natural light and cross-ventilation, and sits more than 30 feet above ground level." [23:260] 33,183 714x104 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "With only 4 apartments per core, the 3 BHK and 3.5 BHK homes are designed for the select few, offering privacy and exclusivity. Every apartment is planned for refreshing airflow, abundant natural light and cross-ventilation, and sits more than 30 feet above ground level."
+        FRAME "Stat tiles" [23:261] 33,307 714x92 flex:row gap:12 pad:0 0 0 0 main:MIN cross:MIN w:FILL h:HUG
+          FRAME "Tile / Floors" [23:262] 0,0 169.5x92 bg:#f3ebdf r:12 flex:col gap:2 pad:16 16 16 16 main:MIN cross:MIN w:FILL h:HUG
+            TEXT "G+30" [23:263] 16,16 84x38 w:HUG h:HUG font:Montserrat 600 32/38 ls:0 LEFT   color:#1f2b25 "G+30"
+            TEXT "Floors" [23:264] 16,56 43x20 w:HUG h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#6b726b "Floors"
+          FRAME "Tile / Towers" [23:265] 181.5,0 169.5x92 bg:#f3ebdf r:12 flex:col gap:2 pad:16 16 16 16 main:MIN cross:MIN w:FILL h:HUG
+            TEXT "Only 2" [23:266] 16,16 105x38 w:HUG h:HUG font:Montserrat 600 32/38 ls:0 LEFT   color:#1f2b25 "Only 2"
+            TEXT "Towers" [23:267] 16,56 49x20 w:HUG h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#6b726b "Towers"
+          FRAME "Tile / Total Units" [23:268] 363,0 169.5x92 bg:#f3ebdf r:12 flex:col gap:2 pad:16 16 16 16 main:MIN cross:MIN w:FILL h:HUG
+            TEXT "224" [23:269] 16,16 59x38 w:HUG h:HUG font:Montserrat 600 32/38 ls:0 LEFT   color:#1f2b25 "224"
+            TEXT "Total Units" [23:270] 16,56 74x20 w:HUG h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#6b726b "Total Units"
+          FRAME "Tile / Land Parcel" [23:271] 544.5,0 169.5x92 bg:#f3ebdf r:12 flex:col gap:2 pad:16 16 16 16 main:MIN cross:MIN w:FILL h:HUG
+            TEXT "2.7 Acres" [23:272] 16,16 147x38 w:HUG h:HUG font:Montserrat 600 32/38 ls:0 LEFT   color:#1f2b25 "2.7 Acres"
+            TEXT "Land Parcel" [23:273] 16,56 83x20 w:HUG h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#6b726b "Land Parcel"
+      FRAME "Card / Key Highlights" [23:274] 0,875 780x462 bg:#fffdf8 border:1 #e3d6c2 INSIDE r:16 shadow:0 4 16 0 #334033/0.03 flex:col gap:20 pad:32 32 32 32 main:MIN cross:MIN w:FILL h:HUG
+        TEXT "Card title" [23:275] 33,33 714x32 w:FILL h:HUG font:Montserrat 600 26/32 ls:0 LEFT   color:#1f2b25 "Key Highlights"
+        FRAME "Highlights grid" [23:276] 33,85 714x344 flex:row gap:16/16 pad:0 0 0 0 main:MIN cross:MIN wrap w:FILL h:HUG
+          FRAME "Highlight / sparkle" [23:277] 0,0 348x80 border:1 #e3d6c2 INSIDE r:12 flex:row gap:14 pad:16 16 16 16 main:MIN cross:CENTER h:HUG
+            FRAME "Badge" [23:278] 16,18 44x44 bg:#f4e9d5 r:10 flex:row gap:0 pad:0 0 0 0 main:CENTER cross:CENTER
+              INSTANCE "Icon/sparkle" [23:279] 11,11 22x22
+                VECTOR "Glyph" [I23:279;959:827] 4.58,2.75 14.67x16.04 border:1.5 #b5873b CENTER
+            TEXT "World-class lifestyle and wellness amenities" [23:280] 74,16 258x48 w:FILL h:HUG font:Montserrat 500 16/24 ls:0 LEFT   color:#1f2b25 "World-class lifestyle and wellness amenities"
+          FRAME "Highlight / balcony" [23:281] 364,0 348x104 border:1 #e3d6c2 INSIDE r:12 flex:row gap:14 pad:16 16 16 16 main:MIN cross:CENTER h:HUG
+            FRAME "Badge" [23:282] 16,30 44x44 bg:#f4e9d5 r:10 flex:row gap:0 pad:0 0 0 0 main:CENTER cross:CENTER
+              INSTANCE "Icon/balcony" [23:283] 11,11 22x22
+                VECTOR "Glyph" [I23:283;959:811] 2.75,4.58 16.5x13.75 border:1.5 #b5873b CENTER
+            TEXT "Spacious balconies with abundant natural light and airflow" [23:284] 74,16 258x72 w:FILL h:HUG font:Montserrat 500 16/24 ls:0 LEFT   color:#1f2b25 "Spacious balconies with abundant natural light and airflow"
+          FRAME "Highlight / lock" [23:285] 0,120 348x80 border:1 #e3d6c2 INSIDE r:12 flex:row gap:14 pad:16 16 16 16 main:MIN cross:CENTER h:HUG
+            FRAME "Badge" [23:286] 16,18 44x44 bg:#f4e9d5 r:10 flex:row gap:0 pad:0 0 0 0 main:CENTER cross:CENTER
+              INSTANCE "Icon/lock" [23:287] 11,11 22x22
+                VECTOR "Glyph" [I23:287;959:851] 4.58,2.75 12.83x16.5 border:1.5 #b5873b CENTER
+            TEXT "Multi-tier security with 24x7 CCTV surveillance" [23:288] 74,16 258x48 w:FILL h:HUG font:Montserrat 500 16/24 ls:0 LEFT   color:#1f2b25 "Multi-tier security with 24x7 CCTV surveillance"
+          FRAME "Highlight / highway" [23:289] 364,120 348x104 border:1 #e3d6c2 INSIDE r:12 flex:row gap:14 pad:16 16 16 16 main:MIN cross:CENTER h:HUG
+            FRAME "Badge" [23:290] 16,30 44x44 bg:#f4e9d5 r:10 flex:row gap:0 pad:0 0 0 0 main:CENTER cross:CENTER
+              INSTANCE "Icon/highway" [23:291] 11,11 22x22
+                VECTOR "Glyph" [I23:291;959:887] 3.67,2.75 14.67x16.5 border:1.5 #b5873b CENTER
+            TEXT "Near NH-48, Dwarka Expressway and KMP Expressway" [23:292] 74,16 258x72 w:FILL h:HUG font:Montserrat 500 16/24 ls:0 LEFT   color:#1f2b25 "Near NH-48, Dwarka Expressway and KMP Expressway"
+          FRAME "Highlight / road" [23:293] 0,240 348x104 border:1 #e3d6c2 INSIDE r:12 flex:row gap:14 pad:16 16 16 16 main:MIN cross:CENTER h:HUG
+            FRAME "Badge" [23:294] 16,30 44x44 bg:#f4e9d5 r:10 flex:row gap:0 pad:0 0 0 0 main:CENTER cross:CENTER
+              INSTANCE "Icon/road" [23:295] 11,11 22x22
+                VECTOR "Glyph" [I23:295;959:802] 4.58,2.75 12.83x16.5 border:1.5 #b5873b CENTER
+            TEXT "Seamless connectivity to Cyber City, IMT Manesar and IGI Airport" [23:296] 74,16 258x72 w:FILL h:HUG font:Montserrat 500 16/24 ls:0 LEFT   color:#1f2b25 "Seamless connectivity to Cyber City, IMT Manesar and IGI Airport"
+          FRAME "Highlight / school" [23:297] 364,240 348x104 border:1 #e3d6c2 INSIDE r:12 flex:row gap:14 pad:16 16 16 16 main:MIN cross:CENTER h:HUG
+            FRAME "Badge" [23:298] 16,30 44x44 bg:#f4e9d5 r:10 flex:row gap:0 pad:0 0 0 0 main:CENTER cross:CENTER
+              INSTANCE "Icon/school" [23:299] 11,11 22x22
+                VECTOR "Glyph" [I23:299;959:839] 1.83,3.67 18.33x12.72 border:1.5 #b5873b CENTER
+            TEXT "Reputed schools, hospitals, malls and business hubs nearby" [23:300] 74,16 258x72 w:FILL h:HUG font:Montserrat 500 16/24 ls:0 LEFT   color:#1f2b25 "Reputed schools, hospitals, malls and business hubs nearby"
+      FRAME "Card / Price banner (CTA)" [23:301] 0,1361 780x194 bg:#f0e5d1 r:16 shadow:0 12 32 0 #334033/0.14 flex:row gap:24 pad:32 32 32 32 main:MIN cross:CENTER w:FILL h:HUG clip
+        RECTANGLE "Banner image" [23:302] 460,0 320x130 bg:IMG(f4048cee,FILL) op:0.5 abs
+        RECTANGLE "Fade" [23:303] 460,0 320x130 bg:linear(90deg #f0e5d1 0%, #f0e5d1/0.1 100%) abs
+        FRAME "Copy" [23:304] 32,32 468x130 flex:col gap:10 pad:0 0 0 0 main:MIN cross:MIN w:FILL h:HUG
+          FRAME "Tag" [23:305] 0,0 169x26 bg:#e2b04a r:6 flex:row gap:0 pad:5 10 5 10 main:MIN cross:MIN w:HUG h:HUG
+            TEXT "LIMITED INVENTORY" [23:306] 10,5 149x16 w:HUG h:HUG font:Montserrat 700 12/16 ls:1.2 LEFT   color:#090909 "LIMITED INVENTORY"
+          TEXT "Get the latest price list and offers" [23:307] 0,36 468x32 w:FILL h:HUG font:Montserrat 600 26/32 ls:0 LEFT   color:#1f2b25 "Get the latest price list and offers"
+          TEXT "Prices for 3 BHK and 3.5 BHK homes, shared directly by the developer's team." [23:308] 0,78 468x52 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#1f2b25 "Prices for 3 BHK and 3.5 BHK homes, shared directly by the developer's team."
+        INSTANCE "Button / Get Price Details" [23:309] 524,69 224x56 bg:linear(90deg #b4672b 0%, #dca347 38%, #f2c95e 68%, #c98636 100%) r:10 shadow:0 6 18 0 #e2b04a/0.32 flex:row gap:10 pad:0 28 0 28 main:CENTER cross:CENTER w:HUG
+          INSTANCE "Icon" [I23:309;1033:8799] 0,0 20x20 HIDDEN
+            VECTOR "Glyph" [I23:309;1033:8799;959:786] 2.5,3.33 14.17x14.17 border:1.5 #090909 CENTER
+          TEXT "Label" [I23:309;1033:8800] 28,18 140x20 w:HUG h:HUG font:Montserrat 700 16/20 ls:0 LEFT   color:#090909 "Get Price Details"
+          INSTANCE "Arrow" [I23:309;1033:8801] 178,19 18x18
+            VECTOR "Glyph" [I23:309;1033:8801;959:869] 6.75,4.5 4.5x9 border:2.200000047683716 #090909 CENTER
+      FRAME "Card / Gallery & Video" [23:310] 0,1579 780x644 bg:#fffdf8 border:1 #e3d6c2 INSIDE r:16 shadow:0 4 16 0 #334033/0.03 flex:col gap:20 pad:32 32 32 32 main:MIN cross:MIN w:FILL h:HUG
+        FRAME "Header" [23:311] 33,33 714x48 flex:row gap:0 pad:0 0 0 0 main:SPACE_BETWEEN cross:CENTER w:FILL h:HUG
+          TEXT "Gallery & Video" [23:312] 0,8 203x32 w:HUG h:HUG font:Montserrat 600 26/32 ls:0 LEFT   color:#1f2b25 "Gallery & Video"
+          INSTANCE "Button / See All Photos" [23:313] 551,0 163x48 bg:#fffdf8 border:1 #e2b04a INSIDE r:10 flex:row gap:10 pad:0 20 0 20 main:CENTER cross:CENTER w:HUG
+            INSTANCE "Icon" [I23:313;1033:8819] 0,0 20x20 HIDDEN
+              VECTOR "Glyph" [I23:313;1033:8819;959:786] 2.5,3.33 14.17x14.17 border:1.5 #b5873b CENTER
+            TEXT "Label" [I23:313;1033:8820] 21,14 121x20 w:HUG h:HUG font:Montserrat 700 16/20 ls:0 LEFT   color:#1f2b25 "See All Photos"
+            INSTANCE "Arrow" [I23:313;1033:8821] 0,0 18x18 HIDDEN
+              VECTOR "Glyph" [I23:313;1033:8821;959:869] 6.75,4.5 4.5x9 border:2.200000047683716 #b5873b CENTER
+        FRAME "Video thumbnail" [23:314] 33,101 714x380 bg:IMG(3429705d,FILL) r:12 w:FILL clip
+          FRAME "Chip / Artistic Impression" [23:315] 12,342 133x26 bg:#12684d r:4 flex:row gap:0 pad:4 10 4 10 main:MIN cross:MIN w:HUG h:HUG
+            TEXT "Artistic Impression" [23:316] 10,4 113x18 w:HUG h:HUG font:Montserrat 400 12/18 ls:0 LEFT   color:#fbf8f0 "Artistic Impression"
+          RECTANGLE "Dark overlay" [23:317] 0,0 716x380 bg:#0c4636
+          FRAME "Play button" [23:318] 318,150 80x80 bg:#fffdf8 r:999 shadow:0 10 30 0 #334033/0.22 shadow:0 0 0 12 #ffffff/0.25 flex:row gap:0 pad:0 0 0 5 main:CENTER cross:CENTER
+            INSTANCE "Icon/play" [23:319] 28,25.5 29x29
+              VECTOR "Glyph" [I23:319;959:884] 9.67,6.04 13.29x16.92 bg:#1f2b25
+        FRAME "Thumbnails" [23:320] 33,501 714x110 flex:row gap:12 pad:0 0 0 0 main:MIN cross:MIN w:FILL h:HUG
+          RECTANGLE "Thumbnail / g2" [23:321] 0,0 169.5x110 bg:IMG(3f12aefc,FILL) r:10 w:FILL
+          RECTANGLE "Thumbnail / g1" [23:322] 181.5,0 169.5x110 bg:IMG(a59a9abd,FILL) r:10 w:FILL
+          RECTANGLE "Thumbnail / g3" [23:323] 363,0 169.5x110 bg:IMG(d7fb9a90,FILL) r:10 w:FILL
+          RECTANGLE "Thumbnail / g5" [23:324] 544.5,0 169.5x110 bg:IMG(4044db99,FILL) r:10 w:FILL
+      FRAME "Card / Property Details" [23:325] 0,2247 780x341 bg:#fffdf8 border:1 #e3d6c2 INSIDE r:16 shadow:0 4 16 0 #334033/0.03 flex:col gap:8 pad:32 32 32 32 main:MIN cross:MIN w:FILL h:HUG
+        TEXT "Card title" [23:326] 33,33 714x32 w:FILL h:HUG font:Montserrat 600 26/32 ls:0 LEFT   color:#1f2b25 "Property Details"
+        FRAME "Details grid" [23:327] 33,73 714x235 flex:row gap:40 pad:0 0 0 0 main:MIN cross:MIN w:FILL h:HUG
+          FRAME "Col 1" [23:328] 0,0 337x235 flex:col gap:0 pad:0 0 0 0 main:MIN cross:MIN w:FILL h:HUG
+            FRAME "Row / Apartment" [23:329] 0,0 337x47 border:0{"top":0,"right":0,"bottom":1,"left":0} #e3d6c2 INSIDE flex:row gap:12 pad:10 0 10 0 main:MIN cross:CENTER w:FILL h:HUG
+              TEXT "Apartment" [23:330] 0,10 237x26 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "Apartment"
+              TEXT "3 / 3.5 BHK" [23:331] 249,11 88x24 w:HUG h:HUG font:Montserrat 600 16/24 ls:0 LEFT   color:#1f2b25 "3 / 3.5 BHK"
+            FRAME "Row / Land parcel" [23:332] 0,47 337x47 border:0{"top":0,"right":0,"bottom":1,"left":0} #e3d6c2 INSIDE flex:row gap:12 pad:10 0 10 0 main:MIN cross:CENTER w:FILL h:HUG
+              TEXT "Land parcel" [23:333] 0,10 251x26 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "Land parcel"
+              TEXT "2.7 Acres" [23:334] 263,11 74x24 w:HUG h:HUG font:Montserrat 600 16/24 ls:0 LEFT   color:#1f2b25 "2.7 Acres"
+            FRAME "Row / Towers" [23:335] 0,94 337x47 border:0{"top":0,"right":0,"bottom":1,"left":0} #e3d6c2 INSIDE flex:row gap:12 pad:10 0 10 0 main:MIN cross:CENTER w:FILL h:HUG
+              TEXT "Towers" [23:336] 0,10 258x26 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "Towers"
+              TEXT "2 (G+30)" [23:337] 270,11 67x24 w:HUG h:HUG font:Montserrat 600 16/24 ls:0 LEFT   color:#1f2b25 "2 (G+30)"
+            FRAME "Row / Total units" [23:338] 0,141 337x47 border:0{"top":0,"right":0,"bottom":1,"left":0} #e3d6c2 INSIDE flex:row gap:12 pad:10 0 10 0 main:MIN cross:CENTER w:FILL h:HUG
+              TEXT "Total units" [23:339] 0,10 295x26 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "Total units"
+              TEXT "224" [23:340] 307,11 30x24 w:HUG h:HUG font:Montserrat 600 16/24 ls:0 LEFT   color:#1f2b25 "224"
+            FRAME "Row / Homes per core" [23:341] 0,188 337x47 border:0{"top":0,"right":0,"bottom":1,"left":0} #e3d6c2 INSIDE flex:row gap:12 pad:10 0 10 0 main:MIN cross:CENTER w:FILL h:HUG
+              TEXT "Homes per core" [23:342] 0,10 271x26 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "Homes per core"
+              TEXT "Only 4" [23:343] 283,11 54x24 w:HUG h:HUG font:Montserrat 600 16/24 ls:0 LEFT   color:#1f2b25 "Only 4"
+          FRAME "Col 2" [23:344] 377,0 337x235 flex:col gap:0 pad:0 0 0 0 main:MIN cross:MIN w:FILL h:HUG
+            FRAME "Row / Price" [23:345] 0,0 337x47 border:0{"top":0,"right":0,"bottom":1,"left":0} #e3d6c2 INSIDE flex:row gap:12 pad:10 0 10 0 main:MIN cross:CENTER w:FILL h:HUG
+              TEXT "Price" [23:346] 0,10 176x26 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "Price"
+              TEXT "₹3.33 Cr* onwards" [23:347] 188,11 149x24 w:HUG h:HUG font:Montserrat 600 16/24 ls:0 LEFT   color:#1f2b25 "₹3.33 Cr* onwards"
+            FRAME "Row / Location" [23:348] 0,47 337x47 border:0{"top":0,"right":0,"bottom":1,"left":0} #e3d6c2 INSIDE flex:row gap:12 pad:10 0 10 0 main:MIN cross:CENTER w:FILL h:HUG
+              TEXT "Location" [23:349] 0,10 153x26 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "Location"
+              TEXT "Sector 80, Gurugram" [23:350] 165,11 172x24 w:HUG h:HUG font:Montserrat 600 16/24 ls:0 LEFT   color:#1f2b25 "Sector 80, Gurugram"
+            FRAME "Row / Property type" [23:351] 0,94 337x47 border:0{"top":0,"right":0,"bottom":1,"left":0} #e3d6c2 INSIDE flex:row gap:12 pad:10 0 10 0 main:MIN cross:CENTER w:FILL h:HUG
+              TEXT "Property type" [23:352] 0,10 165x26 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "Property type"
+              TEXT "Luxury Apartments" [23:353] 177,11 160x24 w:HUG h:HUG font:Montserrat 600 16/24 ls:0 LEFT   color:#1f2b25 "Luxury Apartments"
+            FRAME "Row / Developer" [23:354] 0,141 337x47 border:0{"top":0,"right":0,"bottom":1,"left":0} #e3d6c2 INSIDE flex:row gap:12 pad:10 0 10 0 main:MIN cross:CENTER w:FILL h:HUG
+              TEXT "Developer" [23:355] 0,10 213x26 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "Developer"
+              TEXT "Eldeco Group" [23:356] 225,11 112x24 w:HUG h:HUG font:Montserrat 600 16/24 ls:0 LEFT   color:#1f2b25 "Eldeco Group"
+            FRAME "Row / RERA" [23:357] 0,188 337x47 border:0{"top":0,"right":0,"bottom":1,"left":0} #e3d6c2 INSIDE flex:row gap:12 pad:10 0 10 0 main:MIN cross:CENTER w:FILL h:HUG
+              TEXT "RERA" [23:358] 0,10 164x26 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "RERA"
+              TEXT "HARERA 20 of 2026" [23:359] 176,11 161x24 w:HUG h:HUG font:Montserrat 600 16/24 ls:0 LEFT   color:#1f2b25 "HARERA 20 of 2026"
+      FRAME "Card / Price List" [23:360] 0,2612 780x368 bg:#fffdf8 border:1 #e3d6c2 INSIDE r:16 shadow:0 4 16 0 #334033/0.03 flex:col gap:20 pad:32 32 32 32 main:MIN cross:MIN w:FILL h:HUG
+        FRAME "Header" [23:361] 33,33 714x32 flex:row gap:0 pad:0 0 0 0 main:SPACE_BETWEEN cross:CENTER w:FILL h:HUG
+          TEXT "Price List" [23:362] 0,0 123x32 w:HUG h:HUG font:Montserrat 600 26/32 ls:0 LEFT   color:#1f2b25 "Price List"
+          FRAME "Tag" [23:363] 529,0 185x32 bg:#f4e9d5 r:6 flex:row gap:6 pad:6 10 6 10 main:MIN cross:CENTER w:HUG h:HUG
+            ELLIPSE "Ellipse" [23:364] 10,12 8x8 bg:#b5873b
+            TEXT "Latest offers available" [23:365] 24,6 151x20 w:HUG h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#1f2b25 "Latest offers available"
+        FRAME "Table" [23:366] 33,85 714x212 border:1 #e3d6c2 INSIDE r:12 flex:col gap:0 pad:0 0 0 0 main:MIN cross:MIN w:FILL h:HUG clip
+          FRAME "Head" [23:367] 1,1 712x48 bg:#f3ebdf flex:row gap:0 pad:14 20 14 20 main:MIN cross:MIN w:FILL h:HUG
+            TEXT "Type" [23:368] 20,14 220x20 h:HUG font:Montserrat 500 14/20 ls:0 LEFT   color:#6b726b "Type"
+            TEXT "Price" [23:369] 240,14 220x20 h:HUG font:Montserrat 500 14/20 ls:0 LEFT   color:#6b726b "Price"
+            TEXT "Text" [23:370] 460,14 236x20 h:HUG font:Inter 500 14/20 ls:0 LEFT   color:#6b726b ""
+          FRAME "Row / 3 BHK Apartment" [23:371] 1,49 712x81 border:1{"top":1,"right":0,"bottom":0,"left":0} #e3d6c2 INSIDE flex:row gap:0 pad:16 20 16 20 main:MIN cross:CENTER w:FILL h:HUG
+            TEXT "3 BHK Apartment" [23:372] 20,29 220x24 h:HUG font:Montserrat 600 16/24 ls:0 LEFT   color:#1f2b25 "3 BHK Apartment"
+            TEXT "₹3.33 Cr*" [23:373] 240,28 220x26 h:HUG font:Montserrat 600 20/26 ls:0 LEFT   color:#1f2b25 "₹3.33 Cr*"
+            FRAME "Btn" [23:374] 460,17 232x48 flex:row gap:0 pad:0 0 0 0 main:MAX cross:MIN w:FILL h:HUG
+              INSTANCE "Button / Get Price Details" [23:375] 24,0 208x48 bg:linear(90deg #b4672b 0%, #dca347 38%, #f2c95e 68%, #c98636 100%) r:10 shadow:0 6 18 0 #e2b04a/0.32 flex:row gap:10 pad:0 20 0 20 main:CENTER cross:CENTER w:HUG
+                INSTANCE "Icon" [I23:375;1033:8803] 0,0 20x20 HIDDEN
+                  VECTOR "Glyph" [I23:375;1033:8803;959:786] 2.5,3.33 14.17x14.17 border:1.5 #090909 CENTER
+                TEXT "Label" [I23:375;1033:8804] 20,14 140x20 w:HUG h:HUG font:Montserrat 700 16/20 ls:0 LEFT   color:#090909 "Get Price Details"
+                INSTANCE "Arrow" [I23:375;1033:8805] 170,15 18x18
+                  VECTOR "Glyph" [I23:375;1033:8805;959:869] 6.75,4.5 4.5x9 border:2.200000047683716 #090909 CENTER
+          FRAME "Row / 3.5 BHK Apartment" [23:376] 1,130 712x81 border:1{"top":1,"right":0,"bottom":0,"left":0} #e3d6c2 INSIDE flex:row gap:0 pad:16 20 16 20 main:MIN cross:CENTER w:FILL h:HUG
+            TEXT "3.5 BHK Apartment" [23:377] 20,29 220x24 h:HUG font:Montserrat 600 16/24 ls:0 LEFT   color:#1f2b25 "3.5 BHK Apartment"
+            TEXT "₹ On Request" [23:378] 240,28 220x26 h:HUG font:Montserrat 600 20/26 ls:0 LEFT   color:#1f2b25 "₹ On Request"
+            FRAME "Btn" [23:379] 460,17 232x48 flex:row gap:0 pad:0 0 0 0 main:MAX cross:MIN w:FILL h:HUG
+              INSTANCE "Button / Get Price Details" [23:380] 24,0 208x48 bg:linear(90deg #b4672b 0%, #dca347 38%, #f2c95e 68%, #c98636 100%) r:10 shadow:0 6 18 0 #e2b04a/0.32 flex:row gap:10 pad:0 20 0 20 main:CENTER cross:CENTER w:HUG
+                INSTANCE "Icon" [I23:380;1033:8803] 0,0 20x20 HIDDEN
+                  VECTOR "Glyph" [I23:380;1033:8803;959:786] 2.5,3.33 14.17x14.17 border:1.5 #090909 CENTER
+                TEXT "Label" [I23:380;1033:8804] 20,14 140x20 w:HUG h:HUG font:Montserrat 700 16/20 ls:0 LEFT   color:#090909 "Get Price Details"
+                INSTANCE "Arrow" [I23:380;1033:8805] 170,15 18x18
+                  VECTOR "Glyph" [I23:380;1033:8805;959:869] 6.75,4.5 4.5x9 border:2.200000047683716 #090909 CENTER
+        TEXT "*T&C apply. Prices are indicative; please confirm the latest price with the sales team." [23:381] 33,317 499x18 w:HUG h:HUG font:Montserrat 400 12/18 ls:0 LEFT   color:#6b726b "*T&C apply. Prices are indicative; please confirm the latest price with the sales team."
+      FRAME "Card / Amenities and Features" [23:382] 0,3004 780x658 bg:#fffdf8 border:1 #e3d6c2 INSIDE r:16 shadow:0 4 16 0 #334033/0.03 flex:col gap:20 pad:32 32 32 32 main:MIN cross:MIN w:FILL h:HUG
+        TEXT "Card title" [23:383] 33,33 714x32 w:FILL h:HUG font:Montserrat 600 26/32 ls:0 LEFT   color:#1f2b25 "Amenities and Features"
+        FRAME "Image / Infinity pool" [23:384] 33,85 714x260 bg:IMG(c10c8b85,FILL) r:12 w:FILL clip
+          FRAME "Chip / Artistic Impression" [23:385] 12,222 133x26 bg:#12684d r:4 flex:row gap:0 pad:4 10 4 10 main:MIN cross:MIN w:HUG h:HUG
+            TEXT "Artistic Impression" [23:386] 10,4 113x18 w:HUG h:HUG font:Montserrat 400 12/18 ls:0 LEFT   color:#fbf8f0 "Artistic Impression"
+          FRAME "Label" [23:387] 16,16 200x36 bg:#fffdf8 r:999 flex:row gap:0 pad:8 14 8 14 main:MIN cross:MIN w:HUG h:HUG
+            TEXT "All Weather Infinity Pool" [23:388] 14,8 172x20 w:HUG h:HUG font:Montserrat 500 14/20 ls:0 LEFT   color:#1f2b25 "All Weather Infinity Pool"
+        FRAME "Amenity grid (3 cols)" [23:389] 33,365 714x184 flex:row gap:16/14 pad:0 0 0 0 main:MIN cross:MIN wrap w:FILL h:HUG
+          FRAME "Amenity / All Weather Infinity Pool" [23:390] 0,0 226x52 flex:row gap:10 pad:0 0 0 0 main:MIN cross:CENTER h:HUG
+            FRAME "Check" [23:391] 0,14 24x24 bg:#f4e9d5 r:999 flex:row gap:0 pad:0 0 0 0 main:CENTER cross:CENTER
+              INSTANCE "Icon/check" [23:392] 5,5 14x14
+                VECTOR "Glyph" [I23:392;959:872] 2.92,4.08 8.17x5.83 border:2.200000047683716 #b0632a CENTER
+            TEXT "All Weather Infinity Pool" [23:393] 34,0 192x52 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#1f2b25 "All Weather Infinity Pool"
+          FRAME "Amenity / Lawn Tennis Court" [23:394] 242,0 226x26 flex:row gap:10 pad:0 0 0 0 main:MIN cross:CENTER h:HUG
+            FRAME "Check" [23:395] 0,1 24x24 bg:#f4e9d5 r:999 flex:row gap:0 pad:0 0 0 0 main:CENTER cross:CENTER
+              INSTANCE "Icon/check" [23:396] 5,5 14x14
+                VECTOR "Glyph" [I23:396;959:872] 2.92,4.08 8.17x5.83 border:2.200000047683716 #b0632a CENTER
+            TEXT "Lawn Tennis Court" [23:397] 34,0 192x26 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#1f2b25 "Lawn Tennis Court"
+          FRAME "Amenity / Yoga & Aerobics" [23:398] 484,0 226x26 flex:row gap:10 pad:0 0 0 0 main:MIN cross:CENTER h:HUG
+            FRAME "Check" [23:399] 0,1 24x24 bg:#f4e9d5 r:999 flex:row gap:0 pad:0 0 0 0 main:CENTER cross:CENTER
+              INSTANCE "Icon/check" [23:400] 5,5 14x14
+                VECTOR "Glyph" [I23:400;959:872] 2.92,4.08 8.17x5.83 border:2.200000047683716 #b0632a CENTER
+            TEXT "Yoga & Aerobics" [23:401] 34,0 192x26 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#1f2b25 "Yoga & Aerobics"
+          FRAME "Amenity / Jogging & Fitness Tracks" [23:402] 0,66 226x52 flex:row gap:10 pad:0 0 0 0 main:MIN cross:CENTER h:HUG
+            FRAME "Check" [23:403] 0,14 24x24 bg:#f4e9d5 r:999 flex:row gap:0 pad:0 0 0 0 main:CENTER cross:CENTER
+              INSTANCE "Icon/check" [23:404] 5,5 14x14
+                VECTOR "Glyph" [I23:404;959:872] 2.92,4.08 8.17x5.83 border:2.200000047683716 #b0632a CENTER
+            TEXT "Jogging & Fitness Tracks" [23:405] 34,0 192x52 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#1f2b25 "Jogging & Fitness Tracks"
+          FRAME "Amenity / Landscaped Podium Greens" [23:406] 242,66 226x52 flex:row gap:10 pad:0 0 0 0 main:MIN cross:CENTER h:HUG
+            FRAME "Check" [23:407] 0,14 24x24 bg:#f4e9d5 r:999 flex:row gap:0 pad:0 0 0 0 main:CENTER cross:CENTER
+              INSTANCE "Icon/check" [23:408] 5,5 14x14
+                VECTOR "Glyph" [I23:408;959:872] 2.92,4.08 8.17x5.83 border:2.200000047683716 #b0632a CENTER
+            TEXT "Landscaped Podium Greens" [23:409] 34,0 192x52 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#1f2b25 "Landscaped Podium Greens"
+          FRAME "Amenity / Badminton, Cricket & Squash" [23:410] 484,66 226x52 flex:row gap:10 pad:0 0 0 0 main:MIN cross:CENTER h:HUG
+            FRAME "Check" [23:411] 0,14 24x24 bg:#f4e9d5 r:999 flex:row gap:0 pad:0 0 0 0 main:CENTER cross:CENTER
+              INSTANCE "Icon/check" [23:412] 5,5 14x14
+                VECTOR "Glyph" [I23:412;959:872] 2.92,4.08 8.17x5.83 border:2.200000047683716 #b0632a CENTER
+            TEXT "Badminton, Cricket & Squash" [23:413] 34,0 192x52 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#1f2b25 "Badminton, Cricket & Squash"
+          FRAME "Amenity / 3 High-Speed Lifts per Tower" [23:414] 0,132 226x52 flex:row gap:10 pad:0 0 0 0 main:MIN cross:CENTER h:HUG
+            FRAME "Check" [23:415] 0,14 24x24 bg:#f4e9d5 r:999 flex:row gap:0 pad:0 0 0 0 main:CENTER cross:CENTER
+              INSTANCE "Icon/check" [23:416] 5,5 14x14
+                VECTOR "Glyph" [I23:416;959:872] 2.92,4.08 8.17x5.83 border:2.200000047683716 #b0632a CENTER
+            TEXT "3 High-Speed Lifts per Tower" [23:417] 34,0 192x52 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#1f2b25 "3 High-Speed Lifts per Tower"
+          FRAME "Amenity / Exclusive GQ Club" [23:418] 242,132 226x26 flex:row gap:10 pad:0 0 0 0 main:MIN cross:CENTER h:HUG
+            FRAME "Check" [23:419] 0,1 24x24 bg:#f4e9d5 r:999 flex:row gap:0 pad:0 0 0 0 main:CENTER cross:CENTER
+              INSTANCE "Icon/check" [23:420] 5,5 14x14
+                VECTOR "Glyph" [I23:420;959:872] 2.92,4.08 8.17x5.83 border:2.200000047683716 #b0632a CENTER
+            TEXT "Exclusive GQ Club" [23:421] 34,0 192x26 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#1f2b25 "Exclusive GQ Club"
+          FRAME "Amenity / 24x7 CCTV Security" [23:422] 484,132 226x26 flex:row gap:10 pad:0 0 0 0 main:MIN cross:CENTER h:HUG
+            FRAME "Check" [23:423] 0,1 24x24 bg:#f4e9d5 r:999 flex:row gap:0 pad:0 0 0 0 main:CENTER cross:CENTER
+              INSTANCE "Icon/check" [23:424] 5,5 14x14
+                VECTOR "Glyph" [I23:424;959:872] 2.92,4.08 8.17x5.83 border:2.200000047683716 #b0632a CENTER
+            TEXT "24x7 CCTV Security" [23:425] 34,0 192x26 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#1f2b25 "24x7 CCTV Security"
+        INSTANCE "Button / View All Amenities" [23:426] 33,569 216x56 bg:#fffdf8 border:1 #e2b04a INSIDE r:10 flex:row gap:10 pad:0 28 0 28 main:CENTER cross:CENTER w:HUG
+          INSTANCE "Icon" [I23:426;1033:8815] 0,0 20x20 HIDDEN
+            VECTOR "Glyph" [I23:426;1033:8815;959:786] 2.5,3.33 14.17x14.17 border:1.5 #b5873b CENTER
+          TEXT "Label" [I23:426;1033:8816] 29,18 158x20 w:HUG h:HUG font:Montserrat 700 16/20 ls:0 LEFT   color:#1f2b25 "View All Amenities"
+          INSTANCE "Arrow" [I23:426;1033:8817] 0,0 18x18 HIDDEN
+            VECTOR "Glyph" [I23:426;1033:8817;959:869] 6.75,4.5 4.5x9 border:2.200000047683716 #b5873b CENTER
+      FRAME "Card / Floor Plans" [23:427] 0,3686 780x356 bg:#fffdf8 border:1 #e3d6c2 INSIDE r:16 shadow:0 4 16 0 #334033/0.03 flex:col gap:20 pad:32 32 32 32 main:MIN cross:MIN w:FILL h:HUG
+        FRAME "Header" [23:428] 33,33 714x32 flex:row gap:0 pad:0 0 0 0 main:SPACE_BETWEEN cross:CENTER w:FILL h:HUG
+          TEXT "Floor Plans" [23:429] 0,0 150x32 w:HUG h:HUG font:Montserrat 600 26/32 ls:0 LEFT   color:#1f2b25 "Floor Plans"
+          TEXT "Unlock with your mobile number" [23:430] 481,6 233x20 w:HUG h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#6b726b "Unlock with your mobile number"
+        FRAME "Plans" [23:431] 33,85 714x238 flex:row gap:16 pad:0 0 0 0 main:MIN cross:MIN w:FILL h:HUG
+          FRAME "Plan / Master Plan" [23:432] 0,0 227.33x238 flex:col gap:12 pad:0 0 0 0 main:MIN cross:MIN w:FILL h:HUG
+            FRAME "Locked plan" [23:433] 0,0 228x200 bg:#faf6ef border:1 #e3d6c2 INSIDE r:12 flex:col gap:12 pad:0 0 0 0 main:CENTER cross:CENTER clip
+              FRAME "Floor plan image (blurred, replace)" [23:434] 0,0 228x200 bg:#fffdf8 LAYER_BLUR:10 abs clip
+                (8 vector children)
+              FRAME "Lock" [23:443] 92,48 44x44 bg:#12684d r:999 flex:row gap:0 pad:0 0 0 0 main:CENTER cross:CENTER
+                INSTANCE "Icon/lock" [23:444] 12,12 20x20
+                  VECTOR "Glyph" [I23:444;959:851] 4.17,2.5 11.67x15 border:1.5 #e2b04a CENTER
+              INSTANCE "Button / Unlock Plan" [23:445] 28.5,104 171x48 bg:linear(90deg #b4672b 0%, #dca347 38%, #f2c95e 68%, #c98636 100%) r:10 shadow:0 6 18 0 #e2b04a/0.32 flex:row gap:10 pad:0 20 0 20 main:CENTER cross:CENTER w:HUG
+                INSTANCE "Icon" [I23:445;1033:8803] 20,14 20x20
+                  VECTOR "Glyph" [I23:445;1033:8803;959:851] 4.17,2.5 11.67x15 border:1.5 #090909 CENTER
+                TEXT "Label" [I23:445;1033:8804] 50,14 101x20 w:HUG h:HUG font:Montserrat 700 16/20 ls:0 LEFT   color:#090909 "Unlock Plan"
+                INSTANCE "Arrow" [I23:445;1033:8805] 0,0 18x18 HIDDEN
+                  VECTOR "Glyph" [I23:445;1033:8805;959:869] 6.75,4.5 4.5x9 border:2.200000047683716 #090909 CENTER
+            TEXT "Master Plan" [23:446] 0,212 123x26 w:HUG h:HUG font:Montserrat 600 20/26 ls:0 LEFT   color:#1f2b25 "Master Plan"
+          FRAME "Plan / 3 BHK" [23:447] 243.33,0 227.33x238 flex:col gap:12 pad:0 0 0 0 main:MIN cross:MIN w:FILL h:HUG
+            FRAME "Locked plan" [23:448] 0,0 228x200 bg:#faf6ef border:1 #e3d6c2 INSIDE r:12 flex:col gap:12 pad:0 0 0 0 main:CENTER cross:CENTER clip
+              FRAME "Floor plan image (blurred, replace)" [23:449] 0,0 228x200 bg:#fffdf8 LAYER_BLUR:10 abs clip
+                (8 vector children)
+              FRAME "Lock" [23:458] 92,48 44x44 bg:#12684d r:999 flex:row gap:0 pad:0 0 0 0 main:CENTER cross:CENTER
+                INSTANCE "Icon/lock" [23:459] 12,12 20x20
+                  VECTOR "Glyph" [I23:459;959:851] 4.17,2.5 11.67x15 border:1.5 #e2b04a CENTER
+              INSTANCE "Button / Unlock Plan" [23:460] 28.5,104 171x48 bg:linear(90deg #b4672b 0%, #dca347 38%, #f2c95e 68%, #c98636 100%) r:10 shadow:0 6 18 0 #e2b04a/0.32 flex:row gap:10 pad:0 20 0 20 main:CENTER cross:CENTER w:HUG
+                INSTANCE "Icon" [I23:460;1033:8803] 20,14 20x20
+                  VECTOR "Glyph" [I23:460;1033:8803;959:851] 4.17,2.5 11.67x15 border:1.5 #090909 CENTER
+                TEXT "Label" [I23:460;1033:8804] 50,14 101x20 w:HUG h:HUG font:Montserrat 700 16/20 ls:0 LEFT   color:#090909 "Unlock Plan"
+                INSTANCE "Arrow" [I23:460;1033:8805] 0,0 18x18 HIDDEN
+                  VECTOR "Glyph" [I23:460;1033:8805;959:869] 6.75,4.5 4.5x9 border:2.200000047683716 #090909 CENTER
+            TEXT "3 BHK" [23:461] 0,212 64x26 w:HUG h:HUG font:Montserrat 600 20/26 ls:0 LEFT   color:#1f2b25 "3 BHK"
+          FRAME "Plan / 3.5 BHK" [23:462] 486.67,0 227.33x238 flex:col gap:12 pad:0 0 0 0 main:MIN cross:MIN w:FILL h:HUG
+            FRAME "Locked plan" [23:463] 0,0 228x200 bg:#faf6ef border:1 #e3d6c2 INSIDE r:12 flex:col gap:12 pad:0 0 0 0 main:CENTER cross:CENTER clip
+              FRAME "Floor plan image (blurred, replace)" [23:464] 0,0 228x200 bg:#fffdf8 LAYER_BLUR:10 abs clip
+                (8 vector children)
+              FRAME "Lock" [23:473] 92,48 44x44 bg:#12684d r:999 flex:row gap:0 pad:0 0 0 0 main:CENTER cross:CENTER
+                INSTANCE "Icon/lock" [23:474] 12,12 20x20
+                  VECTOR "Glyph" [I23:474;959:851] 4.17,2.5 11.67x15 border:1.5 #e2b04a CENTER
+              INSTANCE "Button / Unlock Plan" [23:475] 28.5,104 171x48 bg:linear(90deg #b4672b 0%, #dca347 38%, #f2c95e 68%, #c98636 100%) r:10 shadow:0 6 18 0 #e2b04a/0.32 flex:row gap:10 pad:0 20 0 20 main:CENTER cross:CENTER w:HUG
+                INSTANCE "Icon" [I23:475;1033:8803] 20,14 20x20
+                  VECTOR "Glyph" [I23:475;1033:8803;959:851] 4.17,2.5 11.67x15 border:1.5 #090909 CENTER
+                TEXT "Label" [I23:475;1033:8804] 50,14 101x20 w:HUG h:HUG font:Montserrat 700 16/20 ls:0 LEFT   color:#090909 "Unlock Plan"
+                INSTANCE "Arrow" [I23:475;1033:8805] 0,0 18x18 HIDDEN
+                  VECTOR "Glyph" [I23:475;1033:8805;959:869] 6.75,4.5 4.5x9 border:2.200000047683716 #090909 CENTER
+            TEXT "3.5 BHK" [23:476] 0,212 80x26 w:HUG h:HUG font:Montserrat 600 20/26 ls:0 LEFT   color:#1f2b25 "3.5 BHK"
+      FRAME "Card / Location" [23:477] 0,4066 780x888 bg:#fffdf8 border:1 #e3d6c2 INSIDE r:16 shadow:0 4 16 0 #334033/0.03 flex:col gap:20 pad:32 32 32 32 main:MIN cross:MIN w:FILL h:HUG
+        TEXT "Card title" [23:478] 33,33 714x32 w:FILL h:HUG font:Montserrat 600 26/32 ls:0 LEFT   color:#1f2b25 "Location"
+        FRAME "Stylised map (replace with Google Map embed)" [23:479] 33,85 714x320 bg:#fffdf8 r:12 w:FILL clip
+          VECTOR "Vector" [23:480] 0,0 714x320 bg:#efe7d9
+          VECTOR "Vector" [23:481] 0,0 714x670.7 border:3.5999999046325684 #e3d6c2 CENTER
+          VECTOR "Vector" [23:482] 375.91,372.98 161.42x130.1 bg:#e3d9c6
+          VECTOR "Vector" [23:483] 71.4,62.22 120.29x101.77 bg:#e3d9c6
+          VECTOR "Vector" [23:484] 23.83,107.4 690.17x537 border:23.899999618530273 #d6c8b1 CENTER
+          VECTOR "Vector" [23:485] 23.83,107.4 690.17x537 border:16.700000762939453 #b5873b CENTER
+          VECTOR "Vector" [23:486] 0,0 392.7x167.86 border:21.5 #d6c8b1 CENTER
+          VECTOR "Vector" [23:487] 0,0 392.7x167.86 border:14.300000190734863 #b5873b CENTER
+          VECTOR "Vector" [23:488] 0,496.86 714x44.49 border:19.100000381469727 #d6c8b1 CENTER
+          VECTOR "Vector" [23:489] 0,496.86 714x44.49 border:11.899999618530273 #b5873b CENTER
+          VECTOR "Vector" [23:490] 357,322.2 202.33x131.3 border:3.5999999046325684 #b5873b CENTER
+          TEXT "NH-48" [23:491] 525.07,134.12 51.57x41.32 rot:-30 font:Montserrat 700 14/20 ls:0 LEFT   color:#1f2b25 "NH-48"
+          TEXT "Dwarka Expressway" [23:492] 47.73,60.43 149.28x35.36 rot:-6 font:Montserrat 700 14/20 ls:0 LEFT   color:#1f2b25 "Dwarka Expressway"
+          TEXT "KMP Expressway" [23:493] 393.8,271.96 125x20 font:Montserrat 700 14/20 ls:0 LEFT   color:#1f2b25 "KMP Expressway"
+          TEXT "IMT Manesar" [23:494] 35.8,328.88 90x20 font:Montserrat 400 14/20 ls:0 LEFT   color:#6b726b "IMT Manesar"
+          FRAME "Pin" [23:495] 290,130 180x40 bg:#12684d r:999 shadow:0 6 16 0 #334033/0.22 flex:row gap:8 pad:6 12 6 6 main:MIN cross:CENTER w:HUG h:HUG
+            FRAME "Dot" [23:496] 6,6 28x28 bg:#e2b04a r:999 flex:row gap:0 pad:0 0 0 0 main:CENTER cross:CENTER
+              INSTANCE "Icon/pin" [23:497] 6,6 16x16
+                VECTOR "Glyph" [I23:497;959:792] 3.33,1.67 9.33x12.33 border:1.5 #3a3127 CENTER
+            TEXT "Eldeco Terra & Sol" [23:498] 42,10 126x20 w:HUG h:HUG font:Montserrat 500 14/20 ls:0 LEFT   color:#fbf8f0 "Eldeco Terra & Sol"
+        FRAME "Address" [23:499] 33,425 391x54 flex:col gap:4 pad:0 0 0 0 main:MIN cross:MIN w:HUG h:HUG
+          TEXT "Address" [23:500] 0,0 66x24 w:HUG h:HUG font:Montserrat 500 16/24 ls:0 LEFT   color:#1f2b25 "Address"
+          TEXT "Eldeco Terra & Sol, Sector 80, Gurugram, Haryana" [23:501] 0,28 391x26 w:HUG h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "Eldeco Terra & Sol, Sector 80, Gurugram, Haryana"
+        RECTANGLE "Rectangle" [23:502] 33,499 714x1 bg:#e3d6c2 w:FILL
+        TEXT "Location Advantage" [23:503] 33,520 208x26 w:HUG h:HUG font:Montserrat 600 20/26 ls:0 LEFT   color:#1f2b25 "Location Advantage"
+        TEXT "Sector 80 sits close to NH-48, Dwarka Expressway and KMP Expressway, with quick access to IMT Manesar, Cyber City and IGI Airport." [23:504] 33,566 714x52 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "Sector 80 sits close to NH-48, Dwarka Expressway and KMP Expressway, with quick access to IMT Manesar, Cyber City and IGI Airport."
+        FRAME "Distances" [23:505] 33,638 714x141 flex:row gap:40 pad:0 0 0 0 main:MIN cross:MIN w:FILL h:HUG
+          FRAME "Col 1" [23:506] 0,0 337x141 flex:col gap:0 pad:0 0 0 0 main:MIN cross:MIN w:FILL h:HUG
+            FRAME "Row / IMT Manesar" [23:507] 0,0 337x47 border:0{"top":0,"right":0,"bottom":1,"left":0} #e3d6c2 INSIDE flex:row gap:12 pad:10 0 10 0 main:MIN cross:CENTER w:FILL h:HUG
+              TEXT "IMT Manesar" [23:508] 0,10 270x26 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "IMT Manesar"
+              TEXT "≈ 5 km" [23:509] 282,11 55x24 w:HUG h:HUG font:Montserrat 600 16/24 ls:0 LEFT   color:#1f2b25 "≈ 5 km"
+            FRAME "Row / KMP Expressway" [23:510] 0,47 337x47 border:0{"top":0,"right":0,"bottom":1,"left":0} #e3d6c2 INSIDE flex:row gap:12 pad:10 0 10 0 main:MIN cross:CENTER w:FILL h:HUG
+              TEXT "KMP Expressway" [23:511] 0,10 269x26 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "KMP Expressway"
+              TEXT "≈ 6 km" [23:512] 281,11 56x24 w:HUG h:HUG font:Montserrat 600 16/24 ls:0 LEFT   color:#1f2b25 "≈ 6 km"
+            FRAME "Row / Dwarka Expressway" [23:513] 0,94 337x47 border:0{"top":0,"right":0,"bottom":1,"left":0} #e3d6c2 INSIDE flex:row gap:12 pad:10 0 10 0 main:MIN cross:CENTER w:FILL h:HUG
+              TEXT "Dwarka Expressway" [23:514] 0,10 262x26 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "Dwarka Expressway"
+              TEXT "≈ 10 km" [23:515] 274,11 63x24 w:HUG h:HUG font:Montserrat 600 16/24 ls:0 LEFT   color:#1f2b25 "≈ 10 km"
+          FRAME "Col 2" [23:516] 377,0 337x141 flex:col gap:0 pad:0 0 0 0 main:MIN cross:MIN w:FILL h:HUG
+            FRAME "Row / IGI Airport, Delhi" [23:517] 0,0 337x47 border:0{"top":0,"right":0,"bottom":1,"left":0} #e3d6c2 INSIDE flex:row gap:12 pad:10 0 10 0 main:MIN cross:CENTER w:FILL h:HUG
+              TEXT "IGI Airport, Delhi" [23:518] 0,10 261x26 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "IGI Airport, Delhi"
+              TEXT "≈ 35 km" [23:519] 273,11 64x24 w:HUG h:HUG font:Montserrat 600 16/24 ls:0 LEFT   color:#1f2b25 "≈ 35 km"
+            FRAME "Row / Medanta The Medicity" [23:520] 0,47 337x47 border:0{"top":0,"right":0,"bottom":1,"left":0} #e3d6c2 INSIDE flex:row gap:12 pad:10 0 10 0 main:MIN cross:CENTER w:FILL h:HUG
+              TEXT "Medanta The Medicity" [23:521] 0,10 263x26 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "Medanta The Medicity"
+              TEXT "≈ 18 km" [23:522] 275,11 62x24 w:HUG h:HUG font:Montserrat 600 16/24 ls:0 LEFT   color:#1f2b25 "≈ 18 km"
+            FRAME "Row / Cyber City, Gurgaon" [23:523] 0,94 337x47 border:0{"top":0,"right":0,"bottom":1,"left":0} #e3d6c2 INSIDE flex:row gap:12 pad:10 0 10 0 main:MIN cross:CENTER w:FILL h:HUG
+              TEXT "Cyber City, Gurgaon" [23:524] 0,10 259x26 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "Cyber City, Gurgaon"
+              TEXT "≈ 30 km" [23:525] 271,11 66x24 w:HUG h:HUG font:Montserrat 600 16/24 ls:0 LEFT   color:#1f2b25 "≈ 30 km"
+        FRAME "CTAs" [23:526] 33,799 471x56 flex:row gap:12 pad:0 0 0 0 main:MIN cross:MIN w:HUG h:HUG
+          INSTANCE "Button / Book a Site Visit" [23:527] 0,0 250x56 bg:linear(90deg #b4672b 0%, #dca347 38%, #f2c95e 68%, #c98636 100%) r:10 shadow:0 6 18 0 #e2b04a/0.32 flex:row gap:10 pad:0 28 0 28 main:CENTER cross:CENTER w:HUG
+            INSTANCE "Icon" [I23:527;1033:8799] 28,18 20x20
+              VECTOR "Glyph" [I23:527;1033:8799;959:860] 2.5,2.5 15x15 border:1.5 #090909 CENTER
+            TEXT "Label" [I23:527;1033:8800] 58,18 136x20 w:HUG h:HUG font:Montserrat 700 16/20 ls:0 LEFT   color:#090909 "Book a Site Visit"
+            INSTANCE "Arrow" [I23:527;1033:8801] 204,19 18x18
+              VECTOR "Glyph" [I23:527;1033:8801;959:869] 6.75,4.5 4.5x9 border:2.200000047683716 #090909 CENTER
+          INSTANCE "Button / Get Directions" [23:528] 262,0 209x56 bg:#fffdf8 border:1 #e2b04a INSIDE r:10 flex:row gap:10 pad:0 28 0 28 main:CENTER cross:CENTER w:HUG
+            INSTANCE "Icon" [I23:528;1033:8815] 29,18 20x20
+              VECTOR "Glyph" [I23:528;1033:8815;959:792] 4.17,2.08 11.67x15.42 border:1.5 #b5873b CENTER
+            TEXT "Label" [I23:528;1033:8816] 59,18 121x20 w:HUG h:HUG font:Montserrat 700 16/20 ls:0 LEFT   color:#1f2b25 "Get Directions"
+            INSTANCE "Arrow" [I23:528;1033:8817] 0,0 18x18 HIDDEN
+              VECTOR "Glyph" [I23:528;1033:8817;959:869] 6.75,4.5 4.5x9 border:2.200000047683716 #b5873b CENTER
+      FRAME "Card / Explore Property (Virtual Tour)" [23:529] 0,4978 780x626 bg:#fffdf8 border:1 #e3d6c2 INSIDE r:16 shadow:0 4 16 0 #334033/0.03 flex:col gap:20 pad:32 32 32 32 main:MIN cross:MIN w:FILL h:HUG
+        TEXT "Card title" [23:530] 33,33 714x32 w:FILL h:HUG font:Montserrat 600 26/32 ls:0 LEFT   color:#1f2b25 "Explore Property"
+        FRAME "Virtual tour preview" [23:531] 33,85 714x360 bg:IMG(8a63dd9e,FILL) r:12 w:FILL clip
+          RECTANGLE "Rectangle" [23:532] 0,0 716x360 bg:#0c4636
+          FRAME "Chip / Artistic Impression" [23:533] 12,322 133x26 bg:#12684d r:4 flex:row gap:0 pad:4 10 4 10 main:MIN cross:MIN w:HUG h:HUG
+            TEXT "Artistic Impression" [23:534] 10,4 113x18 w:HUG h:HUG font:Montserrat 400 12/18 ls:0 LEFT   color:#fbf8f0 "Artistic Impression"
+          FRAME "360 badge" [23:535] 310,116 96x96 bg:#fffdf8 border:2 #090909 INSIDE r:999 shadow:0 8 24 0 #334033/0.22 flex:col gap:0 pad:0 0 0 0 main:CENTER cross:CENTER
+            TEXT "360°" [23:536] 18,32 60x32 w:HUG h:HUG font:Montserrat 600 26/32 ls:0 LEFT   color:#1f2b25 "360°"
+          FRAME "Label" [23:537] 275,226 176x36 bg:linear(90deg #b4672b 0%, #dca347 38%, #f2c95e 68%, #c98636 100%) r:999 flex:row gap:0 pad:8 16 8 16 main:MIN cross:MIN w:HUG h:HUG
+            TEXT "Start Virtual Tour" [23:538] 16,8 144x20 w:HUG h:HUG font:Montserrat 700 16/20 ls:0 LEFT   color:#090909 "Start Virtual Tour"
+        TEXT "Experience the residences, premium amenities, green spaces and well-crafted interiors virtually, and see the lifestyle that is redefining life in Sector 80, Gurugram." [23:539] 33,465 714x52 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "Experience the residences, premium amenities, green spaces and well-crafted interiors virtually, and see the lifestyle that is redefining life in Sector 80, Gurugram."
+        FRAME "CTAs" [23:540] 33,537 519x56 flex:row gap:12 pad:0 0 0 0 main:MIN cross:MIN w:HUG h:HUG
+          INSTANCE "Button / Request E-Brochure" [23:541] 0,0 253x56 bg:linear(90deg #b4672b 0%, #dca347 38%, #f2c95e 68%, #c98636 100%) r:10 shadow:0 6 18 0 #e2b04a/0.32 flex:row gap:10 pad:0 28 0 28 main:CENTER cross:CENTER w:HUG
+            INSTANCE "Icon" [I23:541;1033:8799] 0,0 20x20 HIDDEN
+              VECTOR "Glyph" [I23:541;1033:8799;959:786] 2.5,3.33 14.17x14.17 border:1.5 #090909 CENTER
+            TEXT "Label" [I23:541;1033:8800] 28,18 169x20 w:HUG h:HUG font:Montserrat 700 16/20 ls:0 LEFT   color:#090909 "Request E-Brochure"
+            INSTANCE "Arrow" [I23:541;1033:8801] 207,19 18x18
+              VECTOR "Glyph" [I23:541;1033:8801;959:869] 6.75,4.5 4.5x9 border:2.200000047683716 #090909 CENTER
+          INSTANCE "Button / Request a Call Back" [23:542] 265,0 254x56 bg:#fffdf8 border:1 #e2b04a INSIDE r:10 flex:row gap:10 pad:0 28 0 28 main:CENTER cross:CENTER w:HUG
+            INSTANCE "Icon/phone" [I23:542;1033:8815] 29,18 20x20
+              VECTOR "Glyph" [I23:542;1033:8815;959:786] 2.5,3.33 14.17x14.17 border:1.5 #b5873b CENTER
+            TEXT "Label" [I23:542;1033:8816] 59,18 166x20 w:HUG h:HUG font:Montserrat 700 16/20 ls:0 LEFT   color:#1f2b25 "Request a Call Back"
+            INSTANCE "Arrow" [I23:542;1033:8817] 0,0 18x18 HIDDEN
+              VECTOR "Glyph" [I23:542;1033:8817;959:869] 6.75,4.5 4.5x9 border:2.200000047683716 #b5873b CENTER
+      FRAME "Card / About Developer" [23:543] 0,5628 780x334 bg:#fffdf8 border:1 #e3d6c2 INSIDE r:16 shadow:0 4 16 0 #334033/0.03 flex:col gap:20 pad:32 32 32 32 main:MIN cross:MIN w:FILL h:HUG
+        TEXT "Card title" [23:544] 33,33 714x32 w:FILL h:HUG font:Montserrat 600 26/32 ls:0 LEFT   color:#1f2b25 "About Eldeco Group"
+        TEXT "Eldeco Group is one of India's most trusted and established real estate developers, with a legacy of over four decades across premium residential, commercial and integrated township developments. Building since 1985, the group has handed over 200 projects and delivered over 30 million sq. ft. to more than 30,000 customers." [23:545] 33,85 714x104 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "Eldeco Group is one of India's most trusted and established real estate developers, with a legacy of over four decades across premium residential, commercial and integrated township developments. Building since 1985, the group has handed over 200 projects and delivered over 30 million sq. ft. to more than 30,000 customers."
+        FRAME "Counters" [23:546] 33,209 714x92 flex:row gap:12 pad:0 0 0 0 main:MIN cross:MIN w:FILL h:HUG
+          FRAME "Counter / Years" [23:547] 0,0 169.5x92 bg:#f3ebdf r:12 flex:col gap:2 pad:16 16 16 16 main:MIN cross:CENTER w:FILL h:HUG
+            TEXT "40+" [23:548] 53.25,16 63x38 w:HUG h:HUG font:Montserrat 600 32/38 ls:0 LEFT   color:#1f2b25 "40+"
+            TEXT "Years" [23:549] 66.25,56 37x20 w:HUG h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#6b726b "Years"
+          FRAME "Counter / Cities" [23:550] 181.5,0 169.5x92 bg:#f3ebdf r:12 flex:col gap:2 pad:16 16 16 16 main:MIN cross:CENTER w:FILL h:HUG
+            TEXT "20+" [23:551] 54.75,16 60x38 w:HUG h:HUG font:Montserrat 600 32/38 ls:0 LEFT   color:#1f2b25 "20+"
+            TEXT "Cities" [23:552] 65.25,56 39x20 w:HUG h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#6b726b "Cities"
+          FRAME "Counter / Projects" [23:553] 363,0 169.5x92 bg:#f3ebdf r:12 flex:col gap:2 pad:16 16 16 16 main:MIN cross:CENTER w:FILL h:HUG
+            TEXT "200+" [23:554] 44.25,16 81x38 w:HUG h:HUG font:Montserrat 600 32/38 ls:0 LEFT   color:#1f2b25 "200+"
+            TEXT "Projects" [23:555] 56.25,56 57x20 w:HUG h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#6b726b "Projects"
+          FRAME "Counter / Homes" [23:556] 544.5,0 169.5x92 bg:#f3ebdf r:12 flex:col gap:2 pad:16 16 16 16 main:MIN cross:CENTER w:FILL h:HUG
+            TEXT "30,000+" [23:557] 19.25,16 131x38 w:HUG h:HUG font:Montserrat 600 32/38 ls:0 LEFT   color:#1f2b25 "30,000+"
+            TEXT "Homes" [23:558] 59.25,56 51x20 w:HUG h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#6b726b "Homes"
+    FRAME "Sidebar space" [23:559] 940,32 380x10 clip
+    FRAME "Sidebar (sticky)" [23:560] 940,-360 380x944 flex:col gap:20 pad:0 0 0 0 main:MIN cross:MIN h:HUG abs
+      INSTANCE "Enquiry form (sidebar)" [23:561] 0,0 380x614 bg:#12684d r:16 shadow:0 20 48 0 #334033/0.22 flex:col gap:18 pad:28 28 28 28 main:MIN cross:MIN w:FILL h:HUG
+        TEXT "Title" [I23:561;1033:9771] 28,28 324x64 w:FILL h:HUG font:Montserrat 600 26/32 ls:0 LEFT   color:#fbf8f0 "Get Exclusive Price from Developer"
+        FRAME "Call row" [I23:561;1033:9772] 28,110 222x24 HIDDEN flex:row gap:8 pad:0 0 0 0 main:MIN cross:CENTER w:HUG h:HUG
+          INSTANCE "Icon/phone" [I23:561;1033:9773] 0,3 18x18
+            VECTOR "Glyph" [I23:561;1033:9773;959:786] 2.25,3 12.75x12.75 border:1.5 #e2b04a CENTER
+          TEXT "Call Us: +91-9770708080" [I23:561;1033:9774] 26,0 202x24 w:HUG h:HUG font:Montserrat 700 16/24 ls:0 LEFT   color:#fbf8f0 "Call Us: +91-9770708080"
+        FRAME "Urgency chip" [I23:561;1033:9775] 28,152 324x56 HIDDEN bg:#e2b04a r:8 flex:row gap:8 pad:8 12 8 12 main:MIN cross:CENTER h:HUG
+          ELLIPSE "Ellipse" [I23:561;1033:9776] 12,24 8x8 bg:#e2b04a shadow:0 0 0 3 #e2b04a/0.32
+          TEXT "Chip text" [I23:561;1033:9777] 28,8 284x40 w:FILL h:HUG font:Montserrat 600 14/20 ls:0 LEFT   color:#ffffff "Limited inventory. Get the latest offers today."
+        INSTANCE "Field / Full Name" [I23:561;1033:9778] 28,110 324x80 flex:col gap:8 pad:0 0 0 0 main:MIN cross:MIN w:FILL h:HUG
+          TEXT "Label" [I23:561;1033:9778;1033:8864] 0,0 324x20 w:FILL h:HUG font:Montserrat 500 14/20 ls:0 LEFT   color:#fbf8f0 "Full Name"
+          FRAME "Input" [I23:561;1033:9778;1033:8865] 0,28 324x52 bg:#fffdf8 r:10 flex:row gap:10 pad:0 16 0 16 main:MIN cross:CENTER w:FILL
+            FRAME "Prefix" [I23:561;1033:9778;1033:8866] 0,0 36x24 HIDDEN flex:row gap:10 pad:0 0 0 0 main:MIN cross:CENTER w:HUG h:HUG
+              TEXT "+91" [I23:561;1033:9778;1033:8867] 0,0 26x24 w:HUG h:HUG font:Montserrat 500 16/24 ls:0 LEFT   color:#1f2b25 "+91"
+              RECTANGLE "Rectangle" [I23:561;1033:9778;1033:8868] 35,1 1x22 bg:#e3d6c2
+            TEXT "Placeholder" [I23:561;1033:9778;1033:8869] 16,13 292x26 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "Enter your name"
+        INSTANCE "Field / Phone Number" [I23:561;1033:9779] 28,208 324x80 flex:col gap:8 pad:0 0 0 0 main:MIN cross:MIN w:FILL h:HUG
+          TEXT "Label" [I23:561;1033:9779;1033:8864] 0,0 324x20 w:FILL h:HUG font:Montserrat 500 14/20 ls:0 LEFT   color:#fbf8f0 "Phone Number"
+          FRAME "Input" [I23:561;1033:9779;1033:8865] 0,28 324x52 bg:#fffdf8 r:10 flex:row gap:10 pad:0 16 0 16 main:MIN cross:CENTER w:FILL
+            FRAME "Prefix" [I23:561;1033:9779;1033:8866] 16,14 37x24 flex:row gap:10 pad:0 0 0 0 main:MIN cross:CENTER w:HUG h:HUG
+              TEXT "+91" [I23:561;1033:9779;1033:8867] 0,0 26x24 w:HUG h:HUG font:Montserrat 500 16/24 ls:0 LEFT   color:#1f2b25 "+91"
+              RECTANGLE "Rectangle" [I23:561;1033:9779;1033:8868] 36,1 1x22 bg:#e3d6c2
+            TEXT "Placeholder" [I23:561;1033:9779;1033:8869] 63,13 245x26 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "98XXXXXXXX"
+        INSTANCE "Field / Email Address" [I23:561;1033:9780] 28,306 324x80 flex:col gap:8 pad:0 0 0 0 main:MIN cross:MIN w:FILL h:HUG
+          TEXT "Label" [I23:561;1033:9780;1033:8864] 0,0 324x20 w:FILL h:HUG font:Montserrat 500 14/20 ls:0 LEFT   color:#fbf8f0 "Email Address"
+          FRAME "Input" [I23:561;1033:9780;1033:8865] 0,28 324x52 bg:#fffdf8 r:10 flex:row gap:10 pad:0 16 0 16 main:MIN cross:CENTER w:FILL
+            FRAME "Prefix" [I23:561;1033:9780;1033:8866] 0,0 36x24 HIDDEN flex:row gap:10 pad:0 0 0 0 main:MIN cross:CENTER w:HUG h:HUG
+              TEXT "+91" [I23:561;1033:9780;1033:8867] 0,0 26x24 w:HUG h:HUG font:Montserrat 500 16/24 ls:0 LEFT   color:#1f2b25 "+91"
+              RECTANGLE "Rectangle" [I23:561;1033:9780;1033:8868] 35,1 1x22 bg:#e3d6c2
+            TEXT "Placeholder" [I23:561;1033:9780;1033:8869] 16,13 292x26 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "name@gmail.com"
+        INSTANCE "Submit Button" [I23:561;1033:9781] 28,404 324x56 bg:linear(90deg #b4672b 0%, #dca347 38%, #f2c95e 68%, #c98636 100%) r:10 shadow:0 6 18 0 #e2b04a/0.32 flex:row gap:10 pad:0 28 0 28 main:CENTER cross:CENTER w:FILL
+          INSTANCE "Icon" [I23:561;1033:9781;1033:8799] 0,0 20x20 HIDDEN
+            VECTOR "Glyph" [I23:561;1033:9781;1033:8799;959:786] 2.5,3.33 14.17x14.17 border:1.5 #090909 CENTER
+          TEXT "Label" [I23:561;1033:9781;1033:8800] 68.5,18 159x20 w:HUG h:HUG font:Montserrat 700 16/20 ls:0 LEFT   color:#090909 "Get Exclusive Price"
+          INSTANCE "Arrow" [I23:561;1033:9781;1033:8801] 237.5,19 18x18
+            VECTOR "Glyph" [I23:561;1033:9781;1033:8801;959:869] 6.75,4.5 4.5x9 border:2.200000047683716 #090909 CENTER
+        TEXT "Consent" [I23:561;1033:9782] 28,478 324x72 w:FILL h:HUG font:Montserrat 400 12/18 ls:0 LEFT   color:#ffffff/0.6 "I authorise company representatives to Call, SMS, Email or WhatsApp me about its products and offers. This consent overrides any registration for DNC/NDNC."
+        FRAME "Trust row" [I23:561;1033:9783] 28,568 194x18 flex:row gap:8 pad:0 0 0 0 main:MIN cross:CENTER w:HUG h:HUG
+          INSTANCE "Icon/check" [I23:561;1033:9784] 0,1 16x16
+            VECTOR "Glyph" [I23:561;1033:9784;959:872] 3.33,4.67 9.33x6.67 border:1.5 #e2b04a CENTER
+          TEXT "HARERA Reg. No. 20 of 2026" [I23:561;1033:9785] 24,0 170x18 w:HUG h:HUG font:Montserrat 400 12/18 ls:0 LEFT   color:#ffffff/0.8 "HARERA Reg. No. 20 of 2026"
+      FRAME "Prefer to talk?" [23:562] 0,634 380x200 bg:#fffdf8 border:1 #e3d6c2 INSIDE r:16 shadow:0 4 16 0 #334033/0.03 flex:col gap:14 pad:24 24 24 24 main:MIN cross:MIN w:FILL h:HUG
+        TEXT "Prefer to talk?" [23:563] 25,25 146x26 w:HUG h:HUG font:Montserrat 600 20/26 ls:0 LEFT   color:#1f2b25 "Prefer to talk?"
+        TEXT "Speak to an Eldeco Terra & Sol expert about prices, availability and site visits." [23:564] 25,65 330x40 w:FILL h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#6b726b "Speak to an Eldeco Terra & Sol expert about prices, availability and site visits."
+        FRAME "Buttons" [23:565] 25,119 330x56 flex:row gap:10 pad:0 0 0 0 main:MIN cross:MIN w:FILL h:HUG
+          INSTANCE "Button / Call Now" [23:566] 0,0 159x56 bg:linear(90deg #b4672b 0%, #dca347 38%, #f2c95e 68%, #c98636 100%) r:10 shadow:0 6 18 0 #e2b04a/0.32 flex:row gap:10 pad:0 28 0 28 main:CENTER cross:CENTER w:FILL
+            INSTANCE "Icon/phone" [I23:566;1033:8799] 27.5,18 20x20
+              VECTOR "Glyph" [I23:566;1033:8799;959:786] 2.5,3.33 14.17x14.17 border:1.5 #090909 CENTER
+            TEXT "Label" [I23:566;1033:8800] 57.5,18 74x20 w:HUG h:HUG font:Montserrat 700 16/20 ls:0 LEFT   color:#090909 "Call Now"
+            INSTANCE "Arrow" [I23:566;1033:8801] 0,0 18x18 HIDDEN
+              VECTOR "Glyph" [I23:566;1033:8801;959:869] 6.75,4.5 4.5x9 border:2.200000047683716 #090909 CENTER
+          INSTANCE "Button / WhatsApp" [23:567] 169,0 161x56 bg:#fffdf8 border:1 #e2b04a INSIDE r:10 flex:row gap:10 pad:0 28 0 28 main:CENTER cross:CENTER w:FILL
+            INSTANCE "Icon" [I23:567;1033:8815] 20.5,18 20x20
+              VECTOR "Glyph" [I23:567;1033:8815;959:881] 3.33,3.21 13.33x13.46 border:1.5 #b5873b CENTER
+            TEXT "Label" [I23:567;1033:8816] 50.5,18 90x20 w:HUG h:HUG font:Montserrat 700 16/20 ls:0 LEFT   color:#1f2b25 "WhatsApp"
+            INSTANCE "Arrow" [I23:567;1033:8817] 0,0 18x18 HIDDEN
+              VECTOR "Glyph" [I23:567;1033:8817;959:869] 6.75,4.5 4.5x9 border:2.200000047683716 #b5873b CENTER
+      FRAME "Brochure card" [23:568] 0,854 380x90 bg:#f4e9d5 border:1 #cec8bd INSIDE r:16 flex:row gap:14 pad:20 20 20 20 main:MIN cross:CENTER w:FILL h:HUG
+        FRAME "Icon" [23:569] 21,21 48x48 bg:#12684d r:12 flex:row gap:0 pad:0 0 0 0 main:CENTER cross:CENTER
+          INSTANCE "Icon/download" [23:570] 13,13 22x22
+            VECTOR "Glyph" [I23:570;959:854] 3.67,3.67 14.67x14.67 border:1.5 #e2b04a CENTER
+        FRAME "Text" [23:571] 83,23 240x44 flex:col gap:2 pad:0 0 0 0 main:MIN cross:MIN w:FILL h:HUG
+          TEXT "Download E-Brochure" [23:572] 0,0 180x24 w:HUG h:HUG font:Montserrat 500 16/24 ls:0 LEFT   color:#1f2b25 "Download E-Brochure"
+          TEXT "Plans, amenities and specifications" [23:573] 0,26 210x18 w:HUG h:HUG font:Montserrat 400 12/18 ls:0 LEFT   color:#6b726b "Plans, amenities and specifications"
+        INSTANCE "Icon/arrowRight" [23:574] 337,34 22x22
+          VECTOR "Glyph" [I23:574;959:869] 8.25,5.5 5.5x11 border:1.5 #b5873b CENTER
+  FRAME "05 Final CTA" [23:575] 0,6878 1440x756 bg:#f3ebdf|IMG(3f12aefc,FILL) flex:row gap:64 pad:96 120 96 120 main:MIN cross:CENTER w:FILL h:HUG clip
+    RECTANGLE "Overlay" [23:576] 0,0 1440x756 bg:linear(90deg #f7f1e6/0.95 0%, #f7f1e6/0.8 60%, #f7f1e6/0.55 100%) abs
+    FRAME "Copy" [23:577] 120,192 696x372 flex:col gap:20 pad:0 0 0 0 main:MIN cross:MIN w:FILL h:HUG
+      FRAME "Tag" [23:578] 0,0 191x28 bg:linear(90deg #b4672b 0%, #dca347 38%, #f2c95e 68%, #c98636 100%) r:6 flex:row gap:0 pad:6 12 6 12 main:MIN cross:MIN w:HUG h:HUG
+        TEXT "BOOK YOUR SITE VISIT" [23:579] 12,6 167x16 w:HUG h:HUG font:Montserrat 700 12/16 ls:1.2 LEFT   color:#090909 "BOOK YOUR SITE VISIT"
+      TEXT "Your home at Eldeco Terra & Sol is waiting" [23:580] 0,48 696x132 w:FILL h:HUG font:Montserrat 600 60/66 ls:-0.6 LEFT   color:#1f2b25 "Your home at Eldeco Terra & Sol is waiting"
+      TEXT "Share your details to get the latest price list, floor plans and a private site visit in Sector 80, Gurugram." [23:581] 0,200 696x56 w:FILL h:HUG font:Montserrat 400 18/28 ls:0 LEFT   color:#1f2b25 "Share your details to get the latest price list, floor plans and a private site visit in Sector 80, Gurugram."
+      FRAME "Points" [23:582] 0,276 270x96 flex:col gap:12 pad:0 0 0 0 main:MIN cross:MIN w:HUG h:HUG
+        FRAME "Point" [23:583] 0,0 270x24 flex:row gap:10 pad:0 0 0 0 main:MIN cross:CENTER w:HUG h:HUG
+          FRAME "Check" [23:584] 0,0 24x24 bg:#e2b04a r:999 flex:row gap:0 pad:0 0 0 0 main:CENTER cross:CENTER
+            INSTANCE "Icon/check" [23:585] 5,5 14x14
+              VECTOR "Glyph" [I23:585;959:872] 2.92,4.08 8.17x5.83 border:1.5 #090909 CENTER
+          TEXT "3 & 3.5 BHK starting ₹3.33 Cr*" [23:586] 34,0 236x24 w:HUG h:HUG font:Montserrat 500 16/24 ls:0 LEFT   color:#1f2b25 "3 & 3.5 BHK starting ₹3.33 Cr*"
+        FRAME "Point" [23:587] 0,36 218x24 flex:row gap:10 pad:0 0 0 0 main:MIN cross:CENTER w:HUG h:HUG
+          FRAME "Check" [23:588] 0,0 24x24 bg:#e2b04a r:999 flex:row gap:0 pad:0 0 0 0 main:CENTER cross:CENTER
+            INSTANCE "Icon/check" [23:589] 5,5 14x14
+              VECTOR "Glyph" [I23:589;959:872] 2.92,4.08 8.17x5.83 border:1.5 #090909 CENTER
+          TEXT "Only 4 homes per core" [23:590] 34,0 184x24 w:HUG h:HUG font:Montserrat 500 16/24 ls:0 LEFT   color:#1f2b25 "Only 4 homes per core"
+        FRAME "Point" [23:591] 0,72 264x24 flex:row gap:10 pad:0 0 0 0 main:MIN cross:CENTER w:HUG h:HUG
+          FRAME "Check" [23:592] 0,0 24x24 bg:#e2b04a r:999 flex:row gap:0 pad:0 0 0 0 main:CENTER cross:CENTER
+            INSTANCE "Icon/check" [23:593] 5,5 14x14
+              VECTOR "Glyph" [I23:593;959:872] 2.92,4.08 8.17x5.83 border:1.5 #090909 CENTER
+          TEXT "HARERA Reg. No. 20 of 2026" [23:594] 34,0 230x24 w:HUG h:HUG font:Montserrat 500 16/24 ls:0 LEFT   color:#1f2b25 "HARERA Reg. No. 20 of 2026"
+    INSTANCE "Enquiry form (final)" [23:595] 880,96 440x564 bg:#12684d r:16 shadow:0 20 48 0 #334033/0.22 flex:col gap:18 pad:28 28 28 28 main:MIN cross:MIN h:HUG
+      TEXT "Title" [I23:595;1033:9771] 28,28 384x32 w:FILL h:HUG font:Montserrat 600 26/32 ls:0 LEFT   color:#fbf8f0 "Schedule Your Site Visit"
+      FRAME "Call row" [I23:595;1033:9772] 28,110 222x24 HIDDEN flex:row gap:8 pad:0 0 0 0 main:MIN cross:CENTER w:HUG h:HUG
+        INSTANCE "Icon/phone" [I23:595;1033:9773] 0,3 18x18
+          VECTOR "Glyph" [I23:595;1033:9773;959:786] 2.25,3 12.75x12.75 border:1.5 #e2b04a CENTER
+        TEXT "Call Us: +91-9770708080" [I23:595;1033:9774] 26,0 202x24 w:HUG h:HUG font:Montserrat 700 16/24 ls:0 LEFT   color:#fbf8f0 "Call Us: +91-9770708080"
+      FRAME "Urgency chip" [I23:595;1033:9775] 28,152 324x56 HIDDEN bg:#e2b04a r:8 flex:row gap:8 pad:8 12 8 12 main:MIN cross:CENTER h:HUG
+        ELLIPSE "Ellipse" [I23:595;1033:9776] 12,24 8x8 bg:#e2b04a shadow:0 0 0 3 #e2b04a/0.32
+        TEXT "Chip text" [I23:595;1033:9777] 28,8 344x20 w:FILL h:HUG font:Montserrat 600 14/20 ls:0 LEFT   color:#ebc15c "Limited inventory. Get the latest offers today."
+      INSTANCE "Field / Full Name" [I23:595;1033:9778] 28,78 384x80 flex:col gap:8 pad:0 0 0 0 main:MIN cross:MIN w:FILL h:HUG
+        TEXT "Label" [I23:595;1033:9778;1033:8864] 0,0 384x20 w:FILL h:HUG font:Montserrat 500 14/20 ls:0 LEFT   color:#fbf8f0 "Full Name"
+        FRAME "Input" [I23:595;1033:9778;1033:8865] 0,28 384x52 bg:#fffdf8 r:10 flex:row gap:10 pad:0 16 0 16 main:MIN cross:CENTER w:FILL
+          FRAME "Prefix" [I23:595;1033:9778;1033:8866] 0,0 36x24 HIDDEN flex:row gap:10 pad:0 0 0 0 main:MIN cross:CENTER w:HUG h:HUG
+            TEXT "+91" [I23:595;1033:9778;1033:8867] 0,0 26x24 w:HUG h:HUG font:Montserrat 500 16/24 ls:0 LEFT   color:#1f2b25 "+91"
+            RECTANGLE "Rectangle" [I23:595;1033:9778;1033:8868] 35,1 1x22 bg:#e3d6c2
+          TEXT "Placeholder" [I23:595;1033:9778;1033:8869] 16,13 352x26 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "Enter your name"
+      INSTANCE "Field / Phone Number" [I23:595;1033:9779] 28,176 384x80 flex:col gap:8 pad:0 0 0 0 main:MIN cross:MIN w:FILL h:HUG
+        TEXT "Label" [I23:595;1033:9779;1033:8864] 0,0 384x20 w:FILL h:HUG font:Montserrat 500 14/20 ls:0 LEFT   color:#fbf8f0 "Phone Number"
+        FRAME "Input" [I23:595;1033:9779;1033:8865] 0,28 384x52 bg:#fffdf8 r:10 flex:row gap:10 pad:0 16 0 16 main:MIN cross:CENTER w:FILL
+          FRAME "Prefix" [I23:595;1033:9779;1033:8866] 16,14 37x24 flex:row gap:10 pad:0 0 0 0 main:MIN cross:CENTER w:HUG h:HUG
+            TEXT "+91" [I23:595;1033:9779;1033:8867] 0,0 26x24 w:HUG h:HUG font:Montserrat 500 16/24 ls:0 LEFT   color:#1f2b25 "+91"
+            RECTANGLE "Rectangle" [I23:595;1033:9779;1033:8868] 36,1 1x22 bg:#e3d6c2
+          TEXT "Placeholder" [I23:595;1033:9779;1033:8869] 63,13 305x26 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "98XXXXXXXX"
+      INSTANCE "Field / Email Address" [I23:595;1033:9780] 28,274 384x80 flex:col gap:8 pad:0 0 0 0 main:MIN cross:MIN w:FILL h:HUG
+        TEXT "Label" [I23:595;1033:9780;1033:8864] 0,0 384x20 w:FILL h:HUG font:Montserrat 500 14/20 ls:0 LEFT   color:#fbf8f0 "Email Address"
+        FRAME "Input" [I23:595;1033:9780;1033:8865] 0,28 384x52 bg:#fffdf8 r:10 flex:row gap:10 pad:0 16 0 16 main:MIN cross:CENTER w:FILL
+          FRAME "Prefix" [I23:595;1033:9780;1033:8866] 0,0 36x24 HIDDEN flex:row gap:10 pad:0 0 0 0 main:MIN cross:CENTER w:HUG h:HUG
+            TEXT "+91" [I23:595;1033:9780;1033:8867] 0,0 26x24 w:HUG h:HUG font:Montserrat 500 16/24 ls:0 LEFT   color:#1f2b25 "+91"
+            RECTANGLE "Rectangle" [I23:595;1033:9780;1033:8868] 35,1 1x22 bg:#e3d6c2
+          TEXT "Placeholder" [I23:595;1033:9780;1033:8869] 16,13 352x26 w:FILL h:HUG font:Montserrat 400 16/26 ls:0 LEFT   color:#6b726b "name@gmail.com"
+      INSTANCE "Submit Button" [I23:595;1033:9781] 28,372 384x56 bg:linear(90deg #b4672b 0%, #dca347 38%, #f2c95e 68%, #c98636 100%) r:10 shadow:0 6 18 0 #e2b04a/0.32 flex:row gap:10 pad:0 28 0 28 main:CENTER cross:CENTER w:FILL
+        INSTANCE "Icon" [I23:595;1033:9781;1033:8799] 0,0 20x20 HIDDEN
+          VECTOR "Glyph" [I23:595;1033:9781;1033:8799;959:786] 2.5,3.33 14.17x14.17 border:1.5 #090909 CENTER
+        TEXT "Label" [I23:595;1033:9781;1033:8800] 102.5,18 151x20 w:HUG h:HUG font:Montserrat 700 16/20 ls:0 LEFT   color:#090909 "Book My Site Visit"
+        INSTANCE "Arrow" [I23:595;1033:9781;1033:8801] 263.5,19 18x18
+          VECTOR "Glyph" [I23:595;1033:9781;1033:8801;959:869] 6.75,4.5 4.5x9 border:2.200000047683716 #090909 CENTER
+      TEXT "Consent" [I23:595;1033:9782] 28,446 384x54 w:FILL h:HUG font:Montserrat 400 12/18 ls:0 LEFT   color:#ffffff/0.6 "I authorise company representatives to Call, SMS, Email or WhatsApp me about its products and offers. This consent overrides any registration for DNC/NDNC."
+      FRAME "Trust row" [I23:595;1033:9783] 28,518 194x18 flex:row gap:8 pad:0 0 0 0 main:MIN cross:CENTER w:HUG h:HUG
+        INSTANCE "Icon/check" [I23:595;1033:9784] 0,1 16x16
+          VECTOR "Glyph" [I23:595;1033:9784;959:872] 3.33,4.67 9.33x6.67 border:1.5 #e2b04a CENTER
+        TEXT "HARERA Reg. No. 20 of 2026" [I23:595;1033:9785] 24,0 170x18 w:HUG h:HUG font:Montserrat 400 12/18 ls:0 LEFT   color:#ffffff/0.8 "HARERA Reg. No. 20 of 2026"
+  FRAME "06 Footer" [23:596] 0,7634 1440x517 bg:#0c4636 flex:col gap:40 pad:72 120 32 120 main:MIN cross:MIN w:FILL h:HUG clip
+    FRAME "Diagonal pattern" [23:597] 0,0 1440x520 abs clip
+      (22 vector children)
+    FRAME "Columns" [23:620] 120,72 1200x218 flex:row gap:48 pad:0 0 0 0 main:MIN cross:MIN w:FILL h:HUG
+      FRAME "Brand" [23:621] 0,0 380x206 flex:col gap:14 pad:0 0 0 0 main:MIN cross:MIN h:HUG
+        RECTANGLE "Logo" [23:622] 0,0 180x46 bg:IMG(7f1a5d17,FIT)
+        TEXT "HARERA Reg. No. 20 of 2026" [23:623] 0,60 230x24 w:HUG h:HUG font:Montserrat 500 16/24 ls:0 LEFT   color:#fbf8f0 "HARERA Reg. No. 20 of 2026"
+        TEXT "Iconic luxury 3 and 3.5 BHK apartments by Eldeco Group in Sector 80, Gurugram." [23:624] 0,98 380x40 w:FILL h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#ffffff/0.7 "Iconic luxury 3 and 3.5 BHK apartments by Eldeco Group in Sector 80, Gurugram."
+        FRAME "Contact" [23:625] 0,152 240x20 flex:row gap:10 pad:0 0 0 0 main:MIN cross:CENTER w:HUG h:HUG
+          INSTANCE "Icon/pin" [23:626] 0,1 18x18
+            VECTOR "Glyph" [I23:626;959:792] 3.75,1.88 10.5x13.88 border:1.5 #e2b04a CENTER
+          TEXT "Sector 80, Gurugram, Haryana" [23:627] 28,0 212x20 w:HUG h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#fbf8f0 "Sector 80, Gurugram, Haryana"
+        FRAME "Contact" [23:628] 0,186 143x20 flex:row gap:10 pad:0 0 0 0 main:MIN cross:CENTER w:HUG h:HUG
+          INSTANCE "Icon/phone" [23:629] 0,1 18x18
+            VECTOR "Glyph" [I23:629;959:786] 2.25,3 12.75x12.75 border:1.5 #e2b04a CENTER
+          TEXT "+91-9770708080" [23:630] 28,0 115x20 w:HUG h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#fbf8f0 "+91-9770708080"
+      FRAME "Quick Links" [23:631] 428,0 218x218 flex:col gap:12 pad:0 0 0 0 main:MIN cross:MIN w:FILL h:HUG
+        TEXT "Quick Links" [23:632] 0,0 121x26 w:HUG h:HUG font:Montserrat 600 20/26 ls:0 LEFT   color:#fbf8f0 "Quick Links"
+        TEXT "Overview" [23:633] 0,38 66x20 w:HUG h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#ffffff/0.7 "Overview"
+        TEXT "Key Highlights" [23:634] 0,70 103x20 w:HUG h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#ffffff/0.7 "Key Highlights"
+        TEXT "Amenities" [23:635] 0,102 72x20 w:HUG h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#ffffff/0.7 "Amenities"
+        TEXT "Price List" [23:636] 0,134 64x20 w:HUG h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#ffffff/0.7 "Price List"
+        TEXT "Location" [23:637] 0,166 61x20 w:HUG h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#ffffff/0.7 "Location"
+        TEXT "Virtual Tour" [23:638] 0,198 81x20 w:HUG h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#ffffff/0.7 "Virtual Tour"
+      FRAME "Project" [23:639] 694,0 218x186 flex:col gap:12 pad:0 0 0 0 main:MIN cross:MIN w:FILL h:HUG
+        TEXT "Project" [23:640] 0,0 74x26 w:HUG h:HUG font:Montserrat 600 20/26 ls:0 LEFT   color:#fbf8f0 "Project"
+        TEXT "3 BHK Apartments" [23:641] 0,38 132x20 w:HUG h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#ffffff/0.7 "3 BHK Apartments"
+        TEXT "3.5 BHK Apartments" [23:642] 0,70 143x20 w:HUG h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#ffffff/0.7 "3.5 BHK Apartments"
+        TEXT "Floor Plans" [23:643] 0,102 78x20 w:HUG h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#ffffff/0.7 "Floor Plans"
+        TEXT "Gallery" [23:644] 0,134 49x20 w:HUG h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#ffffff/0.7 "Gallery"
+        TEXT "About Eldeco Group" [23:645] 0,166 143x20 w:HUG h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#ffffff/0.7 "About Eldeco Group"
+      FRAME "Enquire" [23:646] 960,0 240x162 flex:col gap:12 pad:0 0 0 0 main:MIN cross:MIN h:HUG
+        TEXT "Enquire Now" [23:647] 0,0 134x26 w:HUG h:HUG font:Montserrat 600 20/26 ls:0 LEFT   color:#fbf8f0 "Enquire Now"
+        INSTANCE "Button / Get Exclusive Price" [23:648] 0,38 240x56 bg:linear(90deg #b4672b 0%, #dca347 38%, #f2c95e 68%, #c98636 100%) r:10 shadow:0 6 18 0 #e2b04a/0.32 flex:row gap:10 pad:0 28 0 28 main:CENTER cross:CENTER w:FILL
+          INSTANCE "Icon" [I23:648;1033:8799] 0,0 20x20 HIDDEN
+            VECTOR "Glyph" [I23:648;1033:8799;959:786] 2.5,3.33 14.17x14.17 border:1.5 #090909 CENTER
+          TEXT "Label" [I23:648;1033:8800] 26.5,18 159x20 w:HUG h:HUG font:Montserrat 700 16/20 ls:0 LEFT   color:#090909 "Get Exclusive Price"
+          INSTANCE "Arrow" [I23:648;1033:8801] 195.5,19 18x18
+            VECTOR "Glyph" [I23:648;1033:8801;959:869] 6.75,4.5 4.5x9 border:2.200000047683716 #090909 CENTER
+        INSTANCE "Button / Tap To Call" [23:649] 0,106 240x56 border:1 #e3d6c2 INSIDE r:10 flex:row gap:10 pad:0 28 0 28 main:CENTER cross:CENTER w:FILL
+          INSTANCE "Icon/phone" [I23:649;1033:8831] 60,18 20x20
+            VECTOR "Glyph" [I23:649;1033:8831;959:786] 2.5,3.33 14.17x14.17 border:1.5 #e2b04a CENTER
+          TEXT "Label" [I23:649;1033:8832] 90,18 90x20 w:HUG h:HUG font:Montserrat 700 16/20 ls:0 LEFT   color:#fbf8f0 "Tap To Call"
+          INSTANCE "Arrow" [I23:649;1033:8833] 0,0 18x18 HIDDEN
+            VECTOR "Glyph" [I23:649;1033:8833;959:869] 6.75,4.5 4.5x9 border:2.200000047683716 #e2b04a CENTER
+    RECTANGLE "Rectangle" [23:650] 120,330 1200x1 bg:#ffffff/0.15 w:FILL
+    TEXT "Disclaimer: This website is for informational purposes only and does not constitute an offer to sell or a solicitation to buy any property. All images, plans, specifications, amenities and pricing are indicative and subject to change without notice. The content may include artistic impressions. Interested buyers are advised to verify all details, including area, pricing and availability, with the sales team before making any decision. *T&C Apply" [23:651] 120,371 1200x54 w:FILL h:HUG font:Montserrat 400 12/18 ls:0 LEFT   color:#ffffff/0.55 "Disclaimer: This website is for informational purposes only and does not constitute an offer to sell or a solicitation to buy any property. All images, plans, specifications, amenities and pricing are indicative and subject to change without notice. The content may include artistic impressions. Interested buyers are advised to verify all details, including area, pricing and availability, with the sales team before making any decision. *T&C Apply"
+    FRAME "Bottom" [23:652] 120,465 1200x20 flex:row gap:0 pad:0 0 0 0 main:SPACE_BETWEEN cross:MIN w:FILL h:HUG
+      TEXT "© 2026 Eldeco Group. All Rights Reserved. | RERA Registered | Disclaimer & Privacy Policy" [23:653] 0,0 622x20 w:HUG h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#ffffff/0.7 "© 2026 Eldeco Group. All Rights Reserved. | RERA Registered | Disclaimer & Privacy Policy"
+      TEXT "Digital Media Planned by Eldeco Group." [23:654] 922,0 278x20 w:HUG h:HUG font:Montserrat 400 14/20 ls:0 LEFT   color:#ffffff/0.7 "Digital Media Planned by Eldeco Group."
+  FRAME "Floating WhatsApp (fixed)" [23:655] 1356,740 60x60 bg:#e2b04a border:2 #fffdf8 INSIDE r:999 shadow:0 8 20 0 #334033/0.2 flex:row gap:0 pad:0 0 0 0 main:CENTER cross:CENTER abs
+    INSTANCE "Icon/whatsapp" [23:656] 17,17 26x26
+      VECTOR "Glyph" [I23:656;959:881] 4.33,4.17 17.33x17.49 border:1.5 #090909 CENTER
+  FRAME "Floating Call (fixed)" [23:657] 1356,816 60x60 bg:#e2b04a border:2 #fffdf8 INSIDE r:999 shadow:0 8 20 0 #334033/0.2 flex:row gap:0 pad:0 0 0 0 main:CENTER cross:CENTER abs
+    INSTANCE "Icon/phone" [23:658] 17,17 26x26
+      VECTOR "Glyph" [I23:658;959:786] 3.25,4.33 18.42x18.42 border:1.5 #090909 CENTER

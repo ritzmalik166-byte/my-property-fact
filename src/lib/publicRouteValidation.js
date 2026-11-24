@@ -57,6 +57,7 @@ export const PUBLIC_KNOWN_PREFIXES = new Set([
   "portal",
   "components",
   "lp",
+  "l-p",
   "lavidabella",
   "subh-anandam",
   "api",
@@ -196,6 +197,7 @@ export function isDefinitelyInvalidPublicPath(pathname) {
     const prefix = first.toLowerCase();
     if (prefix === "landing-pages") return false;
     if (prefix === "lp") return false;
+    if (prefix === "l-p") return false;
     if (prefix === "admin" || prefix === "portal") return false;
     if (prefix === "components") return false;
     if (first === "Eldeco-terra&sol" || first.toLowerCase() === "eldeco-terra%26sol") return false;
