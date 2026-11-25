@@ -1,0 +1,96 @@
+/* 23:384 Image / Infinity pool — 714×260, r12, clip */
+.photo {
+  position: relative;
+  width: 100%;
+  height: 260px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--ets-tile);
+}
+.photoImage {
+  object-fit: cover;
+}
+
+/* 23:387 Label pill — card fill, r999, padding 8/14, 500 14/20 */
+.label {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: var(--ets-card);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  color: var(--ets-text);
+}
+
+/* Chip / Artistic Impression — green, r4, padding 4/10, 12/18 */
+.chip {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: var(--ets-green);
+  color: var(--ets-on-dark);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+/* 23:389 Amenity grid — 3 cols × 226, gap 14 (rows) / 16 (cols) */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px 16px;
+  align-items: start;
+}
+.item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+/* Check — 24×24 champ circle, 14px #b0632a tick */
+.check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  background: var(--ets-champ);
+}
+.text {
+  flex: 1;
+  min-width: 0;
+  font-size: 16px;
+  line-height: 26px;
+  font-weight: 400;
+  color: var(--ets-text);
+}
+
+.cta {
+  align-self: flex-start;
+}
+
+/* 23:829 mobile — image 180, 2 cols × 152, gap 12, 14/20 copy, full-width button */
+@media (max-width: 767px) {
+  .photo {
+    height: 180px;
+  }
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+  .item {
+    gap: 8px;
+  }
+  .text {
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .cta {
+    align-self: stretch;
+  }
+}

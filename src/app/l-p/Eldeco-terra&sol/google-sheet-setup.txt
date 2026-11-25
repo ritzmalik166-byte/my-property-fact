@@ -1,0 +1,224 @@
+=====================================================================
+ ELDECO TERRA & SOL (/l-p/Eldeco-terra&sol) — GOOGLE SHEET LEAD SETUP
+=====================================================================
+
+Every form on the landing page (sidebar form, mobile hero form, final
+"Schedule Your Site Visit" form and every popup) sends each lead to:
+
+  1. RMW CRM  — https://crm.ritzmediaworld.com/api/public/leads  (decides success)
+  2. YOUR GOOGLE SHEET — through the Apps Script below
+     (sent with fetch mode "no-cors" + keepalive, form-encoded, so it never
+      blocks the visitor and still arrives while the page redirects)
+
+Leads are written to the sheet even when the CRM rejects them; the
+"CRM Status" column tells you which ones reached the CRM.
+
+Code that sends the data:  src/app/l-p/Eldeco-terra&sol/lib/leadSubmit.js
+URL / keys config:         src/app/l-p/Eldeco-terra&sol/config/leads.js
+
+
+---------------------------------------------------------------------
+ 1. SHEET STRUCTURE  (tab name: "Leads")
+---------------------------------------------------------------------
+The script creates this header row automatically on the first lead
+(or when you run setup() once). You do NOT need to type it.
+
+ Col | Header        | Example                       | Sent as (field)
+-----+---------------+-------------------------------+-----------------
+  A  | Timestamp     | 24/11/2026 11:42:07           | (server time, IST)
+  B  | Date          | 24-11-2026                    | date
+  C  | Time          | 11:42 AM                      | time
+  D  | Name          | Dora Sharma                   | name
+  E  | Phone         | 9299999990                    | phone  (10 digits, no +91)
+  F  | Email         | dora@gmail.com                | email
+  G  | Message       | Popup — Get Price Details     | message
+  H  | Form          | Sidebar — Get Exclusive Price | form_name
+  I  | Project       | Eldeco Terra & Sol (l-p)      | project
+  J  | CRM Status    | success  /  failed: <reason>  | crm_status
+  K  | Page URL      | https://…/l-p/Eldeco-terra&sol?utm_source=google | page_url
+  L  | Landing Page  | first page of the visit       | landing_page
+  M  | Referrer      | https://www.google.com/       | referrer
+  N  | UTM Source    | google                        | utm_source
+  O  | UTM Medium    | cpc                           | utm_medium
+  P  | UTM Campaign  | summer_sale                   | utm_campaign
+  Q  | UTM Term      | 3 bhk sector 80               | utm_term
+  R  | UTM Content   | ad_1                          | utm_content
+  S  | GCLID         | Cj0KCQ…                       | gclid
+  T  | GBRAID        |                               | gbraid
+  U  | WBRAID        |                               | wbraid
+  V  | FBCLID        |                               | fbclid
+
+Date / Time are India time (Asia/Kolkata). Phone is stored as text so
+leading digits are never lost.
+
+
+---------------------------------------------------------------------
+ 2. SET UP THE SHEET + SCRIPT (about 5 minutes)
+---------------------------------------------------------------------
+ a) Create a new Google Sheet (e.g. "Eldeco Terra & Sol — Leads").
+ b) Menu: Extensions → Apps Script.
+ c) Delete everything in Code.gs and paste the WHOLE script from
+    section 3 below. Click Save (disk icon).
+ d) In the function dropdown pick "setup" and click Run once.
+    Approve the permission prompt (your own Google account).
+    → a "Leads" tab with the styled header row appears in the sheet.
+ e) Deploy → New deployment → gear icon → "Web app"
+       Description:     ETS leads
+       Execute as:      Me
+       Who has access:  Anyone
+    Click Deploy and COPY the "Web app URL" (ends with /exec).
+ f) Put the URL in the site, ONE of:
+       • src/app/l-p/Eldeco-terra&sol/config/leads.js
+           export const GOOGLE_SHEET_WEB_APP_URL = "https://script.google.com/macros/s/XXXX/exec";
+       • or an environment variable (then rebuild / restart):
+           NEXT_PUBLIC_ETS_LEADS_SHEET_URL=https://script.google.com/macros/s/XXXX/exec
+ g) Test: open the web app URL in a browser → it should show
+    "Eldeco Terra & Sol lead endpoint is running".
+    Then submit a form on the page and check the sheet.
+
+ IMPORTANT: if you change the script later, use
+ Deploy → Manage deployments → Edit (pencil) → Version: "New version"
+ → Deploy. This keeps the SAME /exec URL. Creating a brand-new
+ deployment gives a new URL that you would have to paste again.
+
+
+---------------------------------------------------------------------
+ 3. APPS SCRIPT CODE  (paste into Code.gs)
+---------------------------------------------------------------------
+
+/**
+ * Eldeco Terra & Sol (/l-p) — lead receiver for Google Sheets.
+ * Receives form-encoded POSTs from the landing page (fetch, mode "no-cors")
+ * and appends one row per lead to the "Leads" tab.
+ */
+
+var SHEET_NAME = 'Leads';
+var TIME_ZONE = 'Asia/Kolkata';
+
+// [Header text, request field name]
+var COLUMNS = [
+  ['Timestamp',    null],            // filled by the script
+  ['Date',         'date'],
+  ['Time',         'time'],
+  ['Name',         'name'],
+  ['Phone',        'phone'],
+  ['Email',        'email'],
+  ['Message',      'message'],
+  ['Form',         'form_name'],
+  ['Project',      'project'],
+  ['CRM Status',   'crm_status'],
+  ['Page URL',     'page_url'],
+  ['Landing Page', 'landing_page'],
+  ['Referrer',     'referrer'],
+  ['UTM Source',   'utm_source'],
+  ['UTM Medium',   'utm_medium'],
+  ['UTM Campaign', 'utm_campaign'],
+  ['UTM Term',     'utm_term'],
+  ['UTM Content',  'utm_content'],
+  ['GCLID',        'gclid'],
+  ['GBRAID',       'gbraid'],
+  ['WBRAID',       'wbraid'],
+  ['FBCLID',       'fbclid']
+];
+
+/** Run once from the editor: creates the "Leads" tab and its header row. */
+function setup() {
+  getSheet_();
+}
+
+/** Health check — open the /exec URL in a browser. */
+function doGet() {
+  return ContentService.createTextOutput('Eldeco Terra & Sol lead endpoint is running');
+}
+
+/** Called by the landing page for every lead. */
+function doPost(e) {
+  var lock = LockService.getScriptLock();
+  lock.waitLock(20000); // one write at a time — no lost rows on simultaneous leads
+  try {
+    var p = (e && e.parameter) || {};
+    var now = new Date();
+    var sheet = getSheet_();
+
+    // basic guard: ignore empty / junk requests
+    if (!p.name && !p.phone && !p.email) {
+      return json_({ success: false, message: 'Empty lead ignored' });
+    }
+
+    var row = COLUMNS.map(function (col) {
+      var key = col[1];
+      if (key === null) return now;                                   // Timestamp
+      if (key === 'date') return p.date || Utilities.formatDate(now, TIME_ZONE, 'dd-MM-yyyy');
+      if (key === 'time') return p.time || Utilities.formatDate(now, TIME_ZONE, 'hh:mm a');
+      var value = clean_(p[key]);
+      if (key === 'phone' && value) return "'" + value;              // keep as text
+      return value;
+    });
+
+    sheet.appendRow(row);
+    return json_({ success: true });
+  } catch (err) {
+    return json_({ success: false, message: String(err) });
+  } finally {
+    lock.releaseLock();
+  }
+}
+
+/* ---------- helpers ---------- */
+
+function getSheet_() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName(SHEET_NAME) || ss.insertSheet(SHEET_NAME);
+  if (sheet.getLastRow() === 0) {
+    var headers = COLUMNS.map(function (c) { return c[0]; });
+    sheet.appendRow(headers);
+    sheet.setFrozenRows(1);
+    sheet.getRange(1, 1, 1, headers.length)
+      .setFontWeight('bold')
+      .setBackground('#12684d')
+      .setFontColor('#ffffff');
+    sheet.getRange('A:A').setNumberFormat('dd/MM/yyyy HH:mm:ss');
+    sheet.getRange('E:E').setNumberFormat('@');                       // phone as text
+    sheet.setColumnWidths(1, headers.length, 150);
+  }
+  return sheet;
+}
+
+/** Trim, cap length, and neutralise spreadsheet formulas (=, +, -, @). */
+function clean_(value) {
+  if (value === undefined || value === null) return '';
+  var s = String(value).trim().slice(0, 1000);
+  if (/^[=+\-@]/.test(s)) s = "'" + s;
+  return s;
+}
+
+function json_(obj) {
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}
+
+/* ===================== end of Apps Script ===================== */
+
+
+---------------------------------------------------------------------
+ 4. WHAT THE LANDING PAGE SENDS (for reference)
+---------------------------------------------------------------------
+ To the CRM (JSON, POST https://crm.ritzmediaworld.com/api/public/leads):
+   api_key, name, phone, email, message, project, form_name,
+   page_url, landing_page, referrer, gclid, gbraid, wbraid, fbclid,
+   utm_source, utm_medium, utm_campaign, utm_term, utm_content
+   → success only when the CRM replies { "success": true }
+
+ To the Google Sheet (form-encoded, POST <your /exec URL>, mode no-cors):
+   everything above except api_key, plus: date, time, crm_status
+
+ Visitor experience:
+   • fields are checked in the browser first (name, 10-digit Indian
+     mobile, valid email) — errors show under each field
+   • while sending: every field + the button are disabled, the button
+     shows a spinner and "Submitting…" (no double submits)
+   • CRM success → "Redirecting…" → /l-p/Eldeco-terra&sol/thankyou
+   • CRM error / timeout (15 s) / no internet → message above the
+     consent text, form unlocks so they can try again
+   • gclid / UTM tags from the ad URL are remembered for 90 days

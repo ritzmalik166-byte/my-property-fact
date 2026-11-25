@@ -9,6 +9,10 @@ export const ELDECO_PAGE_THANK_YOU_PATH = `${ELDECO_PAGE_PATH}/thankyou`;
 
 export const ELDECO_LANDING_BASE_PATH = "/lp/Eldeco-terra&sol";
 export const ELDECO_THANK_YOU_PATH = `${ELDECO_LANDING_BASE_PATH}/thankyou`;
+
+/** v6 landing page (Figma "Desktop / 1440 (v6)" + "Mobile / 390 (v6)") in `src/app/l-p/Eldeco-terra&sol`. */
+export const ELDECO_LP_V6_BASE_PATH = "/l-p/Eldeco-terra&sol";
+export const ELDECO_LP_V6_THANK_YOU_PATH = `${ELDECO_LP_V6_BASE_PATH}/thankyou`;
 export const ELDECO_CRM_PROJECT_NAME = "Eldeco Terra N Sol";
 export const ELDECO_GOOGLE_SHEET_URL =
   "https://script.google.com/macros/s/AKfycbzsKFbdOfCMDz4_BzJNVhkjqcni7kSaGx1tR2Tz4jpEwIq9cO4jE1wWvpox7O5BAoT__A/exec";

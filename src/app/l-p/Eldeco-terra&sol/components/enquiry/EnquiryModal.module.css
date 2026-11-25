@@ -1,0 +1,56 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  background: rgba(10, 58, 44, 0.55);
+  backdrop-filter: blur(4px);
+  animation: fade 0.18s ease-out;
+  overflow-y: auto;
+}
+
+.dialog {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  margin: auto;
+  animation: rise 0.22s ease-out;
+}
+
+.form {
+  padding-top: 32px;
+}
+
+.close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  color: var(--ets-on-dark);
+  background: rgba(255, 255, 255, 0.12);
+  transition: background-color 0.15s ease;
+}
+.close:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+}

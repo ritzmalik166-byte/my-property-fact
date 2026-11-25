@@ -1,0 +1,120 @@
+/* 23:531 Virtual tour preview — 714×360, r12, clip; image under an opaque #0c4636 layer */
+.preview {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  height: 360px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--ets-green-deep);
+}
+/* dark blurred "video" backdrop — the photo slowly pans + zooms like a playing clip */
+.media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  overflow: hidden;
+}
+.image {
+  object-fit: cover;
+  filter: blur(10px) brightness(0.9) saturate(1.15);
+  transform: scale(1.15);
+  animation: ets-tour-drift 16s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes ets-tour-drift {
+  from {
+    transform: scale(1.15) translate3d(2%, -1%, 0);
+  }
+  to {
+    transform: scale(1.28) translate3d(-2%, 1.5%, 0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .image {
+    animation: none;
+  }
+}
+/* dark tint so the 360° badge + label stay legible */
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse at center, rgba(4, 22, 17, 0.15) 0%, rgba(4, 22, 17, 0.55) 100%),
+    linear-gradient(180deg, rgba(12, 70, 54, 0.2) 0%, rgba(6, 30, 23, 0.45) 100%);
+}
+
+.chip {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: var(--ets-green);
+  color: var(--ets-on-dark);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+/* 23:535 360 badge — 96 circle, card fill, 2px #090909 border, shadow 0 8 24 .22 */
+.badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  border: 2px solid var(--ets-black);
+  border-radius: 999px;
+  background: var(--ets-card);
+  box-shadow: 0 8px 24px rgba(51, 64, 51, 0.22);
+  font-size: 26px;
+  line-height: 32px;
+  font-weight: 600;
+  color: var(--ets-text);
+  transition: transform 0.2s ease;
+}
+.preview:hover .badge {
+  transform: scale(1.05);
+}
+
+/* 23:537 Label — gradient pill, padding 8/16, 700 16/20 */
+.label {
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--ets-gradient);
+  color: var(--ets-black);
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* 23:943 mobile — preview 200, badge 72 / 20px, no label; only "Request E-Brochure" */
+@media (max-width: 767px) {
+  .preview {
+    height: 200px;
+  }
+  .badge {
+    width: 72px;
+    height: 72px;
+    font-size: 20px;
+    line-height: 26px;
+  }
+  .ctas .cta {
+    width: 100%;
+  }
+  .ctas .callback {
+    display: none;
+  }
+}

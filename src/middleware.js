@@ -2,7 +2,11 @@ import { NextResponse } from "next/server";
 import { canAccessAdminPath } from "./app/(adminside)/admin/adminPermissions";
 import { getPublicApiBase } from "./lib/publicApiBase";
 import { reportIpTrackHit } from "./lib/reportIpTrackHit";
-import { ELDECO_LANDING_BASE_PATH, ELDECO_PAGE_PATH } from "./components/eldecoPaths";
+import {
+  ELDECO_LANDING_BASE_PATH,
+  ELDECO_LP_V6_BASE_PATH,
+  ELDECO_PAGE_PATH,
+} from "./components/eldecoPaths";
 import {
   isDefinitelyInvalidPublicPath,
   NOT_FOUND_TRIGGER_PATH,
@@ -162,7 +166,7 @@ function isEldecoTerraSolPath(pathname) {
   } catch {
     // keep raw pathname
   }
-  return [ELDECO_PAGE_PATH, ELDECO_LANDING_BASE_PATH].some((base) => {
+  return [ELDECO_PAGE_PATH, ELDECO_LANDING_BASE_PATH, ELDECO_LP_V6_BASE_PATH].some((base) => {
     const decodedBase = decodeURIComponent(base);
     return decoded === decodedBase || decoded.startsWith(`${decodedBase}/`);
   });

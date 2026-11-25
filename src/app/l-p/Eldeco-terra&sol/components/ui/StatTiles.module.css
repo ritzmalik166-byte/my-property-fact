@@ -1,0 +1,69 @@
+/* desktop: row, gap 12, tiles fill; tile fill #f3ebdf r12 padding 16 gap 2 */
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+}
+
+/* value is visually first; label (dt) follows */
+.tile {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: 2px;
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--ets-tile);
+}
+.center .tile {
+  align-items: center;
+  text-align: center;
+}
+
+.value {
+  margin: 0;
+  font-size: 32px;
+  line-height: 38px;
+  font-weight: 600;
+  color: var(--ets-text);
+  white-space: nowrap;
+}
+.label {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+  color: var(--ets-muted);
+}
+
+/* narrower desktops: main column shrinks while the sidebar stays → smaller numerals */
+@media (max-width: 1279px) and (min-width: 1024px) {
+  .tile {
+    padding: 14px;
+  }
+  .value {
+    font-size: 22px;
+    line-height: 28px;
+  }
+}
+@media (max-width: 1023px) and (min-width: 768px) {
+  .value {
+    font-size: 26px;
+    line-height: 32px;
+  }
+}
+
+/* mobile 23:732 — 2 columns, gap 10, padding 14, value 20/26 */
+@media (max-width: 767px) {
+  .tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .tile {
+    padding: 14px;
+  }
+  .value {
+    font-size: 20px;
+    line-height: 26px;
+  }
+}

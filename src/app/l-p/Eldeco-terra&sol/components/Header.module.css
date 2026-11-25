@@ -1,0 +1,245 @@
+/* 23:163 — 1440×84, fill v6/card, padding 0 120, space-between */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--ets-card);
+  transform: translateY(0);
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.3s ease;
+  will-change: transform;
+}
+
+/* scrolling down: slide fully out of view (top -100%) */
+.hidden {
+  transform: translateY(-100%);
+}
+
+.inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  height: var(--ets-header-h);
+  padding: 0 var(--ets-gutter);
+}
+
+/* Logo box 198×59: padding 8/14, r10, logo 170×43 (FIT) */
+.logoBox {
+  display: flex;
+  flex-shrink: 0;
+  padding: 8px 14px;
+  border-radius: 10px;
+  background: var(--ets-card);
+}
+.logo {
+  width: 170px;
+  height: 43px;
+  object-fit: contain;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.navLink {
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 500;
+  color: var(--ets-text);
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+.navLink:hover {
+  color: var(--ets-bronze);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+}
+.phone {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 700;
+  color: var(--ets-text);
+  white-space: nowrap;
+}
+.rera {
+  display: inline-flex;
+  padding: 12px 18px;
+  border: 1px solid var(--ets-black);
+  border-radius: 10px;
+  background: var(--ets-card);
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 700;
+  color: var(--ets-text);
+  white-space: nowrap;
+}
+
+.mobileActions,
+.mobileMenu {
+  display: none;
+}
+
+/* narrower desktops: tighten the nav, then drop the RERA pill */
+@media (max-width: 1279px) {
+  .nav {
+    gap: 22px;
+  }
+  .rera {
+    display: none;
+  }
+}
+
+/* tablet + mobile: 23:660 — 68px, padding 0 12 0 16, call + menu buttons */
+@media (max-width: 1023px) {
+  .inner {
+    padding: 0 12px 0 16px;
+  }
+  .logoBox {
+    padding: 6px 10px;
+    border-radius: 8px;
+  }
+  .logo {
+    width: 124px;
+    height: 31px;
+  }
+  .nav,
+  .actions {
+    display: none;
+  }
+  .mobileActions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .callButton,
+  .menuButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 999px;
+  }
+  .callButton {
+    background: var(--ets-gold);
+  }
+
+  /* hamburger → ✕ : three 16×1.5 bronze bars (Figma Icon/menu 24px, glyph at 4,7 16×10) */
+  .burger {
+    position: relative;
+    display: block;
+    width: 24px;
+    height: 24px;
+  }
+  .burger span {
+    position: absolute;
+    left: 4px;
+    width: 16px;
+    height: 1.5px;
+    border-radius: 2px;
+    background: var(--ets-bronze);
+    transition:
+      top 0.3s cubic-bezier(0.22, 1, 0.36, 1) 0.15s,
+      transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.2s ease 0.1s;
+  }
+  .burger span:nth-child(1) {
+    top: 6.25px;
+  }
+  .burger span:nth-child(2) {
+    top: 11.25px;
+  }
+  .burger span:nth-child(3) {
+    top: 16.25px;
+  }
+  /* open: bars meet in the middle first, then rotate into a cross */
+  .menuButtonOpen .burger span {
+    transition:
+      top 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.3s cubic-bezier(0.22, 1, 0.36, 1) 0.15s,
+      opacity 0.2s ease;
+  }
+  .menuButtonOpen .burger span:nth-child(1) {
+    top: 11.25px;
+    transform: rotate(45deg);
+  }
+  .menuButtonOpen .burger span:nth-child(2) {
+    opacity: 0;
+  }
+  .menuButtonOpen .burger span:nth-child(3) {
+    top: 11.25px;
+    transform: rotate(-45deg);
+  }
+
+  /* menu panel: unrolls from under the header, links fade in one after another */
+  .mobileMenu {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    display: block;
+    padding: 8px 16px 20px;
+    background: var(--ets-card);
+    border-top: 1px solid var(--ets-border);
+    box-shadow: 0 16px 32px rgba(51, 64, 51, 0.14);
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-10px);
+    clip-path: inset(0 0 100% 0);
+    pointer-events: none;
+    transition:
+      clip-path 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.3s ease,
+      visibility 0s linear 0.45s;
+  }
+  .mobileMenuOpen {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+    clip-path: inset(0 0 -48px 0); /* -48px keeps the drop shadow visible */
+    pointer-events: auto;
+    transition:
+      clip-path 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+      opacity 0.25s ease,
+      visibility 0s;
+  }
+  .mobileLink {
+    display: block;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--ets-border);
+    font-size: 16px;
+    line-height: 20px;
+    font-weight: 500;
+    color: var(--ets-text);
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+  .mobileMenuOpen .mobileLink {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 0.35s ease calc(0.08s + var(--i, 0) * 0.05s),
+      transform 0.45s cubic-bezier(0.22, 1, 0.36, 1) calc(0.08s + var(--i, 0) * 0.05s);
+  }
+  .mobileRera {
+    margin-top: 16px;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: 700;
+    color: var(--ets-muted);
+  }
+}
