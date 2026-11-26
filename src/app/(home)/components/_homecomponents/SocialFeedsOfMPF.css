@@ -1049,3 +1049,148 @@ body.mpf-social-reels-open .lead-form-popup-trigger--home-beside-chat {
   opacity: 0 !important;
   pointer-events: none !important;
 }
+
+
+
+/* =========================================
+   MOBILE SOCIAL FEEDS ALIGNMENT FIX
+   ========================================= */
+
+@media (max-width: 767px) {
+
+  .social-feeds-section {
+    width: 100%;
+    max-width: 100%;
+    position: relative;
+    overflow: hidden !important;
+    margin: 0 auto;
+    padding-left: 0;
+    padding-right: 0;
+    box-sizing: border-box;
+  }
+
+  .social-feeds-section > .container-fluid {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    box-sizing: border-box;
+  }
+
+  .social-feeds-section .section-header-wrapper {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto 20px;
+    padding: 0 5px;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  .social-feeds-section .section-header-wrapper h2 {
+    width: 100%;
+    text-align: center;
+    margin: 0 auto;
+    font-size: clamp(17px, 4.5vw, 21px);
+    line-height: 1.4;
+    overflow-wrap: break-word;
+  }
+
+  /* Bootstrap container correction */
+  .social-feeds-section .container {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    box-sizing: border-box;
+  }
+
+  /* Carousel outer wrapper */
+  .social-feeds-swiper-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0;
+    margin: 0 auto;
+    padding: 15px 0 45px !important;
+    overflow: hidden !important;
+    position: relative;
+    box-sizing: border-box;
+  }
+
+  /* Swiper positioning */
+  .social-feeds-swiper {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    overflow: visible !important;
+    box-sizing: border-box;
+    touch-action: pan-y;
+  }
+
+  .social-feeds-swiper .swiper-wrapper {
+    align-items: stretch;
+  }
+
+  .social-feeds-swiper .swiper-slide {
+    height: auto;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    box-sizing: border-box;
+  }
+
+  /* Video card */
+  .instagram-post-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 360px;
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+  .post-video-wrapper {
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    touch-action: pan-y;
+  }
+
+  /* Remove hover movement on mobile */
+  .instagram-post-card:hover {
+    transform: none;
+  }
+
+  /* Hide arrows on smaller screens */
+  .social-feeds-swiper-wrapper .swiper-button-next,
+  .social-feeds-swiper-wrapper .swiper-button-prev {
+    display: none !important;
+  }
+
+  /* Pagination */
+  .social-feeds-swiper-wrapper .swiper-pagination {
+    display: block !important;
+    bottom: 5px !important;
+  }
+}
+
+/* Smaller phones */
+@media (max-width: 479px) {
+  .instagram-post-card {
+    height: 340px;
+  }
+
+  .social-feeds-section .section-header-wrapper h2 {
+    font-size: 18px;
+  }
+}
+
+/* Prevent accidental horizontal page overflow */
+@media (max-width: 767px) {
+  .social-feeds-section,
+  .social-feeds-section .container-fluid,
+  .social-feeds-section .container,
+  .social-feeds-swiper-wrapper {
+    min-width: 0;
+  }
+}
