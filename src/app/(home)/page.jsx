@@ -1,6 +1,7 @@
 import HomePage from "./components/home/HomePage";
-import HeroLcpPreloads from "./components/_homecomponents/HeroLcpPreloads";
+// Hero v3 uses next/image `priority`, which emits its own LCP preload.
 import "./components/home/home-new.css";
+import "./components/home/home-v3.css";
 import JsonLdScript from "@/app/_global_components/jsonLd/JsonLdScript";
 import { buildFaqJsonLd } from "@/app/_global_components/jsonLd/buildJsonLd";
 import { HOME_FAQ_ITEMS } from "./components/home/noida-projects/homeFaqItems";
@@ -61,8 +62,7 @@ export default function Home() {
     <>
       <link rel="canonical" href="https://mypropertyfact.in/" />
       <JsonLdScript data={buildFaqJsonLd(HOME_FAQ_ITEMS)} />
-      <HeroLcpPreloads />
-      <div className="home-page-entrance mpf-home-r26">
+      <div className="home-page-entrance mpf-home-r26 mpf-home-v3">
         <HomePage />
       </div>
     </>

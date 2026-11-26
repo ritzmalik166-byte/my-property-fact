@@ -64,18 +64,9 @@ function kindLabel(kind) {
   return "Keyword";
 }
 
+/** Masked PNG (/static/icon/user-check.png) so the icon follows `currentColor`. */
 function PersonIcon() {
-  return (
-    <svg className="mpf-account-person" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <circle cx="12" cy="8" r="3.4" stroke="currentColor" strokeWidth="1.8" />
-      <path
-        d="M5 19.2c.6-3.4 3.4-5.4 7-5.4s6.4 2 7 5.4"
-        stroke="currentColor"
-        strokeWidth="1.8"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
+  return <span className="mpf-account-person mpf-account-person--img" aria-hidden="true" />;
 }
 
 function SearchClockIcon() {

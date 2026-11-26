@@ -42,7 +42,7 @@ import {
   writeSessionHeaderCity,
 } from "@/lib/headerChosenCity";
 
-const LOGO_ON_LIGHT = "/logo.webp";
+const LOGO_ON_LIGHT = "/logo-dark-text.webp";
 
 /** Ultimate fallback when GPS/IP city has no listings. */
 const DEFAULT_CITY_WITHOUT_GEO = "Delhi NCR";
@@ -1099,7 +1099,7 @@ const isProjectTypeRoute =
                     title="Browse cities — open city menu"
                     aria-haspopup="true"
                   >
-                    Cities
+                    {isHomePage ? "City" : "Cities"}
                   </button>
                   <div className="dropdown dropdown-lg z-3 city-dropdown">
                     {!isMounted || !cityList?.length ? (
@@ -1204,7 +1204,7 @@ const isProjectTypeRoute =
                     title="Browse builders — open builder menu"
                     aria-haspopup="true"
                   >
-                    Builders
+                    {isHomePage ? "Builder" : "Builders"}
                   </button>
                   <div className="dropdown dropdown-lg z-3 builder-dropdown">
                     {!isMounted || builderList.length === 0 ? (
@@ -1617,6 +1617,16 @@ const isProjectTypeRoute =
                       )}
                     </div>
                   </li>
+                ) : isHomePage ? (
+                  <li className="hasChild header-nav-projects">
+                    <Link
+                      href="/projects"
+                      className="text-light py-3 text-decoration-none plus-jakarta-sans-semi-bold"
+                      title="Browse projects"
+                    >
+                      Projects
+                    </Link>
+                  </li>
                 ) : null}
                 <li className="hasChild header-nav-blog">
                   <Link
@@ -1628,14 +1638,14 @@ const isProjectTypeRoute =
                     Blog
                   </Link>
                 </li>
-                <li className={`hasChild header-nav-join${isHomePage ? " header-nav-hide-home" : ""}`}>
+                <li className="hasChild header-nav-join">
                   <Link
                     href="/join-our-team"
                     className={`text-light py-3 text-decoration-none plus-jakarta-sans-semi-bold${pathname === "/join-our-team" ? "header-link-active" : ""
                       }`}
-                    title="Join Our Team"
+                    title={isHomePage ? "Careers" : "Join Our Team"}
                   >
-                    Join Our Team
+                    {isHomePage ? "Careers" : "Join Our Team"}
                   </Link>
                 </li>
                 <li className="hasChild header-nav-contact">
@@ -1643,9 +1653,9 @@ const isProjectTypeRoute =
                     href="/contact-us"
                     className={`text-light py-3 text-decoration-none plus-jakarta-sans-semi-bold${pathname === "/contact-us" ? "header-link-active" : ""
                       }`}
-                    title={isHomePage ? "Contact" : "Contact Us"}
+                    title="Contact Us"
                   >
-                    {isHomePage ? "Contact" : "Contact Us"}
+                    Contact Us
                   </Link>
                 </li>
               </ul>
@@ -1668,8 +1678,8 @@ const isProjectTypeRoute =
                   onClick={openBrokerLoginModal}
                   title="Post your property for free"
                 >
-                  <span className="header-post-property-cta__text">Post Your Property</span>
-                  <span className="header-post-property-cta__badge">FREE</span>
+                  <span className="header-post-property-cta__text">Post Property</span>
+                  <span className="header-post-property-cta__badge">Free</span>
                 </button>
               </div>
             ) : (

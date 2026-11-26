@@ -27,6 +27,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Spinner } from "react-bootstrap";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 let reactSelectModulePromise;
 
@@ -44,6 +45,27 @@ const HOME_HERO_TABS = [
   { key: "Plots", label: "Plots/Land" },
   { key: "Projects", label: "Projects" },
 ];
+
+/** Homepage v3 (Figma) — search tabs + tool links that sit in the same tab row. */
+const HOME_V3_TABS = [
+  { key: "All", label: "Buy" },
+  { key: "New Launched", label: "New Launch", badge: "New" },
+  { key: "Commercial", label: "Commercial" },
+  { key: "Plots", label: "Plots / Land" },
+  { key: "Projects", label: "Projects" },
+];
+
+const HOME_V3_LINK_TABS = [
+  { href: "/projects", label: "Builders" },
+  { href: "/property-rate-and-trend", label: "Price Trends" },
+  { href: "/emi-calculator", label: "EMI Calculator" },
+];
+
+/** Values match `extractIndividualBHKTypes` output used by the /projects filter. */
+const HOME_V3_BHK_OPTIONS = ["1 BHK", "2 BHK", "3 BHK", "4 BHK", "5 BHK"].map((v) => ({
+  value: v,
+  label: v,
+}));
 
 const SEARCH_TABS = [
   { key: "All", label: "All" },
@@ -94,6 +116,14 @@ function ContinueBrowseIcon({ kind }) {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
       <path d="M4 11.5 12 5l8 6.5V20a1 1 0 0 1-1 1h-5v-6H10v6H5a1 1 0 0 1-1-1v-8.5Z" stroke="currentColor" strokeWidth="1.7" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function V3Chevron() {
+  return (
+    <svg className="mpf-sf3__chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path d="M6 9L12 15L18 9" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -423,7 +453,8 @@ function resolveNavigationQuickTab({ activeTab, parsed }) {
 
 export default function SearchFilter({ projectTypeList = [], cityList = [], layout = "default" }) {
   const isClassicHero = layout === "home-hero-classic";
-  const isHomeHero = layout === "home-hero" || isClassicHero;
+  const isV3Hero = layout === "home-hero-v3";
+  const isHomeHero = layout === "home-hero" || isClassicHero || isV3Hero;
   const displayTabs = isClassicHero ? SEARCH_TABS : isHomeHero ? HOME_HERO_TABS : SEARCH_TABS;
   const { setProjectData } = useProjectContext();
   const {
@@ -452,6 +483,7 @@ export default function SearchFilter({ projectTypeList = [], cityList = [], layo
   const [suggestionsReady, setSuggestionsReady] = useState(true);
   const [heroCityId, setHeroCityId] = useState("");
   const [heroBudget, setHeroBudget] = useState("");
+  const [heroBhk, setHeroBhk] = useState("");
   const [heroSelectMenu, setHeroSelectMenu] = useState(null);
   const [mobileSearchOpen, setMobileSearchOpen] = useState(false);
   const [isSearchSticky, setIsSearchSticky] = useState(false);
@@ -803,9 +835,10 @@ useEffect(() => {
           ...params,
           cityId: params.cityId || heroCityId,
           budget: params.budget || heroBudget,
+          bhkType: params.bhkType || heroBhk,
         }
         : params,
-    [heroBudget, heroCityId, isHomeHero],
+    [heroBhk, heroBudget, heroCityId, isHomeHero],
   );
 
   const getProjectHref = useCallback((project) => {
@@ -1605,6 +1638,415 @@ useEffect(() => {
     })
   );
 
+  const suggestionsPanel = showSuggestionsPanel ? (
+        <div
+          id="smart-search-suggestions"
+          className={`smart-search-suggestions${isListening ? " is-listening" : ""}`}
+          role="listbox"
+          aria-label="Search suggestions"
+          aria-busy={isSuggestionsLoading || isListening}
+        >
+          {voiceError ? (
+            <div className="smart-search-suggestion smart-search-suggestion--empty" role="status">
+              {voiceError}
+            </div>
+          ) : isListening ? (
+            <div className="smart-search-listening-panel" role="status" aria-live="polite">
+              <span className="smart-search-eq smart-search-eq--lg" aria-hidden="true">
+                <i />
+                <i />
+                <i />
+                <i />
+              </span>
+              <strong>Smart search is listening to you</strong>
+              <span>Speak a project name. Close matches will appear here</span>
+            </div>
+          ) : isSuggestionsLoading && !voiceOriginQuery ? (
+            <SuggestionDotsLoader />
+          ) : displayedSuggestions.length > 0 ? (
+            displayedSuggestions.map((s, idx) => (
+              <button
+                key={`${s.kind}-${s.label}-${idx}`}
+                type="button"
+                role="option"
+                aria-selected={false}
+                className="smart-search-suggestion"
+                onMouseDown={(e) => e.preventDefault()}
+                onClick={() => handleSuggestionSelect(s)}
+              >
+                <span className="smart-search-suggestion__main">
+                  <span className="smart-search-suggestion__label">
+                    {highlightMatch(s.label, debouncedSearch)}
+                  </span>
+                  <span className="smart-search-suggestion__meta">{s.meta}</span>
+                </span>
+                <span className={`smart-search-suggestion__badge smart-search-suggestion__badge--${s.kind}`}>
+                  {SUGGESTION_KIND_LABELS[s.kind]}
+                </span>
+              </button>
+            ))
+          ) : (
+            <div className="smart-search-suggestion smart-search-suggestion--empty" role="status">
+              {voiceOriginQuery
+                ? "No results"
+                : <>No matches for &ldquo;{debouncedSearch}&rdquo; — press Search to explore</>}
+            </div>
+          )}
+        </div>
+  ) : null;
+
+  const propertyPanel = categoryOpen ? (
+        <div
+          ref={propertyPanelRef}
+          className="smart-search-property-panel"
+          role="listbox"
+          aria-multiselectable="true"
+        >
+          <div className="smart-search-property-panel__header">
+            <div className="smart-search-property-panel__heading">
+              <span className="smart-search-property-panel__eyebrow">
+                {filterMode === "commercial" ? "Commercial" : "Residential"}
+              </span>
+              <span className="smart-search-property-panel__title">Choose property type</span>
+            </div>
+            <div className="smart-search-property-panel__actions">
+              {activeFilterOptions.length > 1 ? (
+                <button
+                  type="button"
+                  className={`smart-search-property-panel__select-all${allPropertyTypesSelected ? " is-checked" : ""}`}
+                  onClick={toggleSelectAllPropertyTypes}
+                  aria-pressed={allPropertyTypesSelected}
+                >
+                  <span className="smart-search-property-panel__select-all-check" aria-hidden>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M5 13l4 4L19 7"
+                        stroke="currentColor"
+                        strokeWidth="2.4"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                  Select all
+                </button>
+              ) : null}
+              {selectedPropertyKeys.length > 0 ? (
+                <button
+                  type="button"
+                  className="smart-search-property-panel__clear"
+                  onClick={clearPropertyFilters}
+                >
+                  Clear
+                </button>
+              ) : null}
+            </div>
+          </div>
+
+          {activeFilterOptions.length > 0 ? (
+            <div className="smart-search-property-panel__grid">
+              {activeFilterOptions.map((option) => {
+                const checked = selectedPropertyKeys.includes(option.key);
+                return (
+                  <button
+                    key={option.key}
+                    type="button"
+                    role="option"
+                    aria-selected={checked}
+                    className={`smart-search-property-option${checked ? " smart-search-property-option--checked" : ""}`}
+                    onClick={() => handlePropertyTypeSelect(option.key)}
+                  >
+                    <span className="smart-search-property-option__icon">
+                      <PropertyTypeIcon typeKey={option.key} />
+                    </span>
+                    <span className="smart-search-property-option__copy">
+                      <span className="smart-search-property-option__label">{option.label}</span>
+                      {option.hint ? (
+                        <span className="smart-search-property-option__hint">{option.hint}</span>
+                      ) : null}
+                    </span>
+                    <span className="smart-search-property-option__check" aria-hidden>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
+                        <path
+                          d="M5 13l4 4L19 7"
+                          stroke="currentColor"
+                          strokeWidth="2.4"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="smart-search-property-panel__empty" role="status">
+              Loading available property types…
+            </div>
+          )}
+
+          <div className="smart-search-property-panel__footer">
+            {filterMode === "residential" ? (
+              <button type="button" className="smart-search-property-panel__switch" onClick={switchToCommercialFilters}>
+                Looking for commercial? <strong>Switch</strong>
+              </button>
+            ) : (
+              <button type="button" className="smart-search-property-panel__switch" onClick={switchToResidentialFilters}>
+                Looking for residential? <strong>Switch</strong>
+              </button>
+            )}
+          </div>
+        </div>
+  ) : null;
+
+  if (isV3Hero) {
+    const v3SelectStyles = {
+      control: (base) => ({
+        ...base,
+        minHeight: 24,
+        border: 0,
+        boxShadow: "none",
+        background: "transparent",
+        cursor: "pointer",
+      }),
+      valueContainer: (base) => ({ ...base, padding: 0 }),
+      input: (base) => ({ ...base, margin: 0, padding: 0 }),
+      indicatorSeparator: () => ({ display: "none" }),
+      dropdownIndicator: (base) => ({ ...base, padding: 0, color: "#6b7280" }),
+      placeholder: (base) => ({ ...base, margin: 0, color: "#9ca3af" }),
+      singleValue: (base) => ({ ...base, margin: 0, color: "#111827" }),
+      menu: (base) => ({ ...base, zIndex: 40, borderRadius: 10, overflow: "hidden" }),
+      option: (base, state) => ({
+        ...base,
+        fontSize: 14,
+        cursor: "pointer",
+        background: state.isSelected ? "#9a5a2b" : state.isFocused ? "#f8efe7" : "#fff",
+        color: state.isSelected ? "#fff" : "#111827",
+      }),
+    };
+
+    const v3Select = (menu, { options, value, onChange, placeholder, id }) => {
+      const selected = options.find((o) => o.value === value) || null;
+      if (!HeroSelect) {
+        return (
+          <button
+            type="button"
+            className="mpf-sf3-select-shell"
+            onPointerEnter={() => ensureHeroSelect()}
+            onClick={() => openHeroSelectMenu(menu)}
+            aria-haspopup="listbox"
+          >
+            <span className={selected ? "" : "is-placeholder"}>
+              {selected ? selected.label : placeholder}
+            </span>
+            <V3Chevron />
+          </button>
+        );
+      }
+      return (
+        <HeroSelect
+          instanceId={id}
+          inputId={`${id}-input`}
+          classNamePrefix="mpf-sf3-select"
+          options={options}
+          placeholder={placeholder}
+          value={selected}
+          onChange={(opt) => onChange(opt ? opt.value : "")}
+          menuIsOpen={heroSelectMenu === menu}
+          onMenuOpen={() => openHeroSelectMenu(menu)}
+          onMenuClose={() => closeHeroSelectMenu(menu)}
+          isSearchable={false}
+          isClearable
+          maxMenuHeight={240}
+          menuPlacement="auto"
+          styles={v3SelectStyles}
+        />
+      );
+    };
+
+    return (
+      <div className="mpf-sf3" ref={cardRef}>
+        <div className="mpf-sf3__head">
+          <h2 className="mpf-sf3__title">Search properties in Delhi NCR</h2>
+          <p className="mpf-sf3__sub">
+            Choose a location, property type and budget. Verified projects only.
+          </p>
+        </div>
+
+        <div className="mpf-sf3__tabs" role="tablist" aria-label="Property categories">
+          {HOME_V3_TABS.map((tab) => (
+            <button
+              key={tab.key}
+              type="button"
+              role="tab"
+              aria-selected={activeTab === tab.key}
+              className={`mpf-sf3__tab${activeTab === tab.key ? " is-active" : ""}`}
+              onClick={() => handleTabChange(tab.key)}
+            >
+              {tab.label}
+              {tab.badge ? <span className="mpf-sf3__tab-badge">{tab.badge}</span> : null}
+            </button>
+          ))}
+          {HOME_V3_LINK_TABS.map((tab) => (
+            <Link key={tab.href + tab.label} href={tab.href} className="mpf-sf3__tab mpf-sf3__tab--link">
+              {tab.label}
+            </Link>
+          ))}
+        </div>
+
+        <div className="mpf-sf3__body" ref={searchWrapRef}>
+          <form className="mpf-sf3__form" onSubmit={handleSearch}>
+            <div className="mpf-sf3__field mpf-sf3__field--location">
+              <label className="mpf-sf3__label" htmlFor="mpf-sf3-location">
+                City, locality or project
+              </label>
+              <div className="mpf-sf3__control">
+                <svg className="mpf-sf3__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+                  <path d="M12 21s7-4.5 7-11a7 7 0 10-14 0c0 6.5 7 11 7 11z" stroke="currentColor" strokeWidth="1.8" />
+                  <circle cx="12" cy="10" r="2.5" stroke="currentColor" strokeWidth="1.8" />
+                </svg>
+                <input
+                  id="mpf-sf3-location"
+                  type="search"
+                  role="combobox"
+                  className="mpf-sf3__input"
+                  value={searchInput}
+                  onChange={(e) => {
+                    setVoiceOriginQuery(false);
+                    setVoiceError("");
+                    setSearchInput(e.target.value);
+                    setSuggestionsReady(false);
+                    setDropdownOpen(true);
+                  }}
+                  onFocus={() => {
+                    if (trimmedInput.length >= 2) setDropdownOpen(true);
+                  }}
+                  placeholder="Noida, Sector 150, project…"
+                  aria-expanded={dropdownOpen}
+                  aria-controls="smart-search-suggestions"
+                  aria-autocomplete="list"
+                  autoComplete="off"
+                />
+                {searchInput ? (
+                  <button
+                    type="button"
+                    className="mpf-sf3__clear"
+                    onClick={() => {
+                      setSearchInput("");
+                      setDebouncedSearch("");
+                      setDropdownOpen(false);
+                    }}
+                    aria-label="Clear search"
+                  >
+                    ×
+                  </button>
+                ) : null}
+              </div>
+              <span className="mpf-sf3__hint">e.g. Sector 150, Noida Expressway</span>
+              {suggestionsPanel}
+            </div>
+
+            <div className="mpf-sf3__field mpf-sf3__field--type">
+              <span className="mpf-sf3__label">Property type</span>
+              <button
+                type="button"
+                className={`mpf-sf3__control mpf-sf3__control--btn${categoryOpen ? " is-open" : ""}`}
+                onClick={() => {
+                  setCategoryOpen(!categoryOpen);
+                  setDropdownOpen(false);
+                  setHeroSelectMenu(null);
+                }}
+                aria-expanded={categoryOpen}
+                aria-haspopup="listbox"
+              >
+                <span className={selectedPropertyKeys.length ? "" : "is-placeholder"}>
+                  {selectedPropertyKeys.length > 0 ? selectedCategoryLabel : homeHeroEmptyCategoryLabel}
+                </span>
+                <V3Chevron />
+              </button>
+              <span className="mpf-sf3__hint">
+                {filterMode === "commercial" ? "Commercial" : "Residential"}
+              </span>
+              {propertyPanel}
+            </div>
+
+            <div className="mpf-sf3__field">
+              <span className="mpf-sf3__label">Budget</span>
+              <div className="mpf-sf3__control">
+                {v3Select("budget", {
+                  id: "home-v3-budget",
+                  options: budgetOptions,
+                  value: heroBudget,
+                  onChange: setHeroBudget,
+                  placeholder: "Any budget",
+                })}
+              </div>
+              <span className="mpf-sf3__hint">All-inclusive price</span>
+            </div>
+
+            <div className="mpf-sf3__field">
+              <span className="mpf-sf3__label">BHK</span>
+              <div className="mpf-sf3__control">
+                {v3Select("bhk", {
+                  id: "home-v3-bhk",
+                  options: HOME_V3_BHK_OPTIONS,
+                  value: heroBhk,
+                  onChange: setHeroBhk,
+                  placeholder: "Any",
+                })}
+              </div>
+              <span className="mpf-sf3__hint">Any size works</span>
+            </div>
+
+            <button type="submit" className="mpf-sf3__submit">
+              {loading ? (
+                <Spinner animation="border" size="sm" variant="light" />
+              ) : (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden>
+                  <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2.2" />
+                  <path d="M20 20L16 16" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+                </svg>
+              )}
+              <span>Search Properties</span>
+            </button>
+          </form>
+
+        </div>
+
+        <div className="mpf-sf3__foot">
+          <div className="mpf-sf3__trust">
+            <span className="mpf-sf3__trust-item">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden>
+                <path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6l7-3z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+                <path d="M9 12l2 2 4-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              Verified listings across Delhi NCR
+            </span>
+            <span className="mpf-sf3__trust-item mpf-sf3__trust-item--muted">
+              <strong>RERA-checked</strong> · registration number shown on every project
+            </span>
+          </div>
+          <div className="mpf-sf3__actions">
+            <Link href="/contact-us" className="mpf-sf3__action">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden>
+                <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" strokeWidth="1.8" />
+                <path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+              </svg>
+              Book Site Visit
+            </Link>
+            <a href="tel:+918920024793" className="mpf-sf3__action">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden>
+                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.8 19.8 0 01-8.63-3.07 19.5 19.5 0 01-6-6A19.8 19.8 0 012.12 4.18 2 2 0 014.11 2h3a2 2 0 012 1.72c.12.89.32 1.76.6 2.6a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.48-1.17a2 2 0 012.11-.45c.84.28 1.71.48 2.6.6A2 2 0 0122 16.92z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" />
+              </svg>
+              Talk to Expert
+            </a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div
       className={`home-search-container container${isHomeHero ? " home-search-container--hero-ss" : ""}${
@@ -1841,167 +2283,9 @@ useEffect(() => {
             )}
           </form>
 
-          {showSuggestionsPanel ? (
-            <div
-              id="smart-search-suggestions"
-              className={`smart-search-suggestions${isListening ? " is-listening" : ""}`}
-              role="listbox"
-              aria-label="Search suggestions"
-              aria-busy={isSuggestionsLoading || isListening}
-            >
-              {voiceError ? (
-                <div className="smart-search-suggestion smart-search-suggestion--empty" role="status">
-                  {voiceError}
-                </div>
-              ) : isListening ? (
-                <div className="smart-search-listening-panel" role="status" aria-live="polite">
-                  <span className="smart-search-eq smart-search-eq--lg" aria-hidden="true">
-                    <i />
-                    <i />
-                    <i />
-                    <i />
-                  </span>
-                  <strong>Smart search is listening to you</strong>
-                  <span>Speak a project name. Close matches will appear here</span>
-                </div>
-              ) : isSuggestionsLoading && !voiceOriginQuery ? (
-                <SuggestionDotsLoader />
-              ) : displayedSuggestions.length > 0 ? (
-                displayedSuggestions.map((s, idx) => (
-                  <button
-                    key={`${s.kind}-${s.label}-${idx}`}
-                    type="button"
-                    role="option"
-                    aria-selected={false}
-                    className="smart-search-suggestion"
-                    onMouseDown={(e) => e.preventDefault()}
-                    onClick={() => handleSuggestionSelect(s)}
-                  >
-                    <span className="smart-search-suggestion__main">
-                      <span className="smart-search-suggestion__label">
-                        {highlightMatch(s.label, debouncedSearch)}
-                      </span>
-                      <span className="smart-search-suggestion__meta">{s.meta}</span>
-                    </span>
-                    <span className={`smart-search-suggestion__badge smart-search-suggestion__badge--${s.kind}`}>
-                      {SUGGESTION_KIND_LABELS[s.kind]}
-                    </span>
-                  </button>
-                ))
-              ) : (
-                <div className="smart-search-suggestion smart-search-suggestion--empty" role="status">
-                  {voiceOriginQuery
-                    ? "No results"
-                    : <>No matches for &ldquo;{debouncedSearch}&rdquo; — press Search to explore</>}
-                </div>
-              )}
-            </div>
-          ) : null}
+          {suggestionsPanel}
 
-          {categoryOpen ? (
-            <div
-              ref={propertyPanelRef}
-              className="smart-search-property-panel"
-              role="listbox"
-              aria-multiselectable="true"
-            >
-              <div className="smart-search-property-panel__header">
-                <div className="smart-search-property-panel__heading">
-                  <span className="smart-search-property-panel__eyebrow">
-                    {filterMode === "commercial" ? "Commercial" : "Residential"}
-                  </span>
-                  <span className="smart-search-property-panel__title">Choose property type</span>
-                </div>
-                <div className="smart-search-property-panel__actions">
-                  {activeFilterOptions.length > 1 ? (
-                    <button
-                      type="button"
-                      className={`smart-search-property-panel__select-all${allPropertyTypesSelected ? " is-checked" : ""}`}
-                      onClick={toggleSelectAllPropertyTypes}
-                      aria-pressed={allPropertyTypesSelected}
-                    >
-                      <span className="smart-search-property-panel__select-all-check" aria-hidden>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
-                          <path
-                            d="M5 13l4 4L19 7"
-                            stroke="currentColor"
-                            strokeWidth="2.4"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </span>
-                      Select all
-                    </button>
-                  ) : null}
-                  {selectedPropertyKeys.length > 0 ? (
-                    <button
-                      type="button"
-                      className="smart-search-property-panel__clear"
-                      onClick={clearPropertyFilters}
-                    >
-                      Clear
-                    </button>
-                  ) : null}
-                </div>
-              </div>
-
-              {activeFilterOptions.length > 0 ? (
-                <div className="smart-search-property-panel__grid">
-                  {activeFilterOptions.map((option) => {
-                    const checked = selectedPropertyKeys.includes(option.key);
-                    return (
-                      <button
-                        key={option.key}
-                        type="button"
-                        role="option"
-                        aria-selected={checked}
-                        className={`smart-search-property-option${checked ? " smart-search-property-option--checked" : ""}`}
-                        onClick={() => handlePropertyTypeSelect(option.key)}
-                      >
-                        <span className="smart-search-property-option__icon">
-                          <PropertyTypeIcon typeKey={option.key} />
-                        </span>
-                        <span className="smart-search-property-option__copy">
-                          <span className="smart-search-property-option__label">{option.label}</span>
-                          {option.hint ? (
-                            <span className="smart-search-property-option__hint">{option.hint}</span>
-                          ) : null}
-                        </span>
-                        <span className="smart-search-property-option__check" aria-hidden>
-                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none">
-                            <path
-                              d="M5 13l4 4L19 7"
-                              stroke="currentColor"
-                              strokeWidth="2.4"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        </span>
-                      </button>
-                    );
-                  })}
-                </div>
-              ) : (
-                <div className="smart-search-property-panel__empty" role="status">
-                  Loading available property types…
-                </div>
-              )}
-
-              <div className="smart-search-property-panel__footer">
-                {filterMode === "residential" ? (
-                  <button type="button" className="smart-search-property-panel__switch" onClick={switchToCommercialFilters}>
-                    Looking for commercial? <strong>Switch</strong>
-                  </button>
-                ) : (
-                  <button type="button" className="smart-search-property-panel__switch" onClick={switchToResidentialFilters}>
-                    Looking for residential? <strong>Switch</strong>
-                  </button>
-                )}
-              </div>
-            </div>
-          ) : null}
+          {propertyPanel}
         </div>
 
       </div>

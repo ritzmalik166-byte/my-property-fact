@@ -41,6 +41,15 @@
   display: block;
 }
 
+/* User-check icon (white PNG) used as a mask so it inherits the trigger colour */
+.mpf-account-person--img {
+  width: 20px;
+  height: 20px;
+  background-color: currentColor;
+  -webkit-mask: url("/static/icon/user-check.png") center / contain no-repeat;
+  mask: url("/static/icon/user-check.png") center / contain no-repeat;
+}
+
 .mpf-account-avatar {
   display: inline-flex;
   align-items: center;

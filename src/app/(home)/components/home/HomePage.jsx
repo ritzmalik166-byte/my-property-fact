@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import HeroSection from "../_homecomponents/heroSection";
+import HeroSectionV3 from "../_homecomponents/HeroSectionV3";
 import {
   fetchCityData,
   fetchProjectTypes,
@@ -225,7 +225,7 @@ export default async function HomePage() {
       <>
         {row(
           0,
-          <HeroSection
+          <HeroSectionV3
             projectTypeList={projectTypeList}
             cityList={cityList}
           />,
