@@ -167,7 +167,7 @@ export default async function AbroadProjectsPage({ params }) {
             <span aria-current="page">{countryName || placeName}</span>
           </nav>
 
-          <div className="abroad-eyebrow">International Collection</div>
+          <div className="abroad-eyebrow">International Collection </div>
 
           <h1>
             Projects in <span>{placeName}</span>
