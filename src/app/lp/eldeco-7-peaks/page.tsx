@@ -14,7 +14,7 @@ const jsonLd = [
     numberOfAccommodationUnits: "[TO BE CONFIRMED]",
     amenityFeature: amenities.map((name) => ({ "@type": "LocationFeatureSpecification", name, value: true })),
     offers: [
-      { "@type": "Offer", name: "3 BHK + 2T, 1650 sq ft", price: "23700000", priceCurrency: "INR", description: "Starting price ₹2.37 Cr*" },
+      { "@type": "Offer", name: "3 BHK + 2T, 1650 sq ft", price: "23700000", priceCurrency: "INR", description: "Starting price ₹2.46CR Cr*" },
       { "@type": "Offer", name: "4 BHK + 3T, 1850 sq ft", description: "Price on request" },
     ],
   },

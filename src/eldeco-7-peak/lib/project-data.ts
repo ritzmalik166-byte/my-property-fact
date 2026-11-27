@@ -4,13 +4,13 @@ export const project = {
   developer: "Eldeco",
   location: "Omicron 1A, Greater Noida, Uttar Pradesh 201310",
   rera: "UPRERAPRJ106523/01/2026",
-  price: "₹2.37 Cr*",
+  price: "₹2.46 Cr*",
   offer: "Pay 10% now and nothing till 24 months**",
   towers: ["Asgard", "Blanc", "Crestone", "Denali", "Everest", "Kili West", "Kili East"],
 };
 
 export const faqItems = [
-  { question: "What is the Eldeco 7 Peaks price?", answer: "The stated Eldeco 7 Peaks price starts at ₹2.37 Cr* for a 3 BHK + 2T residence measuring 1650 sq ft. The 4 BHK + 3T residence measures 1850 sq ft and its current price is available on request. Final cost-sheet components must be verified before booking." },
+  { question: "What is the Eldeco 7 Peaks price?", answer: "The stated Eldeco 7 Peaks price starts at ₹2.46 Cr* for a 3 BHK + 2T residence measuring 1650 sq ft. The 4 BHK + 3T residence measures 1850 sq ft and its current price is available on request. Final cost-sheet components must be verified before booking." },
   { question: "What is the RERA number of Eldeco 7 Peaks?", answer: "Eldeco 7 Peaks Residences is registered with UP RERA under registration number UPRERAPRJ106523/01/2026. Buyers should review the latest project filing, approvals and disclosed timelines on the official UP RERA portal before making a purchase decision." },
   { question: "Where is Eldeco 7 Peaks located?", answer: "Eldeco 7 Peaks is located at Omicron 1A, Greater Noida, Uttar Pradesh 201310. The site is next to a 100 m wide green belt and connects to a 130 m wide main road, with 18 m and 12 m internal roads stated within the project plan." },
   { question: "Which apartment sizes are available?", answer: "The project offers a 3 BHK + 2T home measuring 1650 sq ft and a 4 BHK + 3T home measuring 1850 sq ft. Both formats are planned as three-side-open residences with wraparound balconies, subject to the final sanctioned plans and sale documents." },

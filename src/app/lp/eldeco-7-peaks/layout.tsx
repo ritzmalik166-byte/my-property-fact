@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 const title = "Eldeco 7 Peaks Greater Noida | Price & Floor Plans";
-const description = "Explore Eldeco 7 Peaks in Omicron 1A, Greater Noida: 3 & 4 BHK homes from ₹2.37 Cr*. View prices, floor plans, amenities and RERA details.";
+const description = "Explore Eldeco 7 Peaks in Omicron 1A, Greater Noida: 3 & 4 BHK homes from ₹2.46CR Cr*. View prices, floor plans, amenities and RERA details.";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://mypropertyfact.in"),
