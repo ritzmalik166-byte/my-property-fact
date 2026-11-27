@@ -926,6 +926,50 @@
   margin: 0;
 }
 
+/*
+ * Some CMS tables save EVERY cell as <th> (no <thead>), which made the whole table green with white text.
+ * Only the real header row stays green: <thead> cells, or the first row when the table has no <thead>.
+ * Every other <th> is styled as a normal body cell.
+ */
+.articleContent table:has(thead) tbody th,
+.articleContent table:not(:has(thead)) tr:not(:first-child) th {
+  padding: 0.85rem 1.1rem !important;
+  font-weight: 600 !important;
+  color: #2c3e35 !important;
+  background: #ffffff !important;
+  border: none !important;
+  border-bottom: 1px solid #e8f0ea !important;
+  border-right: 1px solid #e8f0ea !important;
+  letter-spacing: 0.01em;
+}
+.articleContent table:has(thead) tbody tr:nth-child(even) th,
+.articleContent table:not(:has(thead)) tr:not(:first-child):nth-child(even) th {
+  background: #f4faf6 !important;
+}
+.articleContent table:has(thead) tbody tr:hover th,
+.articleContent table:not(:has(thead)) tr:not(:first-child):hover th {
+  background: rgba(13, 88, 52, 0.07) !important;
+}
+.articleContent table tr:last-child th:last-child,
+.articleContent table th:last-child { border-right: none !important; }
+.articleContent table:not(:has(thead)) tr:first-child th { border-bottom: none !important; }
+
+/* Links in tables: readable on both the green header and the white rows */
+.articleContent table a,
+.articleContent table a * {
+  color: #0D5834 !important;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.articleContent table a:hover { color: #0a4428 !important; }
+.articleContent table thead th a,
+.articleContent table thead th a *,
+.articleContent table:not(:has(thead)) tr:first-child th a,
+.articleContent table:not(:has(thead)) tr:first-child th a * {
+  color: #ffffff !important;
+}
+
 .articleContent table img {
   max-width: 100%;
   height: auto;
