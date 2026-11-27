@@ -63,11 +63,13 @@ const cities = CITY_ORDER.map((name, index) => {
   };
 });
 
-const DreamPropertySection = () => {
+const DEFAULT_TITLE = "Find Your Dream Property In The City You Are Searching In";
+
+const DreamPropertySection = ({ title = DEFAULT_TITLE, className = "" }) => {
   useDeferredStylesheet(() => import("./DreamPropertySection.css"));
 
   return (
-    <section className="dream-property-section mb-4 mb-lg-5">
+    <section className={`dream-property-section mb-4 mb-lg-5 ${className}`.trim()}>
       <div className="dream-property-section-bg" aria-hidden="true">
         <img
           {...buildHomeCardImageProps({
@@ -83,9 +85,7 @@ const DreamPropertySection = () => {
       </div>
 
       <div className="dream-property-container">
-        <h2 className="dream-property-title">
-          Find Your Dream Property In The City You Are Searching In
-        </h2>
+        <h2 className="dream-property-title">{title}</h2>
 
         <div className="dream-city-wave" role="list">
           <div className="dream-city-track" aria-hidden="false">

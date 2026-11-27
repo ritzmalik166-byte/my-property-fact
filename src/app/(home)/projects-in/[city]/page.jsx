@@ -1,8 +1,17 @@
 import Image from "next/image";
+import Link from "next/link";
 import { notFound } from "next/navigation";
-import { fetchAllProjects } from "@/app/_global_components/masterFunction";
+import { fetchAllProjects, fetchBuilderData } from "@/app/_global_components/masterFunction";
+import DreamPropertySection from "@/app/(home)/components/home/dream-project/DreamPropertySection";
+import { slimProjectForListing } from "@/lib/slimProjectListing";
 import AbroadProjectsClient from "./AbroadProjectsClient";
+import PopularBuilders from "./sections/PopularBuilders";
+import RecommendedProjects from "./sections/RecommendedProjects";
+import SellRentSection from "./sections/SellRentSection";
+import { pickPopularBuilders, pickRecommendedProjects } from "./sections/sectionData";
+import "@/app/(home)/components/home/dream-project/DreamPropertySection.css";
 import "./abroad-projects.css";
+import "./sections/sections.css";
 
 // Public URL is /projects-in-{slug}; next.config.js rewrites it to this route.
 
@@ -111,10 +120,8 @@ async function resolvePageData(slug) {
   const countryShort = COUNTRY_SHORT_NAMES[countryName.toLowerCase()] || countryName;
 
   return {
-    projects: projects.map((project) => ({
-      ...project,
-      emirate: geoFor(project)?.stateName || "",
-    })),
+    allProjects,
+    projects,
     placeName,
     countryName,
     countryShort,
@@ -138,9 +145,16 @@ export async function generateMetadata({ params }) {
 export default async function AbroadProjectsPage({ params }) {
   const { city } = await params;
   const slug = city.toLowerCase();
-  const { projects, placeName, countryName, countryShort, isCountryPage } = await resolvePageData(slug);
+  const [{ allProjects, projects, placeName, countryName, countryShort, isCountryPage }, buildersResponse] =
+    await Promise.all([resolvePageData(slug), fetchBuilderData()]);
 
   if (!projects.length && !countryName) notFound();
+
+  const pageSlugs = new Set(projects.map((p) => p.slugURL));
+  const recommendedProjects = pickRecommendedProjects(allProjects, pageSlugs);
+  const popularBuilders = pickPopularBuilders(buildersResponse, allProjects, projects);
+  // Only ship the fields the listing cards and filters read.
+  const listingProjects = projects.map((p) => ({ ...slimProjectForListing(p), createdAt: p.createdAt }));
 
   const cityCount = new Set(projects.map((p) => p.cityName).filter(Boolean)).size;
   const developerCount = new Set(projects.map((p) => String(p.builderName || "").trim()).filter(Boolean)).size;
@@ -160,9 +174,9 @@ export default async function AbroadProjectsPage({ params }) {
         />
         <div className="abroad-container abroad-hero__inner">
           <nav className="abroad-crumbs" aria-label="Breadcrumb">
-            <a href="/">Home</a>
+            <Link href="/">Home</Link>
             <span aria-hidden="true">/</span>
-            <a href="/projects">Projects</a>
+            <Link href="/projects">Projects</Link>
             <span aria-hidden="true">/</span>
             <span aria-current="page">{countryName || placeName}</span>
           </nav>
@@ -203,9 +217,14 @@ export default async function AbroadProjectsPage({ params }) {
 
       <section className="abroad-listing">
         <div className="abroad-container">
-          <AbroadProjectsClient projects={projects} />
+          <AbroadProjectsClient projects={listingProjects} />
         </div>
       </section>
+
+      <RecommendedProjects projects={recommendedProjects} />
+      <PopularBuilders builders={popularBuilders} localLabel={countryShort} />
+      <DreamPropertySection title="Explore Real Estate in Popular Indian Cities" className="ap-cities" />
+      <SellRentSection />
     </main>
   );
 }

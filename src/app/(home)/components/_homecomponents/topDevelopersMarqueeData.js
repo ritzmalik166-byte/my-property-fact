@@ -11,7 +11,7 @@ export function normalizeBuildersResponse(raw) {
   return [];
 }
 
-function builderLogoSrcFromBuilder(builder) {
+export function builderLogoSrcFromBuilder(builder) {
   const apiBase = process.env.NEXT_PUBLIC_API_URL || "";
   const imageBase = process.env.NEXT_PUBLIC_IMAGE_URL || "";
   const slug = (builder.slugUrl || builder.slugURL || builder.slug || "").trim();
