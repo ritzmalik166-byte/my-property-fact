@@ -24,11 +24,22 @@ const nextConfig = {
         source: "/api/v1/:path*",
         destination: `${apiOrigin}/api/v1/:path*`,
       },
+      // International listings: public URL /projects-in-dubai -> app/(home)/projects-in/[city]
+      {
+        source: "/projects-in-:city([a-z0-9-]+)",
+        destination: "/projects-in/:city",
+      },
     ];
   },
 
   async redirects() {
     return [
+      // Old nested URL -> flat /projects-in-{city}
+      {
+        source: "/projects-in/:city",
+        destination: "/projects-in-:city",
+        permanent: true,
+      },
       // Blog legacy slugs
       {
         source:

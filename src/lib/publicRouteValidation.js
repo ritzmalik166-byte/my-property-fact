@@ -49,6 +49,7 @@ export const PUBLIC_KNOWN_PREFIXES = new Set([
   "builder",
   "blog",
   "projects",
+  "projects-in",
   "properties",
   "property-rate-and-trend",
   "detail",
