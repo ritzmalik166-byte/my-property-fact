@@ -9,8 +9,35 @@
 })();
 
 function getBackendApiOrigin() {
-  const raw = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8005/api/v1/";
+  // Optional BACKEND_PROXY_URL: where the /api/v1 rewrite forwards to (e.g. http://localhost:8005/api/v1/)
+  // when the browser-facing NEXT_PUBLIC_API_URL is the site's own public URL (ngrok, tunnel).
+  // Unset = previous behaviour (rewrite to NEXT_PUBLIC_API_URL).
+  const raw =
+    process.env.BACKEND_PROXY_URL ||
+    process.env.NEXT_PUBLIC_API_URL ||
+    "http://localhost:8005/api/v1/";
   return String(raw).trim().replace(/\/+$/, "").replace(/\/api\/v1$/i, "");
+}
+
+const BASE_CONTENT_SECURITY_POLICY =
+  "default-src 'self';media-src 'self' https://otherassets.blob.core.windows.net https://*.cdninstagram.com https://*.fbcdn.net; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; frame-src 'self' https://www.google.com https://*.google.com https://www.googletagmanager.com https://www.youtube.com https://www.youtube-nocookie.com https://www.instagram.com; img-src 'self' https: data: blob:; font-src 'self' https: data:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; connect-src 'self' https:; form-action 'self' https:; upgrade-insecure-requests";
+
+/**
+ * Production (https API) gets the original policy unchanged.
+ * Local development only: when NEXT_PUBLIC_API_URL is a plain-http localhost/127.0.0.1
+ * backend (e.g. http://localhost:8005/api/v1/), allow that origin for API calls and
+ * images, and drop upgrade-insecure-requests so the browser does not block it (blocked:csp).
+ */
+function buildContentSecurityPolicy() {
+  const origin = getBackendApiOrigin();
+  if (!/^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(origin)) {
+    return BASE_CONTENT_SECURITY_POLICY;
+  }
+  return BASE_CONTENT_SECURITY_POLICY
+    .replace("connect-src 'self' https:", `connect-src 'self' https: ${origin}`)
+    .replace("img-src 'self' https: data: blob:", `img-src 'self' https: data: blob: ${origin}`)
+    .replace("media-src 'self'", `media-src 'self' ${origin}`)
+    .replace("; upgrade-insecure-requests", "");
 }
 
 const nextConfig = {
@@ -319,10 +346,15 @@ const nextConfig = {
             key: "Referrer-Policy",
             value: "strict-origin-when-cross-origin",
           },
+          // Previous (original) CSP entry, kept for reference:
+          // {
+          //   key: "Content-Security-Policy",
+          //   value:
+          //     "default-src 'self';media-src 'self' https://otherassets.blob.core.windows.net https://*.cdninstagram.com https://*.fbcdn.net; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; frame-src 'self' https://www.google.com https://*.google.com https://www.googletagmanager.com https://www.youtube.com https://www.youtube-nocookie.com https://www.instagram.com; img-src 'self' https: data: blob:; font-src 'self' https: data:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; connect-src 'self' https:; form-action 'self' https:; upgrade-insecure-requests",
+          // },
           {
             key: "Content-Security-Policy",
-            value:
-              "default-src 'self';media-src 'self' https://otherassets.blob.core.windows.net https://*.cdninstagram.com https://*.fbcdn.net; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; frame-src 'self' https://www.google.com https://*.google.com https://www.googletagmanager.com https://www.youtube.com https://www.youtube-nocookie.com https://www.instagram.com; img-src 'self' https: data: blob:; font-src 'self' https: data:; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https:; connect-src 'self' https:; form-action 'self' https:; upgrade-insecure-requests",
+            value: buildContentSecurityPolicy(),
           },
         ],
       },
