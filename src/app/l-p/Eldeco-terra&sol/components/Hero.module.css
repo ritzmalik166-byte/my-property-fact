@@ -1,0 +1,218 @@
+/* 23:179 — 1440×640, fill #12684d + image (FILL), column, gap 24, padding 0 120 88, content bottom-aligned */
+.hero {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 640px;
+  padding: 0 var(--ets-gutter) 88px;
+  overflow: hidden;
+  background: var(--ets-green);
+}
+
+.bg {
+  position: absolute;
+  inset: 0;
+  z-index: -3;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+}
+
+/* 23:180 Bottom gradient */
+.gradientBottom {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: linear-gradient(
+    180deg,
+    rgba(10, 58, 44, 0.12) 0%,
+    rgba(10, 58, 44, 0.2) 45%,
+    rgba(10, 58, 44, 0.74) 100%
+  );
+}
+/* 23:181 Left gradient */
+.gradientLeft {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(90deg, rgba(10, 58, 44, 0.56) 0%, rgba(10, 58, 44, 0) 55%);
+}
+
+/* 23:182 Hero copy — 760 wide, gap 20 */
+.copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  width: 100%;
+  max-width: 760px;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  white-space: nowrap;
+}
+.badgeLight {
+  background: var(--ets-card);
+  color: var(--ets-text);
+}
+.badgeGold {
+  background: var(--ets-gradient);
+  color: var(--ets-black);
+}
+.badgeGlass {
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--ets-on-dark);
+}
+
+.title {
+  color: var(--ets-on-dark);
+}
+
+.subtitle {
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.fact {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 16px;
+  background: var(--ets-green);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  border-radius: 10px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.factLabel {
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.75);
+}
+.factValue {
+  font-size: 20px;
+  line-height: 26px;
+  font-weight: 600;
+  color: var(--ets-on-dark);
+  white-space: nowrap;
+}
+.factAccent {
+  color: var(--ets-gold);
+}
+
+.ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+/* desktop: keep copy clear of the enquiry sidebar that overlaps the hero */
+@media (min-width: 1024px) {
+  .copy {
+    max-width: min(760px, calc(100% - var(--ets-sidebar-w) - var(--ets-col-gap)));
+  }
+}
+
+@media (max-width: 1023px) {
+  .hero {
+    min-height: 600px;
+    padding-bottom: 48px;
+  }
+}
+
+/* 23:668 mobile — 390×600, gap 16, padding 0 16 28; single gradient 23:669 */
+@media (max-width: 767px) {
+  .hero {
+    min-height: 600px;
+    padding: 0 16px 28px;
+  }
+  .gradientBottom {
+    background: linear-gradient(
+      180deg,
+      rgba(10, 58, 44, 0.08) 0%,
+      rgba(10, 58, 44, 0.16) 35%,
+      rgba(10, 58, 44, 0.77) 100%
+    );
+  }
+  .gradientLeft {
+    display: none;
+  }
+  .copy {
+    gap: 16px;
+  }
+  .badges {
+    gap: 8px;
+  }
+  .badge {
+    padding: 5px 10px;
+  }
+  .badgeLight {
+    display: none;
+  }
+  /* mobile HARERA badge is solid gold (#e2b04a), glass badge 18% white */
+  .badgeGold {
+    background: var(--ets-gold);
+  }
+  .badgeGlass {
+    background: rgba(255, 255, 255, 0.18);
+  }
+
+  .subtitle {
+    font-size: 16px;
+    line-height: 26px;
+  }
+  .facts {
+    flex-wrap: nowrap;
+    gap: 8px;
+    width: 100%;
+  }
+  .fact {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 8px 12px;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+  .factDesktopOnly {
+    display: none;
+  }
+  .factValue {
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 500;
+  }
+  .ctas {
+    width: 100%;
+  }
+  .ctas .primaryCta {
+    width: 100%;
+  }
+  .ctas .secondaryCta {
+    display: none;
+  }
+}

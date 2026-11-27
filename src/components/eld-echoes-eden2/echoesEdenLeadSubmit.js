@@ -11,6 +11,53 @@ const GOOGLE_SHEET_URL =
   "https://script.google.com/macros/s/AKfycbyGFtKW9LdwEHvwO7GTS5Ov2Ri6xFUUJs7qb0mF2FpN-ZmFjab5o4gEty8U1DuRyCQL/exec";
 const SHEET_NAME = "Sheet1";
 
+// RMW CRM lead capture (also stores the Google Ads gclid for conversion tracking)
+const RMW_CRM_ENDPOINT = "https://crm.ritzmediaworld.com/api/public/leads";
+const RMW_CRM_API_KEY = "lc__Gq1WievSLEXLSELt7jPdOzqmA3FfeNd";
+const RMW_TRACK_KEYS = ["gclid", "gbraid", "wbraid", "fbclid", "utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"];
+
+/** Call once on page load: remembers ad click IDs / UTM tags and the landing URL. */
+export function rememberCrmTracking() {
+  if (typeof window === "undefined") return;
+  const qs = new URLSearchParams(window.location.search);
+  RMW_TRACK_KEYS.forEach((k) => {
+    const v = qs.get(k);
+    if (v) try { localStorage.setItem(`crm_${k}`, v); } catch {}
+  });
+  try {
+    if (!sessionStorage.getItem("crm_landing")) sessionStorage.setItem("crm_landing", window.location.href);
+  } catch {}
+}
+
+function sendToRmwCrm({ name, email, phone, message }) {
+  const data = {
+    api_key: RMW_CRM_API_KEY,
+    form_name: "Echoes of Eden LP",
+    name,
+    phone,
+    email,
+    message,
+    project: ECHOES_EDEN_CRM_PROJECT_NAME,
+    page_url: window.location.href,
+    referrer: document.referrer,
+  };
+  try { data.landing_page = sessionStorage.getItem("crm_landing") || window.location.href; } catch { data.landing_page = window.location.href; }
+  const qs = new URLSearchParams(window.location.search);
+  RMW_TRACK_KEYS.forEach((k) => {
+    let v = qs.get(k);
+    if (!v) try { v = localStorage.getItem(`crm_${k}`); } catch {}
+    if (v) data[k] = v;
+  });
+  return fetch(RMW_CRM_ENDPOINT, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  })
+    .then((r) => r.json())
+    .then((r) => { if (!r.success) throw new Error(r.message || "RMW CRM rejected lead"); })
+    .catch((e) => console.error("RMW CRM:", e));
+}
+
 function getTrackingFields() {
   const query = new URLSearchParams(window.location.search);
 
@@ -87,7 +134,9 @@ export async function submitEchoesEdenLead({ name, email, phone, homeType }) {
     throw new Error("Could not save your enquiry. Please try again.");
   });
 
-  await Promise.all([crmPromise, sheetPromise]);
+  const rmwPromise = sendToRmwCrm(formData);
+
+  await Promise.all([crmPromise, sheetPromise, rmwPromise]);
   return { ok: true };
 }
 

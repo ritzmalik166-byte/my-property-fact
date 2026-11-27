@@ -1,0 +1,127 @@
+/* 23:363 Tag — champ tint, r6, padding 6/10, gap 6, 8px bronze dot */
+.offerTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: var(--ets-champ);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--ets-text);
+}
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--ets-bronze);
+}
+
+/* 23:366 Table — 1px border, r12, clip */
+.table {
+  border: 1px solid var(--ets-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.tr {
+  display: grid;
+  grid-template-columns: 220px 220px minmax(0, 1fr);
+  align-items: center;
+  padding: 0 20px;
+}
+.tr + .tr {
+  border-top: 1px solid var(--ets-border);
+}
+
+/* Head — #f3ebdf, padding 14/20, 500 14/20 muted */
+.head {
+  padding-top: 14px;
+  padding-bottom: 14px;
+  background: var(--ets-tile);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+  color: var(--ets-muted);
+}
+
+/* Row — 81 tall, button right aligned */
+.row {
+  min-height: 81px;
+}
+.type {
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 600;
+  color: var(--ets-text);
+}
+.price {
+  font-size: 20px;
+  line-height: 26px;
+  font-weight: 600;
+  color: var(--ets-text);
+  white-space: nowrap;
+}
+.action {
+  display: flex;
+  justify-content: flex-end;
+}
+
+@media (max-width: 1279px) {
+  .tr {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr) auto;
+    gap: 12px;
+  }
+}
+
+/* 23:818 mobile price card — 1px border, r12, padding 16, gap 12 */
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.priceCard {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--ets-border);
+  border-radius: 12px;
+}
+.priceTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.priceCard {
+  min-width: 0;
+}
+.priceTop {
+  flex-wrap: wrap;
+  row-gap: 4px;
+  min-width: 0;
+}
+.cardType {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 500;
+  color: var(--ets-text);
+}
+.priceTop .price {
+  flex-shrink: 0;
+  margin-left: auto; /* stays right-aligned even when the row wraps */
+}
+
+/* very narrow phones (≤360px): slightly smaller price so the row stays on one line */
+@media (max-width: 360px) {
+  .priceTop .price {
+    font-size: 18px;
+    line-height: 24px;
+  }
+  .cardType {
+    font-size: 15px;
+  }
+}

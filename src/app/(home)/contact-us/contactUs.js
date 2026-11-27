@@ -174,9 +174,9 @@ export default function ContactUs() {
         </div>
         <div className="info-container-child">
           <p>Office Address</p>
-          <p>6th Floor, Unit No.603, Corporate Park Tower A,</p>
-          <p>Plot No. 7A/1, Near Advant Building, Sector 142,</p>
-          <p>Gautam Buddha Nagar, Noida, Pin-201305.(UP)</p>
+          <p>7th Floor, Tower A2, Corporate Park,</p>
+          <p>Sector 142, Noida,</p>
+          <p>Uttar Pradesh, India</p>
         </div>
       </div>
       <div className="contact-form-section">

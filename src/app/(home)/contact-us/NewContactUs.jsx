@@ -229,7 +229,7 @@ export default function NewContactUs() {
                   </div>
                   <h2 className="plus-jakarta-sans-semi-bold h3">Address</h2>
                   <p className="contact-address-text">
-                    Unit no: 603, 6th Floor, Corporate Park Tower A1, Sector 142 Noida
+                    7th Floor, Tower A2, Corporate Park, Sector 142, Noida, Uttar Pradesh, India
                   </p>
                 </div>
               </div>
@@ -303,11 +303,11 @@ export default function NewContactUs() {
                     <div className="contact-expert-address-body">
                       <p className="contact-expert-address-title">Our Office</p>
                       <p className="contact-expert-address-text mb-0">
-                        Unit no: 603, 6th Floor, Corporate
+                        7th Floor, Tower A2, Corporate Park,
                         <br />
-                        Park Tower A1,
+                        Sector 142, Noida,
                         <br />
-                        Sector 142 Noida, Uttar Pradesh
+                        Uttar Pradesh, India
                       </p>
                     </div>
                   </div>

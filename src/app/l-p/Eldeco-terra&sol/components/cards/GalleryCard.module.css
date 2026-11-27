@@ -1,0 +1,148 @@
+/* 23:314 Video thumbnail — 714×380, r12, clip */
+.video {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 380px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--ets-green-deep);
+}
+/* Dummy "video": 4 blurred frames cross-fade on a 16s loop while slowly drifting (Ken Burns) */
+.frames {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+/* blurred footage that slowly pans + zooms back and forth, like a playing clip */
+.frame {
+  object-fit: cover;
+  filter: blur(8px) saturate(1.1);
+  transform: scale(1.12);
+  animation: ets-video-drift 14s ease-in-out infinite alternate;
+  will-change: transform;
+}
+@keyframes ets-video-drift {
+  from {
+    transform: scale(1.12) translate3d(-2%, 1%, 0);
+  }
+  to {
+    transform: scale(1.24) translate3d(2%, -1.5%, 0);
+  }
+}
+
+/* "Chip / Artistic Impression" — sits below the overlay layer in Figma */
+.chip {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: var(--ets-green);
+  color: var(--ets-on-dark);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+/* tint over the blurred footage (brand deep green) */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(12, 70, 54, 0.25) 0%, rgba(12, 70, 54, 0.55) 100%);
+}
+
+/* 23:318 Play button — 80×80 card fill, shadow 0 10 30 .22, 5px left pad.
+   (The 12px white spread shadow in the file does not show in Figma's own render, so it is omitted.) */
+.play {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  padding-left: 5px;
+  border-radius: 999px;
+  background: var(--ets-card);
+  box-shadow: 0 10px 30px rgba(51, 64, 51, 0.22);
+  transition: transform 0.25s ease;
+}
+/* pulsing rings invite the click */
+.play::before,
+.play::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 2px solid rgba(255, 253, 248, 0.7);
+  animation: ets-play-pulse 2.4s ease-out infinite;
+  pointer-events: none;
+}
+.play::after {
+  animation-delay: 1.2s;
+}
+@keyframes ets-play-pulse {
+  from {
+    transform: scale(1);
+    opacity: 0.9;
+  }
+  to {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+.video:hover .play {
+  transform: scale(1.08);
+}
+
+/* 23:320 Thumbnails — 4 × fill, 110 tall, gap 12, r10 */
+.thumbs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.thumb {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 110px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.thumb img {
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+.thumb:hover img {
+  transform: scale(1.05);
+}
+
+.seeAll.seeAllBottom {
+  display: none;
+}
+
+/* 23:776 mobile — video 200, play 60 (pad 4), thumbs 56 r8 gap 8, button at the bottom */
+@media (max-width: 767px) {
+  .video {
+    height: 200px;
+  }
+  .play {
+    width: 60px;
+    height: 60px;
+    padding-left: 4px;
+  }
+  .thumbs {
+    gap: 8px;
+  }
+  .thumb {
+    height: 56px;
+    border-radius: 8px;
+  }
+  .seeAll.seeAllTop {
+    display: none;
+  }
+  .seeAll.seeAllBottom {
+    display: inline-flex;
+  }
+}

@@ -1,0 +1,38 @@
+/* 23:224 — row gap 40, padding 32 120 96; main column 780 + sidebar 380 */
+.body {
+  display: grid;
+  grid-template-columns: minmax(0, 780px) var(--ets-sidebar-w);
+  justify-content: center;
+  align-items: stretch;
+  column-gap: var(--ets-col-gap);
+  padding: 32px var(--ets-gutter) 96px;
+}
+
+/* 23:225 Main column — gap 24 */
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+
+/* tablet: one centred column (max 780) */
+@media (max-width: 1023px) {
+  .body {
+    grid-template-columns: minmax(0, 780px);
+    padding: 24px var(--ets-gutter) 64px;
+  }
+  .main {
+    gap: 20px;
+  }
+}
+
+/* 23:704 mobile content — padding 16 16 40, gap 16 */
+@media (max-width: 767px) {
+  .body {
+    padding: 16px 16px 40px;
+  }
+  .main {
+    gap: 16px;
+  }
+}

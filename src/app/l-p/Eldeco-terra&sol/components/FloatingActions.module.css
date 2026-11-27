@@ -1,0 +1,129 @@
+/* 23:655 / 23:657 — 60 circles, gold, 2px card border, shadow 0 8 20 .2; right 24, 16 apart */
+.floating {
+  position: fixed;
+  right: 24px;
+  bottom: 32px;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border: 2px solid var(--ets-card);
+  border-radius: 999px;
+  background: var(--ets-gold);
+  box-shadow: var(--ets-shadow-float);
+}
+
+/*
+  WhatsApp brand button: #25D366 fill, white border + glyph.
+  Hover / press / focus: white water fills it, border + glyph turn WhatsApp green.
+*/
+.fabWhatsapp {
+  --ets-water-color: #ffffff;
+  color: #ffffff; /* glyph colour */
+  background: #25d366;
+  border-color: #ffffff;
+  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.35);
+}
+.whatsappIcon {
+  display: block;
+  width: 26px;
+  height: 26px;
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+/* beats the shared .ets-water rules (which turn labels white) */
+.fabWhatsapp:global(.ets-water):active,
+.fabWhatsapp:global(.ets-water):focus-visible {
+  color: #25d366 !important;
+  border-color: #25d366 !important;
+}
+@media (hover: hover) {
+  .fabWhatsapp:global(.ets-water):hover {
+    color: #25d366 !important;
+    border-color: #25d366 !important;
+  }
+}
+
+/* 1024–1439: the page gutter is narrower than the 60px buttons, so they would sit on
+   the sticky enquiry form — make them 48px and tuck them into the gutter. */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .floating {
+    right: 8px;
+    gap: 12px;
+  }
+  .fab {
+    width: 48px;
+    height: 48px;
+  }
+  .fab img,
+  .fab .whatsappIcon {
+    width: 22px !important;
+    height: 22px !important;
+  }
+}
+/* 1024–1279: gutter is only 24–40px */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .floating {
+    right: 4px;
+  }
+  .fab {
+    width: 44px;
+    height: 44px;
+  }
+  .fab img,
+  .fab .whatsappIcon {
+    width: 20px !important;
+    height: 20px !important;
+  }
+}
+
+/* 23:983 — fixed bottom bar, card fill, padding 12 16, gap 10, shadow 0 -6 20 .13 */
+.bar {
+  display: none;
+}
+
+@media (max-width: 1023px) {
+  .bar {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+    display: flex;
+    gap: 10px;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+    background: var(--ets-card);
+    box-shadow: 0 -6px 20px rgba(51, 64, 51, 0.13);
+  }
+  .bar .barButton {
+    flex: 1 1 0;
+    min-width: 0;
+    padding: 0 12px;
+  }
+
+  /* mobile shows only the WhatsApp bubble (23:986), 56px, above the bar */
+  .floating {
+    right: 16px;
+    bottom: calc(96px + env(safe-area-inset-bottom, 0px));
+  }
+  .fab {
+    width: 56px;
+    height: 56px;
+  }
+  .fabCall {
+    display: none;
+  }
+}

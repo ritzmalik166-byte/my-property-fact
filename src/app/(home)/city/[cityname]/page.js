@@ -118,6 +118,20 @@ function normalizeCityKeywords(keywords, cityName, slug) {
   ];
 }
 
+/** Meta tags must be plain text; older city records store editor HTML. */
+function toMetaText(value) {
+  return String(value || "")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/gi, "'")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 // Generate dynamic metadata for SEO
 export async function generateMetadata({ params }) {
   const { cityname } = await params;
@@ -127,8 +141,8 @@ export async function generateMetadata({ params }) {
     notFound();
   }
   return {
-    title: cityData.metaTitle,
-    description: cityData.metaDescription,
+    title: toMetaText(cityData.metaTitle),
+    description: toMetaText(cityData.metaDescription),
     keywords: normalizeCityKeywords(
       cityData.metaKeywords,
       cityData.cityName,

@@ -86,7 +86,9 @@ export default function LazyBelowFold() {
       path === "/eldeco-7-peaks" ||
       path.startsWith("/eldeco-7-peaks/") ||
       path === "/lp/eldeco-7-peaks" ||
-      path.startsWith("/lp/eldeco-7-peaks/");
+      path.startsWith("/lp/eldeco-7-peaks/") ||
+      // ads landing pages under src/app/l-p (e.g. /l-p/Eldeco-terra&sol and its thank-you page)
+      path.startsWith("/l-p/");
     setIsLandingPage(hideChatbot);
   }, [current_path_name]);
 
